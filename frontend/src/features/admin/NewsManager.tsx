@@ -5,12 +5,13 @@ import { Modal } from '../../components/ui/Modal';
 import { ConfirmDialog } from '../../components/ui/ConfirmDialog';
 import { Pagination } from '../../components/ui/Pagination';
 import { TableSkeleton } from '../../components/ui/TableSkeleton';
-import { Plus, Edit, Trash2, Newspaper, Eye, EyeOff, Check, Image as ImageIcon, UploadCloud } from 'lucide-react';
+import { Plus, Edit, Trash2, Newspaper, Eye, EyeOff, Check, Image as ImageIcon, UploadCloud, Pin } from 'lucide-react';
 import { LocalizedNewsArticle } from '../../types/domain';
 import { MOCK_NEWS } from '../../api/mockData';
 
 interface ExtendedNewsArticle extends LocalizedNewsArticle {
   isActive?: boolean;
+  isPinned?: boolean;
 }
 
 export const NewsManager: React.FC = () => {
@@ -46,6 +47,7 @@ export const NewsManager: React.FC = () => {
   const [contentBody, setContentBody] = useState('');
   const [featuredImageURL, setFeaturedImageURL] = useState('');
   const [isActive, setIsActive] = useState(true);
+  const [isPinned, setIsPinned] = useState(false);
 
   // Notification State
   const [toastMessage, setToastMessage] = useState<string | null>(null);
@@ -114,6 +116,19 @@ export const NewsManager: React.FC = () => {
     showToast('เปลี่ยนสถานะการแสดงผลข่าวสารในฐานข้อมูลเรียบร้อยแล้ว');
   };
 
+  const handleTogglePin = (id: string) => {
+    const updatedList = items.map((item) => {
+      if (item.id === id) {
+        return { ...item, isPinned: !item.isPinned };
+      }
+      return item;
+    });
+    setItems(updatedList);
+    syncNewsToDatabase(updatedList);
+    const target = updatedList.find((i) => i.id === id);
+    showToast(target?.isPinned ? '📌 ปักหมุดข่าวเด่นบนหน้าแรกเรียบร้อยแล้ว' : 'ยกเลิกการปักหมุดข่าวนี้แล้ว');
+  };
+
   const handleOpenAdd = () => {
     setEditingArticle(null);
     setTitle('');
@@ -123,6 +138,7 @@ export const NewsManager: React.FC = () => {
     setContentBody('');
     setFeaturedImageURL('/images/factory-building.jpg');
     setIsActive(true);
+    setIsPinned(false);
     setModalOpen(true);
   };
 
@@ -135,6 +151,7 @@ export const NewsManager: React.FC = () => {
     setContentBody(article.contentBody || '');
     setFeaturedImageURL(article.featuredImageURL || '/images/factory-building.jpg');
     setIsActive(article.isActive !== false);
+    setIsPinned(Boolean(article.isPinned));
     setModalOpen(true);
   };
 
@@ -171,6 +188,7 @@ export const NewsManager: React.FC = () => {
               contentBody,
               featuredImageURL,
               isActive,
+              isPinned,
             }
           : item
       );
@@ -189,6 +207,7 @@ export const NewsManager: React.FC = () => {
         contentBody,
         featuredImageURL,
         isActive,
+        isPinned,
         publishedAt: new Date().toISOString(),
       };
       updatedList = [newArt, ...items];
@@ -328,6 +347,18 @@ export const NewsManager: React.FC = () => {
                       <td className="py-3 px-4 text-right space-x-2">
                         <button
                           type="button"
+                          onClick={() => handleTogglePin(article.id)}
+                          className={`rounded-lg border p-1.5 transition-all ${
+                            article.isPinned
+                              ? 'border-amber-500/60 bg-amber-500/20 text-amber-300 shadow-sm'
+                              : 'border-theme-border bg-theme-surface text-theme-text-muted hover:text-amber-400 hover:border-amber-500/40'
+                          }`}
+                          title={article.isPinned ? 'ยกเลิกการปักหมุดข่าวเด่น' : 'ปักหมุดข่าวเด่นบนหน้าแรก'}
+                        >
+                          <Pin className={`h-3.5 w-3.5 ${article.isPinned ? 'fill-amber-400 text-amber-400' : ''}`} />
+                        </button>
+                        <button
+                          type="button"
                           onClick={() => handleOpenEdit(article)}
                           className="rounded-lg border border-theme-border bg-theme-surface p-1.5 text-theme-text-muted hover:text-theme-primary hover:border-theme-primary transition-colors"
                           title="แก้ไขข่าวสาร"
@@ -372,21 +403,42 @@ export const NewsManager: React.FC = () => {
         maxWidth="2xl"
       >
         <div className="space-y-4 text-xs">
-          {/* Visibility Status Switch */}
-          <div className="flex items-center justify-between p-3 rounded-xl border border-theme-border bg-theme-surface-elevated">
-            <span className="font-bold text-theme-text">สถานะการเผยแพร่ (Publish Status)</span>
-            <button
-              type="button"
-              onClick={() => setIsActive(!isActive)}
-              className={`rounded-full px-3 py-1 text-xs font-bold inline-flex items-center gap-1.5 transition-all ${
-                isActive
-                  ? 'bg-emerald-500 text-white shadow-sm'
-                  : 'bg-slate-700 text-slate-300'
-              }`}
-            >
-              {isActive ? <Eye className="h-3.5 w-3.5" /> : <EyeOff className="h-3.5 w-3.5" />}
-              <span>{isActive ? 'เปิดเผยแพร่สู่หน้าเว็บ' : 'บันทึกเป็นฉบับร่าง (ซ่อน)'}</span>
-            </button>
+          {/* Status Switches (Visibility & Pin to Homepage) */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div className="flex items-center justify-between p-3 rounded-xl border border-theme-border bg-theme-surface-elevated">
+              <span className="font-bold text-theme-text">สถานะการเผยแพร่</span>
+              <button
+                type="button"
+                onClick={() => setIsActive(!isActive)}
+                className={`rounded-full px-3 py-1 text-xs font-bold inline-flex items-center gap-1.5 transition-all ${
+                  isActive
+                    ? 'bg-emerald-500 text-white shadow-sm'
+                    : 'bg-slate-700 text-slate-300'
+                }`}
+              >
+                {isActive ? <Eye className="h-3.5 w-3.5" /> : <EyeOff className="h-3.5 w-3.5" />}
+                <span>{isActive ? 'เผยแพร่' : 'ฉบับร่าง'}</span>
+              </button>
+            </div>
+
+            <div className="flex items-center justify-between p-3 rounded-xl border border-theme-border bg-theme-surface-elevated">
+              <span className="font-bold text-theme-text flex items-center gap-1.5">
+                <Pin className="h-3.5 w-3.5 text-amber-400" />
+                <span>ปักหมุดหน้าแรก</span>
+              </span>
+              <button
+                type="button"
+                onClick={() => setIsPinned(!isPinned)}
+                className={`rounded-full px-3 py-1 text-xs font-bold inline-flex items-center gap-1.5 transition-all ${
+                  isPinned
+                    ? 'bg-amber-500 text-black shadow-sm font-black'
+                    : 'bg-slate-700 text-slate-300'
+                }`}
+              >
+                <Pin className={`h-3 w-3 ${isPinned ? 'fill-black' : ''}`} />
+                <span>{isPinned ? '📌 ปักหมุดแล้ว' : 'ไม่ปักหมุด'}</span>
+              </button>
+            </div>
           </div>
 
           <div>

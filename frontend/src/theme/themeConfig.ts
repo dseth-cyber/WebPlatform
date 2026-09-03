@@ -36,24 +36,24 @@ export const THEME_CONFIGS: Record<ThemeMode, ThemeConfig> = {
   LIGHT: {
     mode: 'LIGHT',
     name: 'LIGHT: International Corporate',
-    subtitle: 'White, Aluminum, Light Steel, Navy & Silver',
+    subtitle: 'Google Material Palette: Clean White, Charcoal & Google Blue',
     colors: {
-      background: '#F8FAFC',
+      background: '#F8FAFD',
       surface: '#FFFFFF',
-      surfaceElevated: '#F1F5F9',
-      surfaceHover: '#E2E8F0',
-      border: '#CBD5E1',
-      borderHighlight: 'rgba(15, 23, 42, 0.2)',
-      text: '#0F172A',
-      textMuted: '#475569',
-      textDim: '#64748B',
-      primary: '#0369A1',
-      primaryHover: '#0284C7',
-      primaryGlow: 'rgba(3, 105, 161, 0.2)',
-      secondary: '#475569',
-      accent: '#D97706',
-      badgeBg: 'rgba(3, 105, 161, 0.1)',
-      badgeText: '#0369A1',
+      surfaceElevated: '#FFFFFF',
+      surfaceHover: '#F1F3F4',
+      border: '#DADCE0',
+      borderHighlight: '#BDC1C6',
+      text: '#202124',           // Exact Google text color from attached screenshot (not pure black!)
+      textMuted: '#5F6368',      // Exact Google secondary text color from attached screenshot
+      textDim: '#80868B',        // Exact Google tertiary text color from attached screenshot
+      primary: '#1A73E8',        // Exact Google Blue (matching "จัดการ" button and links)
+      primaryHover: '#1557B0',
+      primaryGlow: 'rgba(26, 115, 232, 0.2)',
+      secondary: '#5F6368',
+      accent: '#1A73E8',
+      badgeBg: 'rgba(26, 115, 232, 0.1)',
+      badgeText: '#1A73E8',
     },
     effects: {
       shadow: '0 4px 6px -1px rgba(0, 0, 0, 0.08)',

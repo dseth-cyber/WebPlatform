@@ -121,6 +121,7 @@ export interface LocalizedNewsArticle {
   publishedAt?: string;
   metaTitle?: string;
   metaDescription?: string;
+  isPinned?: boolean; // 📌 ปักหมุดข่าวเด่นหน้าแรก
 }
 
 export interface MediaFile {

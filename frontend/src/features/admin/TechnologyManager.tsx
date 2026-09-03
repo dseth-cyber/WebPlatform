@@ -16,6 +16,7 @@ import {
   Sparkles,
   UploadCloud,
   Image as ImageIcon,
+  Pin,
 } from 'lucide-react';
 import { compressImageFile } from '../../utils/imageCompressor';
 
@@ -254,14 +255,35 @@ export const TechnologyManager: React.FC = () => {
                       </div>
                     </div>
 
-                    <button
-                      type="button"
-                      onClick={() => handleDeleteCard(idx)}
-                      className="rounded-lg p-1.5 text-theme-text-dim hover:bg-red-500/20 hover:text-red-400 transition-colors"
-                      title="ลบรายการนี้"
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </button>
+                    <div className="flex items-center gap-2">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const updated = [...cards];
+                          updated[idx] = { ...updated[idx], isPinned: updated[idx].isPinned === false ? true : false };
+                          setCards(updated);
+                          showToast(updated[idx].isPinned !== false ? 'ปักหมุดแสดงที่หน้าแรกแล้ว' : 'ยกเลิกปักหมุดหน้าแรกแล้ว');
+                        }}
+                        className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-bold transition-all ${
+                          card.isPinned !== false
+                            ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40 shadow-sm'
+                            : 'bg-theme-surface text-theme-text-muted hover:text-theme-text border border-theme-border'
+                        }`}
+                        title={card.isPinned !== false ? 'คลิกเพื่อยกเลิกการปักหมุดหน้าแรก' : 'คลิกเพื่อปักหมุดแสดงที่หน้าแรก'}
+                      >
+                        <Pin className={`h-3.5 w-3.5 ${card.isPinned !== false ? 'fill-amber-400 text-amber-400' : ''}`} />
+                        <span>{card.isPinned !== false ? '📌 ปักหมุดหน้าแรก' : 'ปักหมุดหน้าแรก'}</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => handleDeleteCard(idx)}
+                        className="rounded-lg p-1.5 text-theme-text-dim hover:bg-red-500/20 hover:text-red-400 transition-colors"
+                        title="ลบรายการนี้"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </button>
+                    </div>
                   </div>
 
                   <div className="space-y-3 pt-2">

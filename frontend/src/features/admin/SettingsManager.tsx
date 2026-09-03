@@ -26,6 +26,8 @@ import {
   ArrowUp,
   ArrowDown,
   Database,
+  Pin,
+  Package,
 } from 'lucide-react';
 import { compressImageFile } from '../../utils/imageCompressor';
 
@@ -191,6 +193,24 @@ export const SettingsManager: React.FC = () => {
     await updateSettings({ navTabs: currentTabs });
     setFormState((prev) => ({ ...prev, navTabs: currentTabs }));
     showToast(`สลับตำแหน่ง "${draggedItem.labelTh}" สำเร็จ`);
+  };
+
+  const handleToggleCategoryPin = async (index: number) => {
+    const categories = [...(settings.categoryCards || [])];
+    if (!categories[index]) return;
+    categories[index] = { ...categories[index], isPinned: !categories[index].isPinned };
+    await updateSettings({ categoryCards: categories });
+    setFormState((prev) => ({ ...prev, categoryCards: categories }));
+    showToast(categories[index].isPinned ? `📌 ปักหมุด "${categories[index].titleTh}" บนหน้าแรกแล้ว` : `ยกเลิกการปักหมุด "${categories[index].titleTh}" แล้ว`);
+  };
+
+  const handleToggleCategoryEnabled = async (index: number) => {
+    const categories = [...(settings.categoryCards || [])];
+    if (!categories[index]) return;
+    categories[index] = { ...categories[index], enabled: categories[index].enabled === false ? true : false };
+    await updateSettings({ categoryCards: categories });
+    setFormState((prev) => ({ ...prev, categoryCards: categories }));
+    showToast(`เปลี่ยนสถานะการแสดงผล "${categories[index].titleTh}" เรียบร้อยแล้ว`);
   };
 
   const handleSaveAll = () => {
@@ -797,7 +817,75 @@ export const SettingsManager: React.FC = () => {
         </div>
       </div>
 
-      {/* 4. THEME SYSTEM */}
+      {/* 4. HOMEPAGE CATEGORY CARDS PIN & VISIBILITY */}
+      <div className="rounded-3xl border border-theme-border bg-theme-surface p-6 sm:p-8 shadow-2xl space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-theme-border pb-3">
+          <div>
+            <h3 className="font-display text-sm font-bold text-theme-text flex items-center gap-2">
+              <Package className="h-4 w-4 text-theme-primary" />
+              <span>จัดการปักหมุดหมวดหมู่สินค้าหน้าแรก (Homepage Category Cards Manager)</span>
+            </h3>
+            <p className="text-[11px] text-theme-text-muted mt-0.5">
+              💡 คลิกปุ่ม 📌 เพื่อปักหมุดหมวดหมู่สินค้าเด่นที่จะนำขึ้นแสดงบนหน้าแรก หรือเปิด/ปิดการแสดงผล
+            </p>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 pt-2">
+          {(settings.categoryCards || []).map((cat, idx) => (
+            <div
+              key={cat.id}
+              className="flex items-center justify-between p-3 rounded-2xl border border-theme-border bg-theme-surface-elevated/60 gap-3"
+            >
+              <div className="flex items-center gap-2.5 min-w-0">
+                <img
+                  src={cat.image}
+                  alt={cat.titleTh}
+                  className="h-10 w-10 object-contain rounded-xl bg-white p-1 border border-theme-border"
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src = '/images/cat-round-cans.jpg';
+                  }}
+                />
+                <div className="min-w-0">
+                  <div className="text-xs font-bold text-theme-text truncate">{cat.titleTh}</div>
+                  <div className="text-[10px] text-theme-text-muted truncate font-mono">{cat.titleEn}</div>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-1.5 flex-shrink-0">
+                <button
+                  type="button"
+                  onClick={() => handleToggleCategoryPin(idx)}
+                  className={`flex items-center gap-1 rounded-xl px-2.5 py-1.5 text-[11px] font-bold transition-all ${
+                    cat.isPinned
+                      ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40 shadow-sm'
+                      : 'bg-theme-surface text-theme-text-muted hover:text-amber-400 border border-theme-border'
+                  }`}
+                  title={cat.isPinned ? 'ยกเลิกการปักหมุด' : 'ปักหมุดหมวดหมู่นี้บนหน้าแรก'}
+                >
+                  <Pin className={`h-3 w-3 ${cat.isPinned ? 'fill-amber-400 text-amber-400' : ''}`} />
+                  <span>{cat.isPinned ? '📌 ปักหมุด' : 'ปักหมุด'}</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => handleToggleCategoryEnabled(idx)}
+                  className={`flex items-center gap-1 rounded-xl px-2.5 py-1.5 text-[11px] font-bold transition-all ${
+                    cat.enabled !== false
+                      ? 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/30'
+                      : 'bg-slate-500/15 text-slate-400 border border-slate-500/30'
+                  }`}
+                  title={cat.enabled !== false ? 'คลิกเพื่อซ่อน' : 'คลิกเพื่อแสดง'}
+                >
+                  {cat.enabled !== false ? <Eye className="h-3 w-3" /> : <EyeOff className="h-3 w-3" />}
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* 5. THEME SYSTEM */}
       <div className="rounded-3xl border border-theme-border bg-theme-surface p-6 sm:p-8 shadow-2xl space-y-4">
         <div className="flex items-center justify-between border-b border-theme-border pb-3">
           <h3 className="font-display text-sm font-bold text-theme-text flex items-center gap-2">

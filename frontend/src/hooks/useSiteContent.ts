@@ -14,6 +14,7 @@ export interface CategoryCardSetting {
   image: string;
   path: string;
   enabled: boolean;
+  isPinned?: boolean; // 📌 ปักหมุดแสดงที่หน้าแรก
 }
 
 export interface MetricSetting {
@@ -40,6 +41,7 @@ export interface SustainabilityCardSetting {
   descTh: string;
   descEn: string;
   image?: string;
+  isPinned?: boolean; // 📌 ปักหมุดแสดงที่หน้าแรก
 }
 
 export interface TechnologyCardSetting {
@@ -50,6 +52,7 @@ export interface TechnologyCardSetting {
   descTh: string;
   descEn: string;
   image?: string;
+  isPinned?: boolean; // 📌 ปักหมุดแสดงที่หน้าแรก
 }
 
 export interface ServiceItemSetting {
@@ -61,6 +64,7 @@ export interface ServiceItemSetting {
   descEn: string;
   features: string[];
   image?: string;
+  isPinned?: boolean; // 📌 ปักหมุดแสดงที่หน้าแรก
 }
 
 export interface CareerJobSetting {

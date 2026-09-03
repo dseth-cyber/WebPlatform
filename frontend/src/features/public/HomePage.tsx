@@ -32,6 +32,7 @@ import {
   Clock,
   Send,
   Building2,
+  Pin,
 } from 'lucide-react';
 import { useSiteContent } from '../../hooks/useSiteContent';
 import { useNews } from '../../hooks/useNews';
@@ -94,8 +95,38 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
   });
 
   const enabledBadges = settings.featureBadges.filter((b) => b.enabled);
-  const enabledCategories = settings.categoryCards.filter((c) => c.enabled);
   const enabledMetrics = settings.metrics.filter((m) => m.enabled);
+
+  // 📌 Categories with Pin sorting
+  const enabledCategories = settings.categoryCards.filter((c) => c.enabled);
+  const pinnedCategories = enabledCategories.filter((c) => c.isPinned);
+  const categoriesToShow = pinnedCategories.length > 0
+    ? [...pinnedCategories, ...enabledCategories.filter((c) => !c.isPinned)]
+    : enabledCategories;
+
+  // 📌 Services with Pin filtering
+  const rawServices = settings.servicesList || [];
+  const pinnedServices = rawServices.filter((s) => s.isPinned);
+  const servicesToShow = pinnedServices.length > 0 ? pinnedServices : rawServices.slice(0, 4);
+
+  // 📌 Technology with Pin filtering
+  const rawTech = settings.technologyCards || [];
+  const pinnedTech = rawTech.filter((t) => t.isPinned);
+  const techToShow = pinnedTech.length > 0 ? pinnedTech : rawTech.slice(0, 3);
+
+  // 📌 Sustainability with Pin filtering
+  const rawSus = settings.sustainabilityCards || [];
+  const pinnedSus = rawSus.filter((s) => s.isPinned);
+  const susToShow = pinnedSus.length > 0 ? pinnedSus : rawSus.slice(0, 3);
+
+  // 📌 News with Pin sorting
+  const allNews = newsArticles || [];
+  const activeNews = allNews.filter((n: any) => n.isActive !== false);
+  const pinnedNews = activeNews.filter((n: any) => n.isPinned);
+  const unpinnedNews = activeNews.filter((n: any) => !n.isPinned);
+  const displayedNews = pinnedNews.length > 0
+    ? [...pinnedNews, ...unpinnedNews].slice(0, 3)
+    : activeNews.slice(0, 3);
 
   // Quick inquiry state
   const [quickContactSent, setQuickContactSent] = useState(false);
@@ -359,12 +390,18 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
         </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-6">
-          {enabledCategories.map((cat) => (
+          {categoriesToShow.map((cat) => (
             <div
               key={cat.id}
               onClick={() => onNavigate(cat.path)}
-              className="glow-card group cursor-pointer rounded-2xl border border-theme-border bg-theme-surface overflow-hidden shadow-lg flex flex-col justify-between transition-colors"
+              className="glow-card group cursor-pointer rounded-2xl border border-theme-border bg-theme-surface overflow-hidden shadow-lg flex flex-col justify-between transition-colors relative"
             >
+              {cat.isPinned && (
+                <div className="absolute top-2.5 right-2.5 z-10 flex items-center gap-1 rounded-full bg-amber-500/90 backdrop-blur-md px-2 py-0.5 text-[9px] font-black text-black shadow-md border border-amber-400/50">
+                  <Pin className="h-2.5 w-2.5 fill-black text-black" />
+                  <span>แนะนำ</span>
+                </div>
+              )}
               <div className="aspect-[4/3] w-full overflow-hidden bg-white p-3">
                 <img
                   src={cat.image}
@@ -419,7 +456,7 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
       </p>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        {(settings.servicesList || []).map((srv) => {
+        {servicesToShow.map((srv) => {
           const IconComp = SRV_ICONS[srv.icon] || Layers;
           const srvTitle = isEn ? (srv.titleEn || srv.titleTh) : (srv.titleTh || srv.titleEn);
           const srvDesc = isEn ? (srv.descEn || srv.descTh) : (srv.descTh || srv.descEn);
@@ -446,8 +483,14 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
                   },
                 });
               }}
-              className="glow-card group cursor-pointer flex flex-col justify-between rounded-2xl border border-theme-border bg-theme-surface overflow-hidden hover:border-theme-primary/60 hover:shadow-2xl hover:-translate-y-1 transition-all shadow-xl"
+              className="glow-card group cursor-pointer flex flex-col justify-between rounded-2xl border border-theme-border bg-theme-surface overflow-hidden hover:border-theme-primary/60 hover:shadow-2xl hover:-translate-y-1 transition-all shadow-xl relative"
             >
+              {srv.isPinned && (
+                <div className="absolute top-3 right-3 z-10 flex items-center gap-1 rounded-full bg-amber-500/90 backdrop-blur-md px-2.5 py-0.5 text-[10px] font-black text-black shadow-md border border-amber-400/50">
+                  <Pin className="h-3 w-3 fill-black text-black" />
+                  <span>แนะนำ</span>
+                </div>
+              )}
               {srv.image && (
                 <div className="relative h-48 w-full overflow-hidden bg-slate-900 border-b border-theme-border/50">
                   <img
@@ -531,7 +574,7 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
       </p>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        {(settings.technologyCards || []).map((card) => {
+        {techToShow.map((card) => {
           const IconComp = TECH_ICONS[card.icon] || Cpu;
           const techTitle = isEn ? (card.titleEn || card.titleTh) : (card.titleTh || card.titleEn);
           const techDesc = isEn ? (card.descEn || card.descTh) : (card.descTh || card.descEn);
@@ -557,8 +600,14 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
                   },
                 });
               }}
-              className="glow-card group cursor-pointer flex flex-col justify-between rounded-2xl border border-theme-border bg-theme-surface overflow-hidden hover:border-theme-primary/60 hover:shadow-2xl hover:-translate-y-1 transition-all shadow-xl"
+              className="glow-card group cursor-pointer flex flex-col justify-between rounded-2xl border border-theme-border bg-theme-surface overflow-hidden hover:border-theme-primary/60 hover:shadow-2xl hover:-translate-y-1 transition-all shadow-xl relative"
             >
+              {card.isPinned && (
+                <div className="absolute top-3 right-3 z-10 flex items-center gap-1 rounded-full bg-amber-500/90 backdrop-blur-md px-2.5 py-0.5 text-[10px] font-black text-black shadow-md border border-amber-400/50">
+                  <Pin className="h-3 w-3 fill-black text-black" />
+                  <span>ไฮไลท์</span>
+                </div>
+              )}
               {card.image && (
                 <div className="relative h-56 w-full overflow-hidden bg-slate-900 border-b border-theme-border/50">
                   <img
@@ -632,7 +681,7 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
       </p>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        {(settings.sustainabilityCards || []).map((card) => {
+        {susToShow.map((card) => {
           const IconComp = SUS_ICONS[card.icon] || Leaf;
           const susTitle = isEn ? (card.titleEn || card.titleTh) : (card.titleTh || card.titleEn);
           const susDesc = isEn ? (card.descEn || card.descTh) : (card.descTh || card.descEn);
@@ -656,8 +705,14 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
                   },
                 });
               }}
-              className="glow-card group cursor-pointer flex flex-col justify-between rounded-2xl border border-emerald-500/30 bg-theme-surface overflow-hidden hover:border-emerald-500 hover:shadow-2xl hover:-translate-y-1 transition-all shadow-xl"
+              className="glow-card group cursor-pointer flex flex-col justify-between rounded-2xl border border-emerald-500/30 bg-theme-surface overflow-hidden hover:border-emerald-500 hover:shadow-2xl hover:-translate-y-1 transition-all shadow-xl relative"
             >
+              {card.isPinned && (
+                <div className="absolute top-3 right-3 z-10 flex items-center gap-1 rounded-full bg-emerald-400 backdrop-blur-md px-2.5 py-0.5 text-[10px] font-black text-black shadow-md border border-emerald-300">
+                  <Pin className="h-3 w-3 fill-black text-black" />
+                  <span>นโยบายหลัก</span>
+                </div>
+              )}
               {card.image && (
                 <div className="relative h-48 w-full overflow-hidden bg-slate-900 border-b border-theme-border/50">
                   <img
@@ -704,10 +759,6 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
   // SECTION 7: NEWS & PRESS (#news)
   // -------------------------------------------------------------
   const renderNews = () => {
-    const rawNewsList = (newsArticles && newsArticles.length > 0) ? newsArticles : [];
-    const activeNews = rawNewsList.filter((n: any) => n.isActive !== false);
-    const displayedNews = activeNews.slice(0, 3);
-
     return (
       <section id="news" className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-8 scroll-mt-28">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -762,8 +813,14 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
                       },
                     });
                   }}
-                  className="glow-card group cursor-pointer flex flex-col justify-between rounded-2xl border border-theme-border bg-theme-surface overflow-hidden hover:border-theme-primary/60 hover:shadow-2xl hover:-translate-y-1 transition-all shadow-xl"
+                  className="glow-card group cursor-pointer flex flex-col justify-between rounded-2xl border border-theme-border bg-theme-surface overflow-hidden hover:border-theme-primary/60 hover:shadow-2xl hover:-translate-y-1 transition-all shadow-xl relative"
                 >
+                  {item.isPinned && (
+                    <div className="absolute top-3 right-3 z-10 flex items-center gap-1 rounded-full bg-amber-500/90 backdrop-blur-md px-2.5 py-0.5 text-[10px] font-black text-black shadow-md border border-amber-400/50">
+                      <Pin className="h-3 w-3 fill-black text-black" />
+                      <span>ข่าวเด่น</span>
+                    </div>
+                  )}
                   <div className="relative h-48 w-full overflow-hidden bg-slate-900">
                     <img
                       src={itemImage}

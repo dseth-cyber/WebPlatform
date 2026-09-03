@@ -6,11 +6,12 @@ import { TableSkeleton } from '../../components/ui/TableSkeleton';
 import { Pagination } from '../../components/ui/Pagination';
 import { Modal } from '../../components/ui/Modal';
 import { ConfirmDialog } from '../../components/ui/ConfirmDialog';
-import { Plus, Edit, Trash2, Package, Search, Check, Image as ImageIcon, Eye, EyeOff, UploadCloud } from 'lucide-react';
+import { Plus, Edit, Trash2, Package, Search, Check, Image as ImageIcon, Eye, EyeOff, UploadCloud, Pin } from 'lucide-react';
 import { LocalizedProduct } from '../../types/domain';
 
 interface ExtendedProduct extends LocalizedProduct {
   isActive?: boolean;
+  isPinned?: boolean;
 }
 
 export const ProductsManager: React.FC = () => {
@@ -223,10 +224,22 @@ export const ProductsManager: React.FC = () => {
       const updatedList = productsList.filter((item) => item.id !== deletingId);
       setProductsList(updatedList);
       syncProductsToDatabase(updatedList);
-      showToast('ลบสินค้าออกจากฐานข้อมูลเรียบร้อยแล้ว');
       setDeleteConfirmOpen(false);
       setDeletingId(null);
     }
+  };
+
+  const handleTogglePin = (id: string) => {
+    const updatedList = productsList.map((item) => {
+      if (item.id === id) {
+        return { ...item, isPinned: !item.isPinned };
+      }
+      return item;
+    });
+    setProductsList(updatedList);
+    syncProductsToDatabase(updatedList);
+    const target = updatedList.find((i) => i.id === id);
+    showToast(target?.isPinned ? '📌 ปักหมุดสินค้าแนะนำเรียบร้อยแล้ว' : 'ยกเลิกการปักหมุดสินค้านี้แล้ว');
   };
 
   const categoryOptions: SelectOption[] = [
@@ -359,6 +372,18 @@ export const ProductsManager: React.FC = () => {
                         </button>
                       </td>
                       <td className="py-3 px-4 text-right space-x-2">
+                        <button
+                          type="button"
+                          onClick={() => handleTogglePin(p.id)}
+                          className={`rounded-lg border p-1.5 transition-all ${
+                            p.isPinned
+                              ? 'border-amber-500/60 bg-amber-500/20 text-amber-300 shadow-sm'
+                              : 'border-theme-border bg-theme-surface text-theme-text-muted hover:text-amber-400 hover:border-amber-500/40'
+                          }`}
+                          title={p.isPinned ? 'ยกเลิกการปักหมุดสินค้าแนะนำ' : 'ปักหมุดสินค้าแนะนำบนหน้าเว็บ'}
+                        >
+                          <Pin className={`h-3.5 w-3.5 ${p.isPinned ? 'fill-amber-400 text-amber-400' : ''}`} />
+                        </button>
                         <button
                           type="button"
                           onClick={() => handleOpenEdit(p)}
