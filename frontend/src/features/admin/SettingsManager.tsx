@@ -25,6 +25,7 @@ import {
   GripVertical,
   ArrowUp,
   ArrowDown,
+  Database,
 } from 'lucide-react';
 import { compressImageFile } from '../../utils/imageCompressor';
 
@@ -103,6 +104,16 @@ export const SettingsManager: React.FC = () => {
     await updateSettings({ showHeroSecondaryBtn: nextValue });
     setFormState((prev) => ({ ...prev, showHeroSecondaryBtn: nextValue }));
     showToast(nextValue ? 'เปิดแสดงปุ่ม "ชมผลิตภัณฑ์ของเรา" บนหน้าแรกแล้ว' : 'ซ่อนปุ่ม "ชมผลิตภัณฑ์ของเรา" จากหน้าแรกเรียบร้อยแล้ว');
+  };
+
+  const handleSetDashboardDataSource = async (mode: 'mock' | 'real') => {
+    setFormState((prev) => ({ ...prev, dashboardDataSource: mode }));
+    await updateSettings({ dashboardDataSource: mode });
+    showToast(
+      mode === 'real'
+        ? 'สลับเป็นโหมด "ข้อมูลจริงของระบบ (Real System Data)" เรียบร้อยแล้ว'
+        : 'สลับเป็นโหมด "ข้อมูลจำลอง (Mockup Demo Data)" เรียบร้อยแล้ว'
+    );
   };
 
   const handleToggleNavTab = async (tabId: string) => {
@@ -573,6 +584,109 @@ export const SettingsManager: React.FC = () => {
                   <span>คลิกเพื่อเปิดแสดงปุ่มนี้</span>
                 </>
               )}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* 🌟 2.5 DASHBOARD DATA SOURCE SELECTOR (MOCKUP VS REAL DATA) */}
+      <div className="rounded-3xl border border-theme-border bg-theme-surface p-6 sm:p-8 shadow-2xl space-y-5">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-theme-border pb-3 gap-2">
+          <div>
+            <h3 className="font-display text-sm font-bold text-theme-text flex items-center gap-2">
+              <Database className="h-4 w-4 text-theme-primary" />
+              <span>แหล่งข้อมูลของแผงควบคุมภาพรวม (Admin Dashboard Data Mode)</span>
+            </h3>
+            <p className="text-[11px] text-theme-text-muted mt-0.5">
+              เลือกว่าจะให้หน้า <strong>แผงควบคุมภาพรวม (Dashboard)</strong> ดึงข้อมูลจริงจากระบบ หรือแสดงข้อมูลจำลองเพื่อการพรีเซนต์
+            </p>
+          </div>
+
+          <span
+            className={`text-[11px] font-bold px-3 py-1 rounded-full border self-start sm:self-auto ${
+              formState.dashboardDataSource === 'real'
+                ? 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30'
+                : 'bg-amber-500/15 text-amber-400 border-amber-500/30'
+            }`}
+          >
+            {formState.dashboardDataSource === 'real'
+              ? '🟢 กำลังใช้: ข้อมูลจริงของระบบ (Real System Data)'
+              : '🟡 กำลังใช้: ข้อมูลจำลอง (Mockup Demo Data)'}
+          </span>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 pt-1">
+          {/* Option 1: Mockup Demo Data */}
+          <div
+            onClick={() => handleSetDashboardDataSource('mock')}
+            className={`cursor-pointer rounded-2xl p-5 border transition-all flex flex-col justify-between space-y-4 ${
+              formState.dashboardDataSource !== 'real'
+                ? 'border-amber-500/60 bg-amber-500/10 shadow-lg shadow-amber-500/10 ring-1 ring-amber-500/40'
+                : 'border-theme-border bg-theme-surface-elevated hover:border-theme-border/80'
+            }`}
+          >
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2 text-xs font-bold text-theme-text">
+                  <Sparkles className="h-4 w-4 text-amber-400" />
+                  <span>ข้อมูลจำลอง / ตัวอย่างระบบ (Mockup Demo Data)</span>
+                </div>
+                {formState.dashboardDataSource !== 'real' && (
+                  <span className="rounded-full bg-amber-500 text-black px-2 py-0.5 text-[10px] font-black">
+                    เปิดใช้งานอยู่
+                  </span>
+                )}
+              </div>
+              <p className="text-[11px] text-theme-text-muted leading-relaxed">
+                แสดงผลสถิติตัวอย่างระดับองค์กร (Web Traffic, Pageviews 36k+, ผู้เข้าชมต่างประเทศ, สัดส่วนอุปกรณ์ B2B Desktop 64%, และคำขอใบเสนอราคาจำลอง) เหมาะสำหรับใช้ในการนำเสนอหรือ Demo เว็บไซต์
+              </p>
+            </div>
+            <button
+              type="button"
+              className={`w-full rounded-xl py-2.5 px-4 text-xs font-bold transition-all ${
+                formState.dashboardDataSource !== 'real'
+                  ? 'bg-amber-500 text-black font-black shadow-sm'
+                  : 'border border-theme-border bg-theme-surface text-theme-text-muted hover:text-theme-text'
+              }`}
+            >
+              {formState.dashboardDataSource !== 'real' ? '✓ กำลังใช้งานโหมดนี้' : 'สลับใช้ข้อมูลจำลอง (Mockup)'}
+            </button>
+          </div>
+
+          {/* Option 2: Real System Data */}
+          <div
+            onClick={() => handleSetDashboardDataSource('real')}
+            className={`cursor-pointer rounded-2xl p-5 border transition-all flex flex-col justify-between space-y-4 ${
+              formState.dashboardDataSource === 'real'
+                ? 'border-emerald-500/60 bg-emerald-500/10 shadow-lg shadow-emerald-500/10 ring-1 ring-emerald-500/40'
+                : 'border-theme-border bg-theme-surface-elevated hover:border-theme-border/80'
+            }`}
+          >
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2 text-xs font-bold text-theme-text">
+                  <Database className="h-4 w-4 text-emerald-400" />
+                  <span>ข้อมูลจริงของระบบ (Real Live System Data)</span>
+                </div>
+                {formState.dashboardDataSource === 'real' && (
+                  <span className="rounded-full bg-emerald-500 text-white px-2 py-0.5 text-[10px] font-black">
+                    เปิดใช้งานอยู่
+                  </span>
+                )}
+              </div>
+              <p className="text-[11px] text-theme-text-muted leading-relaxed">
+                ดึงตัวเลขและสถิติจริงจากฐานข้อมูลและระบบแบบ Real-time: จำนวนสินค้าจริง, ข่าวสารที่บันทึกจริง, หน้าเพจจริง, ไฟล์สื่อในคลังจริง, บัญชีผู้ใช้จริง, ข้อความติดต่อจากลูกค้าจริง และประวัติการทำงาน (Audit Logs)
+              </p>
+            </div>
+            <button
+              type="button"
+              className={`w-full rounded-xl py-2.5 px-4 text-xs font-bold transition-all ${
+                formState.dashboardDataSource === 'real'
+                  ? 'bg-emerald-500 text-white font-black shadow-sm'
+                  : 'border border-theme-border bg-theme-surface text-theme-text-muted hover:text-theme-text'
+              }`}
+            >
+              {formState.dashboardDataSource === 'real' ? '✓ กำลังใช้งานโหมดนี้' : 'สลับใช้ข้อมูลจริงของระบบ (Real)'}
             </button>
           </div>
         </div>

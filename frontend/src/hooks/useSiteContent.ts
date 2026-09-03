@@ -86,6 +86,7 @@ export interface SiteContentSettings {
   logoIcon: string;
   showCMSButton: boolean;       // Control from Admin: Show/Hide CMS button on public web
   showThemeSwitcher: boolean;   // Control from Admin: Show/Hide Theme switcher on public web
+  dashboardDataSource?: 'mock' | 'real'; // Toggle between Mockup Demo Data and Real System Data on Admin Dashboard
 
   // Header Nav Tabs Manager (Show/Hide any tab)
   navTabs: NavTabSetting[];
@@ -163,6 +164,7 @@ export const DEFAULT_SITE_SETTINGS: SiteContentSettings = {
   logoIcon: 'LC',
   showCMSButton: true,
   showThemeSwitcher: true,
+  dashboardDataSource: 'mock',
 
   navTabs: [
     { id: 'tab-home', key: 'home', labelTh: 'หน้าแรก', labelEn: 'Home', path: '/', enabled: true },
