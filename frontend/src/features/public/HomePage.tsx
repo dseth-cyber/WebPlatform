@@ -34,6 +34,9 @@ import {
   Building2,
 } from 'lucide-react';
 import { useSiteContent } from '../../hooks/useSiteContent';
+import { useNews } from '../../hooks/useNews';
+import { formatDate } from '../../utils/dateUtils';
+import { Modal } from '../../components/ui/Modal';
 
 const TECH_ICONS: Record<string, React.FC<{ className?: string }>> = {
   Cpu,
@@ -66,6 +69,29 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
   const { settings } = useSiteContent();
 
   const isEn = (i18n.language || 'th') === 'en';
+
+  const currentLang = i18n.language || 'th';
+  const { data: newsArticles } = useNews(undefined, currentLang);
+
+  // Detail Modal State for Cards (Services, Technology, Sustainability, News)
+  const [detailModal, setDetailModal] = useState<{
+    isOpen: boolean;
+    type: 'service' | 'tech' | 'sustainability' | 'news';
+    title: string;
+    subtitle?: string;
+    category?: string;
+    image?: string;
+    content: string;
+    features?: string[];
+    date?: string;
+    ctaText?: string;
+    ctaAction?: () => void;
+  }>({
+    isOpen: false,
+    type: 'service',
+    title: '',
+    content: '',
+  });
 
   const enabledBadges = settings.featureBadges.filter((b) => b.enabled);
   const enabledCategories = settings.categoryCards.filter((c) => c.enabled);
@@ -395,17 +421,38 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         {(settings.servicesList || []).map((srv) => {
           const IconComp = SRV_ICONS[srv.icon] || Layers;
+          const srvTitle = isEn ? (srv.titleEn || srv.titleTh) : (srv.titleTh || srv.titleEn);
+          const srvDesc = isEn ? (srv.descEn || srv.descTh) : (srv.descTh || srv.descEn);
 
           return (
             <div
               key={srv.id}
-              className="glow-card group flex flex-col justify-between rounded-2xl border border-theme-border bg-theme-surface overflow-hidden transition-all shadow-xl"
+              onClick={() => {
+                setDetailModal({
+                  isOpen: true,
+                  type: 'service',
+                  title: srvTitle,
+                  subtitle: isEn ? 'Comprehensive Metal Packaging Solutions' : 'บริการวิศวกรรมบรรจุภัณฑ์โลหะครบวงจร',
+                  category: isEn ? 'Service Solution' : 'บริการวิศวกรรม',
+                  image: srv.image || '/images/cat-round-cans.jpg',
+                  content: srvDesc,
+                  features: srv.features,
+                  ctaText: isEn ? 'Inquire About This Service' : 'ติดต่อสอบถามบริการนี้',
+                  ctaAction: () => {
+                    setDetailModal((prev) => ({ ...prev, isOpen: false }));
+                    const el = document.getElementById('contact');
+                    if (el) el.scrollIntoView({ behavior: 'smooth' });
+                    else onNavigate('/contact');
+                  },
+                });
+              }}
+              className="glow-card group cursor-pointer flex flex-col justify-between rounded-2xl border border-theme-border bg-theme-surface overflow-hidden hover:border-theme-primary/60 hover:shadow-2xl hover:-translate-y-1 transition-all shadow-xl"
             >
               {srv.image && (
                 <div className="relative h-48 w-full overflow-hidden bg-slate-900 border-b border-theme-border/50">
                   <img
                     src={srv.image}
-                    alt={srv.titleTh}
+                    alt={srvTitle}
                     className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-700"
                     onError={(e) => {
                       (e.target as HTMLImageElement).src = '/images/cat-round-cans.jpg';
@@ -423,15 +470,15 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
                       <IconComp className="h-6 w-6" />
                     </div>
                   )}
-                  <h3 className="font-display text-base sm:text-lg font-bold text-theme-text">
-                    {isEn ? (srv.titleEn || srv.titleTh) : (srv.titleTh || srv.titleEn)}
+                  <h3 className="font-display text-base sm:text-lg font-bold text-theme-text group-hover:text-theme-primary transition-colors">
+                    {srvTitle}
                   </h3>
-                  <p className="text-xs text-theme-text-muted leading-relaxed">
-                    {isEn ? (srv.descEn || srv.descTh) : (srv.descTh || srv.descEn)}
+                  <p className="text-xs text-theme-text-muted leading-relaxed line-clamp-3">
+                    {srvDesc}
                   </p>
                   {srv.features && srv.features.length > 0 && (
                     <div className="space-y-2 pt-2 border-t border-theme-border/50">
-                      {srv.features.map((f, fIdx) => (
+                      {srv.features.slice(0, 3).map((f, fIdx) => (
                         <div key={fIdx} className="flex items-center gap-2 text-xs text-theme-text">
                           <CheckCircle className="h-3.5 w-3.5 text-theme-primary flex-shrink-0" />
                           <span>{f}</span>
@@ -439,6 +486,11 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
                       ))}
                     </div>
                   )}
+                </div>
+
+                <div className="pt-3 border-t border-theme-border flex items-center gap-1.5 text-xs font-bold text-theme-primary group-hover:underline">
+                  <span>ดูรายละเอียดบริการ</span>
+                  <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-1 transition-transform" />
                 </div>
               </div>
             </div>
@@ -481,17 +533,37 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {(settings.technologyCards || []).map((card) => {
           const IconComp = TECH_ICONS[card.icon] || Cpu;
+          const techTitle = isEn ? (card.titleEn || card.titleTh) : (card.titleTh || card.titleEn);
+          const techDesc = isEn ? (card.descEn || card.descTh) : (card.descTh || card.descEn);
 
           return (
             <div
               key={card.id}
-              className="glow-card group flex flex-col justify-between rounded-2xl border border-theme-border bg-theme-surface overflow-hidden transition-all shadow-xl"
+              onClick={() => {
+                setDetailModal({
+                  isOpen: true,
+                  type: 'tech',
+                  title: techTitle,
+                  subtitle: isEn ? 'Smart Manufacturing & High-Speed Automation' : 'เทคโนโลยีและเครื่องจักรอัตโนมัติความเร็วสูง',
+                  category: isEn ? 'Technology & AI' : 'เทคโนโลยีการผลิต',
+                  image: card.image || '/images/factory-building.jpg',
+                  content: techDesc,
+                  ctaText: isEn ? 'Consult Technical Engineers' : 'ปรึกษาทีมวิศวกรเทคนิค',
+                  ctaAction: () => {
+                    setDetailModal((prev) => ({ ...prev, isOpen: false }));
+                    const el = document.getElementById('contact');
+                    if (el) el.scrollIntoView({ behavior: 'smooth' });
+                    else onNavigate('/contact');
+                  },
+                });
+              }}
+              className="glow-card group cursor-pointer flex flex-col justify-between rounded-2xl border border-theme-border bg-theme-surface overflow-hidden hover:border-theme-primary/60 hover:shadow-2xl hover:-translate-y-1 transition-all shadow-xl"
             >
               {card.image && (
                 <div className="relative h-56 w-full overflow-hidden bg-slate-900 border-b border-theme-border/50">
                   <img
                     src={card.image}
-                    alt={card.titleTh}
+                    alt={techTitle}
                     className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-700"
                     onError={(e) => {
                       (e.target as HTMLImageElement).src = '/images/factory-building.jpg';
@@ -509,12 +581,17 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
                       <IconComp className="h-6 w-6" />
                     </div>
                   )}
-                  <h3 className="font-display text-base sm:text-lg font-bold text-theme-text">
-                    {isEn ? (card.titleEn || card.titleTh) : (card.titleTh || card.titleEn)}
+                  <h3 className="font-display text-base sm:text-lg font-bold text-theme-text group-hover:text-theme-primary transition-colors">
+                    {techTitle}
                   </h3>
-                  <p className="text-xs text-theme-text-muted leading-relaxed">
-                    {isEn ? (card.descEn || card.descTh) : (card.descTh || card.descEn)}
+                  <p className="text-xs text-theme-text-muted leading-relaxed line-clamp-3">
+                    {techDesc}
                   </p>
+                </div>
+
+                <div className="pt-3 border-t border-theme-border flex items-center gap-1.5 text-xs font-bold text-theme-primary group-hover:underline">
+                  <span>ดูรายละเอียดเทคโนโลยี</span>
+                  <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-1 transition-transform" />
                 </div>
               </div>
             </div>
@@ -557,17 +634,35 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         {(settings.sustainabilityCards || []).map((card) => {
           const IconComp = SUS_ICONS[card.icon] || Leaf;
+          const susTitle = isEn ? (card.titleEn || card.titleTh) : (card.titleTh || card.titleEn);
+          const susDesc = isEn ? (card.descEn || card.descTh) : (card.descTh || card.descEn);
 
           return (
             <div
               key={card.id}
-              className="glow-card group flex flex-col justify-between rounded-2xl border border-emerald-500/30 bg-theme-surface overflow-hidden transition-all shadow-xl"
+              onClick={() => {
+                setDetailModal({
+                  isOpen: true,
+                  type: 'sustainability',
+                  title: susTitle,
+                  subtitle: isEn ? 'Eco-Friendly & Circular Economy' : 'ความยั่งยืนและการรีไซเคิลโลหะ 100%',
+                  category: isEn ? 'ESG & Net Zero' : 'ความยั่งยืน & สิ่งแวดล้อม',
+                  image: card.image || '/images/hero-fullwidth.jpg',
+                  content: susDesc,
+                  ctaText: isEn ? 'Explore Sustainability Strategy' : 'อ่านนโยบายความยั่งยืนฉบับเต็ม',
+                  ctaAction: () => {
+                    setDetailModal((prev) => ({ ...prev, isOpen: false }));
+                    onNavigate('/sustainability');
+                  },
+                });
+              }}
+              className="glow-card group cursor-pointer flex flex-col justify-between rounded-2xl border border-emerald-500/30 bg-theme-surface overflow-hidden hover:border-emerald-500 hover:shadow-2xl hover:-translate-y-1 transition-all shadow-xl"
             >
               {card.image && (
                 <div className="relative h-48 w-full overflow-hidden bg-slate-900 border-b border-theme-border/50">
                   <img
                     src={card.image}
-                    alt={card.titleTh}
+                    alt={susTitle}
                     className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-700"
                     onError={(e) => {
                       (e.target as HTMLImageElement).src = '/images/hero-fullwidth.jpg';
@@ -585,12 +680,17 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
                       <IconComp className="h-6 w-6" />
                     </div>
                   )}
-                  <h3 className="font-display text-base font-bold text-theme-text">
-                    {isEn ? (card.titleEn || card.titleTh) : (card.titleTh || card.titleEn)}
+                  <h3 className="font-display text-base font-bold text-theme-text group-hover:text-emerald-400 transition-colors">
+                    {susTitle}
                   </h3>
-                  <p className="text-xs text-theme-text-muted leading-relaxed">
-                    {isEn ? (card.descEn || card.descTh) : (card.descTh || card.descEn)}
+                  <p className="text-xs text-theme-text-muted leading-relaxed line-clamp-3">
+                    {susDesc}
                   </p>
+                </div>
+
+                <div className="pt-3 border-t border-emerald-500/20 flex items-center gap-1.5 text-xs font-bold text-emerald-500 group-hover:underline">
+                  <span>ดูรายละเอียดความยั่งยืน</span>
+                  <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-1 transition-transform" />
                 </div>
               </div>
             </div>
@@ -603,96 +703,110 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
   // -------------------------------------------------------------
   // SECTION 7: NEWS & PRESS (#news)
   // -------------------------------------------------------------
-  const renderNews = () => (
-    <section id="news" className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-8 scroll-mt-28">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div className="space-y-1">
-          <span className="text-xs font-bold uppercase tracking-wider text-theme-primary">
-            News & Announcements
-          </span>
-          <h2 className="font-display text-2xl sm:text-4xl font-black text-theme-text">
-            ข่าวสารและกิจกรรมล่าสุด (News & Press)
-          </h2>
-          <div className="h-1 w-12 bg-theme-primary rounded-full" />
+  const renderNews = () => {
+    const rawNewsList = (newsArticles && newsArticles.length > 0) ? newsArticles : [];
+    const activeNews = rawNewsList.filter((n: any) => n.isActive !== false);
+    const displayedNews = activeNews.slice(0, 3);
+
+    return (
+      <section id="news" className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-8 scroll-mt-28">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="space-y-1">
+            <span className="text-xs font-bold uppercase tracking-wider text-theme-primary">
+              News & Announcements
+            </span>
+            <h2 className="font-display text-2xl sm:text-4xl font-black text-theme-text">
+              ข่าวสารและกิจกรรมล่าสุด (News & Press)
+            </h2>
+            <div className="h-1 w-12 bg-theme-primary rounded-full" />
+          </div>
+
+          <button
+            type="button"
+            onClick={() => onNavigate('/news')}
+            className="inline-flex items-center gap-2 rounded-xl border border-theme-border bg-theme-surface px-5 py-2.5 text-xs font-bold text-theme-text hover:border-theme-primary transition-all self-start sm:self-auto"
+          >
+            <span>อ่านข่าวสารทั้งหมด</span>
+            <ChevronRight className="h-4 w-4 text-theme-primary" />
+          </button>
         </div>
 
-        <button
-          type="button"
-          onClick={() => onNavigate('/news')}
-          className="inline-flex items-center gap-2 rounded-xl border border-theme-border bg-theme-surface px-5 py-2.5 text-xs font-bold text-theme-text hover:border-theme-primary transition-all self-start sm:self-auto"
-        >
-          <span>อ่านข่าวสารทั้งหมด</span>
-          <ChevronRight className="h-4 w-4 text-theme-primary" />
-        </button>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        {[
-          {
-            id: 'news-1',
-            title: 'ขยายกำลังการผลิตสายเชื่อม Soudronic สวิตเซอร์แลนด์ รองรับตลาดอาหารส่งออก',
-            date: '28 กรกฎาคม 2026',
-            category: 'Corporate Update',
-            image: '/images/factory-building.jpg',
-            excerpt: 'ไคโอทรอน เทคโนโลยี ลงทุนเครื่องจักรความเร็วสูง 600 cpm เพื่อเพิ่มความแม่นยำและมาตรฐานสากล',
-          },
-          {
-            id: 'news-2',
-            title: 'ติดตั้ง Solar Rooftop 1.2 MW เดินหน้าสู่โรงงานบรรจุภัณฑ์พลังงานสะอาด 100%',
-            date: '15 มิถุนายน 2026',
-            category: 'Sustainability',
-            image: '/images/hero-fullwidth.jpg',
-            excerpt: 'ลดการปล่อยก๊าซเรือนกระจกกว่า 1,200 ตันคาร์บอนต่อปี ขับเคลื่อนเป้าหมาย Net Zero อย่างยั่งยืน',
-          },
-          {
-            id: 'news-3',
-            title: 'เปิดตัวนวัตกรรม Easy Open End สำหรับปลากระป๋อง ทนกรดสูง ปราศจาก BPA',
-            date: '02 พฤษภาคม 2026',
-            category: 'Product Launch',
-            image: '/images/cat-can-lids.jpg',
-            excerpt: 'มาตรฐาน Food Contact Grade สากล ตอบโจทย์โรงงานแปรรูปอาหารทะเลและซอสส่งออกทั่วโลก',
-          },
-        ].map((item) => (
-          <div
-            key={item.id}
-            onClick={() => onNavigate('/news')}
-            className="glow-card group cursor-pointer flex flex-col justify-between rounded-2xl border border-theme-border bg-theme-surface overflow-hidden transition-all shadow-xl"
-          >
-            <div className="relative h-48 w-full overflow-hidden bg-slate-900">
-              <img
-                src={item.image}
-                alt={item.title}
-                className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-700"
-              />
-              <div className="absolute top-3 left-3 rounded-md bg-theme-primary px-2.5 py-1 text-[10px] font-bold text-black">
-                {item.category}
-              </div>
-            </div>
-
-            <div className="p-6 space-y-3 flex-1 flex flex-col justify-between">
-              <div className="space-y-2">
-                <div className="flex items-center gap-1.5 text-[10px] text-theme-text-dim">
-                  <Calendar className="h-3.5 w-3.5" />
-                  <span>{item.date}</span>
-                </div>
-                <h3 className="font-display font-bold text-base text-theme-text group-hover:text-theme-primary transition-colors line-clamp-2">
-                  {item.title}
-                </h3>
-                <p className="text-xs text-theme-text-muted leading-relaxed line-clamp-2">
-                  {item.excerpt}
-                </p>
-              </div>
-
-              <div className="pt-3 border-t border-theme-border flex items-center gap-1 text-xs font-bold text-theme-primary">
-                <span>อ่านต่อ</span>
-                <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-1 transition-transform" />
-              </div>
-            </div>
+        {displayedNews.length === 0 ? (
+          <div className="p-8 text-center text-xs text-theme-text-muted rounded-2xl border border-theme-border bg-theme-surface">
+            กำลังอัปเดตข่าวสารและกิจกรรมล่าสุด...
           </div>
-        ))}
-      </div>
-    </section>
-  );
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {displayedNews.map((item: any) => {
+              const itemImage = item.featuredImageURL || item.image || '/images/factory-building.jpg';
+              const itemDate = item.publishedAt ? formatDate(item.publishedAt, currentLang) : (item.date || '');
+              const itemSummary = item.summary || item.excerpt || (item.contentBody ? item.contentBody.substring(0, 110) + '...' : '');
+
+              return (
+                <div
+                  key={item.id}
+                  onClick={() => {
+                    setDetailModal({
+                      isOpen: true,
+                      type: 'news',
+                      title: item.title,
+                      subtitle: item.category || 'ข่าวสารองค์กร',
+                      category: item.category || 'News',
+                      image: itemImage,
+                      date: itemDate,
+                      content: item.contentBody || itemSummary,
+                      ctaText: isEn ? 'Read Full Article & Press' : 'อ่านข่าวสารฉบับเต็ม',
+                      ctaAction: () => {
+                        setDetailModal((prev) => ({ ...prev, isOpen: false }));
+                        onNavigate(item.slug ? `/news/${item.slug}` : '/news');
+                      },
+                    });
+                  }}
+                  className="glow-card group cursor-pointer flex flex-col justify-between rounded-2xl border border-theme-border bg-theme-surface overflow-hidden hover:border-theme-primary/60 hover:shadow-2xl hover:-translate-y-1 transition-all shadow-xl"
+                >
+                  <div className="relative h-48 w-full overflow-hidden bg-slate-900">
+                    <img
+                      src={itemImage}
+                      alt={item.title}
+                      className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-700"
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).src = '/images/factory-building.jpg';
+                      }}
+                    />
+                    <div className="absolute top-3 left-3 rounded-md bg-theme-primary px-2.5 py-1 text-[10px] font-bold text-black shadow-md">
+                      {item.category || 'Corporate'}
+                    </div>
+                  </div>
+
+                  <div className="p-6 space-y-3 flex-1 flex flex-col justify-between">
+                    <div className="space-y-2">
+                      {itemDate && (
+                        <div className="flex items-center gap-1.5 text-[10px] text-theme-text-dim">
+                          <Calendar className="h-3.5 w-3.5 text-theme-primary" />
+                          <span>{itemDate}</span>
+                        </div>
+                      )}
+                      <h3 className="font-display font-bold text-base text-theme-text group-hover:text-theme-primary transition-colors line-clamp-2">
+                        {item.title}
+                      </h3>
+                      <p className="text-xs text-theme-text-muted leading-relaxed line-clamp-2">
+                        {itemSummary}
+                      </p>
+                    </div>
+
+                    <div className="pt-3 border-t border-theme-border flex items-center gap-1 text-xs font-bold text-theme-primary group-hover:underline">
+                      <span>อ่านต่อ</span>
+                      <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-1 transition-transform" />
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </section>
+    );
+  };
 
   // -------------------------------------------------------------
   // SECTION 8: CONTACT US (#contact)
@@ -969,6 +1083,89 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
           {renderSectionByKey(tab.key)}
         </React.Fragment>
       ))}
+
+      {/* 🌟 RICH CARD DETAIL MODAL (Services, Technology, Sustainability, News) */}
+      <Modal
+        isOpen={detailModal.isOpen}
+        onClose={() => setDetailModal((prev) => ({ ...prev, isOpen: false }))}
+        title={detailModal.title}
+        maxWidth="2xl"
+      >
+        <div className="space-y-5 text-xs font-sans">
+          {detailModal.image && (
+            <div className="aspect-[16/9] w-full overflow-hidden rounded-2xl border border-theme-border bg-black relative shadow-inner">
+              <img
+                src={detailModal.image}
+                alt={detailModal.title}
+                className="h-full w-full object-cover"
+                onError={(e) => {
+                  (e.target as HTMLImageElement).src = '/images/hero-fullwidth.jpg';
+                }}
+              />
+              {detailModal.category && (
+                <div className="absolute top-3 left-3 rounded-xl bg-black/80 backdrop-blur-md px-3 py-1 text-[11px] font-bold text-theme-primary border border-theme-primary/30 shadow-lg">
+                  {detailModal.category}
+                </div>
+              )}
+            </div>
+          )}
+
+          <div className="space-y-3">
+            {detailModal.date && (
+              <div className="flex items-center gap-1.5 text-xs text-theme-text-dim">
+                <Calendar className="h-3.5 w-3.5 text-theme-primary" />
+                <span>{detailModal.date}</span>
+              </div>
+            )}
+            <h3 className="font-display text-xl sm:text-2xl font-black text-theme-text leading-snug">
+              {detailModal.title}
+            </h3>
+            {detailModal.subtitle && (
+              <p className="text-xs font-bold text-theme-primary">
+                {detailModal.subtitle}
+              </p>
+            )}
+            <p className="text-xs sm:text-sm text-theme-text leading-relaxed whitespace-pre-line pt-2">
+              {detailModal.content}
+            </p>
+
+            {detailModal.features && detailModal.features.length > 0 && (
+              <div className="space-y-2 pt-3 border-t border-theme-border">
+                <h4 className="font-bold text-theme-text text-xs">คุณสมบัติและไฮไลท์สำคัญ:</h4>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  {detailModal.features.map((f, idx) => (
+                    <div key={idx} className="flex items-center gap-2 p-2 rounded-xl bg-theme-surface-elevated border border-theme-border text-theme-text text-xs">
+                      <CheckCircle className="h-4 w-4 text-theme-primary flex-shrink-0" />
+                      <span>{f}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+
+          <div className="flex items-center justify-between gap-3 pt-4 border-t border-theme-border flex-wrap">
+            <button
+              type="button"
+              onClick={() => setDetailModal((prev) => ({ ...prev, isOpen: false }))}
+              className="rounded-xl border border-theme-border bg-theme-surface px-5 py-2.5 font-bold text-theme-text hover:bg-theme-surface-elevated transition-colors"
+            >
+              ปิดหน้าต่าง
+            </button>
+
+            {detailModal.ctaText && detailModal.ctaAction && (
+              <button
+                type="button"
+                onClick={detailModal.ctaAction}
+                className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-[#D4AF37] via-[#C5A059] to-[#AA7C11] px-6 py-2.5 text-xs font-bold text-black shadow-lg shadow-amber-500/25 hover:brightness-110 transition-all cursor-pointer"
+              >
+                <span>{detailModal.ctaText}</span>
+                <ArrowRight className="h-4 w-4 text-black" />
+              </button>
+            )}
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 };

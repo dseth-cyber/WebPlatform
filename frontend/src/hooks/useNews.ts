@@ -7,6 +7,21 @@ export const useNews = (category?: string, lang: string = 'th') => {
   return useQuery<LocalizedNewsArticle[]>({
     queryKey: ['news', category, lang],
     queryFn: async () => {
+      // Check localStorage first
+      const local = localStorage.getItem('lohakit_news_data');
+      if (local) {
+        try {
+          const parsed = JSON.parse(local);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            let list = parsed;
+            if (category && category !== 'all') {
+              list = list.filter((n: any) => n.category === category);
+            }
+            return list;
+          }
+        } catch (e) {}
+      }
+
       try {
         // 1. Try public settings DB key first
         const settingsRes = await fetch('/api/v1/public/settings');
@@ -14,6 +29,7 @@ export const useNews = (category?: string, lang: string = 'th') => {
           const json = await settingsRes.json();
           if (json && json.data && Array.isArray(json.data.site_news) && json.data.site_news.length > 0) {
             let list = json.data.site_news;
+            localStorage.setItem('lohakit_news_data', JSON.stringify(list));
             if (category && category !== 'all') {
               list = list.filter((n: any) => n.category === category);
             }
@@ -30,6 +46,7 @@ export const useNews = (category?: string, lang: string = 'th') => {
         return MOCK_NEWS;
       }
     },
+    staleTime: 0,
   });
 };
 

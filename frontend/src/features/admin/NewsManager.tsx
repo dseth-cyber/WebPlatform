@@ -60,6 +60,8 @@ export const NewsManager: React.FC = () => {
   };
 
   const syncNewsToDatabase = async (newList: ExtendedNewsArticle[]) => {
+    localStorage.setItem('lohakit_news_data', JSON.stringify(newList));
+    window.dispatchEvent(new Event('lohakit_news_updated'));
     try {
       const csrfToken = localStorage.getItem('csrf_token') || '';
       const authToken = localStorage.getItem('auth_token') || '';
