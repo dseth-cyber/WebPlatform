@@ -1,0 +1,772 @@
+import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useTheme } from '../../theme/ThemeProvider';
+import { useSiteContent } from '../../hooks/useSiteContent';
+import { Modal } from '../../components/ui/Modal';
+import {
+  Sun,
+  Moon,
+  Sparkles,
+  UploadCloud,
+  CheckCircle2,
+  ArrowLeft,
+  Image as ImageIcon,
+  Save,
+  Send,
+  Eye,
+  History,
+  RotateCcw,
+  Smartphone,
+  Tablet,
+  Laptop,
+  Check,
+  Clock,
+  ArrowRight,
+  ShieldCheck,
+  AlertCircle,
+} from 'lucide-react';
+import { compressImageFile } from '../../utils/imageCompressor';
+
+interface RevisionRecord {
+  id: string;
+  revisionNumber: number;
+  title: string;
+  highlight: string;
+  subtitle: string;
+  buttonText: string;
+  buttonLink: string;
+  heroImage: string;
+  author: string;
+  createdAt: string;
+  status: 'PUBLISHED' | 'DRAFT' | 'REVIEW';
+  note: string;
+}
+
+export const PageEditor: React.FC<{
+  pageId: string;
+  onBack: () => void;
+}> = ({ pageId, onBack }) => {
+  const { t } = useTranslation();
+  const { theme, setTheme } = useTheme();
+  const { settings, updateSettings } = useSiteContent();
+
+  // Workflow Status: DRAFT -> PREVIEW -> REVIEW -> PUBLISHED
+  const [workflowStatus, setWorkflowStatus] = useState<'DRAFT' | 'REVIEW' | 'PUBLISHED'>('PUBLISHED');
+
+  // 4 Languages Translation Tabs (EN, JP, CN, MM)
+  const [activeTranslationLang, setActiveTranslationLang] = useState<'en' | 'jp' | 'cn' | 'mm'>('en');
+
+  // Form States (Column 1 - Thai Content)
+  const [thaiTitle, setThaiTitle] = useState(settings.heroTitle || 'โลหะกิจรุ่งเจริญทรัพย์');
+  const [thaiSubtitle, setThaiSubtitle] = useState(settings.heroHighlight || 'บรรจุภัณฑ์โลหะระดับโลก');
+  const [thaiDesc, setThaiDesc] = useState(
+    settings.heroSubtitle ||
+      'ผู้นำบรรจุภัณฑ์โลหะทางด้านอาหารสำเร็จรูปในประเทศไทย ด้วยเทคโนโลยีที่ทันสมัย คุณภาพมาตรฐานสากล และบริการที่เป็นเลิศ เพื่อตอบสนองความพึงพอใจของลูกค้า และความยั่งยืนของอุตสาหกรรม'
+  );
+  const [ctaText, setCtaText] = useState(settings.heroButtonText || 'เกี่ยวกับเรา');
+  const [ctaLink, setCtaLink] = useState(settings.heroButtonLink || '/about');
+
+  // Form States (Column 2 - Media)
+  const [heroImage, setHeroImage] = useState(settings.heroBannerImage || '/images/hero-fullwidth.jpg');
+
+  // Sync with global settings when loaded from DB
+  React.useEffect(() => {
+    if (settings) {
+      if (settings.heroTitle) setThaiTitle(settings.heroTitle);
+      if (settings.heroHighlight) setThaiSubtitle(settings.heroHighlight);
+      if (settings.heroSubtitle) setThaiDesc(settings.heroSubtitle);
+      if (settings.heroButtonText) setCtaText(settings.heroButtonText);
+      if (settings.heroButtonLink) setCtaLink(settings.heroButtonLink);
+      if (settings.heroBannerImage) setHeroImage(settings.heroBannerImage);
+    }
+  }, [settings]);
+
+  // Form States (Column 3 - Localized Translations for EN, JP, CN, MM)
+  const [translations, setTranslations] = useState({
+    en: {
+      title: 'Lohakit Rungcharoensap',
+      subtitle: 'World-Class Metal Packaging',
+      desc: "Thailand's leading manufacturer of metal packaging for ready-to-eat food with advanced technology, international quality standards, and exceptional customer service.",
+    },
+    jp: {
+      title: 'ロハキット・ルンチャローンサップ',
+      subtitle: '世界水準の金属包装ソリューション',
+      desc: 'タイを代表する即席食品用金属包装メーカー。先進技術と国際品質基準、卓越したサービスで産業の持続可能性を支えます。',
+    },
+    cn: {
+      title: '罗哈吉特隆扎隆萨普有限公司',
+      subtitle: '世界级高品质金属包装',
+      desc: '泰国领先的即食食品金属包装制造商，凭借先进技术、国际标准品质和卓越服务，满足客户需求并促进工业可持续发展。',
+    },
+    mm: {
+      title: 'Lohakit Rungcharoensap ကုမ္ပဏီလီမိတက်',
+      subtitle: 'ကမ္ဘာ့အဆင့်မီ သတ္တုထုပ်ပိုးပစ္စည်းများ',
+      desc: 'အဆင့်မြင့်နည်းပညာ၊ နိုင်ငံတကာအဆင့်မီ အရည်အသွေးနှင့် ထူးချွန်သောဝန်ဆောင်မှုများဖြင့် ထိုင်းနိုင်ငံ၏ ဦးဆောင်စားသောက်ကုန် သတ္တုဘူးထုပ်ပိုးထုတ်လုပ်သူ။',
+    },
+  });
+
+  // Revisions State (Revision 5 Current -> Revision 1)
+  const [revisions, setRevisions] = useState<RevisionRecord[]>([
+    {
+      id: 'rev-5',
+      revisionNumber: 5,
+      title: settings.heroTitle || 'โลหะกิจรุ่งเจริญทรัพย์',
+      highlight: settings.heroHighlight || 'บรรจุภัณฑ์โลหะระดับโลก',
+      subtitle: settings.heroSubtitle || 'ผู้นำบรรจุภัณฑ์โลหะทางด้านอาหารสำเร็จรูปในประเทศไทย...',
+      buttonText: 'เกี่ยวกับเรา',
+      buttonLink: '/about',
+      heroImage: settings.heroBannerImage || '/images/hero-fullwidth.jpg',
+      author: 'Administrator (Super Admin)',
+      createdAt: new Date().toISOString(),
+      status: 'PUBLISHED',
+      note: 'อัปเดตรูปหน้าปก Hero Fullwidth & ปรับคำโปรยภาษาไทย',
+    },
+    {
+      id: 'rev-4',
+      revisionNumber: 4,
+      title: 'บริษัท โลหะกิจรุ่งเจริญทรัพย์ จำกัด',
+      highlight: 'ผู้ผลิตกระป๋องอาหารและถังเคมีมาตรฐานสากล',
+      subtitle: 'โรงงานผลิตบรรจุภัณฑ์โลหะชั้นนำ มาตรฐาน ISO 9001:2015 & FSSC 22000',
+      buttonText: 'สำรวจแคตตาล็อกสินค้า',
+      buttonLink: '/products',
+      heroImage: '/images/hero-cans-banner.jpg',
+      author: 'Content Editor (Somchai)',
+      createdAt: new Date(Date.now() - 3600000 * 24).toISOString(),
+      status: 'DRAFT',
+      note: 'เปลี่ยนสโลแกนเน้นมาตรฐานรับรองสากล',
+    },
+    {
+      id: 'rev-3',
+      revisionNumber: 3,
+      title: 'Lohakit Metal Packaging',
+      highlight: 'ผู้นำอุตสาหกรรมกระป๋อง 3 ชิ้น',
+      subtitle: 'เทคโนโลยีขึ้นรูปตะเข็บคู่ Double Seam ความแม่นยำสูง',
+      buttonText: 'ขอใบเสนอราคา',
+      buttonLink: '/contact',
+      heroImage: '/images/factory-building.jpg',
+      author: 'Administrator',
+      createdAt: new Date(Date.now() - 3600000 * 48).toISOString(),
+      status: 'DRAFT',
+      note: 'ทดสอบปุ่มขอใบเสนอราคาบนหน้าแรก',
+    },
+    {
+      id: 'rev-2',
+      revisionNumber: 2,
+      title: 'โลหะกิจรุ่งเจริญทรัพย์ 1986',
+      highlight: 'ประสบการณ์กว่า 38 ปีแห่งความเป็นเลิศ',
+      subtitle: 'ส่งมอบบรรจุภัณฑ์เหล็กเคลือบดีบุกและอลูมิเนียมปลอดสาร BPA 100%',
+      buttonText: 'อ่านประวัติองค์กร',
+      buttonLink: '/about',
+      heroImage: '/images/hero-fullwidth.jpg',
+      author: 'Super Admin',
+      createdAt: new Date(Date.now() - 3600000 * 72).toISOString(),
+      status: 'DRAFT',
+      note: 'เวอร์ชันแรกเริ่มการปรับปรุงเว็บไซต์',
+    },
+  ]);
+
+  // Modal Controls
+  const [previewModalOpen, setPreviewModalOpen] = useState(false);
+  const [previewDevice, setPreviewDevice] = useState<'desktop' | 'tablet' | 'mobile'>('desktop');
+  const [revisionModalOpen, setRevisionModalOpen] = useState(false);
+  const [selectedRevision, setSelectedRevision] = useState<RevisionRecord | null>(null);
+
+  const [notification, setNotification] = useState<string | null>(null);
+
+  const showNotification = (msg: string) => {
+    setNotification(msg);
+    setTimeout(() => setNotification(null), 3500);
+  };
+
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      try {
+        showNotification('กำลังประมวลผลและปรับขนาดภาพหน้าปก...');
+        const optimizedDataUrl = await compressImageFile(file, 1920, 1080, 0.85);
+        setHeroImage(optimizedDataUrl);
+        setWorkflowStatus('DRAFT');
+        showNotification('อัปโหลดและเปลี่ยนภาพหน้าปกแล้ว (อยู่ในสถานะ Draft)');
+      } catch (err) {
+        showNotification('เกิดข้อผิดพลาดในการโหลดรูปภาพ');
+      }
+    }
+  };
+
+  const handleSaveDraft = () => {
+    setWorkflowStatus('DRAFT');
+    const newRev: RevisionRecord = {
+      id: 'rev-' + Date.now(),
+      revisionNumber: revisions.length + 1,
+      title: thaiTitle,
+      highlight: thaiSubtitle,
+      subtitle: thaiDesc,
+      buttonText: ctaText,
+      buttonLink: ctaLink,
+      heroImage,
+      author: 'Administrator',
+      createdAt: new Date().toISOString(),
+      status: 'DRAFT',
+      note: 'บันทึกเป็นฉบับร่าง (Draft)',
+    };
+    setRevisions([newRev, ...revisions]);
+    showNotification('บันทึกเป็นฉบับร่าง (Draft) สำเร็จแล้ว!');
+  };
+
+  const handlePublish = () => {
+    updateSettings({
+      heroTitle: thaiTitle,
+      heroHighlight: thaiSubtitle,
+      heroSubtitle: thaiDesc,
+      heroButtonText: ctaText,
+      heroButtonLink: ctaLink,
+      heroBannerImage: heroImage,
+    });
+    setWorkflowStatus('PUBLISHED');
+    const newRev: RevisionRecord = {
+      id: 'rev-' + Date.now(),
+      revisionNumber: revisions.length + 1,
+      title: thaiTitle,
+      highlight: thaiSubtitle,
+      subtitle: thaiDesc,
+      buttonText: ctaText,
+      buttonLink: ctaLink,
+      heroImage,
+      author: 'Administrator',
+      createdAt: new Date().toISOString(),
+      status: 'PUBLISHED',
+      note: 'เผยแพร่สู่หน้าเว็บไซต์จริง (Published Live)',
+    };
+    setRevisions([newRev, ...revisions]);
+    setPreviewModalOpen(false);
+    showNotification('🚀 เผยแพร่ข้อมูลสู่หน้าเว็บไซต์จริง (Published Live) เรียบร้อยแล้ว!');
+  };
+
+  const handleRestoreRevision = (rev: RevisionRecord) => {
+    setThaiTitle(rev.title);
+    setThaiSubtitle(rev.highlight);
+    setThaiDesc(rev.subtitle);
+    setCtaText(rev.buttonText);
+    setCtaLink(rev.buttonLink);
+    setHeroImage(rev.heroImage);
+    setWorkflowStatus('DRAFT');
+    setRevisionModalOpen(false);
+    showNotification(`🔄 กู้คืนข้อมูลจาก Revision ${rev.revisionNumber} เรียบร้อยแล้ว! (กรุณากด Preview หรือ Publish เพื่อยืนยัน)`);
+  };
+
+  return (
+    <div className="space-y-6 font-sans pb-24">
+      {/* Toast Notification */}
+      {notification && (
+        <div className="fixed bottom-6 right-6 z-50 flex items-center gap-2 rounded-2xl bg-emerald-500 px-6 py-3.5 text-sm font-bold text-white shadow-2xl animate-bounce">
+          <Check className="h-5 w-5" />
+          <span>{notification}</span>
+        </div>
+      )}
+
+      {/* Top Header Bar: Status Badge, Preview Button, Revision History Button, Publish Button */}
+      <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 border-b border-theme-border pb-5">
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={onBack}
+            className="rounded-xl border border-theme-border bg-theme-surface p-2 text-theme-text hover:text-theme-primary transition-colors"
+          >
+            <ArrowLeft className="h-4 w-4" />
+          </button>
+          <div>
+            <h1 className="font-display text-xl sm:text-2xl font-black text-theme-text flex items-center gap-3">
+              <span>แก้ไขหน้าแรก (Hero Section CMS)</span>
+              {/* Workflow Status Pill */}
+              <span
+                className={`rounded-full px-3 py-0.5 text-xs font-bold border ${
+                  workflowStatus === 'PUBLISHED'
+                    ? 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30'
+                    : workflowStatus === 'REVIEW'
+                    ? 'bg-amber-500/15 text-amber-400 border-amber-500/30'
+                    : 'bg-blue-500/15 text-blue-400 border-blue-500/30'
+                }`}
+              >
+                ● {workflowStatus}
+              </span>
+            </h1>
+            <p className="text-xs text-theme-text-muted mt-0.5">
+              Flow การทำงาน: Draft &rarr; Preview &rarr; Review &rarr; Publish พร้อมประวัติ Version Rollback
+            </p>
+          </div>
+        </div>
+
+        {/* Action Controls */}
+        <div className="flex items-center gap-2.5 flex-wrap">
+          {/* Revision History Button */}
+          <button
+            type="button"
+            onClick={() => setRevisionModalOpen(true)}
+            className="flex items-center gap-1.5 rounded-xl border border-theme-border bg-theme-surface px-4 py-2.5 text-xs font-bold text-theme-text hover:border-theme-primary transition-colors shadow-sm"
+          >
+            <History className="h-4 w-4 text-theme-primary" />
+            <span>ประวัติเวอร์ชัน (Revision {revisions[0]?.revisionNumber || 5})</span>
+          </button>
+
+          {/* Live Preview Button */}
+          <button
+            type="button"
+            onClick={() => setPreviewModalOpen(true)}
+            className="flex items-center gap-1.5 rounded-xl border border-theme-primary/40 bg-theme-primary/10 px-4 py-2.5 text-xs font-black text-theme-primary hover:bg-theme-primary hover:text-black transition-all shadow-sm"
+          >
+            <Eye className="h-4 w-4" />
+            <span>🔍 ดูตัวอย่างหน้าจริง (Live Preview)</span>
+          </button>
+
+          {/* Save Draft */}
+          <button
+            type="button"
+            onClick={handleSaveDraft}
+            className="flex items-center gap-1.5 rounded-xl border border-theme-border bg-theme-surface px-4 py-2.5 text-xs font-bold text-theme-text hover:bg-theme-surface-elevated transition-colors"
+          >
+            <Save className="h-4 w-4" />
+            <span>บันทึก Draft</span>
+          </button>
+
+          {/* Publish Button */}
+          <button
+            type="button"
+            onClick={handlePublish}
+            className="btn-primary-action text-xs font-black px-6 py-2.5 shadow-xl"
+          >
+            <Send className="h-4 w-4 text-black" />
+            <span>🚀 เผยแพร่ทันที (Publish)</span>
+          </button>
+        </div>
+      </div>
+
+      {/* 3-COLUMNS EDITOR GRID */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        {/* COLUMN 1: เนื้อหา (Thai Content) */}
+        <div className="lg:col-span-4 rounded-3xl border border-theme-border bg-theme-surface p-6 shadow-2xl space-y-4">
+          <h2 className="font-display text-sm font-bold text-theme-text border-b border-theme-border pb-3 flex items-center justify-between">
+            <span>เนื้อหาหลัก (ภาษาไทย 🇹🇭)</span>
+            <span className="text-[10px] text-theme-text-muted font-mono">Primary Language</span>
+          </h2>
+
+          <div className="space-y-4 text-xs">
+            <div>
+              <label className="font-bold text-theme-text block mb-1">หัวข้อหลัก Title (ไทย)</label>
+              <input
+                type="text"
+                value={thaiTitle}
+                onChange={(e) => {
+                  setThaiTitle(e.target.value);
+                  setWorkflowStatus('DRAFT');
+                }}
+                className="w-full rounded-xl border border-theme-border bg-theme-surface-elevated px-3.5 py-2.5 text-xs text-theme-text focus:border-theme-primary focus:outline-none"
+              />
+            </div>
+
+            <div>
+              <label className="font-bold text-theme-text block mb-1">หัวข้อย่อยเน้นสีทอง Highlight (ไทย)</label>
+              <input
+                type="text"
+                value={thaiSubtitle}
+                onChange={(e) => {
+                  setThaiSubtitle(e.target.value);
+                  setWorkflowStatus('DRAFT');
+                }}
+                className="w-full rounded-xl border border-theme-border bg-theme-surface-elevated px-3.5 py-2.5 text-xs text-theme-text focus:border-theme-primary focus:outline-none"
+              />
+            </div>
+
+            <div>
+              <label className="font-bold text-theme-text block mb-1">คำบรรยายรายละเอียด Subtitle (ไทย)</label>
+              <textarea
+                rows={5}
+                value={thaiDesc}
+                onChange={(e) => {
+                  setThaiDesc(e.target.value);
+                  setWorkflowStatus('DRAFT');
+                }}
+                className="w-full rounded-xl border border-theme-border bg-theme-surface-elevated px-3.5 py-2.5 text-xs text-theme-text focus:border-theme-primary focus:outline-none leading-relaxed"
+              />
+            </div>
+
+            <div className="grid grid-cols-2 gap-3 pt-2">
+              <div>
+                <label className="font-bold text-theme-text block mb-1">ข้อความบนปุ่ม CTA</label>
+                <input
+                  type="text"
+                  value={ctaText}
+                  onChange={(e) => {
+                    setCtaText(e.target.value);
+                    setWorkflowStatus('DRAFT');
+                  }}
+                  className="w-full rounded-xl border border-theme-border bg-theme-surface-elevated px-3 py-2 text-xs text-theme-text"
+                />
+              </div>
+              <div>
+                <label className="font-bold text-theme-text block mb-1">ลิงก์ปลายทาง</label>
+                <input
+                  type="text"
+                  value={ctaLink}
+                  onChange={(e) => {
+                    setCtaLink(e.target.value);
+                    setWorkflowStatus('DRAFT');
+                  }}
+                  className="w-full rounded-xl border border-theme-border bg-theme-surface-elevated px-3 py-2 text-xs text-theme-text font-mono"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* COLUMN 2: ภาพพื้นหลัง Hero Media Banner */}
+        <div className="lg:col-span-4 rounded-3xl border border-theme-border bg-theme-surface p-6 shadow-2xl space-y-4">
+          <h2 className="font-display text-sm font-bold text-theme-text border-b border-theme-border pb-3 flex items-center justify-between">
+            <span>ภาพพื้นหลังปก (Hero Media)</span>
+            <span className="text-[10px] text-theme-text-muted font-mono">1920x1080 Fullwidth</span>
+          </h2>
+
+          <div className="space-y-4 text-xs">
+            <div className="aspect-[16/9] w-full overflow-hidden rounded-2xl border-2 border-theme-border bg-black relative shadow-inner group">
+              <img
+                src={heroImage}
+                alt="Hero Banner Preview"
+                className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500"
+              />
+              <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                <span className="rounded-xl bg-black/80 px-3 py-1.5 text-[11px] font-bold text-white border border-white/20">
+                  ภาพปัจจุบันบนหน้าแรก
+                </span>
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <label className="font-bold text-theme-text block">URL หรือเลือกไฟล์ภาพใหม่</label>
+              <input
+                type="text"
+                value={heroImage}
+                onChange={(e) => {
+                  setHeroImage(e.target.value);
+                  setWorkflowStatus('DRAFT');
+                }}
+                placeholder="/images/hero-fullwidth.jpg"
+                className="w-full rounded-xl border border-theme-border bg-theme-surface-elevated px-3.5 py-2 text-xs text-theme-text font-mono text-[11px]"
+              />
+            </div>
+
+            <div className="flex gap-2">
+              <label className="flex-1 inline-flex items-center justify-center gap-2 rounded-xl bg-theme-primary/15 border border-theme-primary/40 px-3 py-2.5 text-xs font-bold text-theme-primary hover:bg-theme-primary hover:text-black cursor-pointer transition-all shadow-sm">
+                <UploadCloud className="h-4 w-4" />
+                <span>อัปโหลดภาพจากเครื่อง</span>
+                <input type="file" accept="image/*" onChange={handleFileUpload} className="hidden" />
+              </label>
+              <button
+                type="button"
+                onClick={() => {
+                  setHeroImage('/images/hero-fullwidth.jpg');
+                  setWorkflowStatus('DRAFT');
+                  showNotification('รีเซ็ตเป็นภาพโรงงาน Fullwidth เริ่มต้นแล้ว');
+                }}
+                className="rounded-xl border border-theme-border bg-theme-surface-elevated px-3 py-2.5 text-xs font-semibold text-theme-text hover:text-theme-primary transition-colors"
+                title="ใช้ภาพเริ่มต้น"
+              >
+                ภาพเริ่มต้น
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* COLUMN 3: แปลภาษา 4 ภาษา (EN, JP, CN, MM) */}
+        <div className="lg:col-span-4 rounded-3xl border border-theme-border bg-theme-surface p-6 shadow-2xl space-y-4">
+          <h2 className="font-display text-sm font-bold text-theme-text border-b border-theme-border pb-3 flex items-center justify-between">
+            <span>แปลภาษา (Multi-Language)</span>
+            <span className="text-[10px] text-theme-text-muted font-mono">4 Locales</span>
+          </h2>
+
+          {/* 4 Language Tabs */}
+          <div className="grid grid-cols-4 gap-1 rounded-2xl bg-theme-surface-elevated p-1 border border-theme-border">
+            {[
+              { code: 'en', label: '🇺🇸 EN' },
+              { code: 'jp', label: '🇯🇵 JP' },
+              { code: 'cn', label: '🇨🇳 CN' },
+              { code: 'mm', label: '🇲🇲 MM' },
+            ].map((tab) => {
+              const isActive = activeTranslationLang === tab.code;
+              return (
+                <button
+                  key={tab.code}
+                  type="button"
+                  onClick={() => setActiveTranslationLang(tab.code as any)}
+                  className={`rounded-xl py-2 text-xs font-bold transition-all ${
+                    isActive
+                      ? 'bg-theme-primary text-black font-black shadow-md'
+                      : 'text-theme-text-muted hover:text-theme-text'
+                  }`}
+                >
+                  {tab.label}
+                </button>
+              );
+            })}
+          </div>
+
+          <div className="space-y-4 text-xs">
+            <div>
+              <label className="font-bold text-theme-text block mb-1">
+                Title ({activeTranslationLang.toUpperCase()})
+              </label>
+              <input
+                type="text"
+                value={translations[activeTranslationLang].title}
+                onChange={(e) => {
+                  const val = e.target.value;
+                  setTranslations((prev) => ({
+                    ...prev,
+                    [activeTranslationLang]: { ...prev[activeTranslationLang], title: val },
+                  }));
+                  setWorkflowStatus('DRAFT');
+                }}
+                className="w-full rounded-xl border border-theme-border bg-theme-surface-elevated px-3.5 py-2.5 text-xs text-theme-text focus:border-theme-primary focus:outline-none"
+              />
+            </div>
+
+            <div>
+              <label className="font-bold text-theme-text block mb-1">
+                Highlight ({activeTranslationLang.toUpperCase()})
+              </label>
+              <input
+                type="text"
+                value={translations[activeTranslationLang].subtitle}
+                onChange={(e) => {
+                  const val = e.target.value;
+                  setTranslations((prev) => ({
+                    ...prev,
+                    [activeTranslationLang]: { ...prev[activeTranslationLang], subtitle: val },
+                  }));
+                  setWorkflowStatus('DRAFT');
+                }}
+                className="w-full rounded-xl border border-theme-border bg-theme-surface-elevated px-3.5 py-2.5 text-xs text-theme-text focus:border-theme-primary focus:outline-none"
+              />
+            </div>
+
+            <div>
+              <label className="font-bold text-theme-text block mb-1">
+                Description ({activeTranslationLang.toUpperCase()})
+              </label>
+              <textarea
+                rows={5}
+                value={translations[activeTranslationLang].desc}
+                onChange={(e) => {
+                  const val = e.target.value;
+                  setTranslations((prev) => ({
+                    ...prev,
+                    [activeTranslationLang]: { ...prev[activeTranslationLang], desc: val },
+                  }));
+                  setWorkflowStatus('DRAFT');
+                }}
+                className="w-full rounded-xl border border-theme-border bg-theme-surface-elevated px-3.5 py-2.5 text-xs text-theme-text focus:border-theme-primary focus:outline-none leading-relaxed"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* 🌟 MODAL 1: LIVE INTERACTIVE PREVIEW BEFORE PUBLISH */}
+      <Modal
+        isOpen={previewModalOpen}
+        onClose={() => setPreviewModalOpen(false)}
+        title="🔍 ดูตัวอย่างหน้าจริงก่อนเผยแพร่ (Live Interactive Preview)"
+        maxWidth="2xl"
+      >
+        <div className="space-y-4 font-sans text-xs">
+          {/* Top Device Bar & Publish CTA */}
+          <div className="flex items-center justify-between p-3 rounded-2xl bg-theme-surface-elevated border border-theme-border">
+            {/* Device Switcher */}
+            <div className="flex items-center gap-1 bg-theme-surface p-1 rounded-xl border border-theme-border">
+              <button
+                type="button"
+                onClick={() => setPreviewDevice('desktop')}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                  previewDevice === 'desktop'
+                    ? 'bg-theme-primary text-black font-black shadow-sm'
+                    : 'text-theme-text-muted hover:text-theme-text'
+                }`}
+              >
+                <Laptop className="h-3.5 w-3.5" />
+                <span>Desktop (1440px)</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setPreviewDevice('tablet')}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                  previewDevice === 'tablet'
+                    ? 'bg-theme-primary text-black font-black shadow-sm'
+                    : 'text-theme-text-muted hover:text-theme-text'
+                }`}
+              >
+                <Tablet className="h-3.5 w-3.5" />
+                <span>Tablet (768px)</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setPreviewDevice('mobile')}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                  previewDevice === 'mobile'
+                    ? 'bg-theme-primary text-black font-black shadow-sm'
+                    : 'text-theme-text-muted hover:text-theme-text'
+                }`}
+              >
+                <Smartphone className="h-3.5 w-3.5" />
+                <span>Mobile (375px)</span>
+              </button>
+            </div>
+
+            {/* Quick Action in Preview */}
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={handlePublish}
+                className="btn-primary-action text-xs font-black px-5 py-2 shadow-lg"
+              >
+                <CheckCircle2 className="h-4 w-4" />
+                <span>ยืนยันและเผยแพร่ (Publish Now)</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Actual Simulated Hero Section Screen */}
+          <div className="overflow-x-auto p-2 rounded-2xl bg-black/70 border border-theme-border flex justify-center">
+            <div
+              className={`transition-all duration-300 rounded-2xl overflow-hidden border-2 border-white/20 shadow-2xl relative min-h-[420px] flex items-center ${
+                previewDevice === 'desktop'
+                  ? 'w-full max-w-4xl'
+                  : previewDevice === 'tablet'
+                  ? 'w-[700px]'
+                  : 'w-[360px]'
+              }`}
+            >
+              {/* Background image */}
+              <div
+                className="absolute inset-0 bg-cover bg-center"
+                style={{ backgroundImage: `url(${heroImage})` }}
+              >
+                <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/25 to-transparent z-10" />
+                <div className="absolute inset-0 bg-black/15 z-10" />
+              </div>
+
+              {/* Foreground content */}
+              <div className="relative z-20 p-6 sm:p-10 space-y-4 max-w-lg text-white">
+                <div className="space-y-1">
+                  <h1 className="font-display text-2xl sm:text-4xl font-black text-white leading-tight drop-shadow-md">
+                    {thaiTitle}
+                  </h1>
+                  <span className="font-display text-xl sm:text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-amber-300 to-yellow-200 block drop-shadow">
+                    {thaiSubtitle}
+                  </span>
+                </div>
+
+                <p className="text-xs sm:text-sm text-slate-200 leading-relaxed drop-shadow line-clamp-4">
+                  {thaiDesc}
+                </p>
+
+                <div className="pt-2">
+                  <button
+                    type="button"
+                    className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-[#D4AF37] via-[#C5A059] to-[#AA7C11] px-6 py-2.5 text-xs font-bold text-black shadow-lg shadow-amber-500/30"
+                  >
+                    <span>{ctaText}</span>
+                    <ArrowRight className="h-3.5 w-3.5" />
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Modal>
+
+      {/* 🌟 MODAL 2: REVISION HISTORY & ONE-CLICK RESTORE */}
+      <Modal
+        isOpen={revisionModalOpen}
+        onClose={() => setRevisionModalOpen(false)}
+        title="🕒 ประวัติการแก้ไขย้อนหลัง (Revision History & Restore)"
+        maxWidth="2xl"
+      >
+        <div className="space-y-4 font-sans text-xs">
+          <div className="p-3 rounded-2xl bg-theme-surface-elevated border border-theme-border text-theme-text-muted">
+            ระบบจัดเก็บประวัติทุกครั้งที่มีการกดบันทึกหรือเผยแพร่ หากมีการแก้ไขผิดพลาด สามารถกด **"Restore"** เพื่อกู้คืนข้อมูลกลับมาได้ทันที
+          </div>
+
+          <div className="space-y-3 max-h-[420px] overflow-y-auto pr-1">
+            {revisions.map((rev, idx) => {
+              const isCurrent = idx === 0;
+              return (
+                <div
+                  key={rev.id}
+                  className={`rounded-2xl border p-4 space-y-3 transition-all ${
+                    isCurrent
+                      ? 'border-theme-primary bg-theme-primary/5 shadow-md'
+                      : 'border-theme-border bg-theme-surface-elevated/60 hover:bg-theme-surface-elevated'
+                  }`}
+                >
+                  <div className="flex items-center justify-between flex-wrap gap-2">
+                    <div className="flex items-center gap-2">
+                      <span className="font-display font-black text-sm text-theme-text">
+                        Revision {rev.revisionNumber}
+                      </span>
+                      {isCurrent && (
+                        <span className="rounded-full bg-theme-primary text-black font-black text-[10px] px-2.5 py-0.5 shadow-sm">
+                          Current (เวอร์ชันปัจจุบัน)
+                        </span>
+                      )}
+                      <span
+                        className={`rounded-full px-2 py-0.5 text-[10px] font-bold border ${
+                          rev.status === 'PUBLISHED'
+                            ? 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30'
+                            : 'bg-blue-500/15 text-blue-400 border-blue-500/30'
+                        }`}
+                      >
+                        {rev.status}
+                      </span>
+                    </div>
+
+                    <div className="flex items-center gap-2">
+                      <span className="text-[11px] text-theme-text-dim font-mono flex items-center gap-1">
+                        <Clock className="h-3 w-3" />
+                        {new Date(rev.createdAt).toLocaleString('th-TH')}
+                      </span>
+
+                      {!isCurrent && (
+                        <button
+                          type="button"
+                          onClick={() => handleRestoreRevision(rev)}
+                          className="flex items-center gap-1.5 rounded-xl bg-amber-500 px-3 py-1.5 text-xs font-black text-black shadow-md hover:bg-amber-400 transition-all"
+                        >
+                          <RotateCcw className="h-3 w-3" />
+                          <span>Restore Revision {rev.revisionNumber}</span>
+                        </button>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Summary of content in this revision */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-[11px] rounded-xl bg-black/40 p-3 border border-white/5">
+                    <div>
+                      <span className="text-theme-text-dim block">Title:</span>
+                      <span className="font-bold text-theme-text">{rev.title}</span>
+                    </div>
+                    <div>
+                      <span className="text-theme-text-dim block">Highlight:</span>
+                      <span className="text-amber-400 font-bold">{rev.highlight}</span>
+                    </div>
+                    <div className="sm:col-span-2">
+                      <span className="text-theme-text-dim block">บันทึกช่วยจำ / ผู้แก้ไข:</span>
+                      <span className="text-slate-300">{rev.note} (โดย: {rev.author})</span>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </Modal>
+    </div>
+  );
+};

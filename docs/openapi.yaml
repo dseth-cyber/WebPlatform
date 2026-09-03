@@ -1,0 +1,128 @@
+openapi: 3.0.3
+info:
+  title: Lohakit Rungchareonsap Corporate Website CMS API
+  description: Premium Metal Packaging Manufacturer CMS Backend API
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080/api/v1
+    description: Local / Docker environment
+
+paths:
+  /public/pages/{slug}:
+    get:
+      summary: Get localized published page
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: lang
+          in: query
+          schema:
+            type: string
+            enum: [th, en, cn, mm, jp]
+            default: th
+      responses:
+        '200':
+          description: Localized page with sections
+
+  /public/products:
+    get:
+      summary: List published products
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+        - name: pageSize
+          in: query
+          schema:
+            type: integer
+            enum: [10, 20, 50, 100]
+            default: 20
+        - name: lang
+          in: query
+          schema:
+            type: string
+            default: th
+      responses:
+        '200':
+          description: Paginated product list
+
+  /public/products/{slug}:
+    get:
+      summary: Get product details
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: lang
+          in: query
+          schema:
+            type: string
+            default: th
+      responses:
+        '200':
+          description: Product specifications and gallery
+
+  /public/theme:
+    get:
+      summary: Get active theme tokens
+      responses:
+        '200':
+          description: Active theme configuration (DARK, LIGHT, or MODERN)
+
+  /public/contact:
+    post:
+      summary: Submit contact inquiry
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name, email, message]
+              properties:
+                name:
+                  type: string
+                companyName:
+                  type: string
+                email:
+                  type: string
+                phone:
+                  type: string
+                subject:
+                  type: string
+                message:
+                  type: string
+                interestCategory:
+                  type: string
+                website:
+                  type: string
+                  description: Honeypot field (must be empty)
+      responses:
+        '201':
+          description: Inquiry received
+
+  /admin/auth/login:
+    post:
+      summary: Admin authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password]
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: Authenticated user and CSRF token (Session cookie set)

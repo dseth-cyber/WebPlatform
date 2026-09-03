@@ -1,0 +1,12 @@
+.git
+.github
+.agents
+bin/
+frontend/node_modules
+frontend/dist
+storage/uploads
+*.exe
+.env
+.env.*
+.DS_Store
+Thumbs.db

@@ -1,0 +1,29 @@
+# Dependencies
+node_modules/
+vendor/
+
+# Build outputs
+dist/
+frontend/dist/
+bin/
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Environment & local secrets
+.env
+.env.local
+*.local
+
+# Logs
+logs/
+*.log
+
+# IDE & OS
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
