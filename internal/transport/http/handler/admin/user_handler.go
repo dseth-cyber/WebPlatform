@@ -173,3 +173,45 @@ func (h *UserHandler) ListPermissions(w http.ResponseWriter, r *http.Request) {
 	}
 	response.OK(w, r, perms)
 }
+
+type ResetPasswordRequest struct {
+	NewPassword string `json:"newPassword"`
+}
+
+func (h *UserHandler) ResetPassword(w http.ResponseWriter, r *http.Request) {
+	id, err := uuid.Parse(chi.URLParam(r, "id"))
+	if err != nil {
+		response.Error(w, r, domain.NewValidationError("Invalid user ID", nil))
+		return
+	}
+
+	var req ResetPasswordRequest
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil || len(req.NewPassword) < 8 {
+		response.Error(w, r, domain.NewValidationError("Password must be at least 8 characters long", nil))
+		return
+	}
+
+	err = h.rbacSvc.ResetPassword(r.Context(), id, req.NewPassword)
+	if err != nil {
+		response.Error(w, r, err)
+		return
+	}
+
+	currUser := middleware.GetUserFromContext(r.Context())
+	var currUID *uuid.UUID
+	if currUser != nil {
+		currUID = &currUser.ID
+	}
+
+	h.auditSvc.Log(r.Context(), service.RecordAuditParams{
+		UserID:     currUID,
+		Action:     "RESET_PASSWORD",
+		Resource:   "user",
+		ResourceID: id.String(),
+		IPAddress:  middleware.GetClientIP(r),
+		UserAgent:  r.UserAgent(),
+		NewValues:  map[string]string{"status": "password_reset_success"},
+	})
+
+	response.OK(w, r, map[string]string{"message": "Password reset successfully"})
+}

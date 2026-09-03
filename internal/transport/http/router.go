@@ -118,6 +118,7 @@ func NewRouter(p RouterParams) *chi.Mux {
 			u.With(appMiddleware.RequirePermission("users.read")).Get("/", p.AdminUsers.ListUsers)
 			u.With(appMiddleware.RequirePermission("users.create")).Post("/", p.AdminUsers.CreateUser)
 			u.With(appMiddleware.RequirePermission("users.update")).Put("/{id}", p.AdminUsers.UpdateUser)
+			u.With(appMiddleware.RequirePermission("users.update")).Put("/{id}/reset-password", p.AdminUsers.ResetPassword)
 			u.With(appMiddleware.RequirePermission("users.delete")).Delete("/{id}", p.AdminUsers.DeleteUser)
 		})
 		adm.With(appMiddleware.RequirePermission("users.read")).Get("/roles", p.AdminUsers.ListRoles)

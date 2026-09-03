@@ -126,6 +126,24 @@ func (s *RBACService) SoftDeleteUser(ctx context.Context, id uuid.UUID) error {
 	return s.queries.SoftDeleteUser(ctx, id)
 }
 
+func (s *RBACService) ResetPassword(ctx context.Context, id uuid.UUID, newPassword string) error {
+	hashedPassword, err := hasher.GenerateHash(newPassword, nil)
+	if err != nil {
+		return fmt.Errorf("failed to hash password: %w", err)
+	}
+
+	err = s.queries.UpdateUserPassword(ctx, sqlc.UpdateUserPasswordParams{
+		ID:           id,
+		PasswordHash: hashedPassword,
+	})
+	if err != nil {
+		return fmt.Errorf("failed to update user password: %w", err)
+	}
+
+	_ = s.queries.DeleteUserSessions(ctx, id)
+	return nil
+}
+
 func (s *RBACService) ListRoles(ctx context.Context) ([]domain.Role, error) {
 	rows, err := s.queries.ListRoles(ctx)
 	if err != nil {
