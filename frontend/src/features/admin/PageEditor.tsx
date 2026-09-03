@@ -14,6 +14,7 @@ import {
   Save,
   Send,
   Eye,
+  EyeOff,
   History,
   RotateCcw,
   Smartphone,
@@ -63,8 +64,13 @@ export const PageEditor: React.FC<{
     settings.heroSubtitle ||
       'ผู้นำบรรจุภัณฑ์โลหะทางด้านอาหารสำเร็จรูปในประเทศไทย ด้วยเทคโนโลยีที่ทันสมัย คุณภาพมาตรฐานสากล และบริการที่เป็นเลิศ เพื่อตอบสนองความพึงพอใจของลูกค้า และความยั่งยืนของอุตสาหกรรม'
   );
-  const [ctaText, setCtaText] = useState(settings.heroButtonText || 'เกี่ยวกับเรา');
-  const [ctaLink, setCtaLink] = useState(settings.heroButtonLink || '/about');
+  const [showPrimaryBtn, setShowPrimaryBtn] = useState(settings.showHeroPrimaryBtn !== false);
+  const [ctaText, setCtaText] = useState(settings.heroButtonText || 'อ่านประวัติองค์กร');
+  const [ctaLink, setCtaLink] = useState(settings.heroButtonLink || '#about');
+
+  const [showSecondaryBtn, setShowSecondaryBtn] = useState(settings.showHeroSecondaryBtn !== false);
+  const [secondaryCtaText, setSecondaryCtaText] = useState(settings.heroSecondaryButtonText || 'ชมผลิตภัณฑ์ของเรา');
+  const [secondaryCtaLink, setSecondaryCtaLink] = useState(settings.heroSecondaryButtonLink || '#products');
 
   // Form States (Column 2 - Media)
   const [heroImage, setHeroImage] = useState(settings.heroBannerImage || '/images/hero-fullwidth.jpg');
@@ -77,6 +83,10 @@ export const PageEditor: React.FC<{
       if (settings.heroSubtitle) setThaiDesc(settings.heroSubtitle);
       if (settings.heroButtonText) setCtaText(settings.heroButtonText);
       if (settings.heroButtonLink) setCtaLink(settings.heroButtonLink);
+      if (settings.showHeroPrimaryBtn !== undefined) setShowPrimaryBtn(settings.showHeroPrimaryBtn !== false);
+      if (settings.heroSecondaryButtonText) setSecondaryCtaText(settings.heroSecondaryButtonText);
+      if (settings.heroSecondaryButtonLink) setSecondaryCtaLink(settings.heroSecondaryButtonLink);
+      if (settings.showHeroSecondaryBtn !== undefined) setShowSecondaryBtn(settings.showHeroSecondaryBtn !== false);
       if (settings.heroBannerImage) setHeroImage(settings.heroBannerImage);
     }
   }, [settings]);
@@ -220,6 +230,10 @@ export const PageEditor: React.FC<{
       heroSubtitle: thaiDesc,
       heroButtonText: ctaText,
       heroButtonLink: ctaLink,
+      showHeroPrimaryBtn: showPrimaryBtn,
+      heroSecondaryButtonText: secondaryCtaText,
+      heroSecondaryButtonLink: secondaryCtaLink,
+      showHeroSecondaryBtn: showSecondaryBtn,
       heroBannerImage: heroImage,
     });
     setWorkflowStatus('PUBLISHED');
@@ -389,31 +403,112 @@ export const PageEditor: React.FC<{
               />
             </div>
 
-            <div className="grid grid-cols-2 gap-3 pt-2">
-              <div>
-                <label className="font-bold text-theme-text block mb-1">ข้อความบนปุ่ม CTA</label>
-                <input
-                  type="text"
-                  value={ctaText}
-                  onChange={(e) => {
-                    setCtaText(e.target.value);
+            {/* BUTTON 1 (สีทอง - อ่านประวัติองค์กร) */}
+            <div className="rounded-2xl border border-theme-border bg-theme-surface-elevated p-3.5 space-y-2.5">
+              <div className="flex items-center justify-between">
+                <span className="font-bold text-theme-text flex items-center gap-1.5">
+                  <span className="w-2.5 h-2.5 rounded-full bg-amber-400 shadow-sm" />
+                  <span>ปุ่มที่ 1 (สีทอง - หลัก)</span>
+                </span>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowPrimaryBtn(!showPrimaryBtn);
                     setWorkflowStatus('DRAFT');
                   }}
-                  className="w-full rounded-xl border border-theme-border bg-theme-surface-elevated px-3 py-2 text-xs text-theme-text"
-                />
+                  className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[10px] font-bold border transition-colors cursor-pointer ${
+                    showPrimaryBtn
+                      ? 'bg-emerald-500/20 text-emerald-400 border-emerald-500/40'
+                      : 'bg-slate-500/20 text-slate-400 border-slate-500/40'
+                  }`}
+                >
+                  {showPrimaryBtn ? <Eye className="h-3 w-3" /> : <EyeOff className="h-3 w-3" />}
+                  <span>{showPrimaryBtn ? 'แสดงผลอยู่' : 'ซ่อนปุ่ม'}</span>
+                </button>
               </div>
-              <div>
-                <label className="font-bold text-theme-text block mb-1">ลิงก์ปลายทาง</label>
-                <input
-                  type="text"
-                  value={ctaLink}
-                  onChange={(e) => {
-                    setCtaLink(e.target.value);
+
+              {showPrimaryBtn && (
+                <div className="grid grid-cols-2 gap-2.5 pt-1">
+                  <div>
+                    <label className="font-bold text-theme-text-muted block text-[10px] mb-1">ข้อความบนปุ่ม</label>
+                    <input
+                      type="text"
+                      value={ctaText}
+                      onChange={(e) => {
+                        setCtaText(e.target.value);
+                        setWorkflowStatus('DRAFT');
+                      }}
+                      className="w-full rounded-xl border border-theme-border bg-theme-surface px-2.5 py-1.5 text-xs text-theme-text"
+                    />
+                  </div>
+                  <div>
+                    <label className="font-bold text-theme-text-muted block text-[10px] mb-1">ลิงก์ปลายทาง</label>
+                    <input
+                      type="text"
+                      value={ctaLink}
+                      onChange={(e) => {
+                        setCtaLink(e.target.value);
+                        setWorkflowStatus('DRAFT');
+                      }}
+                      className="w-full rounded-xl border border-theme-border bg-theme-surface px-2.5 py-1.5 text-xs text-theme-text font-mono"
+                    />
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* BUTTON 2 (สีดำใส - ชมผลิตภัณฑ์ของเรา) */}
+            <div className="rounded-2xl border border-theme-border bg-theme-surface-elevated p-3.5 space-y-2.5">
+              <div className="flex items-center justify-between">
+                <span className="font-bold text-theme-text flex items-center gap-1.5">
+                  <span className="w-2.5 h-2.5 rounded-full bg-white/70 border border-white/40 shadow-sm" />
+                  <span>ปุ่มที่ 2 (โครงร่างใส - รอง)</span>
+                </span>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowSecondaryBtn(!showSecondaryBtn);
                     setWorkflowStatus('DRAFT');
                   }}
-                  className="w-full rounded-xl border border-theme-border bg-theme-surface-elevated px-3 py-2 text-xs text-theme-text font-mono"
-                />
+                  className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[10px] font-bold border transition-colors cursor-pointer ${
+                    showSecondaryBtn
+                      ? 'bg-emerald-500/20 text-emerald-400 border-emerald-500/40'
+                      : 'bg-slate-500/20 text-slate-400 border-slate-500/40'
+                  }`}
+                >
+                  {showSecondaryBtn ? <Eye className="h-3 w-3" /> : <EyeOff className="h-3 w-3" />}
+                  <span>{showSecondaryBtn ? 'แสดงผลอยู่' : 'ซ่อนปุ่ม'}</span>
+                </button>
               </div>
+
+              {showSecondaryBtn && (
+                <div className="grid grid-cols-2 gap-2.5 pt-1">
+                  <div>
+                    <label className="font-bold text-theme-text-muted block text-[10px] mb-1">ข้อความบนปุ่ม</label>
+                    <input
+                      type="text"
+                      value={secondaryCtaText}
+                      onChange={(e) => {
+                        setSecondaryCtaText(e.target.value);
+                        setWorkflowStatus('DRAFT');
+                      }}
+                      className="w-full rounded-xl border border-theme-border bg-theme-surface px-2.5 py-1.5 text-xs text-theme-text"
+                    />
+                  </div>
+                  <div>
+                    <label className="font-bold text-theme-text-muted block text-[10px] mb-1">ลิงก์ปลายทาง</label>
+                    <input
+                      type="text"
+                      value={secondaryCtaLink}
+                      onChange={(e) => {
+                        setSecondaryCtaLink(e.target.value);
+                        setWorkflowStatus('DRAFT');
+                      }}
+                      className="w-full rounded-xl border border-theme-border bg-theme-surface px-2.5 py-1.5 text-xs text-theme-text font-mono"
+                    />
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -667,15 +762,27 @@ export const PageEditor: React.FC<{
                   {thaiDesc}
                 </p>
 
-                <div className="pt-2">
-                  <button
-                    type="button"
-                    className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-[#D4AF37] via-[#C5A059] to-[#AA7C11] px-6 py-2.5 text-xs font-bold text-black shadow-lg shadow-amber-500/30"
-                  >
-                    <span>{ctaText}</span>
-                    <ArrowRight className="h-3.5 w-3.5" />
-                  </button>
-                </div>
+                {(showPrimaryBtn || showSecondaryBtn) && (
+                  <div className="flex flex-wrap items-center gap-3 pt-2">
+                    {showPrimaryBtn && (
+                      <button
+                        type="button"
+                        className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-[#D4AF37] via-[#C5A059] to-[#AA7C11] px-5 py-2 text-xs font-bold text-black shadow-lg shadow-amber-500/30"
+                      >
+                        <span>{ctaText}</span>
+                        <ArrowRight className="h-3.5 w-3.5 text-black" />
+                      </button>
+                    )}
+                    {showSecondaryBtn && (
+                      <button
+                        type="button"
+                        className="inline-flex items-center gap-2 rounded-xl border border-white/40 bg-black/40 backdrop-blur-md px-4 py-2 text-xs font-bold text-white"
+                      >
+                        <span>{secondaryCtaText}</span>
+                      </button>
+                    )}
+                  </div>
+                )}
               </div>
             </div>
           </div>

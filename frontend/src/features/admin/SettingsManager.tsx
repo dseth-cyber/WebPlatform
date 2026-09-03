@@ -91,6 +91,20 @@ export const SettingsManager: React.FC = () => {
     showToast(nextValue ? 'เปิดแสดงปุ่มเปลี่ยนธีมบนหน้าเว็บแล้ว' : 'ซ่อนปุ่มเปลี่ยนธีมบนหน้าเว็บเรียบร้อยแล้ว');
   };
 
+  const handleToggleHeroPrimaryBtn = async () => {
+    const nextValue = settings.showHeroPrimaryBtn === false ? true : false;
+    await updateSettings({ showHeroPrimaryBtn: nextValue });
+    setFormState((prev) => ({ ...prev, showHeroPrimaryBtn: nextValue }));
+    showToast(nextValue ? 'เปิดแสดงปุ่ม "อ่านประวัติองค์กร" บนหน้าแรกแล้ว' : 'ซ่อนปุ่ม "อ่านประวัติองค์กร" จากหน้าแรกเรียบร้อยแล้ว');
+  };
+
+  const handleToggleHeroSecondaryBtn = async () => {
+    const nextValue = settings.showHeroSecondaryBtn === false ? true : false;
+    await updateSettings({ showHeroSecondaryBtn: nextValue });
+    setFormState((prev) => ({ ...prev, showHeroSecondaryBtn: nextValue }));
+    showToast(nextValue ? 'เปิดแสดงปุ่ม "ชมผลิตภัณฑ์ของเรา" บนหน้าแรกแล้ว' : 'ซ่อนปุ่ม "ชมผลิตภัณฑ์ของเรา" จากหน้าแรกเรียบร้อยแล้ว');
+  };
+
   const handleToggleNavTab = async (tabId: string) => {
     const currentTabs = settings.navTabs && settings.navTabs.length > 0 ? settings.navTabs : [
       { id: 'tab-home', key: 'home', labelTh: 'หน้าแรก', labelEn: 'Home', path: '/', enabled: true },
@@ -465,6 +479,98 @@ export const SettingsManager: React.FC = () => {
                 <>
                   <Eye className="h-4 w-4" />
                   <span>คลิกเพื่อเปิดแสดงปุ่มเปลี่ยนธีม</span>
+                </>
+              )}
+            </button>
+          </div>
+
+          {/* Switch 3: Hero Primary Action Button (อ่านประวัติองค์กร) */}
+          <div className="flex flex-col justify-between p-5 rounded-2xl border border-theme-border bg-theme-surface-elevated space-y-4 shadow-sm">
+            <div className="space-y-1.5">
+              <div className="font-bold text-xs text-theme-text flex items-center justify-between">
+                <span className="flex items-center gap-1.5">
+                  <span className="inline-block w-2.5 h-2.5 rounded-full bg-amber-400 shadow-sm" />
+                  <span>ปุ่ม "{settings.heroButtonText || 'อ่านประวัติองค์กร'}" บนแบนเนอร์หน้าแรก</span>
+                </span>
+                {settings.showHeroPrimaryBtn !== false ? (
+                  <span className="rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-2.5 py-0.5 text-[10px] font-bold">
+                    🟢 กำลังแสดงผล
+                  </span>
+                ) : (
+                  <span className="rounded-full bg-slate-500/20 text-slate-400 border border-slate-500/30 px-2.5 py-0.5 text-[10px] font-bold">
+                    ⚪ ซ่อนอยู่
+                  </span>
+                )}
+              </div>
+              <p className="text-[11px] text-theme-text-muted leading-relaxed">
+                เปิด/ปิด การแสดงปุ่มสีทองหลัก <code>{settings.heroButtonText || 'อ่านประวัติองค์กร'} &rarr;</code> บนแบนเนอร์ส่วน Hero ของหน้าแรก
+              </p>
+            </div>
+
+            <button
+              type="button"
+              onClick={handleToggleHeroPrimaryBtn}
+              className={`flex items-center justify-center gap-2 rounded-xl py-2.5 px-4 text-xs font-bold transition-all shadow-sm ${
+                settings.showHeroPrimaryBtn !== false
+                  ? 'bg-red-500/15 border border-red-500/40 text-red-400 hover:bg-red-500/25'
+                  : 'bg-emerald-500 text-white hover:bg-emerald-600'
+              }`}
+            >
+              {settings.showHeroPrimaryBtn !== false ? (
+                <>
+                  <EyeOff className="h-4 w-4 text-red-400" />
+                  <span>คลิกเพื่อซ่อนปุ่มนี้</span>
+                </>
+              ) : (
+                <>
+                  <Eye className="h-4 w-4" />
+                  <span>คลิกเพื่อเปิดแสดงปุ่มนี้</span>
+                </>
+              )}
+            </button>
+          </div>
+
+          {/* Switch 4: Hero Secondary Action Button (ชมผลิตภัณฑ์ของเรา) */}
+          <div className="flex flex-col justify-between p-5 rounded-2xl border border-theme-border bg-theme-surface-elevated space-y-4 shadow-sm">
+            <div className="space-y-1.5">
+              <div className="font-bold text-xs text-theme-text flex items-center justify-between">
+                <span className="flex items-center gap-1.5">
+                  <span className="inline-block w-2.5 h-2.5 rounded-full bg-white/70 border border-white/40 shadow-sm" />
+                  <span>ปุ่ม "{settings.heroSecondaryButtonText || 'ชมผลิตภัณฑ์ของเรา'}" บนแบนเนอร์หน้าแรก</span>
+                </span>
+                {settings.showHeroSecondaryBtn !== false ? (
+                  <span className="rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-2.5 py-0.5 text-[10px] font-bold">
+                    🟢 กำลังแสดงผล
+                  </span>
+                ) : (
+                  <span className="rounded-full bg-slate-500/20 text-slate-400 border border-slate-500/30 px-2.5 py-0.5 text-[10px] font-bold">
+                    ⚪ ซ่อนอยู่
+                  </span>
+                )}
+              </div>
+              <p className="text-[11px] text-theme-text-muted leading-relaxed">
+                เปิด/ปิด การแสดงปุ่มโครงร่างโปร่งใส <code>{settings.heroSecondaryButtonText || 'ชมผลิตภัณฑ์ของเรา'}</code> บนแบนเนอร์ส่วน Hero ของหน้าแรก
+              </p>
+            </div>
+
+            <button
+              type="button"
+              onClick={handleToggleHeroSecondaryBtn}
+              className={`flex items-center justify-center gap-2 rounded-xl py-2.5 px-4 text-xs font-bold transition-all shadow-sm ${
+                settings.showHeroSecondaryBtn !== false
+                  ? 'bg-red-500/15 border border-red-500/40 text-red-400 hover:bg-red-500/25'
+                  : 'bg-emerald-500 text-white hover:bg-emerald-600'
+              }`}
+            >
+              {settings.showHeroSecondaryBtn !== false ? (
+                <>
+                  <EyeOff className="h-4 w-4 text-red-400" />
+                  <span>คลิกเพื่อซ่อนปุ่มนี้</span>
+                </>
+              ) : (
+                <>
+                  <Eye className="h-4 w-4" />
+                  <span>คลิกเพื่อเปิดแสดงปุ่มนี้</span>
                 </>
               )}
             </button>

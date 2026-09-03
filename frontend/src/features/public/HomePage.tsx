@@ -145,32 +145,58 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
               {settings.heroSubtitle}
             </p>
 
-            <div className="flex flex-wrap items-center gap-4 pt-2">
-              <button
-                type="button"
-                onClick={() => {
-                  const el = document.getElementById('about');
-                  if (el) el.scrollIntoView({ behavior: 'smooth' });
-                  else onNavigate('/about');
-                }}
-                className="inline-flex items-center gap-2.5 rounded-xl bg-gradient-to-r from-[#D4AF37] via-[#C5A059] to-[#AA7C11] px-8 py-3.5 text-xs sm:text-sm font-bold text-black shadow-lg shadow-amber-500/25 hover:brightness-110 transition-all group cursor-pointer"
-              >
-                <span>{settings.heroButtonText || 'อ่านประวัติองค์กร'}</span>
-                <ArrowRight className="h-4 w-4 text-black group-hover:translate-x-1 transition-transform" />
-              </button>
+            {(settings.showHeroPrimaryBtn !== false || settings.showHeroSecondaryBtn !== false) && (
+              <div className="flex flex-wrap items-center gap-4 pt-2">
+                {settings.showHeroPrimaryBtn !== false && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const link = settings.heroButtonLink || '#about';
+                      if (link.startsWith('#')) {
+                        const el = document.getElementById(link.substring(1));
+                        if (el) el.scrollIntoView({ behavior: 'smooth' });
+                        else onNavigate('/about');
+                      } else if (link.startsWith('/')) {
+                        const targetId = link.replace('/', '');
+                        const el = document.getElementById(targetId);
+                        if (el) el.scrollIntoView({ behavior: 'smooth' });
+                        else onNavigate(link);
+                      } else {
+                        onNavigate(link);
+                      }
+                    }}
+                    className="inline-flex items-center gap-2.5 rounded-xl bg-gradient-to-r from-[#D4AF37] via-[#C5A059] to-[#AA7C11] px-8 py-3.5 text-xs sm:text-sm font-bold text-black shadow-lg shadow-amber-500/25 hover:brightness-110 transition-all group cursor-pointer"
+                  >
+                    <span>{settings.heroButtonText || 'อ่านประวัติองค์กร'}</span>
+                    <ArrowRight className="h-4 w-4 text-black group-hover:translate-x-1 transition-transform" />
+                  </button>
+                )}
 
-              <button
-                type="button"
-                onClick={() => {
-                  const el = document.getElementById('products');
-                  if (el) el.scrollIntoView({ behavior: 'smooth' });
-                  else onNavigate('/products');
-                }}
-                className="inline-flex items-center gap-2 rounded-xl border border-white/40 bg-black/40 backdrop-blur-md px-6 py-3.5 text-xs sm:text-sm font-bold text-white hover:border-theme-primary hover:text-theme-primary transition-all cursor-pointer"
-              >
-                <span>ชมผลิตภัณฑ์ของเรา</span>
-              </button>
-            </div>
+                {settings.showHeroSecondaryBtn !== false && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const link = settings.heroSecondaryButtonLink || '#products';
+                      if (link.startsWith('#')) {
+                        const el = document.getElementById(link.substring(1));
+                        if (el) el.scrollIntoView({ behavior: 'smooth' });
+                        else onNavigate('/products');
+                      } else if (link.startsWith('/')) {
+                        const targetId = link.replace('/', '');
+                        const el = document.getElementById(targetId);
+                        if (el) el.scrollIntoView({ behavior: 'smooth' });
+                        else onNavigate(link);
+                      } else {
+                        onNavigate(link);
+                      }
+                    }}
+                    className="inline-flex items-center gap-2 rounded-xl border border-white/40 bg-black/40 backdrop-blur-md px-6 py-3.5 text-xs sm:text-sm font-bold text-white hover:border-theme-primary hover:text-theme-primary transition-all cursor-pointer"
+                  >
+                    <span>{settings.heroSecondaryButtonText || 'ชมผลิตภัณฑ์ของเรา'}</span>
+                  </button>
+                )}
+              </div>
+            )}
           </div>
         </div>
       </div>

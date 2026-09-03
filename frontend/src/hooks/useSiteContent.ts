@@ -96,6 +96,10 @@ export interface SiteContentSettings {
   heroSubtitle: string;
   heroButtonText: string;
   heroButtonLink: string;
+  showHeroPrimaryBtn?: boolean; // ซ่อน/แสดง ปุ่ม "อ่านประวัติองค์กร"
+  heroSecondaryButtonText?: string;
+  heroSecondaryButtonLink?: string;
+  showHeroSecondaryBtn?: boolean; // ซ่อน/แสดง ปุ่ม "ชมผลิตภัณฑ์ของเรา"
   heroBannerImage: string;
 
   // 4 Feature Badges
@@ -176,8 +180,12 @@ export const DEFAULT_SITE_SETTINGS: SiteContentSettings = {
   heroHighlight: 'วิศวกรรมแห่งอนาคต',
   heroSubtitle:
     'ผู้นำบรรจุภัณฑ์โลหะทางด้านอาหารสำเร็จรูปในประเทศไทย ด้วยเทคโนโลยีที่ทันสมัย คุณภาพมาตรฐานสากล และบริการที่เป็นเลิศ เพื่อตอบสนองความพึงพอใจของลูกค้า และความยั่งยืนของอุตสาหกรรม',
-  heroButtonText: 'เกี่ยวกับเรา',
+  heroButtonText: 'อ่านประวัติองค์กร',
   heroButtonLink: '/about',
+  showHeroPrimaryBtn: true,
+  heroSecondaryButtonText: 'ชมผลิตภัณฑ์ของเรา',
+  heroSecondaryButtonLink: '/products',
+  showHeroSecondaryBtn: true,
   heroBannerImage: '/images/hero-fullwidth.jpg',
 
   featureBadges: [
