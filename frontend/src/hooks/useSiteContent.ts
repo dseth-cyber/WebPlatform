@@ -81,6 +81,23 @@ export interface CareerJobSetting {
   active: boolean;
 }
 
+export interface BranchLocationSetting {
+  id: string;
+  nameTh: string;
+  nameEn: string;
+  type: 'headquarters' | 'factory' | 'warehouse' | 'branch';
+  addressTh: string;
+  addressEn: string;
+  phone: string;
+  fax?: string;
+  email?: string;
+  businessHoursTh?: string;
+  businessHoursEn?: string;
+  mapUrl?: string;
+  isPrimary?: boolean;
+  enabled: boolean;
+}
+
 export interface SiteContentSettings {
   // Brand & Public Header Controls
   logoImage: string;            // Custom uploaded logo image URL (saved to DB)
@@ -158,6 +175,7 @@ export interface SiteContentSettings {
   footerBio: string;
   certificationsText: string;
   complianceText: string;
+  branches?: BranchLocationSetting[]; // ระบบจัดการสาขาและสถานที่ตั้งโรงงาน
 }
 
 export const DEFAULT_SITE_SETTINGS: SiteContentSettings = {
@@ -486,6 +504,56 @@ export const DEFAULT_SITE_SETTINGS: SiteContentSettings = {
   certificationsText: 'ISO 9001:2015 | FSSC 22000 | HACCP & GMP Certified',
   complianceText:
     'BPA-NI Food Contact Compliant • UN Packaging Certified (Dangerous Goods) • 100% Infinitely Recyclable Steel',
+
+  branches: [
+    {
+      id: 'branch-hq',
+      nameTh: 'สำนักงานใหญ่ (Head Office)',
+      nameEn: 'Head Office & Commercial Center',
+      type: 'headquarters',
+      addressTh: '123/45 ถนนสาทรใต้ แขวงยานนาวา เขตสาทร กรุงเทพมหานคร 10120',
+      addressEn: '123/45 South Sathon Road, Yannawa, Sathon, Bangkok 10120, Thailand',
+      phone: '+66 (0) 2 123 4567',
+      fax: '+66 (0) 2 123 4568',
+      email: 'contact@chiotron.co.th',
+      businessHoursTh: 'จันทร์ - ศุกร์: 08:30 - 17:30 น. (หยุดเสาร์ - อาทิตย์)',
+      businessHoursEn: 'Mon - Fri: 08:30 - 17:30 (Closed Sat - Sun)',
+      mapUrl: 'https://maps.google.com/?q=Sathon+Bangkok',
+      isPrimary: true,
+      enabled: true,
+    },
+    {
+      id: 'branch-plant-1',
+      nameTh: 'โรงงานสมุทรสาคร (Samut Sakhon Manufacturing Plant)',
+      nameEn: 'Samut Sakhon Smart Plant & Operations',
+      type: 'factory',
+      addressTh: '88/9 หมู่ 4 นิคมอุตสาหกรรมสมุทรสาคร ตำบลบางกระเจ้า อำเภอเมืองสมุทรสาคร จังหวัดสมุทรสาคร 74000',
+      addressEn: '88/9 Moo 4, Samut Sakhon Industrial Estate, Bang Krachao, Mueang, Samut Sakhon 74000, Thailand',
+      phone: '+66 (0) 34 890 123',
+      fax: '+66 (0) 34 890 124',
+      email: 'factory@chiotron.co.th',
+      businessHoursTh: 'จันทร์ - เสาร์: 08:00 - 17:00 น. (ฝ่ายผลิต 24 ชั่วโมง)',
+      businessHoursEn: 'Mon - Sat: 08:00 - 17:00 (Operations 24/7)',
+      mapUrl: 'https://maps.google.com/?q=Samut+Sakhon+Industrial+Estate',
+      isPrimary: false,
+      enabled: true,
+    },
+    {
+      id: 'branch-logistics',
+      nameTh: 'ศูนย์กระจายสินค้าและคลังสินค้าชลบุรี (Eastern Distribution Hub)',
+      nameEn: 'Chonburi Eastern Logistics Hub',
+      type: 'warehouse',
+      addressTh: '45/12 หมู่ 7 ตำบลบ่อวิน อำเภอศรีราชา จังหวัดชลบุรี 20230 (ใกล้ท่าเรือแหลมฉบัง)',
+      addressEn: '45/12 Moo 7, Bowin, Si Racha, Chonburi 20230, Thailand (Near Laem Chabang Port)',
+      phone: '+66 (0) 38 456 789',
+      email: 'logistics@chiotron.co.th',
+      businessHoursTh: 'จันทร์ - เสาร์: 08:00 - 18:00 น.',
+      businessHoursEn: 'Mon - Sat: 08:00 - 18:00',
+      mapUrl: 'https://maps.google.com/?q=Laem+Chabang+Port',
+      isPrimary: false,
+      enabled: true,
+    },
+  ],
 };
 
 const STORAGE_KEY = 'lohakit_site_content_settings';

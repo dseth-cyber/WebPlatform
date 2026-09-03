@@ -33,9 +33,14 @@ import {
   Send,
   Building2,
   Pin,
+  Package,
+  Star,
+  Tag,
+  ExternalLink,
 } from 'lucide-react';
 import { useSiteContent } from '../../hooks/useSiteContent';
 import { useNews } from '../../hooks/useNews';
+import { useProducts } from '../../hooks/useProducts';
 import { formatDate } from '../../utils/dateUtils';
 import { Modal } from '../../components/ui/Modal';
 
@@ -77,7 +82,7 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
   // Detail Modal State for Cards (Services, Technology, Sustainability, News)
   const [detailModal, setDetailModal] = useState<{
     isOpen: boolean;
-    type: 'service' | 'tech' | 'sustainability' | 'news';
+    type: 'service' | 'tech' | 'sustainability' | 'news' | 'product';
     title: string;
     subtitle?: string;
     category?: string;
@@ -96,6 +101,42 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
 
   const enabledBadges = settings.featureBadges.filter((b) => b.enabled);
   const enabledMetrics = settings.metrics.filter((m) => m.enabled);
+
+  // 📌 Products from Catalog Database with Pin sorting
+  const { data: rawProducts } = useProducts('all', '', currentLang);
+  const productsList = rawProducts && rawProducts.length > 0 ? rawProducts : [];
+  const activeProducts = productsList.filter((p: any) => p.isActive !== false);
+  const pinnedProducts = activeProducts.filter((p: any) => p.isPinned);
+  const unpinnedProducts = activeProducts.filter((p: any) => !p.isPinned);
+  const productsToShow = pinnedProducts.length > 0
+    ? [...pinnedProducts, ...unpinnedProducts]
+    : activeProducts;
+
+  const [productViewMode, setProductViewMode] = useState<'catalog' | 'categories'>('catalog');
+
+  // 🏢 Multi-Branch Locations
+  const branches = (settings.branches && settings.branches.length > 0)
+    ? settings.branches.filter((b) => b.enabled !== false)
+    : [
+        {
+          id: 'b-default',
+          nameTh: settings.companyNameTh || 'ไคโอทรอน เทคโนโลยี (สำนักงานใหญ่)',
+          nameEn: 'Headquarters & Factory',
+          type: 'headquarters' as const,
+          addressTh: settings.factoryAddress || '88/8 หมู่ 4 ตำบลดอนไก่ดี อำเภอกระทุ่มแบน จังหวัดสมุทรสาคร 74110',
+          phone: settings.phoneNumber || '02-810-1234',
+          email: settings.email || 'sales@chiotron.co.th',
+          businessHoursTh: settings.businessHours || 'จันทร์ - เสาร์ 08:00 - 17:00 น.',
+          mapUrl: 'https://maps.google.com/?q=Samut+Sakhon',
+          isPrimary: true,
+          enabled: true,
+        },
+      ];
+
+  const [activeBranchId, setActiveBranchId] = useState<string>(
+    branches.find((b) => b.isPrimary)?.id || branches[0]?.id || ''
+  );
+  const currentBranch = branches.find((b) => b.id === activeBranchId) || branches[0];
 
   // 📌 Categories with Pin sorting
   const enabledCategories = settings.categoryCards.filter((c) => c.enabled);
@@ -379,48 +420,175 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
             <div className="h-1 w-12 bg-theme-primary rounded-full" />
           </div>
 
-          <button
-            type="button"
-            onClick={() => onNavigate('/products')}
-            className="inline-flex items-center gap-2 rounded-xl border border-theme-border bg-theme-surface px-5 py-2.5 text-xs font-bold text-theme-text hover:bg-theme-surface-elevated hover:border-theme-primary hover:shadow-[0_0_15px_var(--color-primary-glow)] transition-all self-start sm:self-auto"
-          >
-            <span>ดูผลิตภัณฑ์ทั้งหมด</span>
-            <ChevronRight className="h-4 w-4 text-theme-primary" />
-          </button>
-        </div>
-
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-6">
-          {categoriesToShow.map((cat) => (
-            <div
-              key={cat.id}
-              onClick={() => onNavigate(cat.path)}
-              className="glow-card group cursor-pointer rounded-2xl border border-theme-border bg-theme-surface overflow-hidden shadow-lg flex flex-col justify-between transition-colors relative"
-            >
-              {cat.isPinned && (
-                <div className="absolute top-2.5 right-2.5 z-10 flex items-center gap-1 rounded-full bg-amber-500/90 backdrop-blur-md px-2 py-0.5 text-[9px] font-black text-black shadow-md border border-amber-400/50">
-                  <Pin className="h-2.5 w-2.5 fill-black text-black" />
-                  <span>แนะนำ</span>
-                </div>
-              )}
-              <div className="aspect-[4/3] w-full overflow-hidden bg-white p-3">
-                <img
-                  src={cat.image}
-                  alt={cat.titleTh}
-                  className="h-full w-full object-contain group-hover:scale-105 transition-transform duration-500"
-                />
-              </div>
-
-              <div className="bg-theme-surface-elevated p-3 text-center border-t border-theme-border group-hover:bg-theme-surface-hover transition-colors">
-                <h3 className="font-display font-bold text-xs sm:text-sm text-theme-text group-hover:text-theme-primary transition-colors">
-                  {cat.titleTh}
-                </h3>
-                <span className="text-[10px] font-mono tracking-wider text-theme-text-muted block mt-0.5 group-hover:text-theme-primary transition-colors">
-                  {cat.titleEn}
-                </span>
-              </div>
+          <div className="flex items-center gap-2 flex-wrap">
+            {/* View Mode Toggle: Catalog vs Categories */}
+            <div className="flex items-center rounded-xl border border-theme-border bg-theme-surface p-1 text-xs">
+              <button
+                type="button"
+                onClick={() => setProductViewMode('catalog')}
+                className={`rounded-lg px-3 py-1.5 font-bold transition-all flex items-center gap-1.5 ${
+                  productViewMode === 'catalog'
+                    ? 'bg-theme-primary text-black shadow-sm'
+                    : 'text-theme-text-muted hover:text-theme-text'
+                }`}
+              >
+                <Package className="h-3.5 w-3.5" />
+                <span>สินค้าแคตตาล็อก ({productsToShow.length})</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setProductViewMode('categories')}
+                className={`rounded-lg px-3 py-1.5 font-bold transition-all flex items-center gap-1.5 ${
+                  productViewMode === 'categories'
+                    ? 'bg-theme-primary text-black shadow-sm'
+                    : 'text-theme-text-muted hover:text-theme-text'
+                }`}
+              >
+                <Tag className="h-3.5 w-3.5" />
+                <span>หมวดหมู่ ({categoriesToShow.length})</span>
+              </button>
             </div>
-          ))}
+
+            <button
+              type="button"
+              onClick={() => onNavigate('/products')}
+              className="inline-flex items-center gap-2 rounded-xl border border-theme-border bg-theme-surface px-5 py-2.5 text-xs font-bold text-theme-text hover:bg-theme-surface-elevated hover:border-theme-primary hover:shadow-[0_0_15px_var(--color-primary-glow)] transition-all self-start sm:self-auto"
+            >
+              <span>ดูผลิตภัณฑ์ทั้งหมด</span>
+              <ChevronRight className="h-4 w-4 text-theme-primary" />
+            </button>
+          </div>
         </div>
+
+        {/* 1. CATALOG PRODUCTS VIEW (Shows exact products from Admin Panel Database) */}
+        {productViewMode === 'catalog' && (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+            {productsToShow.map((prod: any) => (
+              <div
+                key={prod.id || prod.sku}
+                onClick={() => {
+                  setDetailModal({
+                    isOpen: true,
+                    type: 'product',
+                    title: prod.name,
+                    subtitle: `รหัสสินค้า: ${prod.sku} | หมวดหมู่: ${prod.categoryName}`,
+                    category: prod.categoryName,
+                    image: prod.primaryImageURL || prod.featuredImageUrl || '/images/cat-round-cans.jpg',
+                    content:
+                      prod.description ||
+                      'บรรจุภัณฑ์โลหะคุณภาพสูงมาตรฐานสากล ผลิตด้วยเครื่องจักรอัตโนมัติความเร็วสูง รองรับการฆ่าเชื้อความร้อน Retort และได้มาตรฐานสัมผัสอาหาร BPA-NI',
+                    features: [
+                      `รหัส SKU: ${prod.sku}`,
+                      `วัสดุโครงสร้าง: ${prod.material || 'Electrolytic Tinplate ETP'}`,
+                      `สารเคลือบภายใน: ${prod.coatingType || 'BPA-NI Food Contact Safe'}`,
+                      `ขนาด/มิติ: ${prod.specifications?.dimensions || 'ตามมาตรฐานหรือสั่งผลิต'}`,
+                      `การรับรองมาตรฐาน: ${prod.unRating || 'ISO 9001:2015 / FSSC 22000'}`,
+                      `การนำไปใช้: ${prod.applications || 'อาหารสำเร็จรูป, เครื่องดื่ม และเคมีภัณฑ์'}`,
+                    ],
+                    ctaText: 'ขอใบเสนอราคาสินค้านี้',
+                    ctaAction: () => onNavigate('/contact?sku=' + encodeURIComponent(prod.sku)),
+                  });
+                }}
+                className="glow-card group cursor-pointer rounded-2xl border border-theme-border bg-theme-surface overflow-hidden shadow-lg flex flex-col justify-between transition-all hover:border-theme-primary relative"
+              >
+                {prod.isPinned && (
+                  <div className="absolute top-2.5 right-2.5 z-10 flex items-center gap-1 rounded-full bg-amber-500/95 backdrop-blur-md px-2 py-0.5 text-[9px] font-black text-black shadow-md border border-amber-400/50">
+                    <Pin className="h-2.5 w-2.5 fill-black text-black" />
+                    <span>แนะนำ</span>
+                  </div>
+                )}
+
+                <div className="aspect-[4/3] w-full overflow-hidden bg-white p-4 flex items-center justify-center">
+                  <img
+                    src={prod.primaryImageURL || prod.featuredImageUrl || '/images/cat-round-cans.jpg'}
+                    alt={prod.name}
+                    className="h-full w-full object-contain group-hover:scale-105 transition-transform duration-500"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = '/images/cat-round-cans.jpg';
+                    }}
+                  />
+                </div>
+
+                <div className="p-4 bg-theme-surface flex-1 flex flex-col justify-between border-t border-theme-border space-y-3">
+                  <div className="space-y-1.5">
+                    <div className="flex items-center justify-between gap-2">
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-theme-primary truncate">
+                        {prod.categoryName || 'บรรจุภัณฑ์โลหะ'}
+                      </span>
+                      <span className="font-mono text-[10px] font-bold text-theme-text-muted bg-theme-surface-elevated px-2 py-0.5 rounded border border-theme-border flex-shrink-0">
+                        {prod.sku}
+                      </span>
+                    </div>
+
+                    <h3 className="font-display font-bold text-xs sm:text-sm text-theme-text group-hover:text-theme-primary transition-colors line-clamp-2 leading-snug">
+                      {prod.name}
+                    </h3>
+
+                    {(prod.material || prod.specifications?.dimensions) && (
+                      <p className="text-[11px] text-theme-text-muted line-clamp-1 flex items-center gap-1.5 pt-1">
+                        <Layers className="h-3 w-3 text-theme-primary flex-shrink-0" />
+                        <span>{prod.material || prod.specifications?.dimensions}</span>
+                      </p>
+                    )}
+                  </div>
+
+                  <div className="pt-2 border-t border-theme-border/60 flex items-center justify-between">
+                    <span className="text-[11px] font-bold text-theme-primary group-hover:underline flex items-center gap-1">
+                      <span>ดูรายละเอียด</span>
+                      <ChevronRight className="h-3 w-3" />
+                    </span>
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onNavigate('/contact?sku=' + encodeURIComponent(prod.sku));
+                      }}
+                      className="rounded-lg bg-theme-primary/10 hover:bg-theme-primary hover:text-black text-theme-primary px-2.5 py-1 text-[10px] font-bold transition-all border border-theme-primary/20"
+                    >
+                      ขอใบเสนอราคา
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* 2. CATEGORIES VIEW (Category cards) */}
+        {productViewMode === 'categories' && (
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-6">
+            {categoriesToShow.map((cat) => (
+              <div
+                key={cat.id}
+                onClick={() => onNavigate(cat.path)}
+                className="glow-card group cursor-pointer rounded-2xl border border-theme-border bg-theme-surface overflow-hidden shadow-lg flex flex-col justify-between transition-colors relative"
+              >
+                {cat.isPinned && (
+                  <div className="absolute top-2.5 right-2.5 z-10 flex items-center gap-1 rounded-full bg-amber-500/90 backdrop-blur-md px-2 py-0.5 text-[9px] font-black text-black shadow-md border border-amber-400/50">
+                    <Pin className="h-2.5 w-2.5 fill-black text-black" />
+                    <span>แนะนำ</span>
+                  </div>
+                )}
+                <div className="aspect-[4/3] w-full overflow-hidden bg-white p-3">
+                  <img
+                    src={cat.image}
+                    alt={cat.titleTh}
+                    className="h-full w-full object-contain group-hover:scale-105 transition-transform duration-500"
+                  />
+                </div>
+
+                <div className="bg-theme-surface-elevated p-3 text-center border-t border-theme-border group-hover:bg-theme-surface-hover transition-colors">
+                  <h3 className="font-display font-bold text-xs sm:text-sm text-theme-text group-hover:text-theme-primary transition-colors">
+                    {cat.titleTh}
+                  </h3>
+                  <span className="text-[10px] font-mono tracking-wider text-theme-text-muted block mt-0.5 group-hover:text-theme-primary transition-colors">
+                    {cat.titleEn}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </section>
     );
   };
@@ -881,47 +1049,133 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-        {/* Contact Info Card */}
-        <div className="lg:col-span-5 glow-card rounded-2xl border border-theme-border bg-theme-surface p-7 sm:p-8 space-y-6 flex flex-col justify-between">
-          <div className="space-y-6">
-            <h3 className="font-display font-bold text-lg text-theme-text flex items-center gap-2">
-              <Building2 className="h-5 w-5 text-theme-primary" />
-              <span>{settings.companyNameTh || 'บริษัท ไคโอทรอน เทคโนโลยี จำกัด'}</span>
-            </h3>
+        {/* Multi-Branch Contact Info Card */}
+        <div className="lg:col-span-5 glow-card rounded-2xl border border-theme-border bg-theme-surface p-6 sm:p-8 space-y-5 flex flex-col justify-between">
+          <div className="space-y-4">
+            <div className="flex items-center justify-between border-b border-theme-border pb-3">
+              <h3 className="font-display font-bold text-base sm:text-lg text-theme-text flex items-center gap-2">
+                <Building2 className="h-5 w-5 text-theme-primary" />
+                <span>สถานที่ตั้งและสาขา ({branches.length})</span>
+              </h3>
+              {currentBranch.isPrimary && (
+                <span className="flex items-center gap-1 rounded-full bg-amber-500/15 border border-amber-500/30 px-2 py-0.5 text-[9px] font-bold text-amber-500">
+                  <Star className="h-2.5 w-2.5 fill-amber-400" />
+                  สาขาหลัก
+                </span>
+              )}
+            </div>
 
-            <div className="space-y-4 text-xs text-theme-text-muted">
-              <div className="flex items-start gap-3">
+            {/* Branch Selector Tabs */}
+            {branches.length > 1 && (
+              <div className="flex flex-wrap gap-1.5 p-1 rounded-xl bg-theme-surface-elevated border border-theme-border">
+                {branches.map((b) => {
+                  const isSelected = b.id === activeBranchId;
+                  const icon =
+                    b.type === 'headquarters' ? '🏢' : b.type === 'factory' ? '🏭' : b.type === 'warehouse' ? '📦' : '📍';
+                  return (
+                    <button
+                      key={b.id}
+                      type="button"
+                      onClick={() => setActiveBranchId(b.id)}
+                      className={`flex-1 min-w-[100px] rounded-lg py-1.5 px-2.5 text-[11px] font-bold transition-all text-center flex items-center justify-center gap-1 truncate ${
+                        isSelected
+                          ? 'bg-theme-primary text-black shadow-sm'
+                          : 'text-theme-text-muted hover:text-theme-text'
+                      }`}
+                    >
+                      <span>{icon}</span>
+                      <span className="truncate">{b.nameTh.split('(')[0]}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            )}
+
+            <div>
+              <span className="text-[10px] font-bold uppercase tracking-wider text-theme-primary block">
+                {currentBranch.nameEn || 'LOCATION'}
+              </span>
+              <h4 className="font-display font-bold text-sm text-theme-text mt-0.5">
+                {currentBranch.nameTh}
+              </h4>
+            </div>
+
+            <div className="space-y-3 text-xs text-theme-text-muted">
+              <div className="flex items-start gap-2.5">
                 <MapPin className="h-4 w-4 text-theme-primary flex-shrink-0 mt-0.5" />
                 <span className="leading-relaxed">
-                  {settings.factoryAddress ||
-                    '88/8 หมู่ 4 ตำบลดอนไก่ดี อำเภอกระทุ่มแบน จังหวัดสมุทรสาคร 74110'}
+                  {currentBranch.addressTh}
                 </span>
               </div>
 
-              <div className="flex items-center gap-3">
-                <Phone className="h-4 w-4 text-theme-primary flex-shrink-0" />
-                <span className="font-mono">{settings.phoneNumber || '02-810-1234, 034-876-543'}</span>
-              </div>
+              {currentBranch.phone && (
+                <div className="flex items-center gap-2.5">
+                  <Phone className="h-4 w-4 text-theme-primary flex-shrink-0" />
+                  <a
+                    href={`tel:${currentBranch.phone.replace(/[^0-9+]/g, '')}`}
+                    className="font-mono hover:text-theme-primary transition-colors"
+                  >
+                    {currentBranch.phone}
+                  </a>
+                </div>
+              )}
 
-              <div className="flex items-center gap-3">
-                <Mail className="h-4 w-4 text-theme-primary flex-shrink-0" />
-                <span className="font-mono">{settings.email || 'sales@lohakit.co.th'}</span>
-              </div>
+              {currentBranch.email && (
+                <div className="flex items-center gap-2.5">
+                  <Mail className="h-4 w-4 text-theme-primary flex-shrink-0" />
+                  <a
+                    href={`mailto:${currentBranch.email}`}
+                    className="font-mono hover:text-theme-primary transition-colors"
+                  >
+                    {currentBranch.email}
+                  </a>
+                </div>
+              )}
 
-              <div className="flex items-center gap-3">
-                <Clock className="h-4 w-4 text-theme-primary flex-shrink-0" />
-                <span>{settings.businessHours || 'จันทร์ - เสาร์ 08:00 - 17:00'}</span>
-              </div>
+              {currentBranch.businessHoursTh && (
+                <div className="flex items-center gap-2.5">
+                  <Clock className="h-4 w-4 text-theme-primary flex-shrink-0" />
+                  <span>{currentBranch.businessHoursTh}</span>
+                </div>
+              )}
             </div>
           </div>
 
-          <div className="rounded-xl overflow-hidden border border-theme-border aspect-[16/9] w-full bg-slate-900">
-            <iframe
-              title="Factory Map"
-              src="https://maps.google.com/maps?q=Samut%20Sakhon%20Thailand&t=&z=13&ie=UTF8&iwloc=&output=embed"
-              className="w-full h-full border-0 grayscale hover:grayscale-0 transition-all opacity-80 hover:opacity-100"
-              loading="lazy"
-            />
+          <div className="space-y-3 pt-2">
+            <div className="rounded-xl overflow-hidden border border-theme-border aspect-[16/9] w-full bg-slate-900 shadow-inner">
+              <iframe
+                title={`${currentBranch.nameTh} Map`}
+                src={`https://maps.google.com/maps?q=${encodeURIComponent(
+                  currentBranch.addressTh || currentBranch.nameTh
+                )}&t=&z=13&ie=UTF8&iwloc=&output=embed`}
+                className="w-full h-full border-0 grayscale hover:grayscale-0 transition-all opacity-80 hover:opacity-100"
+                loading="lazy"
+              />
+            </div>
+
+            <div className="flex items-center justify-between text-[11px] pt-1">
+              <a
+                href={
+                  currentBranch.mapUrl ||
+                  `https://maps.google.com/?q=${encodeURIComponent(currentBranch.addressTh)}`
+                }
+                target="_blank"
+                rel="noreferrer"
+                className="font-bold text-theme-primary hover:underline flex items-center gap-1"
+              >
+                <span>เปิดแผนที่นำทาง Google Maps</span>
+                <ExternalLink className="h-3 w-3" />
+              </a>
+
+              <button
+                type="button"
+                onClick={() => onNavigate('/contact')}
+                className="font-bold text-theme-text-muted hover:text-theme-primary transition-colors flex items-center gap-1"
+              >
+                <span>ดูข้อมูลติดต่อทั้งหมด</span>
+                <ChevronRight className="h-3 w-3" />
+              </button>
+            </div>
           </div>
         </div>
 

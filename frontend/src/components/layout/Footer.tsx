@@ -179,21 +179,50 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             <div className="flex items-start gap-2.5 text-xs text-theme-text-muted">
               <MapPin className="h-4 w-4 text-theme-primary flex-shrink-0 mt-0.5" />
               <span className="leading-relaxed">
-                {settings.factoryAddress || '88 หมู่ 3 ถนนเศรษฐกิจ 1 ต.คลองมะเดื่อ อ.กระทุ่มแบน จ.สมุทรสาคร 74110'}
+                {(settings.branches && settings.branches.find((b) => b.isPrimary)?.addressTh) ||
+                  settings.factoryAddress ||
+                  '123/45 ถนนสาทรใต้ แขวงยานนาวา เขตสาทร กรุงเทพมหานคร 10120'}
               </span>
             </div>
             <div className="flex items-center gap-2.5 text-xs text-theme-text-muted">
               <Phone className="h-4 w-4 text-theme-primary flex-shrink-0" />
-              <span>{settings.phoneNumber || '+66 (0) 34 878 999'}</span>
+              <span>
+                {(settings.branches && settings.branches.find((b) => b.isPrimary)?.phone) ||
+                  settings.phoneNumber ||
+                  '+66 (0) 2 123 4567'}
+              </span>
             </div>
             <div className="flex items-center gap-2.5 text-xs text-theme-text-muted">
               <Mail className="h-4 w-4 text-theme-primary flex-shrink-0" />
-              <span>{settings.email || 'sales@lohakit.co.th'}</span>
+              <span>
+                {(settings.branches && settings.branches.find((b) => b.isPrimary)?.email) ||
+                  settings.email ||
+                  'contact@chiotron.co.th'}
+              </span>
             </div>
             <div className="flex items-center gap-2.5 text-xs text-theme-text-muted">
               <Clock className="h-4 w-4 text-theme-primary flex-shrink-0" />
-              <span>เวลาทำการ: {settings.businessHours || 'จันทร์ - เสาร์ 08:00 - 17:00'}</span>
+              <span>
+                เวลาทำการ:{' '}
+                {(settings.branches && settings.branches.find((b) => b.isPrimary)?.businessHoursTh) ||
+                  settings.businessHours ||
+                  'จันทร์ - ศุกร์ 08:30 - 17:30 น.'}
+              </span>
             </div>
+
+            {settings.branches && settings.branches.filter((b) => b.enabled !== false).length > 1 && (
+              <div className="pt-1">
+                <button
+                  type="button"
+                  onClick={() => onNavigate('/contact')}
+                  className="inline-flex items-center gap-1 text-[11px] font-bold text-theme-primary hover:underline"
+                >
+                  <span>
+                    🏢 ดูที่ตั้งและสาขาทั้ง {settings.branches.filter((b) => b.enabled !== false).length} แห่ง →
+                  </span>
+                </button>
+              </div>
+            )}
           </div>
         </div>
 

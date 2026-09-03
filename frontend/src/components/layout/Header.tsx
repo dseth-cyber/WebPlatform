@@ -180,13 +180,13 @@ export const Header: React.FC<HeaderProps> = ({ currentPath, onNavigate }) => {
                   onClick={() => handleNavClick(link.path)}
                   className={`group relative py-2 px-1 text-xs sm:text-sm transition-colors duration-200 ${
                     isActive
-                      ? theme === 'LIGHT' || theme === 'MODERN'
+                      ? theme === 'MODERN'
                         ? 'text-[#00F0FF] font-bold'
                         : 'text-theme-primary font-bold'
                       : isTransparentOverDark
-                      ? 'text-slate-200 hover:text-[#00F0FF] font-medium'
+                      ? 'text-slate-200 hover:text-theme-primary font-medium'
                       : theme === 'LIGHT'
-                      ? 'text-slate-600 hover:text-[#00F0FF] font-medium'
+                      ? 'text-slate-600 hover:text-theme-primary font-medium'
                       : 'text-theme-text-muted hover:text-theme-primary font-medium'
                   }`}
                 >
@@ -196,7 +196,7 @@ export const Header: React.FC<HeaderProps> = ({ currentPath, onNavigate }) => {
                   {isActive && (
                     <span
                       className={`absolute bottom-0 left-0 right-0 h-0.5 rounded-full ${
-                        theme === 'LIGHT' || theme === 'MODERN'
+                        theme === 'MODERN'
                           ? 'bg-[#00F0FF]'
                           : 'bg-theme-primary'
                       }`}
@@ -209,7 +209,7 @@ export const Header: React.FC<HeaderProps> = ({ currentPath, onNavigate }) => {
                       className={`absolute bottom-0 left-0 right-0 h-0.5 scale-x-0 group-hover:scale-x-100 transition-transform duration-200 rounded-full ${
                         isTransparentOverDark
                           ? 'bg-white/40'
-                          : theme === 'LIGHT' || theme === 'MODERN'
+                          : theme === 'MODERN'
                           ? 'bg-[#00F0FF]/40'
                           : 'bg-theme-primary/40'
                       }`}
@@ -290,11 +290,11 @@ export const Header: React.FC<HeaderProps> = ({ currentPath, onNavigate }) => {
                   onClick={() => handleNavClick(link.path)}
                   className={`flex items-center justify-between rounded-xl px-4 py-3 text-left text-sm transition-colors ${
                     isActive
-                      ? theme === 'LIGHT' || theme === 'MODERN'
+                      ? theme === 'MODERN'
                         ? 'bg-[#00F0FF]/15 text-[#00F0FF] border-l-4 border-[#00F0FF] font-bold'
                         : 'bg-theme-primary/15 text-theme-primary border-l-4 border-theme-primary font-bold'
                       : theme === 'LIGHT'
-                      ? 'text-slate-700 hover:bg-slate-100 hover:text-[#00F0FF] font-medium'
+                      ? 'text-slate-700 hover:bg-slate-100 hover:text-theme-primary font-medium'
                       : 'text-theme-text hover:bg-theme-surface-hover hover:text-theme-primary font-medium'
                   }`}
                 >

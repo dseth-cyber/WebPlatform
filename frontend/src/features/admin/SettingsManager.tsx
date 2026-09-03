@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from '../../theme/ThemeProvider';
 import { ThemeMode } from '../../types/theme';
-import { useSiteContent, updateBrowserFavicon } from '../../hooks/useSiteContent';
+import { useSiteContent, updateBrowserFavicon, BranchLocationSetting } from '../../hooks/useSiteContent';
 import {
   Settings,
   Building2,
@@ -28,6 +28,16 @@ import {
   Database,
   Pin,
   Package,
+  MapPin,
+  Factory,
+  Warehouse,
+  Phone,
+  Mail,
+  Clock,
+  Plus,
+  Trash2,
+  Edit,
+  ExternalLink,
 } from 'lucide-react';
 import { compressImageFile } from '../../utils/imageCompressor';
 

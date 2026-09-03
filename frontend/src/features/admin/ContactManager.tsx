@@ -1,7 +1,27 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useSiteContent } from '../../hooks/useSiteContent';
-import { Phone, Mail, MapPin, Save, Clock, Inbox, Check, Trash2, Eye, MessageSquare, Building2, User } from 'lucide-react';
+import { useSiteContent, BranchLocationSetting } from '../../hooks/useSiteContent';
+import {
+  Phone,
+  Mail,
+  MapPin,
+  Save,
+  Clock,
+  Inbox,
+  Check,
+  Trash2,
+  Eye,
+  EyeOff,
+  MessageSquare,
+  Building2,
+  User,
+  Factory,
+  Warehouse,
+  Plus,
+  Edit,
+  ExternalLink,
+  Star,
+} from 'lucide-react';
 import { Modal } from '../../components/ui/Modal';
 import { ConfirmDialog } from '../../components/ui/ConfirmDialog';
 
@@ -65,6 +85,23 @@ export const ContactManager: React.FC = () => {
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
   const [deletingId, setDeletingId] = useState<string | null>(null);
 
+  // Multi-Branch Management State
+  const [branches, setBranches] = useState<BranchLocationSetting[]>(settings.branches || []);
+  const [branchModalOpen, setBranchModalOpen] = useState(false);
+  const [editingBranchIdx, setEditingBranchIdx] = useState<number | null>(null);
+
+  // Branch Modal Form Fields
+  const [bNameTh, setBNameTh] = useState('');
+  const [bNameEn, setBNameEn] = useState('');
+  const [bType, setBType] = useState<'headquarters' | 'factory' | 'warehouse' | 'branch'>('headquarters');
+  const [bAddressTh, setBAddressTh] = useState('');
+  const [bAddressEn, setBAddressEn] = useState('');
+  const [bPhone, setBPhone] = useState('');
+  const [bEmail, setBEmail] = useState('');
+  const [bHours, setBHours] = useState('');
+  const [bMapUrl, setBMapUrl] = useState('');
+  const [bIsPrimary, setBIsPrimary] = useState(false);
+
   // Sync with global settings when loaded from DB
   React.useEffect(() => {
     if (settings) {
@@ -72,6 +109,7 @@ export const ContactManager: React.FC = () => {
       if (settings.phoneNumber) setPhoneNumber(settings.phoneNumber);
       if (settings.email) setEmail(settings.email);
       if (settings.businessHours) setBusinessHours(settings.businessHours);
+      if (settings.branches) setBranches(settings.branches);
     }
   }, [settings]);
 
@@ -95,6 +133,126 @@ export const ContactManager: React.FC = () => {
     } finally {
       setIsSaving(false);
     }
+  };
+
+  const handleOpenAddBranch = () => {
+    setEditingBranchIdx(null);
+    setBNameTh('');
+    setBNameEn('');
+    setBType('branch');
+    setBAddressTh('');
+    setBAddressEn('');
+    setBPhone('');
+    setBEmail('');
+    setBHours('จันทร์ - ศุกร์ 08:30 - 17:30 น.');
+    setBMapUrl('');
+    setBIsPrimary(false);
+    setBranchModalOpen(true);
+  };
+
+  const handleOpenEditBranch = (idx: number) => {
+    const b = branches[idx];
+    if (!b) return;
+    setEditingBranchIdx(idx);
+    setBNameTh(b.nameTh);
+    setBNameEn(b.nameEn || '');
+    setBType(b.type || 'branch');
+    setBAddressTh(b.addressTh);
+    setBAddressEn(b.addressEn || '');
+    setBPhone(b.phone || '');
+    setBEmail(b.email || '');
+    setBHours(b.businessHoursTh || '');
+    setBMapUrl(b.mapUrl || '');
+    setBIsPrimary(Boolean(b.isPrimary));
+    setBranchModalOpen(true);
+  };
+
+  const handleSaveBranch = async () => {
+    if (!bNameTh.trim() || !bAddressTh.trim()) {
+      alert('กรุณากรอกชื่อสาขาและที่อยู่สาขา');
+      return;
+    }
+
+    let updated: BranchLocationSetting[];
+    if (editingBranchIdx !== null) {
+      updated = branches.map((item, idx) =>
+        idx === editingBranchIdx
+          ? {
+              ...item,
+              nameTh: bNameTh,
+              nameEn: bNameEn,
+              type: bType,
+              addressTh: bAddressTh,
+              addressEn: bAddressEn,
+              phone: bPhone,
+              email: bEmail,
+              businessHoursTh: bHours,
+              mapUrl: bMapUrl,
+              isPrimary: bIsPrimary,
+            }
+          : bIsPrimary
+          ? { ...item, isPrimary: false }
+          : item
+      );
+    } else {
+      const newB: BranchLocationSetting = {
+        id: 'branch-' + Date.now(),
+        nameTh: bNameTh,
+        nameEn: bNameEn,
+        type: bType,
+        addressTh: bAddressTh,
+        addressEn: bAddressEn,
+        phone: bPhone,
+        email: bEmail,
+        businessHoursTh: bHours,
+        mapUrl: bMapUrl,
+        isPrimary: bIsPrimary,
+        enabled: true,
+      };
+      if (bIsPrimary) {
+        updated = [newB, ...branches.map((b) => ({ ...b, isPrimary: false }))];
+      } else {
+        updated = [...branches, newB];
+      }
+    }
+
+    setBranches(updated);
+    await updateSettings({ branches: updated });
+    setBranchModalOpen(false);
+    showToast('บันทึกข้อมูลสาขาเรียบร้อยแล้ว');
+  };
+
+  const handleDeleteBranch = async (idx: number) => {
+    if (confirm(`คุณต้องการลบสาขา "${branches[idx]?.nameTh}" หรือไม่?`)) {
+      const updated = branches.filter((_, i) => i !== idx);
+      setBranches(updated);
+      await updateSettings({ branches: updated });
+      showToast('ลบข้อมูลสาขาเรียบร้อยแล้ว');
+    }
+  };
+
+  const handleToggleBranchEnabled = async (idx: number) => {
+    const updated = branches.map((b, i) =>
+      i === idx ? { ...b, enabled: !b.enabled } : b
+    );
+    setBranches(updated);
+    await updateSettings({ branches: updated });
+    showToast(updated[idx].enabled ? 'เปิดแสดงผลสาขาบนหน้าเว็บแล้ว' : 'ซ่อนสาขานี้จากหน้าเว็บแล้ว');
+  };
+
+  const handleSetPrimaryBranch = async (idx: number) => {
+    const updated = branches.map((b, i) => ({
+      ...b,
+      isPrimary: i === idx,
+    }));
+    setBranches(updated);
+    await updateSettings({
+      branches: updated,
+      factoryAddress: updated[idx].addressTh,
+      phoneNumber: updated[idx].phone || settings.phoneNumber,
+      email: updated[idx].email || settings.email,
+    });
+    showToast(`ตั้ง "${updated[idx].nameTh}" เป็นสาขาหลักเรียบร้อยแล้ว`);
   };
 
   const handleToggleStatus = (id: string) => {
@@ -220,7 +378,164 @@ export const ContactManager: React.FC = () => {
           </div>
         </div>
 
-      {/* 2. Customer Inquiries Inbox */}
+      {/* 2. Multi-Branch Locations Manager */}
+      <div className="rounded-3xl border border-theme-border bg-theme-surface p-6 sm:p-8 shadow-2xl space-y-4 text-xs">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-theme-border pb-4">
+          <div>
+            <h3 className="font-display text-sm font-bold text-theme-text flex items-center gap-2">
+              <Building2 className="h-4 w-4 text-theme-primary" />
+              <span>ระบบจัดการสาขาและสถานที่ตั้ง (Multi-Branch & Locations Manager)</span>
+            </h3>
+            <p className="text-[11px] text-theme-text-muted mt-0.5">
+              💡 สำหรับองค์กรที่มีหลายสาขา สามารถเพิ่ม แก้ไข และกำหนดสาขาหลัก (สำนักงานใหญ่, โรงงานผลิต, คลังสินค้า) เพื่อให้ผู้เข้าชมเลือกดูได้
+            </p>
+          </div>
+
+          <button
+            type="button"
+            onClick={handleOpenAddBranch}
+            className="btn-primary-action text-xs font-black px-4 py-2 shadow-lg flex items-center gap-1.5 self-start sm:self-auto"
+          >
+            <Plus className="h-4 w-4 text-black" />
+            <span>+ เพิ่มสาขาใหม่</span>
+          </button>
+        </div>
+
+        {branches.length === 0 ? (
+          <div className="p-8 text-center text-xs text-theme-text-muted rounded-2xl border border-dashed border-theme-border">
+            ยังไม่มีข้อมูลสาขา กดปุ่ม "+ เพิ่มสาขาใหม่" เพื่อเริ่มต้น
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pt-2">
+            {branches.map((b, idx) => {
+              const typeLabel =
+                b.type === 'headquarters'
+                  ? '🏢 สำนักงานใหญ่'
+                  : b.type === 'factory'
+                  ? '🏭 โรงงานผลิต'
+                  : b.type === 'warehouse'
+                  ? '📦 คลังสินค้า'
+                  : '📍 สาขาย่อย';
+
+              return (
+                <div
+                  key={b.id}
+                  className={`rounded-2xl border p-4 space-y-3 flex flex-col justify-between transition-all ${
+                    b.isPrimary
+                      ? 'border-theme-primary/60 bg-theme-primary/5 shadow-md'
+                      : 'border-theme-border bg-theme-surface-elevated/60'
+                  }`}
+                >
+                  <div className="space-y-2">
+                    <div className="flex items-start justify-between gap-2">
+                      <span className="rounded-full bg-theme-surface border border-theme-border px-2.5 py-0.5 text-[10px] font-bold text-theme-primary">
+                        {typeLabel}
+                      </span>
+                      <div className="flex items-center gap-1">
+                        {b.isPrimary ? (
+                          <span className="flex items-center gap-1 rounded-full bg-amber-500/20 border border-amber-500/40 px-2 py-0.5 text-[9px] font-black text-amber-300">
+                            <Star className="h-2.5 w-2.5 fill-amber-400 text-amber-400" />
+                            สาขาหลัก
+                          </span>
+                        ) : (
+                          <button
+                            type="button"
+                            onClick={() => handleSetPrimaryBranch(idx)}
+                            className="rounded-full bg-theme-surface border border-theme-border px-2 py-0.5 text-[9px] font-bold text-theme-text-muted hover:text-theme-primary"
+                            title="คลิกเพื่อตั้งเป็นสาขาหลัก"
+                          >
+                            ตั้งเป็นสาขาหลัก
+                          </button>
+                        )}
+                      </div>
+                    </div>
+
+                    <div>
+                      <h4 className="font-display text-sm font-bold text-theme-text">{b.nameTh}</h4>
+                      {b.nameEn && <span className="text-[10px] text-theme-text-muted block">{b.nameEn}</span>}
+                    </div>
+
+                    <div className="space-y-1.5 pt-1 text-[11px] text-theme-text-muted">
+                      <div className="flex items-start gap-1.5">
+                        <MapPin className="h-3.5 w-3.5 text-theme-primary flex-shrink-0 mt-0.5" />
+                        <span className="line-clamp-2 leading-relaxed">{b.addressTh}</span>
+                      </div>
+                      {b.phone && (
+                        <div className="flex items-center gap-1.5">
+                          <Phone className="h-3.5 w-3.5 text-theme-primary flex-shrink-0" />
+                          <span className="font-mono">{b.phone}</span>
+                        </div>
+                      )}
+                      {b.email && (
+                        <div className="flex items-center gap-1.5">
+                          <Mail className="h-3.5 w-3.5 text-theme-primary flex-shrink-0" />
+                          <span className="font-mono">{b.email}</span>
+                        </div>
+                      )}
+                      {b.businessHoursTh && (
+                        <div className="flex items-center gap-1.5">
+                          <Clock className="h-3.5 w-3.5 text-theme-primary flex-shrink-0" />
+                          <span>{b.businessHoursTh}</span>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="flex items-center justify-between pt-2 border-t border-theme-border/50">
+                    <div className="flex items-center gap-1">
+                      {b.mapUrl && (
+                        <a
+                          href={b.mapUrl}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="rounded-lg p-1.5 text-theme-text-dim hover:text-theme-primary"
+                          title="เปิดดูแผนที่ Google Maps"
+                        >
+                          <ExternalLink className="h-3.5 w-3.5" />
+                        </a>
+                      )}
+                      <button
+                        type="button"
+                        onClick={() => handleToggleBranchEnabled(idx)}
+                        className={`rounded-full px-2.5 py-0.5 text-[10px] font-bold inline-flex items-center gap-1 ${
+                          b.enabled !== false
+                            ? 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/30'
+                            : 'bg-slate-500/15 text-slate-400 border border-slate-500/30'
+                        }`}
+                        title={b.enabled !== false ? 'คลิกเพื่อซ่อน' : 'คลิกเพื่อแสดง'}
+                      >
+                        {b.enabled !== false ? <Eye className="h-2.5 w-2.5" /> : <EyeOff className="h-2.5 w-2.5" />}
+                        <span>{b.enabled !== false ? 'แสดง' : 'ซ่อน'}</span>
+                      </button>
+                    </div>
+
+                    <div className="flex items-center gap-1">
+                      <button
+                        type="button"
+                        onClick={() => handleOpenEditBranch(idx)}
+                        className="rounded-lg border border-theme-border bg-theme-surface p-1.5 text-theme-text-muted hover:text-theme-primary hover:border-theme-primary transition-colors"
+                        title="แก้ไขข้อมูลสาขา"
+                      >
+                        <Edit className="h-3.5 w-3.5" />
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handleDeleteBranch(idx)}
+                        className="rounded-lg border border-theme-border bg-theme-surface p-1.5 text-red-400 hover:bg-red-500/10 hover:border-red-500/40 transition-colors"
+                        title="ลบสาขา"
+                      >
+                        <Trash2 className="h-3.5 w-3.5" />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </div>
+
+      {/* 3. Customer Inquiries Inbox */}
       <div className="rounded-3xl border border-theme-border bg-theme-surface shadow-2xl overflow-hidden space-y-4 p-6 sm:p-8">
         <div className="flex items-center justify-between border-b border-theme-border pb-4">
           <div className="space-y-1">
@@ -360,6 +675,150 @@ export const ContactManager: React.FC = () => {
             </div>
           </div>
         )}
+      </Modal>
+
+      {/* Add / Edit Branch Modal */}
+      <Modal
+        isOpen={branchModalOpen}
+        onClose={() => setBranchModalOpen(false)}
+        title={editingBranchIdx !== null ? 'แก้ไขข้อมูลสาขา / โรงงาน' : 'เพิ่มสาขา / โรงงานใหม่'}
+      >
+        <div className="space-y-4 text-xs">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label className="font-bold text-theme-text block mb-1">ชื่อสาขา (ภาษาไทย) *</label>
+              <input
+                type="text"
+                value={bNameTh}
+                onChange={(e) => setBNameTh(e.target.value)}
+                placeholder="เช่น สำนักงานใหญ่, โรงงานสมุทรสาคร"
+                className="w-full rounded-xl border border-theme-border bg-theme-surface-elevated px-3 py-2 text-theme-text"
+              />
+            </div>
+            <div>
+              <label className="font-bold text-theme-text block mb-1">ชื่อสาขา (English)</label>
+              <input
+                type="text"
+                value={bNameEn}
+                onChange={(e) => setBNameEn(e.target.value)}
+                placeholder="e.g. Head Office, Samut Sakhon Plant"
+                className="w-full rounded-xl border border-theme-border bg-theme-surface-elevated px-3 py-2 text-theme-text"
+              />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label className="font-bold text-theme-text block mb-1">ประเภทสาขา</label>
+              <select
+                value={bType}
+                onChange={(e) => setBType(e.target.value as any)}
+                className="w-full rounded-xl border border-theme-border bg-theme-surface-elevated px-3 py-2 text-theme-text"
+              >
+                <option value="headquarters">🏢 สำนักงานใหญ่ (Headquarters)</option>
+                <option value="factory">🏭 โรงงานผลิต (Manufacturing Plant)</option>
+                <option value="warehouse">📦 คลังสินค้า / ศูนย์กระจายสินค้า (Warehouse)</option>
+                <option value="branch">📍 สาขาภูมิภาค (Regional Branch)</option>
+              </select>
+            </div>
+            <div>
+              <label className="font-bold text-theme-text block mb-1">เบอร์โทรศัพท์ติดต่อ</label>
+              <input
+                type="text"
+                value={bPhone}
+                onChange={(e) => setBPhone(e.target.value)}
+                placeholder="เช่น +66 (0) 2 123 4567"
+                className="w-full rounded-xl border border-theme-border bg-theme-surface-elevated px-3 py-2 text-theme-text font-mono"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label className="font-bold text-theme-text block mb-1">ที่อยู่สาขา (ภาษาไทย) *</label>
+            <textarea
+              rows={2}
+              value={bAddressTh}
+              onChange={(e) => setBAddressTh(e.target.value)}
+              placeholder="บ้านเลขที่, ถนน, ตำบล/แขวง, อำเภอ/เขต, จังหวัด, รหัสไปรษณีย์"
+              className="w-full rounded-xl border border-theme-border bg-theme-surface-elevated px-3 py-2 text-theme-text"
+            />
+          </div>
+
+          <div>
+            <label className="font-bold text-theme-text block mb-1">ที่อยู่สาขา (English)</label>
+            <textarea
+              rows={2}
+              value={bAddressEn}
+              onChange={(e) => setBAddressEn(e.target.value)}
+              placeholder="Address in English for international visitors..."
+              className="w-full rounded-xl border border-theme-border bg-theme-surface-elevated px-3 py-2 text-theme-text"
+            />
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label className="font-bold text-theme-text block mb-1">อีเมลติดต่อสาขา</label>
+              <input
+                type="email"
+                value={bEmail}
+                onChange={(e) => setBEmail(e.target.value)}
+                placeholder="branch@chiotron.co.th"
+                className="w-full rounded-xl border border-theme-border bg-theme-surface-elevated px-3 py-2 text-theme-text font-mono"
+              />
+            </div>
+            <div>
+              <label className="font-bold text-theme-text block mb-1">เวลาทำการ</label>
+              <input
+                type="text"
+                value={bHours}
+                onChange={(e) => setBHours(e.target.value)}
+                placeholder="เช่น จันทร์ - ศุกร์: 08:30 - 17:30 น."
+                className="w-full rounded-xl border border-theme-border bg-theme-surface-elevated px-3 py-2 text-theme-text"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label className="font-bold text-theme-text block mb-1">ลิงก์ Google Maps (สำหรับกดนำทาง)</label>
+            <input
+              type="text"
+              value={bMapUrl}
+              onChange={(e) => setBMapUrl(e.target.value)}
+              placeholder="https://maps.google.com/?q=..."
+              className="w-full rounded-xl border border-theme-border bg-theme-surface-elevated px-3 py-2 text-theme-text font-mono"
+            />
+          </div>
+
+          <div className="flex items-center gap-2 pt-1">
+            <input
+              type="checkbox"
+              id="branchPrimaryCheck"
+              checked={bIsPrimary}
+              onChange={(e) => setBIsPrimary(e.target.checked)}
+              className="h-4 w-4 rounded border-theme-border text-theme-primary focus:ring-theme-primary"
+            />
+            <label htmlFor="branchPrimaryCheck" className="font-bold text-theme-text cursor-pointer">
+              ⭐ ตั้งเป็นสาขาหลัก (Primary Branch) — ที่อยู่นี้จะแสดงเป็นค่าเริ่มต้นใน Footer และหน้าติดต่อเรา
+            </label>
+          </div>
+
+          <div className="flex justify-end gap-3 pt-4 border-t border-theme-border">
+            <button
+              type="button"
+              onClick={() => setBranchModalOpen(false)}
+              className="rounded-xl border border-theme-border bg-theme-surface px-5 py-2 font-bold text-theme-text hover:bg-theme-surface-elevated"
+            >
+              ยกเลิก
+            </button>
+            <button
+              type="button"
+              onClick={handleSaveBranch}
+              className="btn-primary-action px-6 py-2 font-black text-black shadow-lg"
+            >
+              บันทึกข้อมูลสาขา
+            </button>
+          </div>
+        </div>
       </Modal>
 
       {/* Delete Confirmation */}

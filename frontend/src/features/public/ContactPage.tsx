@@ -16,6 +16,9 @@ import {
   AlertCircle,
   Building2,
   ExternalLink,
+  Factory,
+  Warehouse,
+  Star,
 } from 'lucide-react';
 
 const contactSchema = z.object({
@@ -37,6 +40,31 @@ export const ContactPage: React.FC<{ onNavigate: (path: string) => void }> = () 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
+
+  // Multi-Branch Support
+  const branches = (settings.branches && settings.branches.length > 0)
+    ? settings.branches.filter((b) => b.enabled !== false)
+    : [
+        {
+          id: 'b-default',
+          nameTh: 'สำนักงานใหญ่และโรงงานผลิต (' + (settings.companyNameTh || 'ไคโอทรอน เทคโนโลยี') + ')',
+          nameEn: 'Headquarters & Manufacturing Plant',
+          type: 'headquarters' as const,
+          addressTh: settings.factoryAddress || '88/9 หมู่ 4 นิคมอุตสาหกรรมสมุทรสาคร จ.สมุทรสาคร 74000',
+          addressEn: '88/9 Moo 4, Samut Sakhon Industrial Estate, Samut Sakhon 74000, Thailand',
+          phone: settings.phoneNumber || '+66 (0) 34 890 123',
+          email: settings.email || 'contact@chiotron.co.th',
+          businessHoursTh: settings.businessHours || 'จันทร์ - เสาร์ 08:00 - 17:00 น.',
+          mapUrl: 'https://maps.google.com/?q=Samut+Sakhon+Industrial+Estate',
+          isPrimary: true,
+          enabled: true,
+        },
+      ];
+
+  const [selectedBranchId, setSelectedBranchId] = useState<string>(
+    branches.find((b) => b.isPrimary)?.id || branches[0]?.id || ''
+  );
+  const currentBranch = branches.find((b) => b.id === selectedBranchId) || branches[0];
 
   const {
     register,
@@ -238,56 +266,120 @@ export const ContactPage: React.FC<{ onNavigate: (path: string) => void }> = () 
           )}
         </div>
 
-        {/* Corporate Information & Factory Map (5 cols) */}
+        {/* Corporate Information & Multi-Branch Locations (5 cols) */}
         <div className="lg:col-span-5 space-y-6">
-          <div className="rounded-3xl border border-theme-border bg-theme-surface p-8 space-y-6">
-            <h3 className="font-display text-lg font-bold text-theme-text">
-              ข้อมูลการติดต่อโรงงาน
-            </h3>
+          <div className="rounded-3xl border border-theme-border bg-theme-surface p-6 sm:p-8 space-y-6 shadow-xl">
+            <div className="flex items-center justify-between border-b border-theme-border pb-4">
+              <h3 className="font-display text-base sm:text-lg font-bold text-theme-text flex items-center gap-2">
+                <Building2 className="h-5 w-5 text-theme-primary" />
+                <span>สถานที่ตั้งและสาขา ({branches.length} สาขา)</span>
+              </h3>
+              {currentBranch.isPrimary && (
+                <span className="flex items-center gap-1 rounded-full bg-amber-500/15 border border-amber-500/30 px-2.5 py-0.5 text-[10px] font-bold text-amber-500">
+                  <Star className="h-3 w-3 fill-amber-400" />
+                  สาขาหลัก
+                </span>
+              )}
+            </div>
 
+            {/* Branch Selector Tabs */}
+            {branches.length > 1 && (
+              <div className="flex flex-wrap gap-1.5 p-1 rounded-2xl bg-theme-surface-elevated border border-theme-border">
+                {branches.map((b) => {
+                  const isSelected = b.id === selectedBranchId;
+                  const icon =
+                    b.type === 'headquarters' ? '🏢' : b.type === 'factory' ? '🏭' : b.type === 'warehouse' ? '📦' : '📍';
+                  return (
+                    <button
+                      key={b.id}
+                      type="button"
+                      onClick={() => setSelectedBranchId(b.id)}
+                      className={`flex-1 min-w-[120px] rounded-xl py-2 px-3 text-xs font-bold transition-all text-center flex items-center justify-center gap-1.5 ${
+                        isSelected
+                          ? 'bg-theme-primary text-black shadow-md'
+                          : 'text-theme-text-muted hover:text-theme-text hover:bg-theme-surface'
+                      }`}
+                    >
+                      <span>{icon}</span>
+                      <span className="truncate">{b.nameTh.split('(')[0]}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            )}
+
+            {/* Selected Branch Details */}
             <div className="space-y-4 text-xs">
-              <div className="flex items-start gap-3">
+              <div>
+                <span className="text-[10px] font-bold uppercase tracking-wider text-theme-primary block mb-0.5">
+                  {currentBranch.nameEn || 'LOCATION'}
+                </span>
+                <h4 className="font-display font-bold text-sm text-theme-text">{currentBranch.nameTh}</h4>
+              </div>
+
+              <div className="flex items-start gap-3 border-t border-theme-border/50 pt-4">
                 <MapPin className="h-5 w-5 text-theme-primary flex-shrink-0 mt-0.5" />
                 <div>
-                  <span className="font-bold text-theme-text block">โรงงานและสำนักงานใหญ่ ({settings.companyNameTh})</span>
+                  <span className="font-bold text-theme-text block">ที่อยู่</span>
                   <p className="text-theme-text-muted mt-0.5 leading-relaxed">
-                    {settings.factoryAddress || '88 หมู่ 3 ถนนเศรษฐกิจ 1 ตำบลคลองมะเดื่อ อำเภอกระทุ่มแบน จังหวัดสมุทรสาคร 74110'}
+                    {currentBranch.addressTh}
                   </p>
+                  {currentBranch.addressEn && (
+                    <p className="text-[11px] text-theme-text-dim mt-1 leading-relaxed">
+                      {currentBranch.addressEn}
+                    </p>
+                  )}
                 </div>
               </div>
 
-              <div className="flex items-start gap-3 border-t border-theme-border/50 pt-4">
-                <Phone className="h-5 w-5 text-theme-primary flex-shrink-0 mt-0.5" />
-                <div>
-                  <span className="font-bold text-theme-text block">เบอร์โทรศัพท์ฝ่ายขาย</span>
-                  <p className="text-theme-text-muted mt-0.5">{settings.phoneNumber || '+66 (0) 34 878 999'}</p>
+              {currentBranch.phone && (
+                <div className="flex items-start gap-3 border-t border-theme-border/50 pt-4">
+                  <Phone className="h-5 w-5 text-theme-primary flex-shrink-0 mt-0.5" />
+                  <div>
+                    <span className="font-bold text-theme-text block">เบอร์โทรศัพท์</span>
+                    <a
+                      href={`tel:${currentBranch.phone.replace(/[^0-9+]/g, '')}`}
+                      className="text-theme-text-muted hover:text-theme-primary font-mono mt-0.5 inline-block"
+                    >
+                      {currentBranch.phone}
+                    </a>
+                  </div>
                 </div>
-              </div>
+              )}
 
-              <div className="flex items-start gap-3 border-t border-theme-border/50 pt-4">
-                <Mail className="h-5 w-5 text-theme-primary flex-shrink-0 mt-0.5" />
-                <div>
-                  <span className="font-bold text-theme-text block">อีเมลฝ่ายวิศวกรรมและการขาย</span>
-                  <p className="text-theme-text-muted mt-0.5">{settings.email || 'sales@lohakit.co.th'}</p>
+              {currentBranch.email && (
+                <div className="flex items-start gap-3 border-t border-theme-border/50 pt-4">
+                  <Mail className="h-5 w-5 text-theme-primary flex-shrink-0 mt-0.5" />
+                  <div>
+                    <span className="font-bold text-theme-text block">อีเมลติดต่อ</span>
+                    <a
+                      href={`mailto:${currentBranch.email}`}
+                      className="text-theme-text-muted hover:text-theme-primary font-mono mt-0.5 inline-block"
+                    >
+                      {currentBranch.email}
+                    </a>
+                  </div>
                 </div>
-              </div>
+              )}
 
-              <div className="flex items-start gap-3 border-t border-theme-border/50 pt-4">
-                <Clock className="h-5 w-5 text-theme-primary flex-shrink-0 mt-0.5" />
-                <div>
-                  <span className="font-bold text-theme-text block">{t('contact.hours')}</span>
-                  <p className="text-theme-text-muted mt-0.5">{settings.businessHours || 'จันทร์ - เสาร์: 08:00 - 17:00 (เวลาประเทศไทย)'}</p>
+              {currentBranch.businessHoursTh && (
+                <div className="flex items-start gap-3 border-t border-theme-border/50 pt-4">
+                  <Clock className="h-5 w-5 text-theme-primary flex-shrink-0 mt-0.5" />
+                  <div>
+                    <span className="font-bold text-theme-text block">{t('contact.hours')}</span>
+                    <p className="text-theme-text-muted mt-0.5">{currentBranch.businessHoursTh}</p>
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
 
             <a
-              href="https://maps.google.com/?q=13.6265,100.2642"
+              href={currentBranch.mapUrl || `https://maps.google.com/?q=${encodeURIComponent(currentBranch.addressTh)}`}
               target="_blank"
               rel="noreferrer"
-              className="flex items-center justify-center gap-2 w-full rounded-xl border border-theme-border-highlight bg-theme-surface-elevated py-3 text-xs font-bold text-theme-text hover:bg-theme-surface hover:border-theme-primary transition-colors"
+              className="flex items-center justify-center gap-2 w-full rounded-xl border border-theme-border bg-theme-surface-elevated py-3 text-xs font-bold text-theme-text hover:bg-theme-surface hover:border-theme-primary hover:text-theme-primary transition-all shadow-sm"
             >
-              <span>เปิดแผนที่ Google Maps</span>
+              <span>เปิดแผนที่ Google Maps นำทางสู่สาขานี้</span>
               <ExternalLink className="h-4 w-4 text-theme-primary" />
             </a>
           </div>
