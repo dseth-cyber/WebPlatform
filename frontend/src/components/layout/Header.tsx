@@ -156,14 +156,14 @@ export const Header: React.FC<HeaderProps> = ({ currentPath, onNavigate }) => {
                   isTransparentOverDark ? 'text-white drop-shadow-sm' : 'text-theme-text'
                 }`}
               >
-                {settings.companyNameTh || 'บริษัท โลหะกิจรุ่งเจริญทรัพย์ จำกัด'}
+                {settings.companyNameTh || 'บริษัท ไคโอทรอน เทคโนโลยี จำกัด'}
               </span>
               <span
                 className={`text-[10px] sm:text-[11px] font-bold tracking-wider uppercase ${
                   isTransparentOverDark ? 'text-slate-300 drop-shadow-sm' : 'text-theme-text-muted'
                 }`}
               >
-                {settings.companyNameEn || 'LOHAKIT RUNGCHAROENSAP CO., LTD.'}
+                {settings.companyNameEn || 'CHIOTRON TECHNOLOGY CO., LTD.'}
               </span>
             </div>
           </div>

@@ -57,10 +57,10 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
 
               <div>
                 <h4 className="font-display font-black text-sm text-theme-text group-hover:text-theme-primary transition-colors">
-                  {settings.companyNameEn || 'LOHAKIT RUNGCHAROENSAP CO., LTD.'}
+                  {settings.companyNameEn || 'CHIOTRON TECHNOLOGY CO., LTD.'}
                 </h4>
                 <p className="text-[10px] text-theme-text-dim">
-                  {settings.companyNameTh || 'บริษัท โลหะกิจรุ่งเจริญทรัพย์ จำกัด'}
+                  {settings.companyNameTh || 'บริษัท ไคโอทรอน เทคโนโลยี จำกัด'}
                 </p>
               </div>
             </div>
@@ -200,7 +200,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
         {/* Copyright & Legal Links (Dynamic establishedYear & companyNameEn) */}
         <div className="mt-12 flex flex-col sm:flex-row items-center justify-between border-t border-theme-border pt-6 text-[11px] text-theme-text-dim gap-4">
           <p>
-            © {settings.establishedYear || '1986'} - {new Date().getFullYear()} {settings.companyNameEn || 'LOHAKIT RUNGCHAROENSAP CO., LTD.'} All Rights Reserved.
+            © {settings.establishedYear || '1986'} - {new Date().getFullYear()} {settings.companyNameEn || 'CHIOTRON TECHNOLOGY CO., LTD.'} All Rights Reserved.
           </p>
           <div className="flex items-center gap-4">
             <button

@@ -57,7 +57,7 @@
   },
   "dashboard": {
     "title": "Overview Dashboard",
-    "subtitle": "Content Management & Performance Metrics for Lohakit Rungcharoensap Co., Ltd.",
+    "subtitle": "Content Management & Performance Metrics for CHIOTRON TECHNOLOGY CO., LTD.",
     "apiHealthy": "Backend API: Healthy",
     "totalPages": "Total Pages",
     "publishedPages": "Published",
@@ -99,7 +99,7 @@
   "home": {
     "heroBadge": "ISO 9001:2015 & FSSC 22000 Certified",
     "heroTitle": "World-Class Food & Industrial Metal Packaging Solutions",
-    "heroSubtitle": "Lohakit Rungcharoensap Co., Ltd. manufactures 3-piece food cans, chemical pails, and Easy Open Ends (EOE) with global export quality standards.",
+    "heroSubtitle": "CHIOTRON TECHNOLOGY CO., LTD. manufactures 3-piece food cans, chemical pails, and Easy Open Ends (EOE) with global export quality standards.",
     "heroCta1": "Explore Catalog",
     "heroCta2": "Contact Sales Engineers",
     "introTitle": "Over 25 Years of Metal Packaging Manufacturing Excellence",
@@ -165,11 +165,11 @@
     "manual": "Service Manual",
     "logout": "Sign Out",
     "login": "CMS Admin Login",
-    "loginSubtitle": "Lohakit Rungchareonsap Co., Ltd. Content Management System",
-    "welcome": "Welcome to Lohakit CMS Portal"
+    "loginSubtitle": "CHIOTRON TECHNOLOGY CO., LTD. Content Management System",
+    "welcome": "Welcome to CHIOTRON CMS Portal"
   },
   "contact": {
-    "title": "Contact Lohakit Rungchareonsap",
+    "title": "Contact CHIOTRON TECHNOLOGY",
     "subtitle": "Headquarters & Manufacturing Plant in Samut Sakhon, Thailand",
     "formTitle": "Send Inquiry or Request Quotation",
     "name": "Full Name",

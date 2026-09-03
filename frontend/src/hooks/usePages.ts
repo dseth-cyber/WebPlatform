@@ -18,7 +18,7 @@ export const useLocalizedPage = (slug: string, lang: string) => {
         return {
           ...MOCK_HOME_PAGE,
           slug,
-          title: `Lohakit Rungchareonsap - ${slug.toUpperCase()}`,
+          title: `CHIOTRON TECHNOLOGY - ${slug.toUpperCase()}`,
         };
       }
     },

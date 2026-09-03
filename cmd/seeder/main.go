@@ -26,7 +26,7 @@ func main() {
 	defer pool.Close()
 
 	queries := sqlc.New(pool)
-	fmt.Println("Seeding Lohakit Rungchareonsap CMS database...")
+	fmt.Println("Seeding CHIOTRON TECHNOLOGY CMS database...")
 
 	// 1. Seed Permissions
 	permissions := []struct {
@@ -180,8 +180,8 @@ func main() {
 
 	// 5. Seed Site Settings
 	companyInfo := json.RawMessage(`{
-		"nameTh": "บริษัท โลหะกิจรุ่งเจริญทรัพย์ จำกัด",
-		"nameEn": "LOHAKIT RUNGCHAREONSAP CO., LTD.",
+		"nameTh": "บริษัท ไคโอทรอน เทคโนโลยี จำกัด",
+		"nameEn": "CHIOTRON TECHNOLOGY CO., LTD.",
 		"taxId": "0745548001234",
 		"establishedYear": 1998,
 		"registeredCapital": "100,000,000 THB",
@@ -275,7 +275,7 @@ func main() {
 					Applications:    "Canned seafood, fruits, vegetables, tomato paste, ready meals",
 					Material:        "Electrolytic Tinplate (ETP)",
 					CoatingType:     "BPA-NI Epoxy",
-					MetaTitle:       "Food Can 300x401 Manufacturer | Lohakit Rungchareonsap",
+					MetaTitle:       "Food Can 300x401 Manufacturer | CHIOTRON TECHNOLOGY",
 					MetaDescription: "Export-grade metal food can packaging with certified BPA-NI food safety standards.",
 				},
 				{
@@ -311,7 +311,7 @@ func main() {
 					Applications:    "水産缶詰、果物缶詰、トマトペースト、レトルト食品",
 					Material:        "電気ブリキ鋼板 (ETP)",
 					CoatingType:     "BPA-NI エポキシコーティング",
-					MetaTitle:       "食品用ブリキ缶 300x401 製造メーカー | Lohakit Rungchareonsap",
+					MetaTitle:       "食品用ブリキ缶 300x401 製造メーカー | CHIOTRON TECHNOLOGY",
 					MetaDescription: "輸出向け食品安全基準をクリアしたタイの金属包装製造メーカー。",
 				},
 			},
@@ -357,7 +357,7 @@ func main() {
 					Applications:    "Industrial paints, coatings, adhesives, solvents, lubricants, agrochemicals",
 					Material:        "Heavy-gauge Steel / Tinplate",
 					CoatingType:     "Chemical Resistant Phenolic Lining",
-					MetaTitle:       "20L Metal Chemical Pail UN Certified | Lohakit Rungchareonsap",
+					MetaTitle:       "20L Metal Chemical Pail UN Certified | CHIOTRON TECHNOLOGY",
 					MetaDescription: "Industrial steel drum and pail manufacturer with certified UN ratings for export.",
 				},
 				{
@@ -393,7 +393,7 @@ func main() {
 					Applications:    "工業用塗料、接着剤、農薬、シンナー、工業用オイル",
 					Material:        "冷間圧延鋼板 / ブリキ",
 					CoatingType:     "耐薬品性フェノールライニング",
-					MetaTitle:       "20L UN規格スチールペール缶製造 | Lohakit Rungchareonsap",
+					MetaTitle:       "20L UN規格スチールペール缶製造 | CHIOTRON TECHNOLOGY",
 					MetaDescription: "危険物輸送用UN認証を取得した高品質工業用ペール缶製造メーカー。",
 				},
 			},
@@ -484,14 +484,14 @@ func main() {
 			{
 				LanguageCode:    "th",
 				Title:           "ผู้นำด้านบรรจุภัณฑ์โลหะและกระป๋องคุณภาพสูงระดับสากล",
-				MetaTitle:       "บริษัท โลหะกิจรุ่งเจริญทรัพย์ จำกัด | โรงงานผลิตกระป๋องและบรรจุภัณฑ์โลหะชั้นนำ",
+				MetaTitle:       "บริษัท ไคโอทรอน เทคโนโลยี จำกัด | โรงงานผลิตกระป๋องและบรรจุภัณฑ์โลหะชั้นนำ",
 				MetaDescription: "โรงงานผลิตบรรจุภัณฑ์โลหะ กระป๋องอาหาร ถังเคมี ฝาโลหะ คุณภาพมาตรฐานสากล ด้วยเทคโนโลยีทันสมัยและเป็นมิตรต่อสิ่งแวดล้อม",
 				MetaKeywords:    "กระป๋องอาหาร, ถังโลหะ, บรรจุภัณฑ์โลหะ, ฝากระป๋อง, โลหะกิจรุ่งเจริญทรัพย์, Lohakit",
 			},
 			{
 				LanguageCode:    "en",
 				Title:           "Global Leader in Premium Metal Packaging Solutions",
-				MetaTitle:       "LOHAKIT RUNGCHAREONSAP CO., LTD. | Advanced Metal Packaging Manufacturer",
+				MetaTitle:       "CHIOTRON TECHNOLOGY CO., LTD. | Advanced Metal Packaging Manufacturer",
 				MetaDescription: "Leading manufacturer of food cans, chemical pails, aerosol cans, and easy-open ends in Thailand with international export standards.",
 				MetaKeywords:    "metal packaging, food cans, tinplate, aerosol cans, steel drums, Lohakit",
 			},
@@ -505,14 +505,14 @@ func main() {
 			{
 				LanguageCode:    "mm",
 				Title:           "ထိပ်တန်း သံဗူးနှင့် သတ္တုထုပ်ပိုးပစ္စည်းများ ထုတ်လုပ်ရေး",
-				MetaTitle:       "LOHAKIT RUNGCHAREONSAP CO., LTD. | သံဗူးနှင့် သတ္တုထုပ်ပိုးပစ္စည်း ထုတ်လုပ်ရေးစက်ရုံ",
+				MetaTitle:       "CHIOTRON TECHNOLOGY CO., LTD. | သံဗူးနှင့် သတ္တုထုပ်ပိုးပစ္စည်း ထုတ်လုပ်ရေးစက်ရုံ",
 				MetaDescription: "အစားအသောက်သံဗူးများ၊ ဓာတုဗေဒသံပုံးများနှင့် သတ္ตုအဖုံးများကို နိုင်ငံတကာအဆင့်မီ ထုတ်လုပ်ပေးနေပါသည်။",
 				MetaKeywords:    "သံဗူး, သတ္တုထုပ်ပိုးမှု, စက်မှုလုပ်ငန်းသုံးသံပုံး, Lohakit",
 			},
 			{
 				LanguageCode:    "jp",
 				Title:           "高品質金属包装・スチール缶ソリューションのグローバルリーダー",
-				MetaTitle:       "LOHAKIT RUNGCHAREONSAP CO., LTD. | 金属包装・スチール缶総合メーカー",
+				MetaTitle:       "CHIOTRON TECHNOLOGY CO., LTD. | 金属包装・スチール缶総合メーカー",
 				MetaDescription: "食品用缶、化学品用ペール缶、エアゾール缶、イージーオープン蓋の専門メーカー。国際基準の品質管理と環境配慮型製造。",
 				MetaKeywords:    "金属包装, ブリキ缶, ペール缶, エアゾール缶, イージーオープンエンド, Lohakit",
 			},
@@ -530,13 +530,13 @@ func main() {
 			{
 				LanguageCode: "th",
 				Title:        "นวัตกรรมบรรจุภัณฑ์โลหะที่แข็งแกร่ง ปลอดภัย และยั่งยืน",
-				Subtitle:     "บริษัท โลหะกิจรุ่งเจริญทรัพย์ จำกัด ผลิตกระป๋องอาหาร ถังเคมีภัณฑ์ และฝาโลหะมาตรฐานส่งออก ด้วยเครื่องจักรอัตโนมัติความเร็วสูง",
+				Subtitle:     "บริษัท ไคโอทรอน เทคโนโลยี จำกัด ผลิตกระป๋องอาหาร ถังเคมีภัณฑ์ และฝาโลหะมาตรฐานส่งออก ด้วยเครื่องจักรอัตโนมัติความเร็วสูง",
 				ContentBody:  "กว่า 25 ปีแห่งความเชี่ยวชาญในการส่งมอบบรรจุภัณฑ์โลหะมาตรฐานสากลให้แก่แบรนด์ชั้นนำทั่วโลก",
 			},
 			{
 				LanguageCode: "en",
 				Title:        "Engineered Metal Packaging for Maximum Strength, Safety & Sustainability",
-				Subtitle:     "Lohakit Rungchareonsap manufactures export-grade food cans, chemical pails, and metal closures with high-speed automated lines.",
+				Subtitle:     "CHIOTRON TECHNOLOGY manufactures export-grade food cans, chemical pails, and metal closures with high-speed automated lines.",
 				ContentBody:  "Over 25 years of engineering excellence delivering trusted metal packaging solutions worldwide.",
 			},
 			{

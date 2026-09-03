@@ -19,7 +19,7 @@ export const NewsPage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
           ข่าวสารและกิจกรรมองค์กร
         </h1>
         <p className="text-sm text-theme-text-muted leading-relaxed">
-          อัปเดตนวัตกรรม เทคโนโลยีการผลิต และกิจกรรมเพื่อสังคมและความยั่งยืนของ บริษัท โลหะกิจรุ่งเจริญทรัพย์ จำกัด
+          อัปเดตนวัตกรรม เทคโนโลยีการผลิต และกิจกรรมเพื่อสังคมและความยั่งยืนของ บริษัท ไคโอทรอน เทคโนโลยี จำกัด (CHIOTRON TECHNOLOGY)
         </p>
       </div>
 

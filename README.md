@@ -1,6 +1,6 @@
-# Lohakit Rungchareonsap Corporate Website CMS Backend
+# CHIOTRON TECHNOLOGY Corporate Website CMS Backend
 
-Production-grade corporate website CMS backend for **บริษัท โลหะกิจรุ่งเจริญทรัพย์ จำกัด (LOHAKIT RUNGCHAREONSAP CO., LTD.)**, leading metal packaging manufacturer in Thailand (Food-grade tin cans, chemical pails, aerosol cans, and easy-open closures).
+Production-grade corporate website CMS backend for **บริษัท ไคโอทรอน เทคโนโลยี จำกัด (CHIOTRON TECHNOLOGY CO., LTD.)**, leading metal packaging and high-tech manufacturing leader in Thailand (Food-grade tin cans, chemical pails, aerosol cans, and easy-open closures).
 
 Built with **Go 1.24+**, **Chi HTTP Router**, **PostgreSQL 16+ (pgx/sqlc)**, **MinIO / S3 Storage Abstraction**, and **Docker**.
 

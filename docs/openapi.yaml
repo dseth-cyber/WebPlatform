@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  title: Lohakit Rungchareonsap Corporate Website CMS API
+  title: CHIOTRON TECHNOLOGY Corporate Website CMS API
   description: Premium Metal Packaging Manufacturer CMS Backend API
   version: 1.0.0
 servers:

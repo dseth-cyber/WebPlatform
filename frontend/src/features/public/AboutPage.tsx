@@ -30,7 +30,7 @@ export const AboutPage: React.FC<{ onNavigate: (path: string) => void }> = ({ on
       {/* Header (Dynamic from Admin Settings & About CMS) */}
       <div className="space-y-4 max-w-3xl">
         <span className="text-xs font-bold uppercase tracking-wider text-theme-primary">
-          About {settings.companyNameEn || 'Lohakit Rungcharoensap'}
+          About {settings.companyNameEn || 'CHIOTRON TECHNOLOGY'}
         </span>
         <h1 className="font-display text-3xl sm:text-5xl font-black text-theme-text leading-tight">
           {settings.aboutSubheading || 'ผู้เชี่ยวชาญการผลิตบรรจุภัณฑ์โลหะเกรดอาหารมาตรฐานสากล'}
@@ -45,7 +45,7 @@ export const AboutPage: React.FC<{ onNavigate: (path: string) => void }> = ({ on
         <div className="aspect-[21/9] w-full bg-theme-surface-elevated overflow-hidden">
           <img
             src={settings.aboutFactoryImage || '/images/factory-building.jpg'}
-            alt="Lohakit Factory"
+            alt="CHIOTRON Factory"
             className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-700"
           />
         </div>

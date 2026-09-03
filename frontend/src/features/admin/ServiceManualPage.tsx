@@ -13,7 +13,7 @@ export const ServiceManualPage: React.FC = () => {
           <span>คู่มือการใช้งานระบบจัดการเว็บไซต์ (Service Manual)</span>
         </h1>
         <p className="text-xs text-theme-text-muted mt-1">
-          บริษัท โลหะกิจรุ่งเจริญทรัพย์ จำกัด (LOHAKIT RUNGCHAREONSAP CO., LTD.)
+          บริษัท ไคโอทรอน เทคโนโลยี จำกัด (CHIOTRON TECHNOLOGY CO., LTD.)
         </p>
       </div>
 

@@ -1,6 +1,6 @@
 # Security Architecture & Acceptance Criteria Matrix
 
-**Corporate System:** บริษัท โลหะกิจรุ่งเจริญทรัพย์ จำกัด (LOHAKIT RUNGCHAREONSAP CO., LTD.)  
+**Corporate System:** บริษัท ไคโอทรอน เทคโนโลยี จำกัด (CHIOTRON TECHNOLOGY CO., LTD.)  
 **Security Baseline:** OWASP Top 10 + Industrial Corporate Security Hardening (Target Score: 9.8 / 10)
 
 ---

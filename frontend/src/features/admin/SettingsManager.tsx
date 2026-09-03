@@ -325,7 +325,7 @@ export const SettingsManager: React.FC = () => {
               <span className="text-[11px] text-slate-300 font-mono truncate">
                 {formState.companyNameTh || formState.companyNameEn
                   ? `${formState.companyNameTh}${formState.companyNameEn ? ` | ${formState.companyNameEn}` : ''}`
-                  : 'LOHAKIT | บริษัท โลหะกิจรุ่งเจริญทรัพย์ จำกัด'}
+                  : 'CHIOTRON | บริษัท ไคโอทรอน เทคโนโลยี จำกัด'}
               </span>
             </div>
           </div>

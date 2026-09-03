@@ -134,9 +134,9 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
           <div className="max-w-xl xl:max-w-2xl space-y-6">
             <div className="space-y-2">
               <h1 className="font-display text-4xl sm:text-5xl xl:text-6xl font-black text-white tracking-tight leading-[1.15] drop-shadow-[0_4px_16px_rgba(0,0,0,0.95)]">
-                {settings.heroTitle || 'โลหะกิจรุ่งเจริญทรัพย์'}
+                {settings.heroTitle || 'ไคโอทรอน เทคโนโลยี'}
                 <span className="block text-transparent bg-clip-text bg-gradient-to-r from-[#F59E0B] via-[#FBBF24] to-[#FCD34D] font-black mt-1 drop-shadow-[0_4px_16px_rgba(0,0,0,0.9)]">
-                  {settings.heroHighlight || 'บรรจุภัณฑ์โลหะระดับโลก'}
+                  {settings.heroHighlight || 'วิศวกรรมแห่งอนาคต'}
                 </span>
               </h1>
             </div>
@@ -217,7 +217,7 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
           <div className="glow-card rounded-3xl overflow-hidden border border-theme-border shadow-2xl bg-theme-surface-elevated">
             <img
               src={settings.aboutFactoryImage || '/images/factory-building.jpg'}
-              alt="Lohakit Manufacturing Plant"
+              alt="CHIOTRON Manufacturing Plant"
               className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
             />
           </div>

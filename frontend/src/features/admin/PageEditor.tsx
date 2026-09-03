@@ -57,8 +57,8 @@ export const PageEditor: React.FC<{
   const [activeTranslationLang, setActiveTranslationLang] = useState<'en' | 'jp' | 'cn' | 'mm'>('en');
 
   // Form States (Column 1 - Thai Content)
-  const [thaiTitle, setThaiTitle] = useState(settings.heroTitle || 'โลหะกิจรุ่งเจริญทรัพย์');
-  const [thaiSubtitle, setThaiSubtitle] = useState(settings.heroHighlight || 'บรรจุภัณฑ์โลหะระดับโลก');
+  const [thaiTitle, setThaiTitle] = useState(settings.heroTitle || 'ไคโอทรอน เทคโนโลยี');
+  const [thaiSubtitle, setThaiSubtitle] = useState(settings.heroHighlight || 'วิศวกรรมแห่งอนาคต');
   const [thaiDesc, setThaiDesc] = useState(
     settings.heroSubtitle ||
       'ผู้นำบรรจุภัณฑ์โลหะทางด้านอาหารสำเร็จรูปในประเทศไทย ด้วยเทคโนโลยีที่ทันสมัย คุณภาพมาตรฐานสากล และบริการที่เป็นเลิศ เพื่อตอบสนองความพึงพอใจของลูกค้า และความยั่งยืนของอุตสาหกรรม'
@@ -84,22 +84,22 @@ export const PageEditor: React.FC<{
   // Form States (Column 3 - Localized Translations for EN, JP, CN, MM)
   const [translations, setTranslations] = useState({
     en: {
-      title: 'Lohakit Rungcharoensap',
-      subtitle: 'World-Class Metal Packaging',
+      title: 'CHIOTRON TECHNOLOGY',
+      subtitle: 'World-Class Metal Packaging & Automation',
       desc: "Thailand's leading manufacturer of metal packaging for ready-to-eat food with advanced technology, international quality standards, and exceptional customer service.",
     },
     jp: {
-      title: 'ロハキット・ルンチャローンサップ',
+      title: 'カイオトロン・テクノロジー',
       subtitle: '世界水準の金属包装ソリューション',
       desc: 'タイを代表する即席食品用金属包装メーカー。先進技術と国際品質基準、卓越したサービスで産業の持続可能性を支えます。',
     },
     cn: {
-      title: '罗哈吉特隆扎隆萨普有限公司',
+      title: '凯奥创科技有限公司',
       subtitle: '世界级高品质金属包装',
       desc: '泰国领先的即食食品金属包装制造商，凭借先进技术、国际标准品质和卓越服务，满足客户需求并促进工业可持续发展。',
     },
     mm: {
-      title: 'Lohakit Rungcharoensap ကုမ္ပဏီလီမိတက်',
+      title: 'CHIOTRON TECHNOLOGY ကုမ္ပဏီလီမိတက်',
       subtitle: 'ကမ္ဘာ့အဆင့်မီ သတ္တုထုပ်ပိုးပစ္စည်းများ',
       desc: 'အဆင့်မြင့်နည်းပညာ၊ နိုင်ငံတကာအဆင့်မီ အရည်အသွေးနှင့် ထူးချွန်သောဝန်ဆောင်မှုများဖြင့် ထိုင်းနိုင်ငံ၏ ဦးဆောင်စားသောက်ကုန် သတ္တုဘူးထုပ်ပိုးထုတ်လုပ်သူ။',
     },
@@ -110,8 +110,8 @@ export const PageEditor: React.FC<{
     {
       id: 'rev-5',
       revisionNumber: 5,
-      title: settings.heroTitle || 'โลหะกิจรุ่งเจริญทรัพย์',
-      highlight: settings.heroHighlight || 'บรรจุภัณฑ์โลหะระดับโลก',
+      title: settings.heroTitle || 'ไคโอทรอน เทคโนโลยี',
+      highlight: settings.heroHighlight || 'วิศวกรรมแห่งอนาคต',
       subtitle: settings.heroSubtitle || 'ผู้นำบรรจุภัณฑ์โลหะทางด้านอาหารสำเร็จรูปในประเทศไทย...',
       buttonText: 'เกี่ยวกับเรา',
       buttonLink: '/about',
@@ -124,7 +124,7 @@ export const PageEditor: React.FC<{
     {
       id: 'rev-4',
       revisionNumber: 4,
-      title: 'บริษัท โลหะกิจรุ่งเจริญทรัพย์ จำกัด',
+      title: 'บริษัท ไคโอทรอน เทคโนโลยี จำกัด',
       highlight: 'ผู้ผลิตกระป๋องอาหารและถังเคมีมาตรฐานสากล',
       subtitle: 'โรงงานผลิตบรรจุภัณฑ์โลหะชั้นนำ มาตรฐาน ISO 9001:2015 & FSSC 22000',
       buttonText: 'สำรวจแคตตาล็อกสินค้า',
@@ -138,7 +138,7 @@ export const PageEditor: React.FC<{
     {
       id: 'rev-3',
       revisionNumber: 3,
-      title: 'Lohakit Metal Packaging',
+      title: 'CHIOTRON Metal Packaging',
       highlight: 'ผู้นำอุตสาหกรรมกระป๋อง 3 ชิ้น',
       subtitle: 'เทคโนโลยีขึ้นรูปตะเข็บคู่ Double Seam ความแม่นยำสูง',
       buttonText: 'ขอใบเสนอราคา',
@@ -152,7 +152,7 @@ export const PageEditor: React.FC<{
     {
       id: 'rev-2',
       revisionNumber: 2,
-      title: 'โลหะกิจรุ่งเจริญทรัพย์ 1986',
+      title: 'ไคโอทรอน เทคโนโลยี 1986',
       highlight: 'ประสบการณ์กว่า 38 ปีแห่งความเป็นเลิศ',
       subtitle: 'ส่งมอบบรรจุภัณฑ์เหล็กเคลือบดีบุกและอลูมิเนียมปลอดสาร BPA 100%',
       buttonText: 'อ่านประวัติองค์กร',

@@ -105,7 +105,7 @@ export const DashboardPage: React.FC<{ onNavigate: (path: string) => void }> = (
             </span>
           </h1>
           <p className="text-xs text-theme-text-muted mt-1">
-            {t('dashboard.subtitle', 'ภาพรวมระบบบริหารจัดการเนื้อหา สถิติการเข้าชม และคำขอใบเสนอราคา บริษัท โลหะกิจรุ่งเจริญทรัพย์ จำกัด')}
+            {t('dashboard.subtitle', 'ภาพรวมระบบบริหารจัดการเนื้อหา สถิติการเข้าชม และคำขอใบเสนอราคา บริษัท ไคโอทรอน เทคโนโลยี จำกัด (CHIOTRON TECHNOLOGY)')}
           </p>
         </div>
 

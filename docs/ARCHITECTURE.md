@@ -1,6 +1,6 @@
 # System Architecture & Technical Specifications
 
-**Client:** บริษัท โลหะกิจรุ่งเจริญทรัพย์ จำกัด (LOHAKIT RUNGCHAREONSAP CO., LTD.)  
+**Client:** บริษัท ไคโอทรอน เทคโนโลยี จำกัด (CHIOTRON TECHNOLOGY CO., LTD.)  
 **Industry:** Metal Packaging Manufacturing (Tin Cans, Industrial Pails, Closures)
 
 ---

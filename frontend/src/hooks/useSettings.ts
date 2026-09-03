@@ -11,8 +11,8 @@ export const usePublicSettings = () => {
       } catch (e) {
         return {
           company_profile: {
-            nameTh: 'บริษัท โลหะกิจรุ่งเจริญทรัพย์ จำกัด',
-            nameEn: 'LOHAKIT RUNGCHAREONSAP CO., LTD.',
+            nameTh: 'บริษัท ไคโอทรอน เทคโนโลยี จำกัด',
+            nameEn: 'CHIOTRON TECHNOLOGY CO., LTD.',
             taxId: '0745548001234',
             establishedYear: 1998,
             registeredCapital: '100,000,000 THB',

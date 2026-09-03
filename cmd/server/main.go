@@ -34,7 +34,7 @@ func main() {
 	}
 	log := logger.New(os.Stdout, logLevel)
 
-	log.Info("Starting Lohakit Rungchareonsap CMS Backend",
+	log.Info("Starting CHIOTRON TECHNOLOGY CMS Backend",
 		slog.String("env", cfg.AppEnv),
 		slog.Int("port", cfg.Port),
 		slog.String("storage_driver", cfg.StorageDriver),

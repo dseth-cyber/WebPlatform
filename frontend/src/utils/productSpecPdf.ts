@@ -9,10 +9,10 @@ export const exportProductSpecPDF = (
   product: LocalizedProduct,
   settings: SiteContentSettings = DEFAULT_SITE_SETTINGS
 ) => {
-  const companyTh = settings.companyNameTh || 'บริษัท โลหะกิจรุ่งเจริญทรัพย์ จำกัด';
-  const companyEn = settings.companyNameEn || 'LOHAKIT RUNGCHAROENSAP CO., LTD.';
+  const companyTh = settings.companyNameTh || 'บริษัท ไคโอทรอน เทคโนโลยี จำกัด';
+  const companyEn = settings.companyNameEn || 'CHIOTRON TECHNOLOGY CO., LTD.';
   const phone = settings.phoneNumber || '034-875-555';
-  const email = settings.email || 'info@lohakit.co.th';
+  const email = settings.email || 'info@chiotron.co.th';
   const address = settings.factoryAddress || '77 หมู่ 2 ถนนพระราม 2 ต.อ้อมน้อย อ.กระทุ่มแบน จ.สมุทรสาคร 74130';
   const logoUrl = settings.logoImage || '';
 
