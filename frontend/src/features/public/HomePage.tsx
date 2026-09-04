@@ -507,11 +507,11 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
                 }}
                 className="glow-card group cursor-pointer rounded-2xl border border-theme-border bg-theme-surface overflow-hidden shadow-lg flex flex-col justify-between transition-all hover:border-theme-primary relative"
               >
-                <div className="aspect-[4/3] w-full overflow-hidden bg-white p-4 flex items-center justify-center">
+                <div className="aspect-[4/3] w-full overflow-hidden bg-slate-900">
                   <img
                     src={prod.primaryImageURL || prod.featuredImageUrl || '/images/cat-round-cans.jpg'}
                     alt={prod.name}
-                    className="h-full w-full object-contain group-hover:scale-105 transition-transform duration-500"
+                    className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500"
                     onError={(e) => {
                       (e.target as HTMLImageElement).src = '/images/cat-round-cans.jpg';
                     }}
@@ -572,11 +572,11 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
                 onClick={() => onNavigate(cat.path)}
                 className="glow-card group cursor-pointer rounded-2xl border border-theme-border bg-theme-surface overflow-hidden shadow-lg flex flex-col justify-between transition-colors relative"
               >
-                <div className="aspect-[4/3] w-full overflow-hidden bg-white p-3">
+                <div className="aspect-[4/3] w-full overflow-hidden bg-slate-900">
                   <img
                     src={cat.image}
                     alt={cat.titleTh}
-                    className="h-full w-full object-contain group-hover:scale-105 transition-transform duration-500"
+                    className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
                 </div>
 
