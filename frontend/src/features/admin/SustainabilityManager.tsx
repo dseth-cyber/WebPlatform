@@ -19,6 +19,7 @@ import {
   Pin,
 } from 'lucide-react';
 import { compressImageFile } from '../../utils/imageCompressor';
+import { MultiLangSectionEditor } from './MultiLangSectionEditor';
 
 const AVAILABLE_ICONS: Record<string, React.FC<{ className?: string }>> = {
   Recycle,
@@ -44,6 +45,15 @@ export const SustainabilityManager: React.FC = () => {
   );
   const [cards, setCards] = useState<SustainabilityCardSetting[]>(settings.sustainabilityCards || []);
 
+  const [sustainabilityTranslations, setSustainabilityTranslations] = useState<any>(
+    settings.sustainabilityTranslations || {
+      en: { badge: 'Circular Economy & ESG', heading: '', description: '' },
+      jp: { badge: 'サステナビリティ', heading: '', description: '' },
+      cn: { badge: '可持续发展', heading: '', description: '' },
+      mm: { badge: 'ရေရှည်တည်တံ့မှု', heading: '', description: '' },
+    }
+  );
+
   const [isSaving, setIsSaving] = useState(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
@@ -54,6 +64,9 @@ export const SustainabilityManager: React.FC = () => {
       if (settings.sustainabilityDescription) setDescription(settings.sustainabilityDescription);
       if (settings.sustainabilityCards && settings.sustainabilityCards.length > 0) {
         setCards(settings.sustainabilityCards);
+      }
+      if (settings.sustainabilityTranslations) {
+        setSustainabilityTranslations(settings.sustainabilityTranslations);
       }
     }
   }, [settings]);
@@ -110,6 +123,7 @@ export const SustainabilityManager: React.FC = () => {
         sustainabilityHeading: heading,
         sustainabilityDescription: description,
         sustainabilityCards: cards,
+        sustainabilityTranslations,
       });
       showToast('บันทึกข้อมูลหน้าความยั่งยืนเรียบร้อยแล้ว');
     } catch (err: any) {
@@ -207,6 +221,18 @@ export const SustainabilityManager: React.FC = () => {
             </div>
           </div>
         </div>
+
+        {/* 1.5 Multi-Language Translations (EN, JP, CN, MM) */}
+        <MultiLangSectionEditor
+          title="แปลภาษา (Multi-Language) - ความยั่งยืน"
+          fields={[
+            { key: 'badge', label: 'Badge' },
+            { key: 'heading', label: 'Title / Heading' },
+            { key: 'description', label: 'Description', type: 'textarea', rows: 3 },
+          ]}
+          value={sustainabilityTranslations}
+          onChange={setSustainabilityTranslations}
+        />
 
         {/* Section 2: Sustainability Cards */}
         <div className="rounded-2xl border border-theme-border bg-theme-surface p-6 space-y-5">

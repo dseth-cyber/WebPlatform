@@ -115,6 +115,7 @@ export const PageEditor: React.FC<{
       if (settings.heroShowArrows !== undefined) setHeroShowArrows(settings.heroShowArrows !== false);
       if (settings.heroShowDots !== undefined) setHeroShowDots(settings.heroShowDots !== false);
       if (settings.heroTextOverlayOpacity !== undefined) setHeroTextOverlayOpacity(settings.heroTextOverlayOpacity);
+      if (settings.heroTranslations) setTranslations(settings.heroTranslations);
     }
   }, [settings]);
 
@@ -303,6 +304,7 @@ export const PageEditor: React.FC<{
       heroShowArrows: heroShowArrows,
       heroShowDots: heroShowDots,
       heroTextOverlayOpacity: heroTextOverlayOpacity,
+      heroTranslations: translations,
     });
     setWorkflowStatus('PUBLISHED');
     const newRev: RevisionRecord = {
@@ -915,12 +917,12 @@ export const PageEditor: React.FC<{
           </h2>
 
           {/* 4 Language Tabs */}
-          <div className="grid grid-cols-4 gap-1 rounded-2xl bg-theme-surface-elevated p-1 border border-theme-border">
+          <div className="grid grid-cols-4 gap-1.5 rounded-2xl bg-theme-surface-elevated p-1 border border-theme-border">
             {[
-              { code: 'en', label: '🇺🇸 EN' },
-              { code: 'jp', label: '🇯🇵 JP' },
-              { code: 'cn', label: '🇨🇳 CN' },
-              { code: 'mm', label: '🇲🇲 MM' },
+              { code: 'en', label: 'US EN' },
+              { code: 'jp', label: 'JP JP' },
+              { code: 'cn', label: 'CN CN' },
+              { code: 'mm', label: 'MM MM' },
             ].map((tab) => {
               const isActive = activeTranslationLang === tab.code;
               return (
@@ -928,10 +930,10 @@ export const PageEditor: React.FC<{
                   key={tab.code}
                   type="button"
                   onClick={() => setActiveTranslationLang(tab.code as any)}
-                  className={`rounded-xl py-2 text-xs font-bold transition-all ${
+                  className={`rounded-xl py-2 text-xs font-bold transition-all cursor-pointer ${
                     isActive
-                      ? 'bg-theme-primary text-black font-black shadow-md'
-                      : 'text-theme-text-muted hover:text-theme-text'
+                      ? 'bg-cyan-400 text-black font-black shadow-md border border-cyan-300'
+                      : 'text-theme-text-muted hover:text-theme-text hover:bg-theme-surface'
                   }`}
                 >
                   {tab.label}

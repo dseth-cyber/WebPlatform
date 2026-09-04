@@ -19,6 +19,7 @@ import {
   Pin,
 } from 'lucide-react';
 import { compressImageFile } from '../../utils/imageCompressor';
+import { MultiLangSectionEditor } from './MultiLangSectionEditor';
 
 const AVAILABLE_ICONS: Record<string, React.FC<{ className?: string }>> = {
   Cpu,
@@ -44,6 +45,15 @@ export const TechnologyManager: React.FC = () => {
   );
   const [cards, setCards] = useState<TechnologyCardSetting[]>(settings.technologyCards || []);
 
+  const [technologyTranslations, setTechnologyTranslations] = useState<any>(
+    settings.technologyTranslations || {
+      en: { badge: 'Manufacturing Automation', heading: '', description: '' },
+      jp: { badge: '製造技術', heading: '', description: '' },
+      cn: { badge: '制造技术', heading: '', description: '' },
+      mm: { badge: 'နည်းပညာ', heading: '', description: '' },
+    }
+  );
+
   const [isSaving, setIsSaving] = useState(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
@@ -54,6 +64,9 @@ export const TechnologyManager: React.FC = () => {
       if (settings.technologyDescription) setDescription(settings.technologyDescription);
       if (settings.technologyCards && settings.technologyCards.length > 0) {
         setCards(settings.technologyCards);
+      }
+      if (settings.technologyTranslations) {
+        setTechnologyTranslations(settings.technologyTranslations);
       }
     }
   }, [settings]);
@@ -110,6 +123,7 @@ export const TechnologyManager: React.FC = () => {
         technologyHeading: heading,
         technologyDescription: description,
         technologyCards: cards,
+        technologyTranslations,
       });
       showToast('บันทึกข้อมูลหน้าเทคโนโลยีเรียบร้อยแล้ว');
     } catch (err: any) {
@@ -207,6 +221,18 @@ export const TechnologyManager: React.FC = () => {
             </div>
           </div>
         </div>
+
+        {/* 1.5 Multi-Language Translations (EN, JP, CN, MM) */}
+        <MultiLangSectionEditor
+          title="แปลภาษา (Multi-Language) - เทคโนโลยี"
+          fields={[
+            { key: 'badge', label: 'Badge' },
+            { key: 'heading', label: 'Title / Heading' },
+            { key: 'description', label: 'Description', type: 'textarea', rows: 3 },
+          ]}
+          value={technologyTranslations}
+          onChange={setTechnologyTranslations}
+        />
 
         {/* Section 2: Technology Cards */}
         <div className="rounded-2xl border border-theme-border bg-theme-surface p-6 space-y-5">

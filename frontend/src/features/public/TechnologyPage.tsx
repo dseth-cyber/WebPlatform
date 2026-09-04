@@ -25,7 +25,13 @@ const AVAILABLE_ICONS: Record<string, React.FC<{ className?: string }>> = {
 export const TechnologyPage: React.FC<{ onNavigate: (path: string) => void }> = () => {
   const { i18n } = useTranslation();
   const { settings } = useSiteContent();
-  const isEn = i18n.language === 'en';
+  const currentLang = (i18n.language || 'th') as 'th' | 'en' | 'jp' | 'cn' | 'mm';
+  const isNonThai = currentLang !== 'th';
+
+  const techTrans = isNonThai && settings.technologyTranslations ? settings.technologyTranslations[currentLang] : null;
+  const technologyBadge = techTrans?.badge || settings.technologyBadge || 'Manufacturing Automation';
+  const technologyHeading = techTrans?.heading || settings.technologyHeading || 'เทคโนโลยีการผลิตกระป๋องโลหะความเร็วสูงและ AI อัจฉริยะ';
+  const technologyDescription = techTrans?.description || settings.technologyDescription || 'ยกระดับสายการผลิตด้วยเครื่องจักรทันสมัยระดับโลกเพื่อความแม่นยำระดับไมครอนและมาตรฐานความปลอดภัยสูงสุด';
 
   const rawCards = settings.technologyCards && settings.technologyCards.length > 0
     ? settings.technologyCards
@@ -76,14 +82,13 @@ export const TechnologyPage: React.FC<{ onNavigate: (path: string) => void }> = 
     <div className="mx-auto max-w-7xl px-4 pt-6 pb-16 sm:px-6 lg:px-8 space-y-12 font-sans">
       <div className="space-y-4 max-w-3xl">
         <span className="text-xs font-bold uppercase tracking-wider text-theme-primary">
-          {settings.technologyBadge || 'Manufacturing Automation'}
+          {technologyBadge}
         </span>
         <h1 className="font-display text-3xl sm:text-5xl font-black text-theme-text leading-tight">
-          {settings.technologyHeading || 'เทคโนโลยีการผลิตกระป๋องโลหะความเร็วสูงและ AI อัจฉริยะ'}
+          {technologyHeading}
         </h1>
         <p className="text-sm sm:text-base text-theme-text-muted leading-relaxed">
-          {settings.technologyDescription ||
-            'ยกระดับสายการผลิตด้วยเครื่องจักรทันสมัยระดับโลกเพื่อความแม่นยำระดับไมครอนและมาตรฐานความปลอดภัยสูงสุด'}
+          {technologyDescription}
         </p>
       </div>
 
@@ -112,7 +117,7 @@ export const TechnologyPage: React.FC<{ onNavigate: (path: string) => void }> = 
                   {Boolean(card.isPinned) && (
                     <span className="absolute top-3 right-3 flex items-center gap-1 rounded-md bg-amber-500/90 text-slate-950 font-bold px-2 py-0.5 text-[10px] shadow-sm backdrop-blur-md">
                       <Pin className="h-3 w-3 fill-slate-950" />
-                      <span>แนะนำ</span>
+                      <span>{isNonThai ? 'Recommended' : 'แนะนำ'}</span>
                     </span>
                   )}
                 </div>
@@ -128,15 +133,15 @@ export const TechnologyPage: React.FC<{ onNavigate: (path: string) => void }> = 
                     {!card.image && Boolean(card.isPinned) && (
                       <span className="flex items-center gap-1 rounded-md bg-amber-500/20 border border-amber-500/40 px-2 py-0.5 text-[10px] font-bold text-amber-300">
                         <Pin className="h-3 w-3 fill-amber-400 text-amber-400" />
-                        <span>📌 แนะนำ</span>
+                        <span>{isNonThai ? '📌 Recommended' : '📌 แนะนำ'}</span>
                       </span>
                     )}
                   </div>
                   <h3 className="font-display text-base font-bold text-theme-text">
-                    {isEn ? (card.titleEn || card.titleTh) : (card.titleTh || card.titleEn)}
+                    {isNonThai ? (card.titleEn || card.titleTh) : (card.titleTh || card.titleEn)}
                   </h3>
                   <p className="text-xs text-theme-text-muted leading-relaxed">
-                    {isEn ? (card.descEn || card.descTh) : (card.descTh || card.descEn)}
+                    {isNonThai ? (card.descEn || card.descTh) : (card.descTh || card.descEn)}
                   </p>
                 </div>
               </div>

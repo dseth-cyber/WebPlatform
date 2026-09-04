@@ -20,7 +20,14 @@ import {
 export const CareersPage: React.FC<{ onNavigate: (path: string) => void }> = ({ onNavigate }) => {
   const { t, i18n } = useTranslation();
   const { settings } = useSiteContent();
-  const isEn = i18n.language === 'en';
+  const currentLang = (i18n.language || 'th') as 'th' | 'en' | 'jp' | 'cn' | 'mm';
+  const isNonThai = currentLang !== 'th';
+  const isEn = isNonThai;
+
+  const careersTrans = isNonThai && settings.careersTranslations ? settings.careersTranslations[currentLang] : null;
+  const careersBadge = careersTrans?.badge || settings.careersBadge || 'Careers & Opportunities';
+  const careersHeading = careersTrans?.heading || settings.careersHeading || 'ร่วมเป็นส่วนหนึ่งของการขับเคลื่อนอุตสาหกรรมบรรจุภัณฑ์สู่อนาคต';
+  const careersSubtitle = careersTrans?.subtitle || settings.careersSubtitle || 'สร้างสรรค์นวัตกรรม เติบโตไปพร้อมกับทีมงานมืออาชีพในสภาพแวดล้อมที่ทันสมัย ปลอดภัย และมั่นคง';
 
   const [selectedJob, setSelectedJob] = useState<CareerJobSetting | null>(null);
   const [applyModalOpen, setApplyModalOpen] = useState(false);
@@ -63,14 +70,13 @@ export const CareersPage: React.FC<{ onNavigate: (path: string) => void }> = ({ 
       {/* 1. Page Hero Banner */}
       <div className="space-y-4 max-w-3xl">
         <span className="text-xs font-bold uppercase tracking-wider text-theme-primary">
-          {settings.careersBadge || 'Careers & Opportunities'}
+          {careersBadge}
         </span>
         <h1 className="font-display text-3xl sm:text-5xl font-black text-theme-text leading-tight">
-          {settings.careersHeading || 'ร่วมเป็นส่วนหนึ่งของการขับเคลื่อนอุตสาหกรรมบรรจุภัณฑ์สู่อนาคต'}
+          {careersHeading}
         </h1>
         <p className="text-sm sm:text-base text-theme-text-muted leading-relaxed">
-          {settings.careersSubtitle ||
-            'สร้างสรรค์นวัตกรรม เติบโตไปพร้อมกับทีมงานมืออาชีพในสภาพแวดล้อมที่ทันสมัย ปลอดภัย และมั่นคง'}
+          {careersSubtitle}
         </p>
       </div>
 

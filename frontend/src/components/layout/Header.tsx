@@ -98,10 +98,22 @@ export const Header: React.FC<HeaderProps> = ({ currentPath, onNavigate }) => {
       ]
   )
     .filter((tab) => tab.enabled)
-    .map((tab) => ({
-      label: isEn ? (tab.labelEn || tab.labelTh) : (tab.labelTh || tab.labelEn),
-      path: tab.path,
-    }));
+    .map((tab) => {
+      let localizedLabel = tab.labelTh;
+      if (currentLang !== 'th') {
+        const i18nKey = `nav.${tab.key}`;
+        const translated = t(i18nKey);
+        if (translated && translated !== i18nKey) {
+          localizedLabel = translated;
+        } else if (tab.labelEn) {
+          localizedLabel = tab.labelEn;
+        }
+      }
+      return {
+        label: localizedLabel,
+        path: tab.path,
+      };
+    });
 
   const checkIsActive = (path: string) => {
     if (isHome) {

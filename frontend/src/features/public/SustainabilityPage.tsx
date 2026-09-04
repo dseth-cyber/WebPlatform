@@ -29,7 +29,14 @@ const AVAILABLE_ICONS: Record<string, React.FC<{ className?: string }>> = {
 export const SustainabilityPage: React.FC<{ onNavigate: (path: string) => void }> = ({ onNavigate }) => {
   const { i18n } = useTranslation();
   const { settings } = useSiteContent();
-  const isEn = i18n.language === 'en';
+  const currentLang = (i18n.language || 'th') as 'th' | 'en' | 'jp' | 'cn' | 'mm';
+  const isNonThai = currentLang !== 'th';
+  const isEn = isNonThai;
+
+  const susTrans = isNonThai && settings.sustainabilityTranslations ? settings.sustainabilityTranslations[currentLang] : null;
+  const sustainabilityBadge = susTrans?.badge || settings.sustainabilityBadge || 'Circular Economy & ESG';
+  const sustainabilityHeading = susTrans?.heading || settings.sustainabilityHeading || 'โลหะ... วัสดุเพื่อความยั่งยืนที่รีไซเคิลได้ไม่รู้จบ';
+  const sustainabilityDescription = susTrans?.description || settings.sustainabilityDescription || 'แผ่นเหล็กเคลือบดีบุกและอลูมิเนียมเป็นหนึ่งในวัสดุบรรจุภัณฑ์ที่เป็นมิตรต่อสิ่งแวดล้อมมากที่สุดในโลก สามารถนำกลับมาหลอมใช้ใหม่ได้ 100% โดยไม่สูญเสียคุณสมบัติเชิงกล';
 
   const [selectedCard, setSelectedCard] = useState<SustainabilityCardSetting | null>(null);
 
@@ -109,14 +116,13 @@ export const SustainabilityPage: React.FC<{ onNavigate: (path: string) => void }
     <div className="mx-auto max-w-7xl px-4 pt-6 pb-16 sm:px-6 lg:px-8 space-y-12 font-sans">
       <div className="space-y-4 max-w-3xl">
         <span className="text-xs font-bold uppercase tracking-wider text-emerald-400">
-          {settings.sustainabilityBadge || 'Circular Economy & ESG'}
+          {sustainabilityBadge}
         </span>
         <h1 className="font-display text-3xl sm:text-5xl font-black text-theme-text leading-tight">
-          {settings.sustainabilityHeading || 'โลหะ... วัสดุเพื่อความยั่งยืนที่รีไซเคิลได้ไม่รู้จบ'}
+          {sustainabilityHeading}
         </h1>
         <p className="text-sm sm:text-base text-theme-text-muted leading-relaxed">
-          {settings.sustainabilityDescription ||
-            'แผ่นเหล็กเคลือบดีบุกและอลูมิเนียมเป็นหนึ่งในวัสดุบรรจุภัณฑ์ที่เป็นมิตรต่อสิ่งแวดล้อมมากที่สุดในโลก สามารถนำกลับมาหลอมใช้ใหม่ได้ 100% โดยไม่สูญเสียคุณสมบัติเชิงกล'}
+          {sustainabilityDescription}
         </p>
       </div>
 
@@ -124,8 +130,8 @@ export const SustainabilityPage: React.FC<{ onNavigate: (path: string) => void }
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         {sortedCards.map((card) => {
           const IconComp = AVAILABLE_ICONS[card.icon] || Leaf;
-          const title = isEn ? (card.titleEn || card.titleTh) : (card.titleTh || card.titleEn);
-          const desc = isEn ? (card.descEn || card.descTh) : (card.descTh || card.descEn);
+          const title = isNonThai ? (card.titleEn || card.titleTh) : (card.titleTh || card.titleEn);
+          const desc = isNonThai ? (card.descEn || card.descTh) : (card.descTh || card.descEn);
 
           return (
             <div

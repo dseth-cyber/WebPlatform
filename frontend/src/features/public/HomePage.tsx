@@ -254,6 +254,115 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
   };
 
   // -------------------------------------------------------------
+  // MULTI-LANGUAGE LOCALIZED CONTENT RESOLUTION (5 Locales: TH, EN, JP, CN, MM)
+  // -------------------------------------------------------------
+  const heroContent = (() => {
+    if (currentLang !== 'th' && settings.heroTranslations?.[currentLang as 'en'|'jp'|'cn'|'mm']) {
+      const trans = settings.heroTranslations[currentLang as 'en'|'jp'|'cn'|'mm'];
+      return {
+        title: trans.title || settings.heroTitle,
+        highlight: trans.subtitle || settings.heroHighlight,
+        subtitle: trans.desc || settings.heroSubtitle,
+      };
+    }
+    return {
+      title: settings.heroTitle || 'ไคโอทรอน เทคโนโลยี',
+      highlight: settings.heroHighlight || 'วิศวกรรมแห่งอนาคต',
+      subtitle: settings.heroSubtitle,
+    };
+  })();
+
+  const heroPrimaryBtnText = (() => {
+    if (currentLang === 'th') return settings.heroButtonText || 'อ่านประวัติองค์กร';
+    if (currentLang === 'jp') return '会社概要を見る';
+    if (currentLang === 'cn') return '了解企业简介';
+    if (currentLang === 'mm') return 'ကုမ္ပဏီအကြောင်းဖတ်ရန်';
+    return 'Read Corporate Story';
+  })();
+
+  const heroSecondaryBtnText = (() => {
+    if (currentLang === 'th') return settings.heroSecondaryButtonText || 'ชมผลิตภัณฑ์ของเรา';
+    if (currentLang === 'jp') return '製品カタログを見る';
+    if (currentLang === 'cn') return '查看产品中心';
+    if (currentLang === 'mm') return 'ထုတ်ကုန်များကြည့်ရှုရန်';
+    return 'Explore Products';
+  })();
+
+  const aboutContent = (() => {
+    if (currentLang !== 'th' && settings.aboutTranslations?.[currentLang as 'en'|'jp'|'cn'|'mm']) {
+      const trans = settings.aboutTranslations[currentLang as 'en'|'jp'|'cn'|'mm'];
+      return {
+        heading: trans.heading || settings.aboutHeading,
+        subheading: trans.subheading || settings.aboutSubheading,
+        story1: trans.story1 || settings.aboutStory1,
+        mission: trans.mission || settings.aboutMission,
+      };
+    }
+    return {
+      heading: settings.aboutHeading || 'เกี่ยวกับเรา',
+      subheading: settings.aboutSubheading,
+      story1: settings.aboutStory1,
+      mission: settings.aboutMission,
+    };
+  })();
+
+  const servicesContent = (() => {
+    if (currentLang !== 'th' && settings.servicesTranslations?.[currentLang as 'en'|'jp'|'cn'|'mm']) {
+      const trans = settings.servicesTranslations[currentLang as 'en'|'jp'|'cn'|'mm'];
+      return {
+        badge: trans.badge || settings.servicesBadge,
+        heading: trans.heading || settings.servicesHeading,
+        description: trans.description || settings.servicesDescription,
+      };
+    }
+    return {
+      badge: settings.servicesBadge || 'Manufacturing Services',
+      heading: settings.servicesHeading || 'บริการการผลิตและพิมพ์ลายบรรจุภัณฑ์โลหะครบวงจร',
+      description: settings.servicesDescription,
+    };
+  })();
+
+  const technologyContent = (() => {
+    if (currentLang !== 'th' && settings.technologyTranslations?.[currentLang as 'en'|'jp'|'cn'|'mm']) {
+      const trans = settings.technologyTranslations[currentLang as 'en'|'jp'|'cn'|'mm'];
+      return {
+        badge: trans.badge || settings.technologyBadge,
+        heading: trans.heading || settings.technologyHeading,
+        description: trans.description || settings.technologyDescription,
+      };
+    }
+    return {
+      badge: settings.technologyBadge || 'Manufacturing Automation',
+      heading: settings.technologyHeading || 'เทคโนโลยีการผลิตกระป๋องโลหะความเร็วสูงและ AI อัจฉริยะ',
+      description: settings.technologyDescription,
+    };
+  })();
+
+  const sustainabilityContent = (() => {
+    if (currentLang !== 'th' && settings.sustainabilityTranslations?.[currentLang as 'en'|'jp'|'cn'|'mm']) {
+      const trans = settings.sustainabilityTranslations[currentLang as 'en'|'jp'|'cn'|'mm'];
+      return {
+        badge: trans.badge || settings.sustainabilityBadge,
+        heading: trans.heading || settings.sustainabilityHeading,
+        description: trans.description || settings.sustainabilityDescription,
+      };
+    }
+    return {
+      badge: settings.sustainabilityBadge || 'Circular Economy & ESG',
+      heading: settings.sustainabilityHeading || 'โลหะ... วัสดุเพื่อความยั่งยืนที่รีไซเคิลได้ไม่รู้จบ',
+      description: settings.sustainabilityDescription,
+    };
+  })();
+
+  const viewAllServicesText = currentLang === 'th' ? 'ดูรายละเอียดบริการทั้งหมด' : currentLang === 'jp' ? 'すべてのサービスを見る' : currentLang === 'cn' ? '查看全部服务' : currentLang === 'mm' ? 'ဝန်ဆောင်မှုအားလုံးကြည့်ရန်' : 'View All Services';
+  const viewAllTechText = currentLang === 'th' ? 'ดูสายการผลิตทั้งหมด' : currentLang === 'jp' ? 'すべての製造ラインを見る' : currentLang === 'cn' ? '查看全部生产线' : currentLang === 'mm' ? 'ထုတ်လုပ်မှုလိုင်းအားလုံးကြည့်ရန်' : 'View All Technologies';
+  const viewSusReportText = currentLang === 'th' ? 'อ่านรายงานความยั่งยืน' : currentLang === 'jp' ? 'サステナビリティ報告書' : currentLang === 'cn' ? '阅读可持续发展报告' : currentLang === 'mm' ? 'ရေရှည်တည်တံ့မှုအစီရင်ခံစာဖတ်ရန်' : 'Read Sustainability Report';
+  const viewProductsCatalogText = currentLang === 'th' ? 'ดูแคตตาล็อกสินค้าทั้งหมด' : currentLang === 'jp' ? '製品カタログ一覧を見る' : currentLang === 'cn' ? '查看完整产品目录' : currentLang === 'mm' ? 'ထုတ်ကုန်ကတ်တလောက်အားလုံးကြည့်ရန်' : 'View Full Catalog';
+  const requestQuoteText = currentLang === 'th' ? 'ขอใบเสนอราคา' : currentLang === 'jp' ? 'お見積り依頼' : currentLang === 'cn' ? '索取报价' : currentLang === 'mm' ? 'စျေးနှုန်းတောင်းခံရန်' : 'Request Quote';
+  const viewDetailsText = currentLang === 'th' ? 'ดูรายละเอียด' : currentLang === 'jp' ? '詳細を見る' : currentLang === 'cn' ? '查看详情' : currentLang === 'mm' ? 'အသေးစိတ်ကြည့်ရန်' : 'View Details';
+  const readFullStoryText = currentLang === 'th' ? 'อ่านเรื่องราวองค์กรฉบับเต็ม' : currentLang === 'jp' ? '会社詳細を読む' : currentLang === 'cn' ? '阅读企业完整故事' : currentLang === 'mm' ? 'ကုမ္ပဏီအကြောင်းပြည့်စုံစွာဖတ်ရန်' : 'Read Full Corporate Story';
+
+  // -------------------------------------------------------------
   // SECTION 1: HOME (Hero + Highlights)
   // -------------------------------------------------------------
   const renderHomeHero = () => (
@@ -265,18 +374,27 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
     >
       {/* Full-bleed Panoramic Hero Banner Slider */}
       <div className="relative w-full overflow-hidden bg-[#070B14] pt-24 sm:pt-28 pb-14 sm:pb-18 min-h-[540px] lg:min-h-[620px] flex items-center">
-        {/* Carousel Background Layers with Smooth Fade */}
-        {heroSlides.map((slideUrl, idx) => (
+        {/* Continuous Horizontal Carousel Slider Track (Zero Black Gap & Smooth Slide from Left to Right / Right to Left) */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
           <div
-            key={idx}
-            className={`absolute inset-0 bg-cover bg-center bg-no-repeat transition-all duration-1000 ease-in-out ${
-              idx === currentHeroSlide
-                ? 'opacity-100 scale-100 z-0'
-                : 'opacity-0 scale-105 -z-10 pointer-events-none'
-            }`}
-            style={{ backgroundImage: `url('${slideUrl}')` }}
-          />
-        ))}
+            className="flex h-full w-full transition-transform duration-700 ease-in-out"
+            style={{
+              width: `${heroSlides.length * 100}%`,
+              transform: `translateX(-${(currentHeroSlide * 100) / heroSlides.length}%)`,
+            }}
+          >
+            {heroSlides.map((slideUrl, idx) => (
+              <div
+                key={idx}
+                className="h-full bg-cover bg-center bg-no-repeat flex-shrink-0"
+                style={{
+                  width: `${100 / heroSlides.length}%`,
+                  backgroundImage: `url('${slideUrl}')`,
+                }}
+              />
+            ))}
+          </div>
+        </div>
 
         {/* Configurable Dark Overlay behind Hero Text for Optimal Clarity & Legibility */}
         {(() => {
@@ -307,15 +425,15 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
           <div className="max-w-xl xl:max-w-2xl space-y-6">
             <div className="space-y-2">
               <h1 className="font-display text-4xl sm:text-5xl xl:text-6xl font-black text-white tracking-tight leading-[1.15] drop-shadow-[0_4px_16px_rgba(0,0,0,0.95)]">
-                {settings.heroTitle || 'ไคโอทรอน เทคโนโลยี'}
+                {heroContent.title}
                 <span className="block text-transparent bg-clip-text bg-gradient-to-r from-[#F59E0B] via-[#FBBF24] to-[#FCD34D] font-black mt-1 drop-shadow-[0_4px_16px_rgba(0,0,0,0.9)]">
-                  {settings.heroHighlight || 'วิศวกรรมแห่งอนาคต'}
+                  {heroContent.highlight}
                 </span>
               </h1>
             </div>
 
             <p className="text-sm sm:text-base text-white/95 font-medium leading-relaxed max-w-xl drop-shadow-[0_2px_10px_rgba(0,0,0,0.95)]">
-              {settings.heroSubtitle}
+              {heroContent.subtitle}
             </p>
 
             {(settings.showHeroPrimaryBtn !== false || settings.showHeroSecondaryBtn !== false) && (
@@ -340,7 +458,7 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
                     }}
                     className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-[#D4AF37] via-[#C5A059] to-[#AA7C11] px-6 py-3.5 text-xs sm:text-sm font-bold text-black shadow-xl shadow-amber-500/25 hover:brightness-110 hover:shadow-amber-500/40 transition-all cursor-pointer"
                   >
-                    <span>{settings.heroButtonText || 'อ่านประวัติองค์กร'}</span>
+                    <span>{heroPrimaryBtnText}</span>
                     <ArrowRight className="h-4 w-4" />
                   </button>
                 )}
@@ -365,7 +483,7 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
                     }}
                     className="inline-flex items-center gap-2 rounded-xl border border-white/40 bg-black/40 backdrop-blur-md px-6 py-3.5 text-xs sm:text-sm font-bold text-white hover:border-theme-primary hover:text-theme-primary transition-all cursor-pointer"
                   >
-                    <span>{settings.heroSecondaryButtonText || 'ชมผลิตภัณฑ์ของเรา'}</span>
+                    <span>{heroSecondaryBtnText}</span>
                   </button>
                 )}
               </div>
@@ -475,17 +593,17 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
               Corporate Story & Capabilities
             </span>
             <h2 className="font-display text-2xl sm:text-4xl font-black text-theme-text">
-              {settings.aboutHeading || 'เกี่ยวกับเรา'}
+              {aboutContent.heading}
             </h2>
             <div className="h-1 w-12 bg-theme-primary rounded-full" />
           </div>
 
           <p className="text-xs sm:text-sm text-theme-text-muted leading-relaxed">
-            {settings.aboutStory1}
+            {aboutContent.story1}
           </p>
 
           <p className="text-xs sm:text-sm font-semibold text-theme-text leading-relaxed">
-            {settings.aboutStory2}
+            {aboutContent.subheading || settings.aboutStory2}
           </p>
 
           {enabledMetrics.length > 0 && (
@@ -515,7 +633,7 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
               onClick={() => onNavigate('/about')}
               className="inline-flex items-center gap-2 rounded-xl border border-theme-border bg-theme-surface px-5 py-2.5 text-xs font-bold text-theme-text hover:bg-theme-surface-elevated hover:border-theme-primary hover:text-theme-primary transition-all shadow-sm"
             >
-              <span>อ่านวิสัยทัศน์และประวัติองค์กรฉบับเต็ม</span>
+              <span>{readFullStoryText}</span>
               <ChevronRight className="h-4 w-4 text-theme-primary" />
             </button>
           </div>
@@ -711,10 +829,10 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="space-y-1">
           <span className="text-xs font-bold uppercase tracking-wider text-theme-primary">
-            {settings.servicesBadge || 'Manufacturing Services'}
+            {servicesContent.badge}
           </span>
           <h2 className="font-display text-2xl sm:text-4xl font-black text-theme-text">
-            {settings.servicesHeading || 'บริการการผลิตและพิมพ์ลายบรรจุภัณฑ์โลหะครบวงจร'}
+            {servicesContent.heading}
           </h2>
           <div className="h-1 w-12 bg-theme-primary rounded-full" />
         </div>
@@ -724,20 +842,20 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
           onClick={() => onNavigate('/services')}
           className="inline-flex items-center gap-2 rounded-xl border border-theme-border bg-theme-surface px-5 py-2.5 text-xs font-bold text-theme-text hover:border-theme-primary transition-all self-start sm:self-auto"
         >
-          <span>ดูรายละเอียดบริการทั้งหมด</span>
+          <span>{viewAllServicesText}</span>
           <ChevronRight className="h-4 w-4 text-theme-primary" />
         </button>
       </div>
 
       <p className="text-xs sm:text-sm text-theme-text-muted leading-relaxed max-w-3xl">
-        {settings.servicesDescription}
+        {servicesContent.description}
       </p>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         {servicesToShow.map((srv) => {
           const IconComp = SRV_ICONS[srv.icon] || Layers;
-          const srvTitle = isEn ? (srv.titleEn || srv.titleTh) : (srv.titleTh || srv.titleEn);
-          const srvDesc = isEn ? (srv.descEn || srv.descTh) : (srv.descTh || srv.descEn);
+          const srvTitle = currentLang === 'th' ? (srv.titleTh || srv.titleEn) : (srv.titleEn || srv.titleTh);
+          const srvDesc = currentLang === 'th' ? (srv.descTh || srv.descEn) : (srv.descEn || srv.descTh);
 
           return (
             <div
@@ -747,12 +865,12 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
                   isOpen: true,
                   type: 'service',
                   title: srvTitle,
-                  subtitle: isEn ? 'Comprehensive Metal Packaging Solutions' : 'บริการวิศวกรรมบรรจุภัณฑ์โลหะครบวงจร',
-                  category: isEn ? 'Service Solution' : 'บริการวิศวกรรม',
+                  subtitle: currentLang === 'th' ? 'บริการวิศวกรรมบรรจุภัณฑ์โลหะครบวงจร' : 'Comprehensive Metal Packaging Solutions',
+                  category: currentLang === 'th' ? 'บริการวิศวกรรม' : 'Service Solution',
                   image: srv.image || '/images/cat-round-cans.jpg',
                   content: srvDesc,
                   features: srv.features,
-                  ctaText: isEn ? 'Inquire About This Service' : 'ติดต่อสอบถามบริการนี้',
+                  ctaText: currentLang === 'th' ? 'ติดต่อสอบถามบริการนี้' : currentLang === 'jp' ? 'このサービスについて問い合わせる' : currentLang === 'cn' ? '咨询此项服务' : currentLang === 'mm' ? 'ဤဝန်ဆောင်မှုအတွက် မေးမြန်းရန်' : 'Inquire About This Service',
                   ctaAction: () => {
                     setDetailModal((prev) => ({ ...prev, isOpen: false }));
                     const el = document.getElementById('contact');
@@ -823,10 +941,10 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="space-y-1">
           <span className="text-xs font-bold uppercase tracking-wider text-theme-primary">
-            {settings.technologyBadge || 'Manufacturing Automation'}
+            {technologyContent.badge}
           </span>
           <h2 className="font-display text-2xl sm:text-4xl font-black text-theme-text">
-            {settings.technologyHeading || 'เทคโนโลยีการผลิตกระป๋องโลหะความเร็วสูงและ AI อัจฉริยะ'}
+            {technologyContent.heading}
           </h2>
           <div className="h-1 w-12 bg-theme-primary rounded-full" />
         </div>
@@ -836,20 +954,20 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
           onClick={() => onNavigate('/technology')}
           className="inline-flex items-center gap-2 rounded-xl border border-theme-border bg-theme-surface px-5 py-2.5 text-xs font-bold text-theme-text hover:border-theme-primary transition-all self-start sm:self-auto"
         >
-          <span>ดูสายการผลิตทั้งหมด</span>
+          <span>{viewAllTechText}</span>
           <ChevronRight className="h-4 w-4 text-theme-primary" />
         </button>
       </div>
 
       <p className="text-xs sm:text-sm text-theme-text-muted leading-relaxed max-w-3xl">
-        {settings.technologyDescription}
+        {technologyContent.description}
       </p>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {techToShow.map((card) => {
           const IconComp = TECH_ICONS[card.icon] || Cpu;
-          const techTitle = isEn ? (card.titleEn || card.titleTh) : (card.titleTh || card.titleEn);
-          const techDesc = isEn ? (card.descEn || card.descTh) : (card.descTh || card.descEn);
+          const techTitle = currentLang === 'th' ? (card.titleTh || card.titleEn) : (card.titleEn || card.titleTh);
+          const techDesc = currentLang === 'th' ? (card.descTh || card.descEn) : (card.descEn || card.descTh);
 
           return (
             <div
@@ -859,11 +977,11 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
                   isOpen: true,
                   type: 'tech',
                   title: techTitle,
-                  subtitle: isEn ? 'Smart Manufacturing & High-Speed Automation' : 'เทคโนโลยีและเครื่องจักรอัตโนมัติความเร็วสูง',
-                  category: isEn ? 'Technology & AI' : 'เทคโนโลยีการผลิต',
+                  subtitle: currentLang === 'th' ? 'เทคโนโลยีและเครื่องจักรอัตโนมัติความเร็วสูง' : 'Smart Manufacturing & High-Speed Automation',
+                  category: currentLang === 'th' ? 'เทคโนโลยีการผลิต' : 'Technology & AI',
                   image: card.image || '/images/factory-building.jpg',
                   content: techDesc,
-                  ctaText: isEn ? 'Consult Technical Engineers' : 'ปรึกษาทีมวิศวกรเทคนิค',
+                  ctaText: currentLang === 'th' ? 'ปรึกษาทีมวิศวกรเทคนิค' : currentLang === 'jp' ? '技術営業に相談する' : currentLang === 'cn' ? '咨询技术工程师' : currentLang === 'mm' ? 'အင်ဂျင်နီယာများနှင့် ဆွေးနွေးရန်' : 'Consult Technical Engineers',
                   ctaAction: () => {
                     setDetailModal((prev) => ({ ...prev, isOpen: false }));
                     const el = document.getElementById('contact');
@@ -924,10 +1042,10 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="space-y-1">
           <span className="text-xs font-bold uppercase tracking-wider text-emerald-500">
-            {settings.sustainabilityBadge || 'Circular Economy & ESG'}
+            {sustainabilityContent.badge}
           </span>
           <h2 className="font-display text-2xl sm:text-4xl font-black text-theme-text">
-            {settings.sustainabilityHeading || 'โลหะ... วัสดุเพื่อความยั่งยืนที่รีไซเคิลได้ไม่รู้จบ'}
+            {sustainabilityContent.heading}
           </h2>
           <div className="h-1 w-12 bg-emerald-500 rounded-full" />
         </div>
@@ -937,20 +1055,20 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
           onClick={() => onNavigate('/sustainability')}
           className="inline-flex items-center gap-2 rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-5 py-2.5 text-xs font-bold text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500 hover:text-white transition-all self-start sm:self-auto"
         >
-          <span>อ่านรายงานความยั่งยืน</span>
+          <span>{viewSusReportText}</span>
           <ChevronRight className="h-4 w-4" />
         </button>
       </div>
 
       <p className="text-xs sm:text-sm text-theme-text-muted leading-relaxed max-w-3xl">
-        {settings.sustainabilityDescription}
+        {sustainabilityContent.description}
       </p>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         {susToShow.map((card) => {
           const IconComp = SUS_ICONS[card.icon] || Leaf;
-          const susTitle = isEn ? (card.titleEn || card.titleTh) : (card.titleTh || card.titleEn);
-          const susDesc = isEn ? (card.descEn || card.descTh) : (card.descTh || card.descEn);
+          const susTitle = currentLang === 'th' ? (card.titleTh || card.titleEn) : (card.titleEn || card.titleTh);
+          const susDesc = currentLang === 'th' ? (card.descTh || card.descEn) : (card.descEn || card.descTh);
 
           return (
             <div
@@ -960,11 +1078,11 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
                   isOpen: true,
                   type: 'sustainability',
                   title: susTitle,
-                  subtitle: isEn ? 'Eco-Friendly & Circular Economy' : 'ความยั่งยืนและการรีไซเคิลโลหะ 100%',
-                  category: isEn ? 'ESG & Net Zero' : 'ความยั่งยืน & สิ่งแวดล้อม',
+                  subtitle: currentLang === 'th' ? 'ความยั่งยืนและการรีไซเคิลโลหะ 100%' : 'Eco-Friendly & Circular Economy',
+                  category: currentLang === 'th' ? 'ความยั่งยืน & สิ่งแวดล้อม' : 'ESG & Net Zero',
                   image: card.image || '/images/hero-fullwidth.jpg',
                   content: susDesc,
-                  ctaText: isEn ? 'Explore Sustainability Strategy' : 'อ่านนโยบายความยั่งยืนฉบับเต็ม',
+                  ctaText: currentLang === 'th' ? 'อ่านนโยบายความยั่งยืนฉบับเต็ม' : currentLang === 'jp' ? 'サステナビリティ方針を読む' : currentLang === 'cn' ? '阅读完整可持续发展政策' : currentLang === 'mm' ? 'ရေရှည်တည်တံ့မှုမူဝါဒဖတ်ရန်' : 'Explore Sustainability Strategy',
                   ctaAction: () => {
                     setDetailModal((prev) => ({ ...prev, isOpen: false }));
                     onNavigate('/sustainability');

@@ -10,6 +10,7 @@ import {
   Loader2,
 } from 'lucide-react';
 import { compressImageFile } from '../../utils/imageCompressor';
+import { MultiLangSectionEditor } from './MultiLangSectionEditor';
 
 export const AboutManager: React.FC = () => {
   const { t } = useTranslation();
@@ -27,6 +28,15 @@ export const AboutManager: React.FC = () => {
   );
   const [metrics, setMetrics] = useState(settings.metrics || []);
 
+  const [aboutTranslations, setAboutTranslations] = useState<any>(
+    settings.aboutTranslations || {
+      en: { heading: 'About Us', subheading: '', story1: '', mission: '' },
+      jp: { heading: '会社概要', subheading: '', story1: '', mission: '' },
+      cn: { heading: '关于我们', subheading: '', story1: '', mission: '' },
+      mm: { heading: 'ကျွန်ုပ်တို့အကြောင်း', subheading: '', story1: '', mission: '' },
+    }
+  );
+
   const [isSaving, setIsSaving] = useState(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
@@ -41,6 +51,9 @@ export const AboutManager: React.FC = () => {
       if (settings.aboutFactoryImage) setFactoryImage(settings.aboutFactoryImage);
       if (settings.metrics && settings.metrics.length > 0) {
         setMetrics(settings.metrics);
+      }
+      if (settings.aboutTranslations) {
+        setAboutTranslations(settings.aboutTranslations);
       }
     }
   }, [settings]);
@@ -61,6 +74,7 @@ export const AboutManager: React.FC = () => {
         aboutMission: mission,
         aboutFactoryImage: factoryImage,
         metrics,
+        aboutTranslations,
       });
       showToast('บันทึกข้อมูลหน้าเกี่ยวกับเราลงฐานข้อมูลสำเร็จแล้ว!');
     } catch (err) {
@@ -178,6 +192,19 @@ export const AboutManager: React.FC = () => {
           />
         </div>
       </div>
+
+      {/* 1.5 Multi-Language Translations (EN, JP, CN, MM) */}
+      <MultiLangSectionEditor
+        title="แปลภาษา (Multi-Language) - เกี่ยวกับเรา"
+        fields={[
+          { key: 'heading', label: 'Title / Heading' },
+          { key: 'subheading', label: 'Highlight / Subheading' },
+          { key: 'story1', label: 'Story Description', type: 'textarea', rows: 3 },
+          { key: 'mission', label: 'Mission & Standards', type: 'textarea', rows: 3 },
+        ]}
+        value={aboutTranslations}
+        onChange={setAboutTranslations}
+      />
 
       {/* 2. Factory Photo & Attachment */}
       <div className="rounded-3xl border border-theme-border bg-theme-surface p-6 sm:p-8 shadow-2xl space-y-4 text-xs">

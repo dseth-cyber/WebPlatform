@@ -17,6 +17,8 @@ import {
   Pin,
 } from 'lucide-react';
 
+import { MultiLangSectionEditor } from './MultiLangSectionEditor';
+
 export const CareersManager: React.FC = () => {
   const { t } = useTranslation();
   const { settings, updateSettings } = useSiteContent();
@@ -34,6 +36,15 @@ export const CareersManager: React.FC = () => {
   );
   const [jobs, setJobs] = useState<CareerJobSetting[]>(settings.careersJobs || []);
 
+  const [careersTranslations, setCareersTranslations] = useState<any>(
+    settings.careersTranslations || {
+      en: { badge: 'Careers & Opportunities', heading: '', subtitle: '' },
+      jp: { badge: '採用情報', heading: '', subtitle: '' },
+      cn: { badge: '招贤纳士', heading: '', subtitle: '' },
+      mm: { badge: 'အလုပ်အကိုင် အခွင့်အလမ်းများ', heading: '', subtitle: '' },
+    }
+  );
+
   const [isSaving, setIsSaving] = useState(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
@@ -47,6 +58,9 @@ export const CareersManager: React.FC = () => {
       }
       if (settings.careersJobs && settings.careersJobs.length > 0) {
         setJobs(settings.careersJobs);
+      }
+      if (settings.careersTranslations) {
+        setCareersTranslations(settings.careersTranslations);
       }
     }
   }, [settings]);
@@ -103,6 +117,7 @@ export const CareersManager: React.FC = () => {
         careersSubtitle: subtitle,
         careersBenefits: parsedBenefits,
         careersJobs: jobs,
+        careersTranslations,
       });
       showToast('บันทึกข้อมูลหน้าสมัครงานเรียบร้อยแล้ว');
     } catch (err: any) {
@@ -200,6 +215,18 @@ export const CareersManager: React.FC = () => {
             </div>
           </div>
         </div>
+
+        {/* 1.5 Multi-Language Translations (EN, JP, CN, MM) */}
+        <MultiLangSectionEditor
+          title="แปลภาษา (Multi-Language) - สมัครงาน"
+          fields={[
+            { key: 'badge', label: 'Badge' },
+            { key: 'heading', label: 'Title / Heading' },
+            { key: 'subtitle', label: 'Subtitle / Culture Pitch', type: 'textarea', rows: 3 },
+          ]}
+          value={careersTranslations}
+          onChange={setCareersTranslations}
+        />
 
         {/* Section 2: Employee Benefits */}
         <div className="rounded-2xl border border-theme-border bg-theme-surface p-6 space-y-5">

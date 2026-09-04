@@ -131,6 +131,15 @@ export interface SiteContentSettings {
   heroShowDots?: boolean; // แสดงจุดบอกตำแหน่งสไลด์
   heroTextOverlayOpacity?: number; // ระดับความฟุ้ง/เงาดำหลังตัวหนังสือ (0, 10, 20, 30, 40, 50, 60, 70%)
 
+  // 5-Language Multi-Language CMS Content (EN, JP, CN, MM)
+  heroTranslations?: Record<'en' | 'jp' | 'cn' | 'mm', { title: string; subtitle: string; desc: string }>;
+  aboutTranslations?: Record<'en' | 'jp' | 'cn' | 'mm', { heading: string; subheading: string; story1: string; mission: string }>;
+  servicesTranslations?: Record<'en' | 'jp' | 'cn' | 'mm', { badge: string; heading: string; description: string }>;
+  technologyTranslations?: Record<'en' | 'jp' | 'cn' | 'mm', { badge: string; heading: string; description: string }>;
+  sustainabilityTranslations?: Record<'en' | 'jp' | 'cn' | 'mm', { badge: string; heading: string; description: string }>;
+  careersTranslations?: Record<'en' | 'jp' | 'cn' | 'mm', { badge: string; heading: string; subtitle: string }>;
+  contactTranslations?: Record<'en' | 'jp' | 'cn' | 'mm', { bio: string; businessHours: string }>;
+
   // 4 Feature Badges
   featureBadges: FeatureBadgeSetting[];
 
@@ -228,6 +237,167 @@ export const DEFAULT_SITE_SETTINGS: SiteContentSettings = {
   heroShowArrows: true,
   heroShowDots: true,
   heroTextOverlayOpacity: 30,
+
+  heroTranslations: {
+    en: {
+      title: 'CHIOTRON TECHNOLOGY',
+      subtitle: 'World-Class Metal Packaging & Automation',
+      desc: "Thailand's leading manufacturer of metal packaging for ready-to-eat food with advanced technology, international quality standards, and exceptional customer service.",
+    },
+    jp: {
+      title: 'カイオトロン・テクノロジー',
+      subtitle: '世界水準の金属包装ソリューション',
+      desc: 'タイを代表する即席食品用金属包装メーカー。先進技術と国際品質基準、卓越したサービスで産業の持続可能性を支えます。',
+    },
+    cn: {
+      title: '凯奥创科技有限公司',
+      subtitle: '世界级高品质金属包装',
+      desc: '泰国领先的即食食品金属包装制造商，凭借先进技术、国际标准品质和卓越服务，满足客户需求并促进工业可持续发展。',
+    },
+    mm: {
+      title: 'CHIOTRON TECHNOLOGY ကုမ္ပဏီလီမိတက်',
+      subtitle: 'ကမ္ဘာ့အဆင့်မီ သတ္တုထုပ်ပိုးပစ္စည်းများ',
+      desc: 'အဆင့်မြင့်နည်းပညာ၊ နိုင်ငံတကာအဆင့်မီ အရည်အသွေးနှင့် ထူးချွန်သောဝန်ဆောင်မှုများဖြင့် ထိုင်းနိုင်ငံ၏ ဦးဆောင်စားသောက်ကုန် သတ္တုဘူးထုပ်ပိုးထုတ်လုပ်သူ။',
+    },
+  },
+
+  aboutTranslations: {
+    en: {
+      heading: 'About Us',
+      subheading: 'Global Standard Food-Grade Metal Packaging Specialist',
+      story1: 'With over 38 years of manufacturing excellence, Chiotron Technology delivers high-purity, BPA-free metal cans and closures to global markets.',
+      mission: 'Delivering 100% recyclable, high-purity metal packaging.\nIntegrating world-class Swiss automated canning technology.\nEmpowering customers with sustainable ESG packaging solutions.',
+    },
+    jp: {
+      heading: '会社概要',
+      subheading: '世界水準の食品グレード金属パッケージング専門企業',
+      story1: '38年以上の製造実績と技術革新に基づき、安全で高品質なBPAフリー金属缶およびキャップを世界各国の食品メーカーへ供給しています。',
+      mission: '100%リサイクル可能な高純度金属包装の供給\nスイス製高速精密製缶設備の導入による品質向上\n持続可能なESGパッケージングソリューションの提案',
+    },
+    cn: {
+      heading: '关于我们',
+      subheading: '全球标准食品级金属包装专业制造企业',
+      story1: '拥有超过38年的卓越制造经验，凯奥创科技为全球市场提供高纯度、100%无BPA的金属罐及密封盖。',
+      mission: '供应100%可循环再生的环保金属包装\n引进世界先进的瑞士高速精密制罐生产线\n以可持续ESG包装方案赋能全球客户',
+    },
+    mm: {
+      heading: 'ကျွန်ုပ်တို့အကြောင်း',
+      subheading: 'နိုင်ငံတကာအဆင့်မီ စားသောက်ကုန်သတ္တုထုပ်ပိုးမှုဆိုင်ရာ ကျွမ်းကျင်သူ',
+      story1: 'ထုတ်လုပ်မှုလုပ်ငန်း အတွေ့အကြုံ ၃၈ နှစ်ကျော်ဖြင့် ကမ္ဘာ့အဆင့်မီ အရည်အသွေးမြင့် BPA-free သံဗူးနှင့် အဖုံးများကို တင်ပို့ရောင်းချလျက်ရှိပါသည်။',
+      mission: '၁၀၀% ပြန်လည်အသုံးပြုနိုင်သော သတ္တုထုပ်ပိုးမှုများ ထုတ်လုပ်ခြင်း\nအဆင့်မြင့် ဆွစ်ဇာလန်နည်းပညာသုံး စက်ကိရိယာများ တပ်ဆင်ခြင်း\nရေရှည်တည်တံ့သော ESG ထုပ်ပိုးမှုဆိုင်ရာ ဖြေရှင်းချက်များ ပေးအပ်ခြင်း',
+    },
+  },
+
+  servicesTranslations: {
+    en: {
+      badge: 'Manufacturing Services',
+      heading: 'Comprehensive Metal Packaging & Printing Services',
+      description: 'From high-precision tooling design and ultra-HD UV offset printing to automated high-speed can forming using Swiss technologies.',
+    },
+    jp: {
+      badge: 'OEM製造サービス',
+      heading: '金属パッケージングおよび高精細印刷の一貫受託サービス',
+      description: '金型設計・高精細オフセット印刷からスイス製自動製缶ラインによる高速成形まで、一貫したOEMソリューションを提供します。',
+    },
+    cn: {
+      badge: 'OEM定制加工',
+      heading: '全方位高品质金属包装与精细印花综合服务',
+      description: '涵盖精密模具设计、超高清UV胶印印花至瑞士全自动高速制罐成型的一体化制造服务。',
+    },
+    mm: {
+      badge: 'OEM ဝန်ဆောင်မှုများ',
+      heading: 'ပြည့်စုံသော သတ္တုထုပ်ပိုးပစ္စည်း ထုတ်လုပ်မှုနှင့် ပုံနှိပ်ဝန်ဆောင်မှုများ',
+      description: 'ဒီဇိုင်းပုံစံထုတ်လုပ်ခြင်း၊ အရည်အသွေးမြင့် ပုံနှိပ်ခြင်းမှ ဆွစ်ဇာလန်နည်းပညာသုံး အလိုအလျောက် သံဗူးထုတ်လုပ်ခြင်းအထိ ဝန်ဆောင်မှုပေးပါသည်။',
+    },
+  },
+
+  technologyTranslations: {
+    en: {
+      badge: 'Manufacturing Automation',
+      heading: 'High-Speed Metal Canning & Smart AI Inspection',
+      description: 'Elevating production lines with cutting-edge global machinery for micron-level precision and uncompromising food safety standards.',
+    },
+    jp: {
+      badge: '製造技術',
+      heading: '高速金属製缶ラインとAIスマート検査システム',
+      description: 'ミクロン単位の精度と最高水準の食品安全性を実現する、世界最先端の高速自動化機械とAI画像検査技術。',
+    },
+    cn: {
+      badge: '制造技术',
+      heading: '高速金属制罐与AI智能全检系统',
+      description: '引进世界领先的精密设备，以微米级精度和严苛安全标准赋能现代化生产线。',
+    },
+    mm: {
+      badge: 'နည်းပညာ',
+      heading: 'အမြန်နှုန်းမြင့် သတ္တုဗူးထုတ်လုပ်မှုနှင့် AI စစ်ဆေးရေးစနစ်',
+      description: 'အမြင့်မားဆုံးတိကျမှုနှင့် စားသောက်ကုန်ဘေးကင်းရေးအတွက် ကမ္ဘာ့အဆင့်မီ စက်ယန္တရားများနှင့် နည်းပညာများဖြင့် ထုတ်လုပ်ပါသည်။',
+    },
+  },
+
+  sustainabilityTranslations: {
+    en: {
+      badge: 'Circular Economy & ESG',
+      heading: 'Metal... The Forever Recyclable Sustainable Material',
+      description: 'Pioneering green manufacturing with 100% circular metal packaging, solar rooftop generation, and carbon footprint reduction.',
+    },
+    jp: {
+      badge: 'サステナビリティ',
+      heading: '金属 — 無限にリサイクル可能な循環型環境素材',
+      description: '100%リサイクル可能な金属パッケージング、屋上太陽光発電、省エネ設計によるカーボンフットプリント削減を推進。',
+    },
+    cn: {
+      badge: '可持续发展',
+      heading: '金属... 100%无限次循环再生的绿色环保材料',
+      description: '践行绿色低碳制造，采用100%循环金属包装材料与屋顶光伏清洁能源，降低碳足迹。',
+    },
+    mm: {
+      badge: 'ရေရှည်တည်တံ့မှု',
+      heading: 'သတ္တု... အကြိမ်ကြိမ်ပြန်လည်အသုံးပြုနိုင်သော ရေရှည်တည်တံ့သည့်ပစ္စည်း',
+      description: '၁၀၀% ပြန်လည်အသုံးပြုနိုင်သော သတ္တုထုပ်ပိုးပစ္စည်းများနှင့် နေရောင်ခြည်စွမ်းအင်သုံး လျှပ်စစ်ဓာတ်အားဖြင့် သဘာဝပတ်ဝန်းကျင်ကို ထိန်းသိမ်းပါသည်။',
+    },
+  },
+
+  careersTranslations: {
+    en: {
+      badge: 'Careers & Opportunities',
+      heading: 'Drive the Future of Sustainable Metal Packaging',
+      subtitle: 'Join an innovative engineering team committed to world-class manufacturing standards and sustainable growth.',
+    },
+    jp: {
+      badge: '採用情報',
+      heading: '持続可能な金属パッケージング産業の未来を拓く',
+      subtitle: '世界水準の品質と技術革新を追求するエンジニアリングチームであなたの才能を発揮してください。',
+    },
+    cn: {
+      badge: '招贤纳士',
+      heading: '携手共创绿色可持续金属包装的未来',
+      subtitle: '加入致力于世界级制造标准与绿色创新的优秀团队，共同开拓行业新格局。',
+    },
+    mm: {
+      badge: 'အလုပ်အကိုင် အခွင့်အလမ်းများ',
+      heading: 'ရေရှည်တည်တံ့သော သတ္တုထုပ်ပိုးမှုလုပ်ငန်း အနာဂတ်တွင် ပါဝင်ပါ',
+      subtitle: 'ကမ္ဘာ့အဆင့်မီ ထုတ်လုပ်မှုစံချိန်စံညွှန်းများနှင့်အတူ လက်တွဲဆောင်ရွက်ရန် ဖိတ်ခေါ်အပ်ပါသည်။',
+    },
+  },
+
+  contactTranslations: {
+    en: {
+      bio: 'Chiotron Technology is a premier manufacturer of food-grade tinplate and aluminum packaging solutions based in Samut Sakhon, Thailand.',
+      businessHours: 'Monday - Saturday: 08:00 - 17:00 (ICT)',
+    },
+    jp: {
+      bio: 'カイオトロン・テクノロジーは、タイ・サムットサコーン県に拠点を置く、食品グレードの高品質ブリキ・アルミ缶パッケージングの総合メーカーです。',
+      businessHours: '月曜日 - 土曜日: 08:00 - 17:00 (タイ時間)',
+    },
+    cn: {
+      bio: '凯奥创科技是泰国龙仔厝府领先的高端食品级马口铁及铝制金属包装综合制造商。',
+      businessHours: '周一至周六: 08:00 - 17:00 (泰国时间)',
+    },
+    mm: {
+      bio: 'CHIOTRON TECHNOLOGY သည် ထိုင်းနိုင်ငံ၊ စမွတ်စာခွန်ပြည်နယ်အခြေစိုက် အရည်အသွေးမြင့် စားသောက်ကုန်သတ္တုဘူးထုပ်ပိုးထုတ်လုပ်သည့် ဦးဆောင်ကုမ္ပဏီဖြစ်ပါသည်။',
+      businessHours: 'တနင်္လာ - စနေ: ၀၈:၀၀ - ၁၇:၀၀ (ထိုင်းစံတော်ချိန်)',
+    },
+  },
 
   featureBadges: [
     {
@@ -625,6 +795,13 @@ export const useSiteContent = () => {
           careersJobs: parsed.careersJobs || DEFAULT_SITE_SETTINGS.careersJobs,
           careersBenefits: parsed.careersBenefits || DEFAULT_SITE_SETTINGS.careersBenefits,
           heroImages: parsed.heroImages || DEFAULT_SITE_SETTINGS.heroImages,
+          heroTranslations: parsed.heroTranslations || DEFAULT_SITE_SETTINGS.heroTranslations,
+          aboutTranslations: parsed.aboutTranslations || DEFAULT_SITE_SETTINGS.aboutTranslations,
+          servicesTranslations: parsed.servicesTranslations || DEFAULT_SITE_SETTINGS.servicesTranslations,
+          technologyTranslations: parsed.technologyTranslations || DEFAULT_SITE_SETTINGS.technologyTranslations,
+          sustainabilityTranslations: parsed.sustainabilityTranslations || DEFAULT_SITE_SETTINGS.sustainabilityTranslations,
+          careersTranslations: parsed.careersTranslations || DEFAULT_SITE_SETTINGS.careersTranslations,
+          contactTranslations: parsed.contactTranslations || DEFAULT_SITE_SETTINGS.contactTranslations,
         };
       }
     } catch (e) {}
@@ -673,6 +850,13 @@ export const useSiteContent = () => {
                   careersJobs: remoteSettings.careersJobs || prev.careersJobs || DEFAULT_SITE_SETTINGS.careersJobs,
                   careersBenefits: remoteSettings.careersBenefits || prev.careersBenefits || DEFAULT_SITE_SETTINGS.careersBenefits,
                   heroImages: remoteSettings.heroImages || prev.heroImages || DEFAULT_SITE_SETTINGS.heroImages,
+                  heroTranslations: remoteSettings.heroTranslations || prev.heroTranslations || DEFAULT_SITE_SETTINGS.heroTranslations,
+                  aboutTranslations: remoteSettings.aboutTranslations || prev.aboutTranslations || DEFAULT_SITE_SETTINGS.aboutTranslations,
+                  servicesTranslations: remoteSettings.servicesTranslations || prev.servicesTranslations || DEFAULT_SITE_SETTINGS.servicesTranslations,
+                  technologyTranslations: remoteSettings.technologyTranslations || prev.technologyTranslations || DEFAULT_SITE_SETTINGS.technologyTranslations,
+                  sustainabilityTranslations: remoteSettings.sustainabilityTranslations || prev.sustainabilityTranslations || DEFAULT_SITE_SETTINGS.sustainabilityTranslations,
+                  careersTranslations: remoteSettings.careersTranslations || prev.careersTranslations || DEFAULT_SITE_SETTINGS.careersTranslations,
+                  contactTranslations: remoteSettings.contactTranslations || prev.contactTranslations || DEFAULT_SITE_SETTINGS.contactTranslations,
                 };
                 try {
                   localStorage.setItem(STORAGE_KEY, JSON.stringify(merged));

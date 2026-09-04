@@ -24,7 +24,13 @@ const AVAILABLE_ICONS: Record<string, React.FC<{ className?: string }>> = {
 export const ServicesPage: React.FC<{ onNavigate: (path: string) => void }> = ({ onNavigate }) => {
   const { i18n } = useTranslation();
   const { settings } = useSiteContent();
-  const isEn = i18n.language === 'en';
+  const currentLang = (i18n.language || 'th') as 'th' | 'en' | 'jp' | 'cn' | 'mm';
+  const isNonThai = currentLang !== 'th';
+
+  const servicesTrans = isNonThai && settings.servicesTranslations ? settings.servicesTranslations[currentLang] : null;
+  const servicesBadge = servicesTrans?.badge || settings.servicesBadge || 'Manufacturing Services';
+  const servicesHeading = servicesTrans?.heading || settings.servicesHeading || 'บริการการผลิตและพิมพ์ลายบรรจุภัณฑ์โลหะครบวงจร';
+  const servicesDescription = servicesTrans?.description || settings.servicesDescription || 'ตั้งแต่การออกแบบแม่พิมพ์ การพิมพ์ลายออฟเซ็ตความละเอียดสูง ไปจนถึงการขึ้นรูปกระป๋องด้วยเทคโนโลยีสวิตเซอร์แลนด์';
 
   const rawServices = settings.servicesList && settings.servicesList.length > 0
     ? settings.servicesList
@@ -82,14 +88,13 @@ export const ServicesPage: React.FC<{ onNavigate: (path: string) => void }> = ({
     <div className="mx-auto max-w-7xl px-4 pt-6 pb-16 sm:px-6 lg:px-8 space-y-16 font-sans">
       <div className="space-y-4 max-w-3xl">
         <span className="text-xs font-bold uppercase tracking-wider text-theme-primary">
-          {settings.servicesBadge || 'Manufacturing Services'}
+          {servicesBadge}
         </span>
         <h1 className="font-display text-3xl sm:text-5xl font-black text-theme-text leading-tight">
-          {settings.servicesHeading || 'บริการการผลิตและพิมพ์ลายบรรจุภัณฑ์โลหะครบวงจร'}
+          {servicesHeading}
         </h1>
         <p className="text-sm sm:text-base text-theme-text-muted leading-relaxed">
-          {settings.servicesDescription ||
-            'ตั้งแต่การออกแบบแม่พิมพ์ การพิมพ์ลายออฟเซ็ตความละเอียดสูง ไปจนถึงการขึ้นรูปกระป๋องด้วยเทคโนโลยีสวิตเซอร์แลนด์'}
+          {servicesDescription}
         </p>
       </div>
 
@@ -118,7 +123,7 @@ export const ServicesPage: React.FC<{ onNavigate: (path: string) => void }> = ({
                   {Boolean(srv.isPinned) && (
                     <span className="absolute top-3 right-3 flex items-center gap-1 rounded-md bg-amber-500/90 text-slate-950 font-bold px-2 py-0.5 text-[10px] shadow-sm backdrop-blur-md">
                       <Pin className="h-3 w-3 fill-slate-950" />
-                      <span>บริการแนะนำ</span>
+                      <span>{isNonThai ? 'Recommended' : 'บริการแนะนำ'}</span>
                     </span>
                   )}
                 </div>
@@ -134,15 +139,15 @@ export const ServicesPage: React.FC<{ onNavigate: (path: string) => void }> = ({
                     {!srv.image && Boolean(srv.isPinned) && (
                       <span className="flex items-center gap-1 rounded-md bg-amber-500/20 border border-amber-500/40 px-2 py-0.5 text-[10px] font-bold text-amber-300">
                         <Pin className="h-3 w-3 fill-amber-400 text-amber-400" />
-                        <span>📌 บริการแนะนำ</span>
+                        <span>{isNonThai ? '📌 Recommended' : '📌 บริการแนะนำ'}</span>
                       </span>
                     )}
                   </div>
                   <h3 className="font-display text-lg font-bold text-theme-text">
-                    {isEn ? (srv.titleEn || srv.titleTh) : (srv.titleTh || srv.titleEn)}
+                    {isNonThai ? (srv.titleEn || srv.titleTh) : (srv.titleTh || srv.titleEn)}
                   </h3>
                   <p className="text-xs text-theme-text-muted leading-relaxed">
-                    {isEn ? (srv.descEn || srv.descTh) : (srv.descTh || srv.descEn)}
+                    {isNonThai ? (srv.descEn || srv.descTh) : (srv.descTh || srv.descEn)}
                   </p>
                 {srv.features && srv.features.length > 0 && (
                   <div className="space-y-2 pt-2 border-t border-theme-border/50">

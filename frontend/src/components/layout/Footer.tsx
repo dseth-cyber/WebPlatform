@@ -8,8 +8,26 @@ interface FooterProps {
 }
 
 export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { settings } = useSiteContent();
+  const currentLang = (i18n.language || 'th') as 'th' | 'en' | 'jp' | 'cn' | 'mm';
+  const isNonThai = currentLang !== 'th';
+
+  const contactTrans = isNonThai && settings.contactTranslations ? settings.contactTranslations[currentLang] : null;
+  const footerBio = contactTrans?.bio || settings.footerBio || 'ผู้นำนวัตกรรมผลิตกระป๋องอาหารสำเร็จรูป ถังเคมีภัณฑ์ และฝาเปิดง่าย EOE มาตรฐานส่งออกสากล ด้วยเครื่องจักรอัตโนมัติความเร็วสูง';
+  const businessHoursText = contactTrans?.businessHours || settings.businessHours || 'จันทร์ - ศุกร์ 08:30 - 17:30 น.';
+
+  const labels = {
+    products: currentLang === 'th' ? 'ผลิตภัณฑ์บรรจุภัณฑ์' : currentLang === 'jp' ? '包装製品' : currentLang === 'cn' ? '包装产品' : currentLang === 'mm' ? 'ထုပ်ပိုးမှုထုတ်ကုန်များ' : 'Packaging Products',
+    about: currentLang === 'th' ? 'เกี่ยวกับเรา' : currentLang === 'jp' ? '企業情報' : currentLang === 'cn' ? '关于我们' : currentLang === 'mm' ? 'ကျွန်ုပ်တို့အကြောင်း' : 'About Us',
+    contact: currentLang === 'th' ? 'ติดต่อเรา' : currentLang === 'jp' ? 'お問い合わせ' : currentLang === 'cn' ? '联系我们' : currentLang === 'mm' ? 'ဆက်သွယ်ရန်' : 'Contact Us',
+    aboutHistory: currentLang === 'th' ? 'ประวัติองค์กรและวิสัยทัศน์' : currentLang === 'jp' ? '沿革・ビジョン' : currentLang === 'cn' ? '公司历程与愿景' : currentLang === 'mm' ? 'ကုမ္ပဏီသမိုင်းနှင့် မျှော်မှန်းချက်' : 'History & Vision',
+    aboutTech: currentLang === 'th' ? 'เทคโนโลยีการผลิตและ AI' : currentLang === 'jp' ? '製造技術・AI' : currentLang === 'cn' ? '制造技术与AI' : currentLang === 'mm' ? 'ထုတ်လုပ်မှုနည်းပညာနှင့် AI' : 'Technology & AI',
+    aboutSus: currentLang === 'th' ? 'ความยั่งยืนและการรีไซเคิล' : currentLang === 'jp' ? 'サステナビリティ' : currentLang === 'cn' ? '可持续发展' : currentLang === 'mm' ? 'ရေရှည်တည်တံ့မှု' : 'Sustainability',
+    aboutNews: currentLang === 'th' ? 'ข่าวสารและกิจกรรม CSR' : currentLang === 'jp' ? 'ニュース・CSR' : currentLang === 'cn' ? '新闻与CSR' : currentLang === 'mm' ? 'သတင်းနှင့် CSR' : 'News & CSR',
+    aboutContact: currentLang === 'th' ? 'ติดต่อและขอใบเสนอราคา' : currentLang === 'jp' ? 'お見積り・お問い合わせ' : currentLang === 'cn' ? '询价与联系' : currentLang === 'mm' ? 'ဆက်သွယ်ရန်နှင့် စျေးနှုန်းတောင်းခံရန်' : 'Contact & Request Quote',
+    hoursPrefix: currentLang === 'th' ? 'เวลาทำการ: ' : currentLang === 'jp' ? '営業時間: ' : currentLang === 'cn' ? '营业时间: ' : currentLang === 'mm' ? 'ဖွင့်ချိန်: ' : 'Hours: ',
+  };
 
   const enabledCategories = (settings.categoryCards || []).filter((c) => c.enabled);
 
@@ -66,15 +84,14 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             </div>
 
             <p className="text-xs text-theme-text-muted leading-relaxed">
-              {settings.footerBio ||
-                'ผู้นำนวัตกรรมผลิตกระป๋องอาหารสำเร็จรูป ถังเคมีภัณฑ์ และฝาเปิดง่าย EOE มาตรฐานส่งออกสากล ด้วยเครื่องจักรอัตโนมัติความเร็วสูง'}
+              {footerBio}
             </p>
           </div>
 
           {/* Col 2: Dynamic Products List (Synced with Category Cards in Admin) */}
           <div>
             <h5 className="text-xs font-bold uppercase tracking-wider text-theme-primary mb-4">
-              ผลิตภัณฑ์บรรจุภัณฑ์
+              {labels.products}
             </h5>
             <ul className="space-y-2 text-xs text-theme-text-muted">
               {enabledCategories.length > 0 ? (
@@ -86,7 +103,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                       className="hover:text-theme-primary transition-colors flex items-center gap-1 text-left"
                     >
                       <span>
-                        {cat.titleTh} ({cat.titleEn})
+                        {isNonThai ? (cat.titleEn || cat.titleTh) : (cat.titleTh || cat.titleEn)}
                       </span>
                       <ArrowUpRight className="h-3 w-3 opacity-40" />
                     </button>
@@ -100,7 +117,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                       onClick={() => onNavigate('/products')}
                       className="hover:text-theme-primary transition-colors"
                     >
-                      กระป๋องอาหารสำเร็จรูป (Food Cans)
+                      {isNonThai ? 'Food Cans' : 'กระป๋องอาหารสำเร็จรูป (Food Cans)'}
                     </button>
                   </li>
                   <li>
@@ -109,7 +126,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                       onClick={() => onNavigate('/products')}
                       className="hover:text-theme-primary transition-colors"
                     >
-                      ถังโลหะบรรจุเคมีและสี (Chemical Pails)
+                      {isNonThai ? 'Chemical Pails' : 'ถังโลหะบรรจุเคมีและสี (Chemical Pails)'}
                     </button>
                   </li>
                 </>
@@ -120,7 +137,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
           {/* Col 3: Company & Technology */}
           <div>
             <h5 className="text-xs font-bold uppercase tracking-wider text-theme-primary mb-4">
-              เกี่ยวกับเรา
+              {labels.about}
             </h5>
             <ul className="space-y-2 text-xs text-theme-text-muted">
               <li>
@@ -129,7 +146,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   onClick={() => onNavigate('/about')}
                   className="hover:text-theme-primary transition-colors"
                 >
-                  ประวัติองค์กรและวิสัยทัศน์
+                  {labels.aboutHistory}
                 </button>
               </li>
               <li>
@@ -138,7 +155,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   onClick={() => onNavigate('/technology')}
                   className="hover:text-theme-primary transition-colors"
                 >
-                  เทคโนโลยีการผลิตและ AI
+                  {labels.aboutTech}
                 </button>
               </li>
               <li>
@@ -147,7 +164,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   onClick={() => onNavigate('/sustainability')}
                   className="hover:text-theme-primary transition-colors"
                 >
-                  ความยั่งยืนและการรีไซเคิล
+                  {labels.aboutSus}
                 </button>
               </li>
               <li>
@@ -156,7 +173,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   onClick={() => onNavigate('/news')}
                   className="hover:text-theme-primary transition-colors"
                 >
-                  ข่าวสารและกิจกรรม CSR
+                  {labels.aboutNews}
                 </button>
               </li>
               <li>
@@ -165,7 +182,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   onClick={() => onNavigate('/contact')}
                   className="hover:text-theme-primary transition-colors"
                 >
-                  ติดต่อและขอใบเสนอราคา
+                  {labels.aboutContact}
                 </button>
               </li>
             </ul>
@@ -174,12 +191,12 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
           {/* Col 4: Contact info (100% Synced with Admin Settings & Contact CMS) */}
           <div className="space-y-3">
             <h5 className="text-xs font-bold uppercase tracking-wider text-theme-primary mb-4">
-              ติดต่อเรา
+              {labels.contact}
             </h5>
             <div className="flex items-start gap-2.5 text-xs text-theme-text-muted">
               <MapPin className="h-4 w-4 text-theme-primary flex-shrink-0 mt-0.5" />
               <span className="leading-relaxed">
-                {(settings.branches && settings.branches.find((b) => b.isPrimary)?.addressTh) ||
+                {(settings.branches && (isNonThai ? (settings.branches.find((b) => b.isPrimary)?.addressEn || settings.branches.find((b) => b.isPrimary)?.addressTh) : settings.branches.find((b) => b.isPrimary)?.addressTh)) ||
                   settings.factoryAddress ||
                   '123/45 ถนนสาทรใต้ แขวงยานนาวา เขตสาทร กรุงเทพมหานคร 10120'}
               </span>
@@ -203,10 +220,8 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             <div className="flex items-center gap-2.5 text-xs text-theme-text-muted">
               <Clock className="h-4 w-4 text-theme-primary flex-shrink-0" />
               <span>
-                เวลาทำการ:{' '}
-                {(settings.branches && settings.branches.find((b) => b.isPrimary)?.businessHoursTh) ||
-                  settings.businessHours ||
-                  'จันทร์ - ศุกร์ 08:30 - 17:30 น.'}
+                {labels.hoursPrefix}
+                {businessHoursText}
               </span>
             </div>
 

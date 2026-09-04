@@ -18,6 +18,7 @@ import {
   Pin,
 } from 'lucide-react';
 import { compressImageFile } from '../../utils/imageCompressor';
+import { MultiLangSectionEditor } from './MultiLangSectionEditor';
 
 const AVAILABLE_ICONS: Record<string, React.FC<{ className?: string }>> = {
   Layers,
@@ -42,6 +43,15 @@ export const ServicesManager: React.FC = () => {
   );
   const [services, setServices] = useState<ServiceItemSetting[]>(settings.servicesList || []);
 
+  const [servicesTranslations, setServicesTranslations] = useState<any>(
+    settings.servicesTranslations || {
+      en: { badge: 'Manufacturing Services', heading: '', description: '' },
+      jp: { badge: 'OEM製造サービス', heading: '', description: '' },
+      cn: { badge: 'OEM定制加工', heading: '', description: '' },
+      mm: { badge: 'OEM ဝန်ဆောင်မှုများ', heading: '', description: '' },
+    }
+  );
+
   const [isSaving, setIsSaving] = useState(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
@@ -52,6 +62,9 @@ export const ServicesManager: React.FC = () => {
       if (settings.servicesDescription) setDescription(settings.servicesDescription);
       if (settings.servicesList && settings.servicesList.length > 0) {
         setServices(settings.servicesList);
+      }
+      if (settings.servicesTranslations) {
+        setServicesTranslations(settings.servicesTranslations);
       }
     }
   }, [settings]);
@@ -109,6 +122,7 @@ export const ServicesManager: React.FC = () => {
         servicesHeading: heading,
         servicesDescription: description,
         servicesList: services,
+        servicesTranslations,
       });
       showToast('บันทึกข้อมูลหน้าบริการเรียบร้อยแล้ว');
     } catch (err: any) {
@@ -206,6 +220,18 @@ export const ServicesManager: React.FC = () => {
             </div>
           </div>
         </div>
+
+        {/* 1.5 Multi-Language Translations (EN, JP, CN, MM) */}
+        <MultiLangSectionEditor
+          title="แปลภาษา (Multi-Language) - บริการ"
+          fields={[
+            { key: 'badge', label: 'Badge' },
+            { key: 'heading', label: 'Title / Heading' },
+            { key: 'description', label: 'Description', type: 'textarea', rows: 3 },
+          ]}
+          value={servicesTranslations}
+          onChange={setServicesTranslations}
+        />
 
         {/* Section 2: Services List */}
         <div className="rounded-2xl border border-theme-border bg-theme-surface p-6 space-y-5">

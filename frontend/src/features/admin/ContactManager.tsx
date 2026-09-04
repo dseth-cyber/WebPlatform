@@ -25,6 +25,7 @@ import {
 import { Modal } from '../../components/ui/Modal';
 import { formatGoogleMapsUrl } from '../../utils/mapUtils';
 import { ConfirmDialog } from '../../components/ui/ConfirmDialog';
+import { MultiLangSectionEditor } from './MultiLangSectionEditor';
 
 interface CustomerInquiry {
   id: string;
@@ -75,6 +76,15 @@ export const ContactManager: React.FC = () => {
   const [email, setEmail] = useState(settings.email || '');
   const [businessHours, setBusinessHours] = useState(settings.businessHours || 'จันทร์ - เสาร์ 08:00 - 17:00');
 
+  const [contactTranslations, setContactTranslations] = useState<any>(
+    settings.contactTranslations || {
+      en: { bio: '', businessHours: '' },
+      jp: { bio: '', businessHours: '' },
+      cn: { bio: '', businessHours: '' },
+      mm: { bio: '', businessHours: '' },
+    }
+  );
+
   const [inquiries, setInquiries] = useState<CustomerInquiry[]>(() => {
     const saved = localStorage.getItem('lohakit_customer_inquiries');
     return saved ? JSON.parse(saved) : INITIAL_INQUIRIES;
@@ -111,6 +121,7 @@ export const ContactManager: React.FC = () => {
       if (settings.email) setEmail(settings.email);
       if (settings.businessHours) setBusinessHours(settings.businessHours);
       if (settings.branches) setBranches(settings.branches);
+      if (settings.contactTranslations) setContactTranslations(settings.contactTranslations);
     }
   }, [settings]);
 
@@ -127,6 +138,7 @@ export const ContactManager: React.FC = () => {
         phoneNumber,
         email,
         businessHours,
+        contactTranslations,
       });
       showToast('บันทึกข้อมูลการติดต่อโรงงานลงฐานข้อมูลเรียบร้อยแล้ว!');
     } catch (err) {
@@ -378,6 +390,17 @@ export const ContactManager: React.FC = () => {
             </button>
           </div>
         </div>
+
+      {/* 1.5 Multi-Language Translations (EN, JP, CN, MM) */}
+      <MultiLangSectionEditor
+        title="แปลภาษา (Multi-Language) - ติดต่อเรา & ข้อมูลองค์กร"
+        fields={[
+          { key: 'bio', label: 'Company Bio / Overview', type: 'textarea', rows: 3 },
+          { key: 'businessHours', label: 'Business Hours' },
+        ]}
+        value={contactTranslations}
+        onChange={setContactTranslations}
+      />
 
       {/* 2. Multi-Branch Locations Manager */}
       <div className="rounded-3xl border border-theme-border bg-theme-surface p-6 sm:p-8 shadow-2xl space-y-4 text-xs">
