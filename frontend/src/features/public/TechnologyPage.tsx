@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSiteContent } from '../../hooks/useSiteContent';
 import {
@@ -9,6 +9,7 @@ import {
   Shield,
   Wrench,
   Layers,
+  Pin,
 } from 'lucide-react';
 
 const AVAILABLE_ICONS: Record<string, React.FC<{ className?: string }>> = {
@@ -26,7 +27,7 @@ export const TechnologyPage: React.FC<{ onNavigate: (path: string) => void }> = 
   const { settings } = useSiteContent();
   const isEn = i18n.language === 'en';
 
-  const cards = settings.technologyCards && settings.technologyCards.length > 0
+  const rawCards = settings.technologyCards && settings.technologyCards.length > 0
     ? settings.technologyCards
     : [
         {
@@ -63,6 +64,14 @@ export const TechnologyPage: React.FC<{ onNavigate: (path: string) => void }> = 
         },
       ];
 
+  const sortedCards = useMemo(() => {
+    return [...rawCards].sort((a: any, b: any) => {
+      if (Boolean(a.isPinned) && !Boolean(b.isPinned)) return -1;
+      if (!Boolean(a.isPinned) && Boolean(b.isPinned)) return 1;
+      return 0;
+    });
+  }, [rawCards]);
+
   return (
     <div className="mx-auto max-w-7xl px-4 pt-6 pb-16 sm:px-6 lg:px-8 space-y-12 font-sans">
       <div className="space-y-4 max-w-3xl">
@@ -79,7 +88,7 @@ export const TechnologyPage: React.FC<{ onNavigate: (path: string) => void }> = 
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        {cards.map((card) => {
+        {sortedCards.map((card) => {
           const IconComp = AVAILABLE_ICONS[card.icon] || Cpu;
 
           return (
@@ -100,15 +109,29 @@ export const TechnologyPage: React.FC<{ onNavigate: (path: string) => void }> = 
                   <div className="absolute top-3 left-3 flex h-10 w-10 items-center justify-center rounded-xl bg-black/60 backdrop-blur-md text-theme-primary border border-theme-primary/30 shadow-lg">
                     <IconComp className="h-5 w-5" />
                   </div>
+                  {Boolean(card.isPinned) && (
+                    <span className="absolute top-3 right-3 flex items-center gap-1 rounded-md bg-amber-500/90 text-slate-950 font-bold px-2 py-0.5 text-[10px] shadow-sm backdrop-blur-md">
+                      <Pin className="h-3 w-3 fill-slate-950" />
+                      <span>แนะนำ</span>
+                    </span>
+                  )}
                 </div>
               )}
               <div className="p-7 space-y-3 flex-1 flex flex-col justify-between">
                 <div className="space-y-3">
-                  {!card.image && (
-                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-theme-primary/10 text-theme-primary">
-                      <IconComp className="h-5 w-5" />
-                    </div>
-                  )}
+                  <div className="flex items-center justify-between gap-2">
+                    {!card.image && (
+                      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-theme-primary/10 text-theme-primary">
+                        <IconComp className="h-5 w-5" />
+                      </div>
+                    )}
+                    {!card.image && Boolean(card.isPinned) && (
+                      <span className="flex items-center gap-1 rounded-md bg-amber-500/20 border border-amber-500/40 px-2 py-0.5 text-[10px] font-bold text-amber-300">
+                        <Pin className="h-3 w-3 fill-amber-400 text-amber-400" />
+                        <span>📌 แนะนำ</span>
+                      </span>
+                    )}
+                  </div>
                   <h3 className="font-display text-base font-bold text-theme-text">
                     {isEn ? (card.titleEn || card.titleTh) : (card.titleTh || card.titleEn)}
                   </h3>

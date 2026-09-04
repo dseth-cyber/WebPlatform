@@ -2,12 +2,21 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNews } from '../../hooks/useNews';
 import { formatDate } from '../../utils/dateUtils';
-import { Calendar, ArrowRight } from 'lucide-react';
+import { Calendar, ArrowRight, Pin } from 'lucide-react';
 
 export const NewsPage: React.FC<{ onNavigate: (path: string) => void }> = ({ onNavigate }) => {
   const { t, i18n } = useTranslation();
   const currentLang = i18n.language || 'th';
   const { data: newsList, isLoading } = useNews(undefined, currentLang);
+
+  const sortedNews = React.useMemo(() => {
+    if (!newsList) return [];
+    return [...newsList].sort((a: any, b: any) => {
+      if (Boolean(a.isPinned) && !Boolean(b.isPinned)) return -1;
+      if (!Boolean(a.isPinned) && Boolean(b.isPinned)) return 1;
+      return 0;
+    });
+  }, [newsList]);
 
   return (
     <div className="mx-auto max-w-7xl px-4 pt-6 pb-16 sm:px-6 lg:px-8 space-y-10 font-sans">
@@ -24,14 +33,14 @@ export const NewsPage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {(newsList ?? []).map((news) => (
+        {sortedNews.map((news) => (
           <div
             key={news.id}
             onClick={() => onNavigate(`/news/${news.slug}`)}
             className="glow-card group cursor-pointer rounded-2xl border border-theme-border bg-theme-surface p-5 shadow-glass-edge flex flex-col justify-between"
           >
             <div className="space-y-4">
-              <div className="aspect-video w-full overflow-hidden rounded-xl bg-theme-surface-elevated">
+              <div className="aspect-video w-full overflow-hidden rounded-xl bg-theme-surface-elevated relative">
                 <img
                   src={news.featuredImageURL || '/images/hero-fullwidth.jpg'}
                   alt={news.title}
@@ -40,6 +49,12 @@ export const NewsPage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
                   }}
                   className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300"
                 />
+                {Boolean(news.isPinned) && (
+                  <span className="absolute top-3 left-3 flex items-center gap-1 rounded-md bg-amber-500/90 text-slate-950 font-bold px-2 py-0.5 text-[10px] shadow-sm backdrop-blur-md">
+                    <Pin className="h-3 w-3 fill-slate-950" />
+                    <span>ข่าวเด่น</span>
+                  </span>
+                )}
               </div>
 
               <div className="space-y-2">

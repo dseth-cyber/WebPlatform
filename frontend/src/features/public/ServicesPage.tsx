@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSiteContent } from '../../hooks/useSiteContent';
 import {
@@ -9,6 +9,7 @@ import {
   ShieldCheck,
   PhoneCall,
   CheckCircle,
+  Pin,
 } from 'lucide-react';
 
 const AVAILABLE_ICONS: Record<string, React.FC<{ className?: string }>> = {
@@ -25,7 +26,7 @@ export const ServicesPage: React.FC<{ onNavigate: (path: string) => void }> = ({
   const { settings } = useSiteContent();
   const isEn = i18n.language === 'en';
 
-  const services = settings.servicesList && settings.servicesList.length > 0
+  const rawServices = settings.servicesList && settings.servicesList.length > 0
     ? settings.servicesList
     : [
         {
@@ -69,6 +70,14 @@ export const ServicesPage: React.FC<{ onNavigate: (path: string) => void }> = ({
         },
       ];
 
+  const sortedServices = useMemo(() => {
+    return [...rawServices].sort((a: any, b: any) => {
+      if (Boolean(a.isPinned) && !Boolean(b.isPinned)) return -1;
+      if (!Boolean(a.isPinned) && Boolean(b.isPinned)) return 1;
+      return 0;
+    });
+  }, [rawServices]);
+
   return (
     <div className="mx-auto max-w-7xl px-4 pt-6 pb-16 sm:px-6 lg:px-8 space-y-16 font-sans">
       <div className="space-y-4 max-w-3xl">
@@ -85,7 +94,7 @@ export const ServicesPage: React.FC<{ onNavigate: (path: string) => void }> = ({
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        {services.map((srv) => {
+        {sortedServices.map((srv) => {
           const IconComp = AVAILABLE_ICONS[srv.icon] || Layers;
 
           return (
@@ -106,15 +115,29 @@ export const ServicesPage: React.FC<{ onNavigate: (path: string) => void }> = ({
                   <div className="absolute top-3 left-3 flex h-10 w-10 items-center justify-center rounded-xl bg-black/60 backdrop-blur-md text-theme-primary border border-theme-primary/30 shadow-lg">
                     <IconComp className="h-5 w-5" />
                   </div>
+                  {Boolean(srv.isPinned) && (
+                    <span className="absolute top-3 right-3 flex items-center gap-1 rounded-md bg-amber-500/90 text-slate-950 font-bold px-2 py-0.5 text-[10px] shadow-sm backdrop-blur-md">
+                      <Pin className="h-3 w-3 fill-slate-950" />
+                      <span>บริการแนะนำ</span>
+                    </span>
+                  )}
                 </div>
               )}
               <div className="p-7 space-y-6 flex-1 flex flex-col justify-between">
                 <div className="space-y-4">
-                  {!srv.image && (
-                    <div className="rounded-2xl bg-theme-primary/10 p-3.5 w-fit border border-theme-primary/20 text-theme-primary">
-                      <IconComp className="h-7 w-7" />
-                    </div>
-                  )}
+                  <div className="flex items-center justify-between gap-2">
+                    {!srv.image && (
+                      <div className="rounded-2xl bg-theme-primary/10 p-3.5 w-fit border border-theme-primary/20 text-theme-primary">
+                        <IconComp className="h-7 w-7" />
+                      </div>
+                    )}
+                    {!srv.image && Boolean(srv.isPinned) && (
+                      <span className="flex items-center gap-1 rounded-md bg-amber-500/20 border border-amber-500/40 px-2 py-0.5 text-[10px] font-bold text-amber-300">
+                        <Pin className="h-3 w-3 fill-amber-400 text-amber-400" />
+                        <span>📌 บริการแนะนำ</span>
+                      </span>
+                    )}
+                  </div>
                   <h3 className="font-display text-lg font-bold text-theme-text">
                     {isEn ? (srv.titleEn || srv.titleTh) : (srv.titleTh || srv.titleEn)}
                   </h3>

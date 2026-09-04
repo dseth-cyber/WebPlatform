@@ -14,6 +14,7 @@ import {
   DollarSign,
   ToggleLeft,
   ToggleRight,
+  Pin,
 } from 'lucide-react';
 
 export const CareersManager: React.FC = () => {
@@ -74,6 +75,7 @@ export const CareersManager: React.FC = () => {
       requirements: ['วุฒิการศึกษาตามที่กำหนด', 'มีทักษะการทำงานเป็นทีม'],
       salaryRange: 'ตามตกลง / โครงสร้างบริษัท',
       active: true,
+      isPinned: false,
     };
     setJobs([...jobs, newJob]);
   };
@@ -272,6 +274,12 @@ export const CareersManager: React.FC = () => {
                         >
                           {job.active ? 'กำลังเปิดรับสมัคร (Active)' : 'ปิดรับสมัครชั่วคราว'}
                         </span>
+                        {Boolean(job.isPinned) && (
+                          <span className="flex items-center gap-1 rounded px-2 py-0.5 text-[10px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30">
+                            <Pin className="h-3 w-3 fill-amber-400 text-amber-400" />
+                            <span>ปักหมุดหน้าแรก</span>
+                          </span>
+                        )}
                       </div>
                       <div className="text-xs font-bold text-theme-text truncate max-w-[300px]">
                         {job.titleTh}
@@ -280,6 +288,32 @@ export const CareersManager: React.FC = () => {
                   </div>
 
                   <div className="flex items-center gap-2">
+                    {/* 📌 Pin Toggle Button */}
+                    <button
+                      type="button"
+                      onClick={async () => {
+                        const updated = [...jobs];
+                        const nextPinned = !Boolean(updated[idx].isPinned);
+                        updated[idx] = { ...updated[idx], isPinned: nextPinned };
+                        setJobs(updated);
+                        await updateSettings({ careersJobs: updated });
+                        showToast(
+                          nextPinned
+                            ? `📌 ปักหมุดตำแหน่งงาน "${job.titleTh || 'นี้'}" บนหน้าแรกแล้ว`
+                            : `ยกเลิกการปักหมุด "${job.titleTh || 'นี้'}" แล้ว`
+                        );
+                      }}
+                      className={`flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-bold transition-all ${
+                        Boolean(job.isPinned)
+                          ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40 shadow-sm'
+                          : 'bg-theme-surface text-theme-text-muted hover:text-theme-text border border-theme-border'
+                      }`}
+                      title={Boolean(job.isPinned) ? 'คลิกเพื่อยกเลิกการปักหมุดหน้าแรก' : 'คลิกเพื่อปักหมุดแสดงที่หน้าแรก'}
+                    >
+                      <Pin className={`h-3.5 w-3.5 ${Boolean(job.isPinned) ? 'fill-amber-400 text-amber-400' : ''}`} />
+                      <span>{Boolean(job.isPinned) ? '📌 ปักหมุดหน้าแรก' : 'ปักหมุดหน้าแรก'}</span>
+                    </button>
+
                     {/* Toggle Active Switch */}
                     <button
                       type="button"

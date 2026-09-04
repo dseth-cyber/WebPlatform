@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useProducts, useCategories } from '../../hooks/useProducts';
 import { SearchableSelect, SelectOption } from '../../components/ui/SearchableSelect';
-import { Search, ArrowRight, Download, SlidersHorizontal, Package, Plus, Settings } from 'lucide-react';
+import { Search, ArrowRight, Download, SlidersHorizontal, Package, Plus, Settings, Pin } from 'lucide-react';
 
 import { useSiteContent } from '../../hooks/useSiteContent';
 
@@ -41,6 +41,15 @@ export const ProductsPage: React.FC<{ onNavigate: (path: string) => void; curren
 
   const { data: categories } = useCategories(currentLang);
   const { data: products, isLoading } = useProducts(selectedCategory, searchTerm, currentLang);
+
+  const sortedProducts = useMemo(() => {
+    if (!products) return [];
+    return [...products].sort((a: any, b: any) => {
+      if (Boolean(a.isPinned) && !Boolean(b.isPinned)) return -1;
+      if (!Boolean(a.isPinned) && Boolean(b.isPinned)) return 1;
+      return 0;
+    });
+  }, [products]);
 
   // Unified Category Options combining Homepage Categories and Catalog Categories
   const categoryOptions: SelectOption[] = [
@@ -133,14 +142,14 @@ export const ProductsPage: React.FC<{ onNavigate: (path: string) => void; curren
             <div key={i} className="h-96 rounded-2xl bg-theme-surface animate-pulse border border-theme-border" />
           ))}
         </div>
-      ) : (products ?? []).length === 0 ? (
+      ) : sortedProducts.length === 0 ? (
         <div className="rounded-2xl border border-dashed border-theme-border p-12 text-center text-theme-text-muted space-y-2">
           <Package className="h-10 w-10 mx-auto text-theme-text-dim" />
           <p className="text-sm font-semibold">{t('common.emptyState')}</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {(products ?? []).map((product) => (
+          {sortedProducts.map((product) => (
             <div
               key={product.id}
               onClick={() => onNavigate(`/products/${product.slug}`)}
@@ -157,6 +166,12 @@ export const ProductsPage: React.FC<{ onNavigate: (path: string) => void; curren
                   <span className="absolute top-3 left-3 rounded-md bg-black/75 px-2.5 py-1 text-xs font-mono font-bold text-theme-primary backdrop-blur-md">
                     {product.sku}
                   </span>
+                  {Boolean(product.isPinned) && (
+                    <span className="absolute top-3 right-3 flex items-center gap-1 rounded-md bg-amber-500/90 text-slate-950 font-bold px-2 py-0.5 text-[10px] shadow-sm backdrop-blur-md">
+                      <Pin className="h-3 w-3 fill-slate-950" />
+                      <span>แนะนำ</span>
+                    </span>
+                  )}
                 </div>
 
                 <div>

@@ -14,6 +14,7 @@ import {
   ChevronRight,
   ShieldCheck,
   Building,
+  Pin,
 } from 'lucide-react';
 
 export const CareersPage: React.FC<{ onNavigate: (path: string) => void }> = ({ onNavigate }) => {
@@ -30,7 +31,12 @@ export const CareersPage: React.FC<{ onNavigate: (path: string) => void }> = ({ 
   const [applicantNote, setApplicantNote] = useState('');
   const [applySuccess, setApplySuccess] = useState(false);
 
-  const activeJobs = (settings.careersJobs || []).filter((j) => j.active);
+  const activeJobs = (settings.careersJobs || []).filter((j) => j.active !== false);
+  const sortedJobs = [...activeJobs].sort((a, b) => {
+    if (Boolean(a.isPinned) && !Boolean(b.isPinned)) return -1;
+    if (!Boolean(a.isPinned) && Boolean(b.isPinned)) return 1;
+    return 0;
+  });
 
   const handleOpenApply = (job: CareerJobSetting) => {
     setSelectedJob(job);
@@ -124,16 +130,24 @@ export const CareersPage: React.FC<{ onNavigate: (path: string) => void }> = ({ 
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {activeJobs.map((job) => (
+            {sortedJobs.map((job) => (
               <div
                 key={job.id}
                 className="glow-card flex flex-col justify-between rounded-2xl border border-theme-border bg-theme-surface p-6 space-y-6 transition-all"
               >
                 <div className="space-y-4">
                   <div className="flex items-center justify-between gap-2">
-                    <span className="rounded-md bg-theme-primary/15 border border-theme-primary/30 px-2.5 py-1 text-[11px] font-bold text-theme-primary">
-                      {job.department}
-                    </span>
+                    <div className="flex items-center gap-2">
+                      <span className="rounded-md bg-theme-primary/15 border border-theme-primary/30 px-2.5 py-1 text-[11px] font-bold text-theme-primary">
+                        {job.department}
+                      </span>
+                      {Boolean(job.isPinned) && (
+                        <span className="flex items-center gap-1 rounded-md bg-amber-500/20 border border-amber-500/40 px-2 py-0.5 text-[10px] font-bold text-amber-300">
+                          <Pin className="h-3 w-3 fill-amber-400 text-amber-400" />
+                          <span>📌 เปิดรับด่วน / แนะนำ</span>
+                        </span>
+                      )}
+                    </div>
                     <span className="text-[11px] font-semibold text-emerald-400">
                       {job.type}
                     </span>

@@ -177,13 +177,12 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
     ? pinnedSus
     : rawSus.slice(0, 3);
 
-  // 📌 News with Pin sorting
+  // 📌 News with Pin filtering
   const allNews = newsArticles || [];
   const activeNews = allNews.filter((n: any) => n.isActive !== false);
-  const pinnedNews = activeNews.filter((n: any) => n.isPinned);
-  const unpinnedNews = activeNews.filter((n: any) => !n.isPinned);
+  const pinnedNews = activeNews.filter((n: any) => Boolean(n.isPinned));
   const displayedNews = pinnedNews.length > 0
-    ? [...pinnedNews, ...unpinnedNews].slice(0, 3)
+    ? pinnedNews
     : activeNews.slice(0, 3);
 
   // Quick inquiry state
@@ -1321,39 +1320,55 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
       )}
 
       {/* Open Job Positions preview */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {(settings.careersJobs || []).filter((j) => j.active).slice(0, 3).map((job) => (
-          <div
-            key={job.id}
-            className="glow-card flex flex-col justify-between rounded-2xl border border-theme-border bg-theme-surface p-6 space-y-4 transition-all"
-          >
-            <div className="space-y-2.5">
-              <div className="flex items-center gap-2 text-[10px] font-mono text-theme-primary font-bold">
-                <Briefcase className="h-3.5 w-3.5" />
-                <span>{job.department}</span>
-              </div>
-              <h3 className="font-display font-bold text-base text-theme-text">
-                {isEn ? (job.titleEn || job.titleTh) : (job.titleTh || job.titleEn)}
-              </h3>
-              <p className="text-xs text-theme-text-muted line-clamp-2">
-                {job.description}
-              </p>
-            </div>
+      {(() => {
+        const activeJobs = (settings.careersJobs || []).filter((j) => j.active !== false);
+        const pinnedJobs = activeJobs.filter((j) => Boolean(j.isPinned));
+        const jobsToShow = pinnedJobs.length > 0 ? pinnedJobs : activeJobs.slice(0, 3);
 
-            <div className="pt-3 border-t border-theme-border flex items-center justify-between">
-              <span className="text-[11px] text-theme-text-dim">{job.location}</span>
-              <button
-                type="button"
-                onClick={() => onNavigate('/careers')}
-                className="text-xs font-bold text-theme-primary hover:underline flex items-center gap-1"
+        return (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {jobsToShow.map((job) => (
+              <div
+                key={job.id}
+                className="glow-card flex flex-col justify-between rounded-2xl border border-theme-border bg-theme-surface p-6 space-y-4 transition-all"
               >
-                <span>สมัครงาน</span>
-                <ArrowRight className="h-3 w-3" />
-              </button>
-            </div>
+                <div className="space-y-2.5">
+                  <div className="flex items-center justify-between gap-2">
+                    <div className="flex items-center gap-2 text-[10px] font-mono text-theme-primary font-bold">
+                      <Briefcase className="h-3.5 w-3.5" />
+                      <span>{job.department}</span>
+                    </div>
+                    {Boolean(job.isPinned) && (
+                      <span className="flex items-center gap-1 rounded-md bg-amber-500/20 border border-amber-500/40 px-2 py-0.5 text-[10px] font-bold text-amber-300">
+                        <Pin className="h-3 w-3 fill-amber-400 text-amber-400" />
+                        <span>📌 เปิดรับด่วน / แนะนำ</span>
+                      </span>
+                    )}
+                  </div>
+                  <h3 className="font-display font-bold text-base text-theme-text">
+                    {isEn ? (job.titleEn || job.titleTh) : (job.titleTh || job.titleEn)}
+                  </h3>
+                  <p className="text-xs text-theme-text-muted line-clamp-2">
+                    {job.description}
+                  </p>
+                </div>
+
+                <div className="pt-3 border-t border-theme-border flex items-center justify-between">
+                  <span className="text-[11px] text-theme-text-dim">{job.location}</span>
+                  <button
+                    type="button"
+                    onClick={() => onNavigate('/careers')}
+                    className="text-xs font-bold text-theme-primary hover:underline flex items-center gap-1"
+                  >
+                    <span>สมัครงาน</span>
+                    <ArrowRight className="h-3 w-3" />
+                  </button>
+                </div>
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
+        );
+      })()}
     </section>
   );
 

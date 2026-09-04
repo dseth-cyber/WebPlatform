@@ -79,6 +79,7 @@ export interface CareerJobSetting {
   requirements: string[];
   salaryRange?: string;
   active: boolean;
+  isPinned?: boolean; // 📌 ปักหมุดแสดงที่หน้าแรก
 }
 
 export interface BranchLocationSetting {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSiteContent, SustainabilityCardSetting } from '../../hooks/useSiteContent';
 import {
@@ -12,6 +12,7 @@ import {
   ArrowRight,
   CheckCircle,
   Sparkles,
+  Pin,
 } from 'lucide-react';
 import { Modal } from '../../components/ui/Modal';
 
@@ -32,7 +33,7 @@ export const SustainabilityPage: React.FC<{ onNavigate: (path: string) => void }
 
   const [selectedCard, setSelectedCard] = useState<SustainabilityCardSetting | null>(null);
 
-  const cards: SustainabilityCardSetting[] = settings.sustainabilityCards && settings.sustainabilityCards.length > 0
+  const rawCards: SustainabilityCardSetting[] = settings.sustainabilityCards && settings.sustainabilityCards.length > 0
     ? settings.sustainabilityCards
     : [
         {
@@ -96,6 +97,14 @@ export const SustainabilityPage: React.FC<{ onNavigate: (path: string) => void }
     }
   };
 
+  const sortedCards = useMemo(() => {
+    return [...rawCards].sort((a: any, b: any) => {
+      if (Boolean(a.isPinned) && !Boolean(b.isPinned)) return -1;
+      if (!Boolean(a.isPinned) && Boolean(b.isPinned)) return 1;
+      return 0;
+    });
+  }, [rawCards]);
+
   return (
     <div className="mx-auto max-w-7xl px-4 pt-6 pb-16 sm:px-6 lg:px-8 space-y-12 font-sans">
       <div className="space-y-4 max-w-3xl">
@@ -113,7 +122,7 @@ export const SustainabilityPage: React.FC<{ onNavigate: (path: string) => void }
 
       {/* Cards Grid */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        {cards.map((card) => {
+        {sortedCards.map((card) => {
           const IconComp = AVAILABLE_ICONS[card.icon] || Leaf;
           const title = isEn ? (card.titleEn || card.titleTh) : (card.titleTh || card.titleEn);
           const desc = isEn ? (card.descEn || card.descTh) : (card.descTh || card.descEn);
@@ -137,15 +146,29 @@ export const SustainabilityPage: React.FC<{ onNavigate: (path: string) => void }
                   <div className="absolute top-3 left-3 flex h-10 w-10 items-center justify-center rounded-xl bg-black/60 backdrop-blur-md text-emerald-400 border border-emerald-500/30 shadow-lg">
                     <IconComp className="h-5 w-5" />
                   </div>
+                  {Boolean(card.isPinned) && (
+                    <span className="absolute top-3 right-3 flex items-center gap-1 rounded-md bg-amber-500/90 text-slate-950 font-bold px-2 py-0.5 text-[10px] shadow-sm backdrop-blur-md">
+                      <Pin className="h-3 w-3 fill-slate-950" />
+                      <span>นโยบายแนะนำ</span>
+                    </span>
+                  )}
                 </div>
               )}
               <div className="p-7 space-y-4 flex-1 flex flex-col justify-between">
                 <div className="space-y-3">
-                  {!card.image && (
-                    <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-400">
-                      <IconComp className="h-6 w-6" />
-                    </div>
-                  )}
+                  <div className="flex items-center justify-between gap-2">
+                    {!card.image && (
+                      <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-400">
+                        <IconComp className="h-6 w-6" />
+                      </div>
+                    )}
+                    {!card.image && Boolean(card.isPinned) && (
+                      <span className="flex items-center gap-1 rounded-md bg-amber-500/20 border border-amber-500/40 px-2 py-0.5 text-[10px] font-bold text-amber-300">
+                        <Pin className="h-3 w-3 fill-amber-400 text-amber-400" />
+                        <span>📌 นโยบายแนะนำ</span>
+                      </span>
+                    )}
+                  </div>
                   <h3 className="font-display text-base font-bold text-theme-text group-hover:text-emerald-400 transition-colors">
                     {title}
                   </h3>
