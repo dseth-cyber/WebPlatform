@@ -507,13 +507,6 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
                 }}
                 className="glow-card group cursor-pointer rounded-2xl border border-theme-border bg-theme-surface overflow-hidden shadow-lg flex flex-col justify-between transition-all hover:border-theme-primary relative"
               >
-                {prod.isPinned && (
-                  <div className="absolute top-2.5 right-2.5 z-10 flex items-center gap-1 rounded-full bg-amber-500/95 backdrop-blur-md px-2 py-0.5 text-[9px] font-black text-black shadow-md border border-amber-400/50">
-                    <Pin className="h-2.5 w-2.5 fill-black text-black" />
-                    <span>แนะนำ</span>
-                  </div>
-                )}
-
                 <div className="aspect-[4/3] w-full overflow-hidden bg-white p-4 flex items-center justify-center">
                   <img
                     src={prod.primaryImageURL || prod.featuredImageUrl || '/images/cat-round-cans.jpg'}
@@ -579,12 +572,6 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
                 onClick={() => onNavigate(cat.path)}
                 className="glow-card group cursor-pointer rounded-2xl border border-theme-border bg-theme-surface overflow-hidden shadow-lg flex flex-col justify-between transition-colors relative"
               >
-                {cat.isPinned && (
-                  <div className="absolute top-2.5 right-2.5 z-10 flex items-center gap-1 rounded-full bg-amber-500/90 backdrop-blur-md px-2 py-0.5 text-[9px] font-black text-black shadow-md border border-amber-400/50">
-                    <Pin className="h-2.5 w-2.5 fill-black text-black" />
-                    <span>แนะนำ</span>
-                  </div>
-                )}
                 <div className="aspect-[4/3] w-full overflow-hidden bg-white p-3">
                   <img
                     src={cat.image}
@@ -669,12 +656,6 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
               }}
               className="glow-card group cursor-pointer flex flex-col justify-between rounded-2xl border border-theme-border bg-theme-surface overflow-hidden hover:border-theme-primary/60 hover:shadow-2xl hover:-translate-y-1 transition-all shadow-xl relative"
             >
-              {srv.isPinned && (
-                <div className="absolute top-3 right-3 z-10 flex items-center gap-1 rounded-full bg-amber-500/90 backdrop-blur-md px-2.5 py-0.5 text-[10px] font-black text-black shadow-md border border-amber-400/50">
-                  <Pin className="h-3 w-3 fill-black text-black" />
-                  <span>แนะนำ</span>
-                </div>
-              )}
               {srv.image && (
                 <div className="relative h-48 w-full overflow-hidden bg-slate-900 border-b border-theme-border/50">
                   <img
@@ -786,12 +767,6 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
               }}
               className="glow-card group cursor-pointer flex flex-col justify-between rounded-2xl border border-theme-border bg-theme-surface overflow-hidden hover:border-theme-primary/60 hover:shadow-2xl hover:-translate-y-1 transition-all shadow-xl relative"
             >
-              {card.isPinned && (
-                <div className="absolute top-3 right-3 z-10 flex items-center gap-1 rounded-full bg-amber-500/90 backdrop-blur-md px-2.5 py-0.5 text-[10px] font-black text-black shadow-md border border-amber-400/50">
-                  <Pin className="h-3 w-3 fill-black text-black" />
-                  <span>ไฮไลท์</span>
-                </div>
-              )}
               {card.image && (
                 <div className="relative h-56 w-full overflow-hidden bg-slate-900 border-b border-theme-border/50">
                   <img
@@ -891,12 +866,6 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
               }}
               className="glow-card group cursor-pointer flex flex-col justify-between rounded-2xl border border-emerald-500/30 bg-theme-surface overflow-hidden hover:border-emerald-500 hover:shadow-2xl hover:-translate-y-1 transition-all shadow-xl relative"
             >
-              {card.isPinned && (
-                <div className="absolute top-3 right-3 z-10 flex items-center gap-1 rounded-full bg-emerald-400 backdrop-blur-md px-2.5 py-0.5 text-[10px] font-black text-black shadow-md border border-emerald-300">
-                  <Pin className="h-3 w-3 fill-black text-black" />
-                  <span>นโยบายหลัก</span>
-                </div>
-              )}
               {card.image && (
                 <div className="relative h-48 w-full overflow-hidden bg-slate-900 border-b border-theme-border/50">
                   <img
@@ -999,12 +968,6 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
                   }}
                   className="glow-card group cursor-pointer flex flex-col justify-between rounded-2xl border border-theme-border bg-theme-surface overflow-hidden hover:border-theme-primary/60 hover:shadow-2xl hover:-translate-y-1 transition-all shadow-xl relative"
                 >
-                  {item.isPinned && (
-                    <div className="absolute top-3 right-3 z-10 flex items-center gap-1 rounded-full bg-amber-500/90 backdrop-blur-md px-2.5 py-0.5 text-[10px] font-black text-black shadow-md border border-amber-400/50">
-                      <Pin className="h-3 w-3 fill-black text-black" />
-                      <span>ข่าวเด่น</span>
-                    </div>
-                  )}
                   <div className="relative h-48 w-full overflow-hidden bg-slate-900">
                     <img
                       src={itemImage}
@@ -1333,17 +1296,9 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
                 className="glow-card flex flex-col justify-between rounded-2xl border border-theme-border bg-theme-surface p-6 space-y-4 transition-all"
               >
                 <div className="space-y-2.5">
-                  <div className="flex items-center justify-between gap-2">
-                    <div className="flex items-center gap-2 text-[10px] font-mono text-theme-primary font-bold">
-                      <Briefcase className="h-3.5 w-3.5" />
-                      <span>{job.department}</span>
-                    </div>
-                    {Boolean(job.isPinned) && (
-                      <span className="flex items-center gap-1 rounded-md bg-amber-500/20 border border-amber-500/40 px-2 py-0.5 text-[10px] font-bold text-amber-300">
-                        <Pin className="h-3 w-3 fill-amber-400 text-amber-400" />
-                        <span>📌 เปิดรับด่วน / แนะนำ</span>
-                      </span>
-                    )}
+                  <div className="flex items-center gap-2 text-[10px] font-mono text-theme-primary font-bold">
+                    <Briefcase className="h-3.5 w-3.5" />
+                    <span>{job.department}</span>
                   </div>
                   <h3 className="font-display font-bold text-base text-theme-text">
                     {isEn ? (job.titleEn || job.titleTh) : (job.titleTh || job.titleEn)}
