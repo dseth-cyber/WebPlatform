@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from '../../theme/ThemeProvider';
 import { ThemeMode } from '../../types/theme';
-import { useSiteContent, updateBrowserFavicon, BranchLocationSetting } from '../../hooks/useSiteContent';
+import { useSiteContent, updateBrowserFavicon, BranchLocationSetting, CategoryCardSetting } from '../../hooks/useSiteContent';
 import {
   Settings,
   Building2,
@@ -40,6 +40,7 @@ import {
   ExternalLink,
 } from 'lucide-react';
 import { compressImageFile } from '../../utils/imageCompressor';
+import { Modal } from '../../components/ui/Modal';
 
 export const SettingsManager: React.FC = () => {
   const { t } = useTranslation();
@@ -221,6 +222,99 @@ export const SettingsManager: React.FC = () => {
     await updateSettings({ categoryCards: categories });
     setFormState((prev) => ({ ...prev, categoryCards: categories }));
     showToast(`เปลี่ยนสถานะการแสดงผล "${categories[index].titleTh}" เรียบร้อยแล้ว`);
+  };
+
+  // Category Edit / Add Modal State
+  const [categoryModalOpen, setCategoryModalOpen] = useState(false);
+  const [editingCatIdx, setEditingCatIdx] = useState<number | null>(null);
+  const [catFormId, setCatFormId] = useState('');
+  const [catFormTitleTh, setCatFormTitleTh] = useState('');
+  const [catFormTitleEn, setCatFormTitleEn] = useState('');
+  const [catFormImage, setCatFormImage] = useState('');
+  const [catFormPath, setCatFormPath] = useState('');
+  const [catFormPinned, setCatFormPinned] = useState(false);
+  const [catFormEnabled, setCatFormEnabled] = useState(true);
+
+  const handleOpenEditCategory = (idx: number) => {
+    const cat = settings.categoryCards?.[idx];
+    if (!cat) return;
+    setEditingCatIdx(idx);
+    setCatFormId(cat.id);
+    setCatFormTitleTh(cat.titleTh);
+    setCatFormTitleEn(cat.titleEn);
+    setCatFormImage(cat.image);
+    setCatFormPath(cat.path);
+    setCatFormPinned(cat.isPinned || false);
+    setCatFormEnabled(cat.enabled !== false);
+    setCategoryModalOpen(true);
+  };
+
+  const handleOpenAddCategory = () => {
+    setEditingCatIdx(null);
+    const newId = 'cat-' + Date.now();
+    setCatFormId(newId);
+    setCatFormTitleTh('');
+    setCatFormTitleEn('');
+    setCatFormImage('/images/cat-round-cans.jpg');
+    setCatFormPath('/products?category=' + newId);
+    setCatFormPinned(false);
+    setCatFormEnabled(true);
+    setCategoryModalOpen(true);
+  };
+
+  const handleCatImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      try {
+        showToast('กำลังประมวลผลรูปภาพ...');
+        const optimized = await compressImageFile(file, 800, 600, 0.85);
+        setCatFormImage(optimized);
+        showToast('อัปโหลดรูปภาพสำเร็จ!');
+      } catch (err) {
+        showToast('เกิดข้อผิดพลาดในการโหลดรูปภาพ');
+      }
+    }
+  };
+
+  const handleSaveCategory = async () => {
+    if (!catFormTitleTh.trim()) {
+      showToast('กรุณากรอกชื่อหมวดหมู่ภาษาไทย');
+      return;
+    }
+    const currentList = [...(settings.categoryCards || [])];
+    const catData: CategoryCardSetting = {
+      id: catFormId || ('cat-' + Date.now()),
+      titleTh: catFormTitleTh.trim(),
+      titleEn: catFormTitleEn.trim(),
+      image: catFormImage.trim() || '/images/cat-round-cans.jpg',
+      path: catFormPath.trim() || `/products?category=${catFormId}`,
+      isPinned: catFormPinned,
+      enabled: catFormEnabled,
+    };
+
+    if (editingCatIdx !== null && currentList[editingCatIdx]) {
+      currentList[editingCatIdx] = catData;
+      showToast(`บันทึกการแก้ไขหมวดหมู่ "${catData.titleTh}" เรียบร้อยแล้ว`);
+    } else {
+      currentList.push(catData);
+      showToast(`เพิ่มหมวดหมู่ใหม่ "${catData.titleTh}" เรียบร้อยแล้ว`);
+    }
+
+    await updateSettings({ categoryCards: currentList });
+    setFormState((prev) => ({ ...prev, categoryCards: currentList }));
+    setCategoryModalOpen(false);
+  };
+
+  const handleDeleteCategory = async (idx: number) => {
+    const cat = settings.categoryCards?.[idx];
+    if (!cat) return;
+    if (confirm(`คุณต้องการลบหมวดหมู่ "${cat.titleTh}" หรือไม่?`)) {
+      const currentList = [...(settings.categoryCards || [])];
+      currentList.splice(idx, 1);
+      await updateSettings({ categoryCards: currentList });
+      setFormState((prev) => ({ ...prev, categoryCards: currentList }));
+      showToast(`ลบหมวดหมู่ "${cat.titleTh}" เรียบร้อยแล้ว`);
+    }
   };
 
   const handleSaveAll = () => {
@@ -827,68 +921,118 @@ export const SettingsManager: React.FC = () => {
         </div>
       </div>
 
-      {/* 4. HOMEPAGE CATEGORY CARDS PIN & VISIBILITY */}
+      {/* 4. HOMEPAGE CATEGORY CARDS & IMAGE MANAGER */}
       <div className="rounded-3xl border border-theme-border bg-theme-surface p-6 sm:p-8 shadow-2xl space-y-4">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-theme-border pb-3">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-theme-border pb-3">
           <div>
             <h3 className="font-display text-sm font-bold text-theme-text flex items-center gap-2">
               <Package className="h-4 w-4 text-theme-primary" />
-              <span>จัดการปักหมุดหมวดหมู่สินค้าหน้าแรก (Homepage Category Cards Manager)</span>
+              <span>จัดการหมวดหมู่สินค้าและรูปภาพหน้าแรก (Homepage Category Cards & Image Manager)</span>
             </h3>
             <p className="text-[11px] text-theme-text-muted mt-0.5">
-              💡 คลิกปุ่ม 📌 เพื่อปักหมุดหมวดหมู่สินค้าเด่นที่จะนำขึ้นแสดงบนหน้าแรก หรือเปิด/ปิดการแสดงผล
+              💡 คลิกปุ่ม <strong>"✏️ แก้ไขรูป/ข้อมูล"</strong> เพื่ออัปโหลดเปลี่ยนรูปภาพหมวดหมู่ แก้ไขชื่อภาษาไทย/อังกฤษ หรือปุ่ม 📌 ปักหมุดบนหน้าแรก
             </p>
           </div>
+
+          <button
+            type="button"
+            onClick={handleOpenAddCategory}
+            className="btn-primary-action text-xs font-black px-4 py-2 shadow-lg flex items-center gap-1.5 self-start sm:self-auto"
+          >
+            <Plus className="h-4 w-4 text-black" />
+            <span>+ เพิ่มหมวดหมู่ใหม่</span>
+          </button>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 pt-2">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 pt-2">
           {(settings.categoryCards || []).map((cat, idx) => (
             <div
               key={cat.id}
-              className="flex items-center justify-between p-3 rounded-2xl border border-theme-border bg-theme-surface-elevated/60 gap-3"
+              className="flex flex-col justify-between p-4 rounded-2xl border border-theme-border bg-theme-surface-elevated/60 gap-3 hover:border-theme-primary/40 transition-all shadow-sm"
             >
-              <div className="flex items-center gap-2.5 min-w-0">
-                <img
-                  src={cat.image}
-                  alt={cat.titleTh}
-                  className="h-10 w-10 object-contain rounded-xl bg-white p-1 border border-theme-border"
-                  onError={(e) => {
-                    (e.target as HTMLImageElement).src = '/images/cat-round-cans.jpg';
-                  }}
-                />
-                <div className="min-w-0">
-                  <div className="text-xs font-bold text-theme-text truncate">{cat.titleTh}</div>
-                  <div className="text-[10px] text-theme-text-muted truncate font-mono">{cat.titleEn}</div>
+              <div className="flex items-start gap-3">
+                <div className="relative group/img flex-shrink-0">
+                  <img
+                    src={cat.image}
+                    alt={cat.titleTh}
+                    className="h-16 w-16 object-contain rounded-xl bg-white p-1.5 border border-theme-border shadow-inner"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = '/images/cat-round-cans.jpg';
+                    }}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => handleOpenEditCategory(idx)}
+                    className="absolute inset-0 bg-black/60 rounded-xl opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center text-[10px] text-white font-bold"
+                    title="คลิกเพื่อเปลี่ยนรูปภาพ"
+                  >
+                    เปลี่ยนรูป
+                  </button>
+                </div>
+
+                <div className="min-w-0 flex-1 space-y-1">
+                  <div className="flex items-center justify-between gap-1">
+                    <span className="text-xs font-black text-theme-text truncate">{cat.titleTh}</span>
+                    {cat.isPinned && (
+                      <span className="flex items-center gap-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40 px-1.5 py-0.5 text-[9px] font-bold flex-shrink-0">
+                        <Pin className="h-2 w-2 fill-amber-400 text-amber-400" />
+                        ปักหมุด
+                      </span>
+                    )}
+                  </div>
+                  <div className="text-[10px] text-theme-text-muted truncate font-mono uppercase">{cat.titleEn}</div>
+                  <div className="text-[10px] text-theme-primary/80 truncate font-mono">{cat.path}</div>
                 </div>
               </div>
 
-              <div className="flex items-center gap-1.5 flex-shrink-0">
+              <div className="flex items-center justify-between pt-2 border-t border-theme-border/50 gap-2">
                 <button
                   type="button"
-                  onClick={() => handleToggleCategoryPin(idx)}
-                  className={`flex items-center gap-1 rounded-xl px-2.5 py-1.5 text-[11px] font-bold transition-all ${
-                    cat.isPinned
-                      ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40 shadow-sm'
-                      : 'bg-theme-surface text-theme-text-muted hover:text-amber-400 border border-theme-border'
-                  }`}
-                  title={cat.isPinned ? 'ยกเลิกการปักหมุด' : 'ปักหมุดหมวดหมู่นี้บนหน้าแรก'}
+                  onClick={() => handleOpenEditCategory(idx)}
+                  className="flex items-center gap-1 rounded-xl px-2.5 py-1.5 text-[11px] font-bold bg-theme-primary/10 text-theme-primary hover:bg-theme-primary hover:text-black transition-all border border-theme-primary/20"
                 >
-                  <Pin className={`h-3 w-3 ${cat.isPinned ? 'fill-amber-400 text-amber-400' : ''}`} />
-                  <span>{cat.isPinned ? '📌 ปักหมุด' : 'ปักหมุด'}</span>
+                  <Edit className="h-3 w-3" />
+                  <span>แก้ไขรูป & ข้อมูล</span>
                 </button>
 
-                <button
-                  type="button"
-                  onClick={() => handleToggleCategoryEnabled(idx)}
-                  className={`flex items-center gap-1 rounded-xl px-2.5 py-1.5 text-[11px] font-bold transition-all ${
-                    cat.enabled !== false
-                      ? 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/30'
-                      : 'bg-slate-500/15 text-slate-400 border border-slate-500/30'
-                  }`}
-                  title={cat.enabled !== false ? 'คลิกเพื่อซ่อน' : 'คลิกเพื่อแสดง'}
-                >
-                  {cat.enabled !== false ? <Eye className="h-3 w-3" /> : <EyeOff className="h-3 w-3" />}
-                </button>
+                <div className="flex items-center gap-1.5">
+                  <button
+                    type="button"
+                    onClick={() => handleToggleCategoryPin(idx)}
+                    className={`flex items-center gap-1 rounded-xl px-2 py-1.5 text-[11px] font-bold transition-all ${
+                      cat.isPinned
+                        ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40 shadow-sm'
+                        : 'bg-theme-surface text-theme-text-muted hover:text-amber-400 border border-theme-border'
+                    }`}
+                    title={cat.isPinned ? 'ยกเลิกการปักหมุด' : 'ปักหมุดหมวดหมู่นี้บนหน้าแรก'}
+                  >
+                    <Pin className={`h-3 w-3 ${cat.isPinned ? 'fill-amber-400 text-amber-400' : ''}`} />
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => handleToggleCategoryEnabled(idx)}
+                    className={`flex items-center gap-1 rounded-xl px-2 py-1.5 text-[11px] font-bold transition-all ${
+                      cat.enabled !== false
+                        ? 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/30'
+                        : 'bg-slate-500/15 text-slate-400 border border-slate-500/30'
+                    }`}
+                    title={cat.enabled !== false ? 'คลิกเพื่อซ่อน' : 'คลิกเพื่อแสดง'}
+                  >
+                    {cat.enabled !== false ? <Eye className="h-3 w-3" /> : <EyeOff className="h-3 w-3" />}
+                  </button>
+
+                  {(settings.categoryCards || []).length > 1 && (
+                    <button
+                      type="button"
+                      onClick={() => handleDeleteCategory(idx)}
+                      className="p-1.5 text-theme-text-dim hover:text-red-400 rounded-lg transition-colors"
+                      title="ลบหมวดหมู่นี้"
+                    >
+                      <Trash2 className="h-3.5 w-3.5" />
+                    </button>
+                  )}
+                </div>
               </div>
             </div>
           ))}
@@ -1089,6 +1233,133 @@ export const SettingsManager: React.FC = () => {
           </button>
         </div>
       </div>
+
+      {/* Category Edit / Add Modal */}
+      <Modal
+        isOpen={categoryModalOpen}
+        onClose={() => setCategoryModalOpen(false)}
+        title={editingCatIdx !== null ? '✏️ แก้ไขรูปภาพและข้อมูลหมวดหมู่สินค้า' : '✨ เพิ่มหมวดหมู่สินค้าใหม่'}
+      >
+        <div className="space-y-4 text-xs font-sans">
+          {/* Image Upload & Preview */}
+          <div>
+            <label className="font-bold text-theme-text block mb-1.5">
+              รูปภาพหมวดหมู่สินค้า (Category Image) *
+            </label>
+            <div className="flex items-start gap-4 p-3 rounded-2xl border border-theme-border bg-theme-surface-elevated">
+              <div className="h-20 w-20 rounded-xl bg-white p-2 border border-theme-border flex items-center justify-center flex-shrink-0 shadow-sm overflow-hidden">
+                <img
+                  src={catFormImage || '/images/cat-round-cans.jpg'}
+                  alt="Preview"
+                  className="h-full w-full object-contain"
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src = '/images/cat-round-cans.jpg';
+                  }}
+                />
+              </div>
+
+              <div className="space-y-2 flex-1">
+                <div className="flex flex-wrap items-center gap-2">
+                  <label className="inline-flex items-center gap-1.5 rounded-xl bg-theme-primary/15 border border-theme-primary/40 px-3 py-1.5 text-xs font-bold text-theme-primary hover:bg-theme-primary hover:text-black cursor-pointer transition-all shadow-sm">
+                    <UploadCloud className="h-3.5 w-3.5" />
+                    <span>อัปโหลดรูปภาพใหม่ (PNG / JPG / WEBP)</span>
+                    <input type="file" accept="image/*" onChange={handleCatImageUpload} className="hidden" />
+                  </label>
+                </div>
+                <p className="text-[11px] text-theme-text-muted">
+                  หรือระบุที่อยู่ไฟล์ / URL รูปภาพโดยตรง:
+                </p>
+                <input
+                  type="text"
+                  value={catFormImage}
+                  onChange={(e) => setCatFormImage(e.target.value)}
+                  placeholder="/images/cat-round-cans.jpg หรือ https://..."
+                  className="w-full rounded-xl border border-theme-border bg-theme-surface px-3 py-1.5 text-[11px] text-theme-text font-mono"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label className="font-bold text-theme-text block mb-1">
+                ชื่อหมวดหมู่ (ภาษาไทย) *
+              </label>
+              <input
+                type="text"
+                value={catFormTitleTh}
+                onChange={(e) => setCatFormTitleTh(e.target.value)}
+                placeholder="เช่น กระป๋องกลม, กระป๋องสเปรย์"
+                className="w-full rounded-xl border border-theme-border bg-theme-surface-elevated px-3 py-2 text-theme-text"
+              />
+            </div>
+            <div>
+              <label className="font-bold text-theme-text block mb-1">
+                ชื่อหมวดหมู่ (English)
+              </label>
+              <input
+                type="text"
+                value={catFormTitleEn}
+                onChange={(e) => setCatFormTitleEn(e.target.value.toUpperCase())}
+                placeholder="e.g. ROUND CANS, AEROSOL CANS"
+                className="w-full rounded-xl border border-theme-border bg-theme-surface-elevated px-3 py-2 text-theme-text uppercase font-mono"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label className="font-bold text-theme-text block mb-1">
+              ลิงก์ปลายทางเมื่อคลิก (Target Path)
+            </label>
+            <input
+              type="text"
+              value={catFormPath}
+              onChange={(e) => setCatFormPath(e.target.value)}
+              placeholder="เช่น /products?category=round-cans"
+              className="w-full rounded-xl border border-theme-border bg-theme-surface-elevated px-3 py-2 text-theme-text font-mono"
+            />
+          </div>
+
+          <div className="flex flex-wrap items-center gap-6 pt-2">
+            <label className="flex items-center gap-2 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={catFormPinned}
+                onChange={(e) => setCatFormPinned(e.target.checked)}
+                className="h-4 w-4 rounded border-theme-border text-theme-primary focus:ring-theme-primary"
+              />
+              <span className="font-bold text-theme-text">📌 ปักหมุดแสดงบนหน้าแรก</span>
+            </label>
+
+            <label className="flex items-center gap-2 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={catFormEnabled}
+                onChange={(e) => setCatFormEnabled(e.target.checked)}
+                className="h-4 w-4 rounded border-theme-border text-theme-primary focus:ring-theme-primary"
+              />
+              <span className="font-bold text-theme-text">🟢 เปิดแสดงผล (Active)</span>
+            </label>
+          </div>
+
+          <div className="flex justify-end gap-2 pt-4 border-t border-theme-border">
+            <button
+              type="button"
+              onClick={() => setCategoryModalOpen(false)}
+              className="rounded-xl border border-theme-border bg-theme-surface px-4 py-2 font-bold text-theme-text hover:bg-theme-surface-elevated"
+            >
+              ยกเลิก
+            </button>
+            <button
+              type="button"
+              onClick={handleSaveCategory}
+              className="btn-primary-action px-5 py-2 font-bold"
+            >
+              บันทึกการแก้ไข
+            </button>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 };
