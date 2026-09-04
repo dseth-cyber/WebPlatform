@@ -163,10 +163,10 @@ export const MediaLibrary: React.FC = () => {
         <div>
           <h1 className="font-display text-2xl font-black text-theme-text flex items-center gap-2">
             <ImageIcon className="h-6 w-6 text-theme-primary" />
-            <span>{t('admin.media')} (Media Library)</span>
+            <span>{t('admin.mediaTitle', 'คลังไฟล์สื่อและรูปภาพ (Media Library Storage)')}</span>
           </h1>
           <p className="text-xs text-theme-text-muted mt-1">
-            คลังจัดเก็บไฟล์สื่อ MinIO S3 (JPG, PNG, WebP, SVG, PDF, MP4) เพิ่ม แก้ไข คัดลอกลิงก์ และลบไฟล์
+            {t('admin.mediaSubtitle', 'อัปโหลดและจัดการรูปภาพสำหรับใช้งานบนเว็บไซต์และแคตตาล็อก')}
           </p>
         </div>
 

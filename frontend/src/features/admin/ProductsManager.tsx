@@ -501,7 +501,7 @@ export const ProductsManager: React.FC = () => {
           }`}
         >
           <Package className="h-4 w-4" />
-          <span>📦 รายการแคตตาล็อกสินค้า ({productsList.length})</span>
+          <span>📦 {t('admin.catalogList', 'รายการแคตตาล็อกสินค้า')} ({productsList.length})</span>
         </button>
 
         <button
@@ -514,7 +514,7 @@ export const ProductsManager: React.FC = () => {
           }`}
         >
           <Tag className="h-4 w-4" />
-          <span>🏷️ หมวดหมู่สินค้าและรูปภาพหน้าแรก ({(settings.categoryCards || []).length})</span>
+          <span>🏷️ {t('admin.homepageCategories', 'หมวดหมู่สินค้าและรูปภาพหน้าแรก')} ({(settings.categoryCards || []).length})</span>
         </button>
       </div>
 
@@ -525,10 +525,10 @@ export const ProductsManager: React.FC = () => {
             <div>
               <h1 className="font-display text-2xl font-black text-theme-text flex items-center gap-2">
                 <Tag className="h-6 w-6 text-theme-primary" />
-                <span>จัดการหมวดหมู่สินค้าและรูปภาพหน้าแรก (Homepage Categories & Images)</span>
+                <span>{t('admin.manageCategoriesTitle', 'จัดการหมวดหมู่สินค้าและรูปภาพหน้าแรก (Homepage Categories & Images)')}</span>
               </h1>
               <p className="text-xs text-theme-text-muted mt-1">
-                กำหนดรูปภาพหมวดหมู่ที่แสดงบนหน้าแรก (Homepage Products Section), เปลี่ยนรูปภาพ, แก้ไขชื่อภาษาไทย/อังกฤษ และปักหมุด
+                {t('admin.manageCategoriesSubtitle', 'กำหนดรูปภาพหมวดหมู่ที่แสดงบนหน้าแรก (Homepage Products Section), เปลี่ยนรูปภาพ, แก้ไขชื่อภาษาไทย/อังกฤษ และปักหมุด')}
               </p>
             </div>
 
@@ -538,7 +538,7 @@ export const ProductsManager: React.FC = () => {
               className="btn-primary-action text-sm font-black px-6 py-3 shadow-xl flex items-center gap-2"
             >
               <Plus className="h-4 w-4" />
-              <span>+ เพิ่มหมวดหมู่ใหม่</span>
+              <span>{t('admin.addNewCategory', '+ เพิ่มหมวดหมู่ใหม่')}</span>
             </button>
           </div>
 
@@ -644,10 +644,10 @@ export const ProductsManager: React.FC = () => {
             <div>
               <h1 className="font-display text-2xl font-black text-theme-text flex items-center gap-2">
                 <Package className="h-6 w-6 text-theme-primary" />
-                <span>จัดการแคตตาล็อกสินค้า (Products Catalog Database)</span>
+                <span>{t('admin.productCatalogTitle', 'จัดการแคตตาล็อกสินค้า (Products Catalog Database)')}</span>
               </h1>
               <p className="text-xs text-theme-text-muted mt-1">
-                เพิ่ม, แก้ไข, แนบรูปภาพ และ เปิด/ปิด การแสดงผลบรรจุภัณฑ์โลหะ (บันทึกลง Database อัตโนมัติ)
+                {t('admin.productCatalogSubtitle', 'เพิ่ม, แก้ไข, แนบรูปภาพ และ เปิด/ปิด การแสดงผลบรรจุภัณฑ์โลหะ (บันทึกลง Database อัตโนมัติ)')}
               </p>
             </div>
 
@@ -657,7 +657,7 @@ export const ProductsManager: React.FC = () => {
               className="btn-primary-action text-sm font-black px-6 py-3 shadow-xl"
             >
               <Plus className="h-4 w-4" />
-              <span>+ เพิ่มสินค้าใหม่</span>
+              <span>{t('admin.addNewProduct', '+ เพิ่มสินค้าใหม่')}</span>
             </button>
           </div>
 
@@ -677,7 +677,7 @@ export const ProductsManager: React.FC = () => {
                 type="text"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                placeholder="ค้นหาตามชื่อสินค้า หรือ SKU..."
+                placeholder={t('admin.searchProductsPlaceholder', 'ค้นหาตามชื่อสินค้า หรือ SKU...')}
                 className="w-full rounded-xl border border-theme-border bg-theme-surface-elevated py-2 pl-9 pr-3 text-xs text-theme-text placeholder-theme-text-dim focus:border-theme-primary focus:outline-none"
               />
             </div>

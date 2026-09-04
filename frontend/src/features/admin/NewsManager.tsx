@@ -317,10 +317,10 @@ export const NewsManager: React.FC = () => {
         <div>
           <h1 className="font-display text-2xl font-black text-theme-text flex items-center gap-2">
             <Newspaper className="h-6 w-6 text-theme-primary" />
-            <span>จัดการข่าวสารและกิจกรรมองค์กร (News & CSR Database)</span>
+            <span>{t('admin.newsTitle', 'จัดการข่าวสารและกิจกรรมองค์กร (News & CSR Database)')}</span>
           </h1>
           <p className="text-xs text-theme-text-muted mt-1">
-            เพิ่ม, แก้ไข, ลบ, แนบรูปภาพ และ เปิด/ปิด การแสดงผลข่าวสารองค์กร (บันทึกลง Database อัตโนมัติ)
+            {t('admin.newsSubtitle', 'เพิ่ม, แก้ไข, แนบรูปภาพ และ เปิด/ปิด การแสดงผลข่าวสารองค์กร (บันทึกลง Database อัตโนมัติ)')}
           </p>
         </div>
 
@@ -330,7 +330,7 @@ export const NewsManager: React.FC = () => {
           className="btn-primary-action text-sm font-black px-6 py-3 shadow-xl"
         >
           <Plus className="h-4 w-4" />
-          <span>+ เพิ่มข่าวสารใหม่</span>
+          <span>{t('admin.addNewNews', '+ เพิ่มข่าวสารใหม่')}</span>
         </button>
       </div>
 
@@ -341,7 +341,7 @@ export const NewsManager: React.FC = () => {
             type="text"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder="ค้นหาตามหัวข้อข่าว หรือหมวดหมู่..."
+            placeholder={t('admin.searchNewsPlaceholder', 'ค้นหาตามหัวข้อข่าว หรือหมวดหมู่...')}
             className="w-full rounded-xl border border-theme-border bg-theme-surface-elevated py-2 px-3 text-xs text-theme-text placeholder-theme-text-dim focus:border-theme-primary focus:outline-none"
           />
         </div>

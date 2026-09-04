@@ -74,15 +74,15 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({
     currentPath.startsWith('/admin/contact');
 
   const contentSubmenu = [
-    { label: 'หน้าแรก', path: '/admin/pages' },
-    { label: 'เกี่ยวกับเรา', path: '/admin/about' },
-    { label: 'สินค้า', path: '/admin/products' },
-    { label: 'บริการ', path: '/admin/services' },
-    { label: 'เทคโนโลยี', path: '/admin/technology' },
-    { label: 'ความยั่งยืน', path: '/admin/sustainability' },
-    { label: 'สมัครงาน', path: '/admin/careers' },
-    { label: 'ข่าวสาร', path: '/admin/news' },
-    { label: 'ติดต่อเรา', path: '/admin/contact' },
+    { label: t('admin.menuHome', 'หน้าแรก'), path: '/admin/pages' },
+    { label: t('admin.menuAbout', 'เกี่ยวกับเรา'), path: '/admin/about' },
+    { label: t('admin.menuProducts', 'สินค้า'), path: '/admin/products' },
+    { label: t('admin.menuServices', 'บริการ'), path: '/admin/services' },
+    { label: t('admin.menuTechnology', 'เทคโนโลยี'), path: '/admin/technology' },
+    { label: t('admin.menuSustainability', 'ความยั่งยืน'), path: '/admin/sustainability' },
+    { label: t('admin.menuCareers', 'สมัครงาน'), path: '/admin/careers' },
+    { label: t('admin.menuNews', 'ข่าวสาร'), path: '/admin/news' },
+    { label: t('admin.menuContact', 'ติดต่อเรา'), path: '/admin/contact' },
   ];
 
   const getNavLinkClass = (isActive: boolean) =>
@@ -111,7 +111,7 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({
               </span>
             </div>
           )}
-          <span className="font-display font-bold text-sm text-theme-text">ADMIN PANEL</span>
+          <span className="font-display font-bold text-sm text-theme-text">{t('admin.adminPanel', 'ADMIN PANEL')}</span>
         </div>
 
         <div className="flex items-center gap-2">
@@ -128,24 +128,24 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({
 
       {/* Admin Sidebar: Fixed/Locked to height, stays in place while main content scrolls */}
       <aside
-        className={`fixed inset-y-0 left-0 z-50 w-64 h-full flex flex-col justify-between border-r border-theme-border bg-theme-surface-elevated/95 backdrop-blur-xl p-5 transition-transform duration-200 lg:static lg:translate-x-0 flex-shrink-0 ${
-          sidebarOpen ? 'translate-x-0' : '-translate-x-full'
+        className={`fixed inset-y-0 left-0 z-50 flex flex-col justify-between border-r border-theme-border bg-theme-surface/95 backdrop-blur-md p-4 transition-all duration-300 lg:static lg:w-64 lg:h-screen flex-shrink-0 shadow-2xl lg:shadow-none ${
+          sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
         }`}
       >
-        {/* Scrollable Nav Area */}
-        <div className="flex-1 overflow-y-auto space-y-5 pr-1 -mr-1">
-          {/* Header Brand */}
-          <div className="flex items-center justify-between border-b border-theme-border pb-4">
+        {/* Top Section */}
+        <div className="space-y-4 flex-1 overflow-y-auto pr-1">
+          {/* Logo & Brand */}
+          <div className="flex items-center justify-between border-b border-theme-border pb-3">
             <div className="flex items-center gap-2.5">
               {settings.logoImage ? (
                 <img
                   src={settings.logoImage}
                   alt="Logo"
-                  className="h-9 w-auto max-w-[90px] object-contain rounded shadow-md"
+                  className="h-8 w-auto max-w-[100px] object-contain rounded"
                 />
               ) : (
-                <div className="relative flex h-9 w-9 items-center justify-center">
-                  <div className="absolute inset-0 rotate-45 rounded-lg border-2 border-theme-primary bg-black shadow-md" />
+                <div className="relative flex h-8 w-8 items-center justify-center">
+                  <div className="absolute inset-0 rotate-45 rounded-md border border-theme-primary bg-gradient-to-br from-slate-900 to-black" />
                   <span className="relative z-10 font-display font-black text-xs text-theme-primary">
                     {settings.logoText || 'LC'}
                   </span>
@@ -153,7 +153,7 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({
               )}
               <div>
                 <h3 className="font-display font-black text-xs text-theme-text tracking-wider">
-                  ADMIN PANEL
+                  {t('admin.adminPanel', 'ADMIN PANEL')}
                 </h3>
               </div>
             </div>
@@ -162,7 +162,7 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({
               type="button"
               onClick={() => onNavigate('/')}
               className="rounded-lg p-1.5 text-theme-text-muted hover:text-theme-primary hover:bg-theme-surface transition-colors"
-              title="View Public Website"
+              title={t('admin.viewPublicSite', 'ดูหน้าเว็บไซต์จริง')}
             >
               <ExternalLink className="h-4 w-4" />
             </button>
@@ -174,8 +174,8 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({
               AD
             </div>
             <div className="min-w-0 flex-1">
-              <h4 className="font-bold text-xs text-theme-text truncate">Administrator</h4>
-              <span className="text-[10px] text-theme-primary font-semibold block">Super Admin</span>
+              <h4 className="font-bold text-xs text-theme-text truncate">{t('admin.administrator', 'Administrator')}</h4>
+              <span className="text-[10px] text-theme-primary font-semibold block">{t('admin.superAdmin', 'Super Admin')}</span>
             </div>
           </div>
 
@@ -188,7 +188,7 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({
               className={getNavLinkClass(currentPath === '/admin')}
             >
               <LayoutDashboard className="h-4 w-4 text-theme-primary" />
-              <span>แดชบอร์ด</span>
+              <span>{t('admin.dashboard', 'แดชบอร์ด')}</span>
             </button>
 
             {/* Collapsible Content Management Menu */}
@@ -204,7 +204,7 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({
               >
                 <div className="flex items-center gap-3">
                   <FileText className="h-4 w-4 text-theme-primary" />
-                  <span>จัดการเนื้อหา</span>
+                  <span>{t('admin.contentManagement', 'จัดการเนื้อหา')}</span>
                 </div>
                 {contentMenuOpen ? <ChevronDown className="h-3.5 w-3.5 text-theme-primary" /> : <ChevronRight className="h-3.5 w-3.5" />}
               </button>
@@ -219,7 +219,7 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({
 
                     return (
                       <button
-                        key={sub.label}
+                        key={sub.path}
                         type="button"
                         onClick={() => onNavigate(sub.path)}
                         className={`block w-full text-left rounded-lg px-3 py-1.5 text-[11px] transition-all duration-200 ${
@@ -243,7 +243,7 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({
               className={getNavLinkClass(currentPath === '/admin/media')}
             >
               <Image className="h-4 w-4 text-theme-primary" />
-              <span>คลังไฟล์สื่อ</span>
+              <span>{t('admin.media', 'คลังไฟล์สื่อ')}</span>
             </button>
 
             {/* Settings */}
@@ -253,7 +253,7 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({
               className={getNavLinkClass(currentPath === '/admin/settings')}
             >
               <Settings className="h-4 w-4 text-theme-primary" />
-              <span>ตั้งค่าองค์กรและระบบ</span>
+              <span>{t('admin.settings', 'ตั้งค่าองค์กรและระบบ')}</span>
             </button>
 
             {/* Users */}
@@ -263,7 +263,7 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({
               className={getNavLinkClass(currentPath === '/admin/users')}
             >
               <Users className="h-4 w-4 text-theme-primary" />
-              <span>จัดการผู้ใช้ & RBAC</span>
+              <span>{t('admin.users', 'จัดการผู้ใช้ & RBAC')}</span>
             </button>
 
             {/* Audit Log */}
@@ -273,7 +273,7 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({
               className={getNavLinkClass(currentPath === '/admin/audit-log')}
             >
               <History className="h-4 w-4 text-theme-primary" />
-              <span>ประวัติการทำงาน</span>
+              <span>{t('admin.auditLog', 'ประวัติการทำงาน')}</span>
             </button>
 
             {/* Trash */}
@@ -283,7 +283,7 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({
               className={getNavLinkClass(currentPath === '/admin/trash')}
             >
               <Trash2 className="h-4 w-4 text-theme-primary" />
-              <span>ถังขยะและกู้คืน</span>
+              <span>{t('admin.trash', 'ถังขยะและกู้คืน')}</span>
             </button>
 
             {/* Manual */}
@@ -293,7 +293,7 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({
               className={getNavLinkClass(currentPath === '/admin/manual')}
             >
               <BookOpen className="h-4 w-4 text-theme-primary" />
-              <span>คู่มือการใช้งาน</span>
+              <span>{t('admin.manual', 'คู่มือการใช้งาน')}</span>
             </button>
           </nav>
         </div>
@@ -311,7 +311,7 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({
             className="flex w-full items-center justify-center gap-2 rounded-xl border border-red-500/30 bg-red-500/10 px-3 py-2 text-xs font-bold text-red-400 hover:bg-red-500/20 transition-colors"
           >
             <LogOut className="h-4 w-4" />
-            <span>ออกจากระบบ</span>
+            <span>{t('admin.logout', 'ออกจากระบบ')}</span>
           </button>
         </div>
       </aside>

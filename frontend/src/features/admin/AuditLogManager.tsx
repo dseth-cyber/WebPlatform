@@ -117,10 +117,10 @@ export const AuditLogManager: React.FC = () => {
         <div>
           <h1 className="font-display text-2xl font-black text-theme-text flex items-center gap-2">
             <History className="h-6 w-6 text-theme-primary" />
-            <span>{t('admin.auditLog')} & Field-level Diff Audit</span>
+            <span>{t('admin.auditLogTitle', 'บันทึกประวัติการทำงานและความปลอดภัย (Audit Log)')}</span>
           </h1>
           <p className="text-xs text-theme-text-muted mt-1">
-            บันทึกประวัติการทำงาน, การแก้ไขข้อมูล, นโยบายลบอัตโนมัติ และการลบประวัติแบบกลุ่ม (Batch Delete)
+            {t('admin.auditLogSubtitle', 'ตรวจสอบประวัติการเข้าใช้งานและการแก้ไขข้อมูลในระบบ')}
           </p>
         </div>
 

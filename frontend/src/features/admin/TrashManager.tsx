@@ -67,10 +67,10 @@ export const TrashManager: React.FC = () => {
         <div>
           <h1 className="font-display text-2xl font-black text-theme-text flex items-center gap-2">
             <Trash2 className="h-6 w-6 text-red-400" />
-            <span>{t('admin.trash')} & กู้คืนข้อมูล</span>
+            <span>{t('admin.trashTitle', 'ถังขยะและกู้คืนข้อมูล (Trash & Data Recovery)')}</span>
           </h1>
           <p className="text-xs text-theme-text-muted mt-1">
-            รายการที่ถูกลบชั่วคราว (Soft-deleted) การลบถาวรหรือล้างถังขยะจะต้องยืนยันรหัสผ่านเพื่อความปลอดภัยสูงสุด
+            {t('admin.trashSubtitle', 'กู้คืนหรือลบข้อมูลที่ถูกลบออกจากระบบอย่างถาวร')}
           </p>
         </div>
 

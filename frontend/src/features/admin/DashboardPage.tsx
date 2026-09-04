@@ -83,23 +83,23 @@ export const DashboardPage: React.FC<{ onNavigate: (path: string) => void }> = (
   const kpiData = {
     visitors: {
       value: isRealData ? realVisitorsCount.toLocaleString('en-US') : '48,250',
-      trend: isRealData ? '+12.4% สัปดาห์นี้' : '+18.4% MoM',
-      note: isRealData ? 'คำนวณจาก Unique Session ในระบบจริง' : 'นับเฉพาะ Unique IP และผู้ใช้จริง',
+      trend: isRealData ? `+12.4% ${t('dashboard.thisWeek', 'สัปดาห์นี้')}` : '+18.4% MoM',
+      note: isRealData ? t('dashboard.uniqueSessionNote', 'คำนวณจาก Unique Session ในระบบจริง') : t('dashboard.uniqueIpNote', 'นับเฉพาะ Unique IP และผู้ใช้จริง'),
     },
     pageviews: {
       value: isRealData ? realPageviewsCount.toLocaleString('en-US') : '142,800',
-      trend: isRealData ? '+16.8% สัปดาห์นี้' : '+24.2% MoM',
-      note: isRealData ? `เฉลี่ย 3.14 หน้าต่อผู้เข้าชมจริง` : 'เฉลี่ย 2.96 หน้า ต่อผู้เข้าชม 1 คน',
+      trend: isRealData ? `+16.8% ${t('dashboard.thisWeek', 'สัปดาห์นี้')}` : '+24.2% MoM',
+      note: isRealData ? t('dashboard.avgPageviewsNote', 'เฉลี่ย 3.14 หน้าต่อผู้เข้าชมจริง') : 'เฉลี่ย 2.96 หน้า ต่อผู้เข้าชม 1 คน',
     },
     quotes: {
-      value: isRealData ? `${realQuotesCount} รายการ` : '433 รายการ',
-      trend: isRealData ? (realQuotesCount > 0 ? '+100% ข้อมูลจริง' : '0 รายการใหม่') : '+31.5% YoY',
-      note: isRealData ? `รอตอบกลับ ${inquiriesList.filter((i) => i.status === 'PENDING').length} รายการใน Inbox` : 'จากทั้งลูกค้าไทยและกลุ่มโรงงานส่งออก',
+      value: isRealData ? `${realQuotesCount} ${t('dashboard.newItems', 'รายการ')}` : `433 ${t('dashboard.newItems', 'รายการ')}`,
+      trend: isRealData ? (realQuotesCount > 0 ? '+100%' : `0 ${t('dashboard.newItems', 'รายการ')}`) : '+31.5% YoY',
+      note: isRealData ? t('dashboard.inboxPendingNote', 'รอตอบกลับ {{count}} รายการใน Inbox', { count: inquiriesList.filter((i) => i.status === 'PENDING').length }) : 'จากทั้งลูกค้าไทยและกลุ่มโรงงานส่งออก',
     },
     conversion: {
       value: isRealData ? `${realConversionRate}%` : '3.48%',
-      trend: isRealData ? 'คำนวณจากคำขอจริง' : 'สูงกว่าเกณฑ์ B2B',
-      note: isRealData ? 'อัตราคำขอใบเสนอราคาต่อผู้เข้าชมจริง' : 'เข้าชมแล้วส่งคำขอสเปกกระป๋องสำเร็จ',
+      trend: isRealData ? t('dashboard.quoteRateNote', 'คำนวณจากคำขอจริง') : t('dashboard.b2bBenchmarkNote', 'สูงกว่าเกณฑ์ B2B'),
+      note: isRealData ? t('dashboard.quoteRateNote', 'อัตราคำขอใบเสนอราคาต่อผู้เข้าชมจริง') : 'เข้าชมแล้วส่งคำขอสเปกกระป๋องสำเร็จ',
     },
   };
 
@@ -210,12 +210,12 @@ export const DashboardPage: React.FC<{ onNavigate: (path: string) => void }> = (
               {isRealData ? (
                 <>
                   <Database className="h-3.5 w-3.5 text-emerald-400" />
-                  <span>โหมด: ข้อมูลจริงของระบบ (Real Data)</span>
+                  <span>{t('dashboard.realDataMode', 'โหมด: ข้อมูลจริงของระบบ (Real Data)')}</span>
                 </>
               ) : (
                 <>
                   <Sparkles className="h-3.5 w-3.5 text-amber-400" />
-                  <span>โหมด: ข้อมูลจำลอง (Mockup Demo)</span>
+                  <span>{t('dashboard.mockDataMode', 'โหมด: ข้อมูลจำลอง (Mockup Demo)')}</span>
                 </>
               )}
             </span>
@@ -223,8 +223,8 @@ export const DashboardPage: React.FC<{ onNavigate: (path: string) => void }> = (
 
           <p className="text-xs text-theme-text-muted mt-1">
             {isRealData
-              ? 'กำลังแสดงผลสถิติและตัวเลขจริงจากฐานข้อมูล PostgreSQL และการใช้งานจริงของระบบ'
-              : 'กำลังแสดงผลข้อมูลสถิติตัวอย่างระดับองค์กรเพื่อการนำเสนอ (Demo Presentation Mode)'}
+              ? t('dashboard.realDataDesc', 'กำลังแสดงผลสถิติและตัวเลขจริงจากฐานข้อมูล PostgreSQL และการใช้งานจริงของระบบ')
+              : t('dashboard.mockDataDesc', 'กำลังแสดงผลข้อมูลสถิติตัวอย่างระดับองค์กรเพื่อการนำเสนอ (Demo Presentation Mode)')}
           </p>
         </div>
 
@@ -239,10 +239,10 @@ export const DashboardPage: React.FC<{ onNavigate: (path: string) => void }> = (
                   ? 'bg-amber-500 text-black font-black shadow-sm'
                   : 'text-theme-text-muted hover:text-theme-text'
               }`}
-              title="สลับเป็นข้อมูลจำลองเพื่อพรีเซนต์"
+              title="Mockup Demo"
             >
               <Sparkles className="h-3.5 w-3.5" />
-              <span>ข้อมูลจำลอง (Mockup)</span>
+              <span>{t('dashboard.mockDataBtn', 'ข้อมูลจำลอง (Mockup)')}</span>
             </button>
             <button
               type="button"
@@ -252,10 +252,10 @@ export const DashboardPage: React.FC<{ onNavigate: (path: string) => void }> = (
                   ? 'bg-emerald-500 text-white font-black shadow-sm'
                   : 'text-theme-text-muted hover:text-theme-text'
               }`}
-              title="สลับเป็นข้อมูลจริงของระบบ"
+              title="Real Data"
             >
               <Database className="h-3.5 w-3.5" />
-              <span>ข้อมูลจริง (Real Data)</span>
+              <span>{t('dashboard.realDataBtn', 'ข้อมูลจริง (Real Data)')}</span>
             </button>
           </div>
 
@@ -268,7 +268,7 @@ export const DashboardPage: React.FC<{ onNavigate: (path: string) => void }> = (
                 timeRange === '7d' ? 'bg-theme-primary text-black font-black shadow-sm' : 'text-theme-text-muted hover:text-theme-text'
               }`}
             >
-              7 วัน
+              {t('dashboard.range7d', '7 วัน')}
             </button>
             <button
               type="button"
@@ -277,7 +277,7 @@ export const DashboardPage: React.FC<{ onNavigate: (path: string) => void }> = (
                 timeRange === '30d' ? 'bg-theme-primary text-black font-black shadow-sm' : 'text-theme-text-muted hover:text-theme-text'
               }`}
             >
-              30 วัน
+              {t('dashboard.range30d', '30 วัน')}
             </button>
             <button
               type="button"
@@ -286,7 +286,7 @@ export const DashboardPage: React.FC<{ onNavigate: (path: string) => void }> = (
                 timeRange === '1y' ? 'bg-theme-primary text-black font-black shadow-sm' : 'text-theme-text-muted hover:text-theme-text'
               }`}
             >
-              รายปี 2026
+              {t('dashboard.rangeYear', 'รายปี 2026')}
             </button>
           </div>
 
@@ -294,10 +294,10 @@ export const DashboardPage: React.FC<{ onNavigate: (path: string) => void }> = (
             type="button"
             onClick={() => onNavigate('/admin/settings')}
             className="flex items-center gap-1.5 rounded-xl border border-theme-border bg-theme-surface px-3 py-2 text-xs font-bold text-theme-text hover:border-theme-primary transition-all"
-            title="ไปที่การตั้งค่าระบบ"
+            title={t('dashboard.systemSettingsBtn', 'ตั้งค่าระบบ')}
           >
             <Sliders className="h-3.5 w-3.5 text-theme-primary" />
-            <span>ตั้งค่าระบบ</span>
+            <span>{t('dashboard.systemSettingsBtn', 'ตั้งค่าระบบ')}</span>
           </button>
         </div>
       </div>
@@ -307,7 +307,7 @@ export const DashboardPage: React.FC<{ onNavigate: (path: string) => void }> = (
         {/* 1. Total Visitors */}
         <div className="glow-card rounded-2xl border border-theme-border bg-theme-surface p-5 space-y-3 shadow-glass-edge">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold text-theme-text-muted">ผู้เข้าชมทั้งหมด (Visitors)</span>
+            <span className="text-xs font-bold text-theme-text-muted">{t('dashboard.visitorsTitle', 'ผู้เข้าชมทั้งหมด (Visitors)')}</span>
             <div className="rounded-xl bg-theme-primary/10 p-2 text-theme-primary border border-theme-primary/20">
               <Users className="h-4 w-4" />
             </div>
@@ -324,7 +324,7 @@ export const DashboardPage: React.FC<{ onNavigate: (path: string) => void }> = (
         {/* 2. Total Pageviews */}
         <div className="glow-card rounded-2xl border border-theme-border bg-theme-surface p-5 space-y-3 shadow-glass-edge">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold text-theme-text-muted">ยอดเปิดดูหน้าเว็บ (Pageviews)</span>
+            <span className="text-xs font-bold text-theme-text-muted">{t('dashboard.pageviewsTitle', 'ยอดเปิดดูหน้าเว็บ (Pageviews)')}</span>
             <div className="rounded-xl bg-theme-accent/10 p-2 text-theme-accent border border-theme-accent/20">
               <Eye className="h-4 w-4" />
             </div>
@@ -341,7 +341,7 @@ export const DashboardPage: React.FC<{ onNavigate: (path: string) => void }> = (
         {/* 3. Quote Requests & Inquiries */}
         <div className="glow-card rounded-2xl border border-theme-border bg-theme-surface p-5 space-y-3 shadow-glass-edge">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold text-theme-text-muted">คำขอใบเสนอราคา (Quotes)</span>
+            <span className="text-xs font-bold text-theme-text-muted">{t('dashboard.quotesTitle', 'คำขอใบเสนอราคา (Quotes)')}</span>
             <div className="rounded-xl bg-emerald-500/10 p-2 text-emerald-400 border border-emerald-500/20">
               <Send className="h-4 w-4" />
             </div>
@@ -358,7 +358,7 @@ export const DashboardPage: React.FC<{ onNavigate: (path: string) => void }> = (
         {/* 4. Conversion Rate */}
         <div className="glow-card rounded-2xl border border-theme-border bg-theme-surface p-5 space-y-3 shadow-glass-edge">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold text-theme-text-muted">อัตราสนใจสั่งผลิต (Conversion)</span>
+            <span className="text-xs font-bold text-theme-text-muted">{t('dashboard.conversionTitle', 'อัตราสนใจสั่งผลิต (Conversion)')}</span>
             <div className="rounded-xl bg-theme-secondary/10 p-2 text-theme-secondary border border-theme-secondary/20">
               <CheckCircle2 className="h-4 w-4" />
             </div>
@@ -379,20 +379,20 @@ export const DashboardPage: React.FC<{ onNavigate: (path: string) => void }> = (
             <div>
               <h3 className="font-display text-base sm:text-lg font-bold text-theme-text flex items-center gap-2">
                 <TrendingUp className="h-5 w-5 text-theme-primary" />
-                <span>สถิติการเข้าชมและเปิดดูหน้าเว็บรายเดือน (Monthly Web Traffic)</span>
+                <span>{t('dashboard.trafficChartTitle', 'สถิติการเข้าชมและเปิดดูหน้าเว็บรายเดือน (Monthly Web Traffic)')}</span>
               </h3>
               <p className="text-xs text-theme-text-muted mt-0.5">
                 {isRealData
-                  ? 'แนวโน้มสถิติจริงจากฐานข้อมูลและระบบบันทึกการเข้าชม'
+                  ? t('dashboard.trafficChartDesc', 'แนวโน้มสถิติจริงจากฐานข้อมูลและระบบบันทึกการเข้าชม')
                   : 'แนวโน้มจำนวนผู้เข้าชมเว็บไซต์และคำขอใบเสนอราคาจากโรงงานอุตสาหกรรมอาหาร'}
               </p>
             </div>
             <div className="flex items-center gap-3 text-xs font-bold text-theme-text">
               <span className="flex items-center gap-1.5">
-                <span className="h-2.5 w-2.5 rounded-full bg-theme-primary" /> ผู้เข้าชม
+                <span className="h-2.5 w-2.5 rounded-full bg-theme-primary" /> {t('dashboard.visitorsLabel', 'ผู้เข้าชม')}
               </span>
               <span className="flex items-center gap-1.5">
-                <span className="h-2.5 w-2.5 rounded-full bg-theme-accent" /> Pageviews
+                <span className="h-2.5 w-2.5 rounded-full bg-theme-accent" /> {t('dashboard.pageviewsLabel', 'Pageviews')}
               </span>
             </div>
           </div>
@@ -421,8 +421,8 @@ export const DashboardPage: React.FC<{ onNavigate: (path: string) => void }> = (
                     fontSize: '12px',
                   }}
                 />
-                <Area type="monotone" dataKey="pageviews" name="Pageviews" stroke={themeConfig.colors.accent} fill="url(#pvGrad)" strokeWidth={2} />
-                <Area type="monotone" dataKey="visitors" name="ผู้เข้าชม (Visitors)" stroke={themeConfig.colors.primary} fill="url(#visitorGrad)" strokeWidth={3} />
+                <Area type="monotone" dataKey="pageviews" name={t('dashboard.pageviewsLabel', 'Pageviews')} stroke={themeConfig.colors.accent} fill="url(#pvGrad)" strokeWidth={2} />
+                <Area type="monotone" dataKey="visitors" name={t('dashboard.visitorsTitle', 'ผู้เข้าชม (Visitors)')} stroke={themeConfig.colors.primary} fill="url(#visitorGrad)" strokeWidth={3} />
               </AreaChart>
             </ResponsiveContainer>
           </div>
@@ -433,10 +433,10 @@ export const DashboardPage: React.FC<{ onNavigate: (path: string) => void }> = (
           <div className="border-b border-theme-border pb-4">
             <h3 className="font-display text-base font-bold text-theme-text flex items-center gap-2">
               <Globe2 className="h-5 w-5 text-theme-primary" />
-              <span>กลุ่มภาษาและผู้เข้าชม (Demographics)</span>
+              <span>{t('dashboard.demographicsTitle', 'กลุ่มภาษาและผู้เข้าชม (Demographics)')}</span>
             </h3>
             <p className="text-xs text-theme-text-muted mt-0.5">
-              สัดส่วนภาษาที่ผู้ใช้งานเลือกอ่านบนเว็บไซต์
+              {t('dashboard.demographicsDesc', 'สัดส่วนภาษาที่ผู้ใช้งานเลือกอ่านบนเว็บไซต์')}
             </p>
           </div>
 
@@ -487,10 +487,10 @@ export const DashboardPage: React.FC<{ onNavigate: (path: string) => void }> = (
           <div className="flex items-center justify-between border-b border-theme-border pb-3">
             <h3 className="font-display text-base font-bold text-theme-text flex items-center gap-2">
               <Package className="h-5 w-5 text-theme-primary" />
-              <span>สินค้าและสเปกกระป๋องยอดนิยม (Top Viewed Products)</span>
+              <span>{t('dashboard.topProductsTitle', 'สินค้าและสเปกกระป๋องยอดนิยม (Top Viewed Products)')}</span>
             </h3>
             <span className="text-xs font-bold text-theme-primary">
-              {isRealData ? 'จากแคตตาล็อกจริง' : 'เดือนนี้'}
+              {isRealData ? t('dashboard.fromCatalog', 'จากแคตตาล็อกจริง') : t('dashboard.thisMonth', 'เดือนนี้')}
             </span>
           </div>
 
@@ -507,7 +507,7 @@ export const DashboardPage: React.FC<{ onNavigate: (path: string) => void }> = (
                     fontSize: '11px',
                   }}
                 />
-                <Bar dataKey="views" name="ยอดเข้าดู (Views)" fill={themeConfig.colors.primary} radius={[0, 8, 8, 0]} />
+                <Bar dataKey="views" name={t('dashboard.viewsLabel', 'ยอดเข้าดู (Views)')} fill={themeConfig.colors.primary} radius={[0, 8, 8, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>
@@ -518,10 +518,10 @@ export const DashboardPage: React.FC<{ onNavigate: (path: string) => void }> = (
           <div className="border-b border-theme-border pb-3">
             <h3 className="font-display text-base font-bold text-theme-text flex items-center gap-2">
               <Laptop className="h-5 w-5 text-theme-primary" />
-              <span>อุปกรณ์ที่ลูกค้าใช้เข้าชม (Device Distribution)</span>
+              <span>{t('dashboard.deviceTitle', 'อุปกรณ์ที่ลูกค้าใช้เข้าชม (Device Distribution)')}</span>
             </h3>
             <p className="text-xs text-theme-text-muted mt-0.5">
-              กลุ่มลูกค้าโรงงานส่วนใหญ่เข้าชมผ่านคอมพิวเตอร์เพื่อเปิดดูสเปกสินค้า
+              {t('dashboard.deviceDesc', 'กลุ่มลูกค้าโรงงานส่วนใหญ่เข้าชมผ่านคอมพิวเตอร์เพื่อเปิดดูสเปกสินค้า')}
             </p>
           </div>
 
@@ -542,7 +542,7 @@ export const DashboardPage: React.FC<{ onNavigate: (path: string) => void }> = (
 
           <div className="p-3.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-xs text-emerald-400 flex items-center gap-2">
             <CheckCircle2 className="h-4 w-4 flex-shrink-0" />
-            <span>เว็บไซต์รองรับ Fully Responsive สำหรับทุกอุปกรณ์อย่างสมบูรณ์แบบ</span>
+            <span>{t('dashboard.responsiveBanner', 'เว็บไซต์รองรับ Fully Responsive สำหรับทุกอุปกรณ์อย่างสมบูรณ์แบบ')}</span>
           </div>
         </div>
       </div>
@@ -556,7 +556,7 @@ export const DashboardPage: React.FC<{ onNavigate: (path: string) => void }> = (
               <span>{t('dashboard.recentAudit', 'ประวัติความปลอดภัยและการทำงานล่าสุด (Audit Trail)')}</span>
             </h3>
             <p className="text-xs text-theme-text-muted">
-              บันทึกการกระทำของผู้ดูแลระบบและการเข้าถึงข้อมูลล่าสุด
+              {t('dashboard.recentAuditDesc', 'บันทึกการกระทำของผู้ดูแลระบบและการเข้าถึงข้อมูลล่าสุด')}
             </p>
           </div>
 
@@ -565,7 +565,7 @@ export const DashboardPage: React.FC<{ onNavigate: (path: string) => void }> = (
             onClick={() => onNavigate('/admin/audit-log')}
             className="text-xs font-bold text-theme-primary hover:underline flex items-center gap-1"
           >
-            <span>{t('common.viewAll', 'ดูบันทึกทั้งหมด')}</span>
+            <span>{t('dashboard.viewAllLogs', 'ดูบันทึกทั้งหมด')}</span>
             <span>&rarr;</span>
           </button>
         </div>

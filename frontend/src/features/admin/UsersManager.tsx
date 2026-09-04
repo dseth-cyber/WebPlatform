@@ -260,10 +260,10 @@ export const UsersManager: React.FC = () => {
         <div>
           <h1 className="font-display text-2xl font-black text-theme-text flex items-center gap-2">
             <Users className="h-6 w-6 text-theme-primary" />
-            <span>{t('admin.users')} & RBAC</span>
+            <span>{t('admin.usersTitle', 'จัดการผู้ใช้และสิทธิ์การเข้าถึง (User Management & RBAC)')}</span>
           </h1>
           <p className="text-xs text-theme-text-muted mt-1">
-            จัดการบัญชีผู้ดูแลระบบ กำหนดสิทธิ์การเข้าถึงเมนู และรีเซ็ตรหัสผ่านความปลอดภัย (Superadmin, Content Editor, Product Manager)
+            {t('admin.usersSubtitle', 'จัดการบัญชีผู้ดูแลระบบ กำหนดสิทธิ์ และความปลอดภัย')}
           </p>
         </div>
 
@@ -285,7 +285,7 @@ export const UsersManager: React.FC = () => {
             className="flex items-center gap-2 rounded-xl bg-theme-primary px-5 py-2.5 text-xs font-black text-black shadow-lg shadow-theme-primary/25 hover:bg-theme-primary-hover transition-all"
           >
             <Plus className="h-4 w-4 text-black" />
-            <span>+ เพิ่มผู้ใช้งานใหม่</span>
+            <span>{t('admin.addNewUser', '+ เพิ่มผู้ใช้ใหม่')}</span>
           </button>
         </div>
       </div>
