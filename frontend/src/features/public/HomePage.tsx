@@ -1398,15 +1398,24 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
         isOpen={detailModal.isOpen}
         onClose={() => setDetailModal((prev) => ({ ...prev, isOpen: false }))}
         title={detailModal.title}
+        subtitle={detailModal.subtitle}
         maxWidth="2xl"
       >
-        <div className="space-y-5 text-xs font-sans">
+        <div className="space-y-4 text-xs font-sans">
           {detailModal.image && (
-            <div className="aspect-[16/9] w-full overflow-hidden rounded-2xl border border-theme-border bg-black relative shadow-inner">
+            <div
+              className={`w-full overflow-hidden rounded-2xl border border-theme-border relative shadow-inner ${
+                detailModal.type === 'product'
+                  ? 'bg-white h-44 sm:h-52 p-4 flex items-center justify-center'
+                  : 'h-44 sm:h-52 bg-slate-900'
+              }`}
+            >
               <img
                 src={detailModal.image}
                 alt={detailModal.title}
-                className="h-full w-full object-cover"
+                className={`h-full w-full ${
+                  detailModal.type === 'product' ? 'object-contain' : 'object-cover'
+                }`}
                 onError={(e) => {
                   (e.target as HTMLImageElement).src = '/images/hero-fullwidth.jpg';
                 }}
@@ -1426,15 +1435,7 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
                 <span>{detailModal.date}</span>
               </div>
             )}
-            <h3 className="font-display text-xl sm:text-2xl font-black text-theme-text leading-snug">
-              {detailModal.title}
-            </h3>
-            {detailModal.subtitle && (
-              <p className="text-xs font-bold text-theme-primary">
-                {detailModal.subtitle}
-              </p>
-            )}
-            <p className="text-xs sm:text-sm text-theme-text leading-relaxed whitespace-pre-line pt-2">
+            <p className="text-xs sm:text-sm text-theme-text leading-relaxed whitespace-pre-line pt-1">
               {detailModal.content}
             </p>
 

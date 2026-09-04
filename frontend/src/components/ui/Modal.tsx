@@ -49,7 +49,7 @@ export const Modal: React.FC<ModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto p-4 sm:p-6 backdrop-blur-md bg-black/60 animate-in fade-in duration-200">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 backdrop-blur-md bg-black/60 animate-in fade-in duration-200">
       <div
         className="fixed inset-0"
         onClick={onClose}
@@ -59,11 +59,11 @@ export const Modal: React.FC<ModalProps> = ({
       <div
         role="dialog"
         aria-modal="true"
-        className={`relative w-full ${maxWidthClasses[maxWidth]} rounded-2xl border border-theme-border-highlight bg-theme-surface-elevated p-6 shadow-2xl transition-all duration-200 animate-in zoom-in-95`}
+        className={`relative w-full ${maxWidthClasses[maxWidth]} max-h-[calc(100dvh-2rem)] sm:max-h-[calc(100dvh-3.5rem)] flex flex-col rounded-2xl border border-theme-border-highlight bg-theme-surface-elevated shadow-2xl transition-all duration-200 animate-in zoom-in-95 overflow-hidden my-auto`}
       >
-        <div className="flex items-start justify-between border-b border-theme-border pb-4">
-          <div>
-            <h3 className="text-lg font-semibold text-theme-text">{title}</h3>
+        <div className="flex-shrink-0 flex items-start justify-between border-b border-theme-border px-5 py-4 sm:px-6 sm:py-4.5 bg-theme-surface-elevated z-10">
+          <div className="pr-4">
+            <h3 className="text-base sm:text-lg font-bold text-theme-text leading-snug">{title}</h3>
             {subtitle && <p className="mt-1 text-xs text-theme-text-muted">{subtitle}</p>}
           </div>
 
@@ -71,7 +71,7 @@ export const Modal: React.FC<ModalProps> = ({
             <button
               type="button"
               onClick={onClose}
-              className="rounded-lg p-1 text-theme-text-muted hover:bg-theme-surface hover:text-theme-text transition-colors"
+              className="flex-shrink-0 rounded-xl p-1.5 text-theme-text-muted hover:bg-theme-surface hover:text-theme-text transition-colors border border-transparent hover:border-theme-border"
               aria-label="Close dialog"
             >
               <X className="h-5 w-5" />
@@ -79,7 +79,9 @@ export const Modal: React.FC<ModalProps> = ({
           )}
         </div>
 
-        <div className="mt-4">{children}</div>
+        <div className="flex-1 overflow-y-auto px-5 py-4 sm:px-6 sm:py-5 overscroll-contain">
+          {children}
+        </div>
       </div>
     </div>
   );
