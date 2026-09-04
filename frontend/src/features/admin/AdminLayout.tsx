@@ -301,7 +301,7 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({
         {/* Footer Sidebar (Always pinned at bottom) */}
         <div className="pt-3 border-t border-theme-border space-y-2.5 flex-shrink-0">
           <div className="flex items-center justify-between gap-2">
-            <LanguageSwitcher />
+            <LanguageSwitcher dropDirection="up" align="left" />
             <ThemeToggleButton />
           </div>
 

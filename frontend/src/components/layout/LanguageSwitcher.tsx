@@ -10,16 +10,53 @@ const EXACT_5_LANGUAGES = [
   { code: 'mm', name: 'မြန်မာ', flag: '🇲🇲' },
 ];
 
-export const LanguageSwitcher: React.FC<{ className?: string; isTransparentOverDark?: boolean }> = ({
+export interface LanguageSwitcherProps {
+  className?: string;
+  isTransparentOverDark?: boolean;
+  dropDirection?: 'down' | 'up' | 'auto';
+  align?: 'left' | 'right' | 'auto';
+}
+
+export const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({
   className = '',
   isTransparentOverDark = false,
+  dropDirection = 'auto',
+  align = 'auto',
 }) => {
   const { i18n } = useTranslation();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+  const [computedPlacement, setComputedPlacement] = useState<{
+    openUp: boolean;
+    alignLeft: boolean;
+  }>({
+    openUp: false,
+    alignLeft: false,
+  });
 
   const currentLangCode = i18n.language || 'th';
   const currentLang = EXACT_5_LANGUAGES.find((l) => l.code === currentLangCode) || EXACT_5_LANGUAGES[0];
+
+  useEffect(() => {
+    if (dropdownOpen && containerRef.current) {
+      const rect = containerRef.current.getBoundingClientRect();
+      const spaceBelow = window.innerHeight - rect.bottom;
+      const spaceAbove = rect.top;
+
+      const shouldOpenUp =
+        dropDirection === 'up' ||
+        (dropDirection === 'auto' && spaceBelow < 260 && spaceAbove > spaceBelow);
+
+      const shouldAlignLeft =
+        align === 'left' ||
+        (align === 'auto' && (rect.left < 200 || rect.right > window.innerWidth));
+
+      setComputedPlacement({
+        openUp: shouldOpenUp,
+        alignLeft: shouldAlignLeft,
+      });
+    }
+  }, [dropdownOpen, dropDirection, align]);
 
   // Close dropdown on click outside
   useEffect(() => {
@@ -41,6 +78,20 @@ export const LanguageSwitcher: React.FC<{ className?: string; isTransparentOverD
     localStorage.setItem('lohakit_language', newLang);
     setDropdownOpen(false);
   };
+
+  const isUp =
+    dropDirection === 'up'
+      ? true
+      : dropDirection === 'down'
+      ? false
+      : computedPlacement.openUp;
+
+  const isLeft =
+    align === 'left'
+      ? true
+      : align === 'right'
+      ? false
+      : computedPlacement.alignLeft;
 
   return (
     <div className={`relative ${className}`} ref={containerRef}>
@@ -72,7 +123,11 @@ export const LanguageSwitcher: React.FC<{ className?: string; isTransparentOverD
 
       {/* 5-Language Dropdown Popover */}
       {dropdownOpen && (
-        <div className="absolute right-0 top-full mt-2 z-50 w-44 rounded-2xl border border-theme-border bg-theme-surface/98 backdrop-blur-2xl p-1.5 shadow-2xl space-y-1 animate-in fade-in zoom-in-95 duration-150">
+        <div
+          className={`absolute z-50 w-48 rounded-2xl border border-theme-border bg-theme-surface/98 backdrop-blur-2xl p-1.5 shadow-2xl space-y-1 animate-in fade-in duration-150 ${
+            isUp ? 'bottom-full mb-2' : 'top-full mt-2'
+          } ${isLeft ? 'left-0' : 'right-0'}`}
+        >
           <div className="px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-theme-text-dim border-b border-theme-border">
             เลือกภาษา (5 Languages)
           </div>
