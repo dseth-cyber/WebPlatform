@@ -103,15 +103,16 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
   const enabledBadges = settings.featureBadges.filter((b) => b.enabled);
   const enabledMetrics = settings.metrics.filter((m) => m.enabled);
 
-  // 📌 Products from Catalog Database with Pin sorting
+  // 📌 Products from Catalog Database with Pin filtering
   const { data: rawProducts, refetch: refetchProducts } = useProducts('all', '', currentLang);
   const productsList = rawProducts && rawProducts.length > 0 ? rawProducts : [];
   const activeProducts = productsList.filter((p: any) => p.isActive !== false);
   const pinnedProducts = activeProducts.filter((p: any) => Boolean(p.isPinned));
-  const unpinnedProducts = activeProducts.filter((p: any) => !p.isPinned);
+  // 1. ถ้ามีปักหมุด แสดงเฉพาะรายการที่ปักหมุดตามจำนวนนั้น
+  // 2. ถ้าไม่ปักหมุด แสดงแถวแรกอัตโนมัติ (4 รายการ = 1 แถว) เพื่อไม่ให้เยอะเกินไป
   const productsToShow = pinnedProducts.length > 0
-    ? [...pinnedProducts, ...unpinnedProducts]
-    : activeProducts;
+    ? pinnedProducts
+    : activeProducts.slice(0, 4);
 
   // Listen to product database updates from admin panel in real-time
   useEffect(() => {
@@ -148,37 +149,33 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
   );
   const currentBranch = branches.find((b) => b.id === activeBranchId) || branches[0];
 
-  // 📌 Categories with Pin sorting
+  // 📌 Categories with Pin filtering
   const enabledCategories = (settings.categoryCards || []).filter((c) => c.enabled !== false);
   const pinnedCategories = enabledCategories.filter((c) => Boolean(c.isPinned));
-  const unpinnedCategories = enabledCategories.filter((c) => !c.isPinned);
   const categoriesToShow = pinnedCategories.length > 0
-    ? [...pinnedCategories, ...unpinnedCategories]
-    : enabledCategories;
+    ? pinnedCategories
+    : enabledCategories.slice(0, 5);
 
-  // 📌 Services with Pin filtering & sorting
+  // 📌 Services with Pin filtering
   const rawServices = settings.servicesList || [];
   const pinnedServices = rawServices.filter((s) => Boolean(s.isPinned));
-  const unpinnedServices = rawServices.filter((s) => !s.isPinned);
   const servicesToShow = pinnedServices.length > 0
-    ? [...pinnedServices, ...unpinnedServices]
-    : rawServices;
+    ? pinnedServices
+    : rawServices.slice(0, 3);
 
-  // 📌 Technology with Pin filtering & sorting
+  // 📌 Technology with Pin filtering
   const rawTech = settings.technologyCards || [];
   const pinnedTech = rawTech.filter((t) => Boolean(t.isPinned));
-  const unpinnedTech = rawTech.filter((t) => !t.isPinned);
   const techToShow = pinnedTech.length > 0
-    ? [...pinnedTech, ...unpinnedTech]
-    : rawTech;
+    ? pinnedTech
+    : rawTech.slice(0, 2);
 
-  // 📌 Sustainability with Pin filtering & sorting
+  // 📌 Sustainability with Pin filtering
   const rawSus = settings.sustainabilityCards || [];
   const pinnedSus = rawSus.filter((s) => Boolean(s.isPinned));
-  const unpinnedSus = rawSus.filter((s) => !s.isPinned);
   const susToShow = pinnedSus.length > 0
-    ? [...pinnedSus, ...unpinnedSus]
-    : rawSus;
+    ? pinnedSus
+    : rawSus.slice(0, 3);
 
   // 📌 News with Pin sorting
   const allNews = newsArticles || [];
