@@ -648,6 +648,7 @@ export const useSiteContent = () => {
                   ...prev,
                   ...remoteSettings,
                   navTabs: remoteSettings.navTabs || prev.navTabs || DEFAULT_SITE_SETTINGS.navTabs,
+                  categoryCards: remoteSettings.categoryCards || prev.categoryCards || DEFAULT_SITE_SETTINGS.categoryCards,
                   sustainabilityCards: remoteSettings.sustainabilityCards || prev.sustainabilityCards || DEFAULT_SITE_SETTINGS.sustainabilityCards,
                   technologyCards: remoteSettings.technologyCards || prev.technologyCards || DEFAULT_SITE_SETTINGS.technologyCards,
                   servicesList: remoteSettings.servicesList || prev.servicesList || DEFAULT_SITE_SETTINGS.servicesList,

@@ -27,7 +27,7 @@ export const ProductsManager: React.FC = () => {
 
   React.useEffect(() => {
     if (initialProducts && productsList.length === 0) {
-      setProductsList(initialProducts.map((p: any) => ({ ...p, isActive: p.isActive !== false })));
+      setProductsList(initialProducts.map((p: any) => ({ ...p, isActive: p.isActive !== false, isPinned: Boolean(p.isPinned) })));
     }
   }, [initialProducts]);
 
@@ -174,6 +174,11 @@ export const ProductsManager: React.FC = () => {
   };
 
   const syncProductsToDatabase = async (newList: ExtendedProduct[]) => {
+    try {
+      localStorage.setItem('lohakit_catalog_products', JSON.stringify(newList));
+    } catch (e) {}
+    window.dispatchEvent(new Event('lohakit_products_updated'));
+
     try {
       const csrfToken = localStorage.getItem('csrf_token') || '';
       const authToken = localStorage.getItem('auth_token') || '';

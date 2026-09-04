@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   ArrowRight,
@@ -104,14 +104,23 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
   const enabledMetrics = settings.metrics.filter((m) => m.enabled);
 
   // 📌 Products from Catalog Database with Pin sorting
-  const { data: rawProducts } = useProducts('all', '', currentLang);
+  const { data: rawProducts, refetch: refetchProducts } = useProducts('all', '', currentLang);
   const productsList = rawProducts && rawProducts.length > 0 ? rawProducts : [];
   const activeProducts = productsList.filter((p: any) => p.isActive !== false);
-  const pinnedProducts = activeProducts.filter((p: any) => p.isPinned);
+  const pinnedProducts = activeProducts.filter((p: any) => Boolean(p.isPinned));
   const unpinnedProducts = activeProducts.filter((p: any) => !p.isPinned);
   const productsToShow = pinnedProducts.length > 0
     ? [...pinnedProducts, ...unpinnedProducts]
     : activeProducts;
+
+  // Listen to product database updates from admin panel in real-time
+  useEffect(() => {
+    const handleProductsUpdated = () => {
+      refetchProducts();
+    };
+    window.addEventListener('lohakit_products_updated', handleProductsUpdated);
+    return () => window.removeEventListener('lohakit_products_updated', handleProductsUpdated);
+  }, [refetchProducts]);
 
   const [productViewMode, setProductViewMode] = useState<'catalog' | 'categories'>('catalog');
 
@@ -140,26 +149,36 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
   const currentBranch = branches.find((b) => b.id === activeBranchId) || branches[0];
 
   // 📌 Categories with Pin sorting
-  const enabledCategories = settings.categoryCards.filter((c) => c.enabled);
-  const pinnedCategories = enabledCategories.filter((c) => c.isPinned);
+  const enabledCategories = (settings.categoryCards || []).filter((c) => c.enabled !== false);
+  const pinnedCategories = enabledCategories.filter((c) => Boolean(c.isPinned));
+  const unpinnedCategories = enabledCategories.filter((c) => !c.isPinned);
   const categoriesToShow = pinnedCategories.length > 0
-    ? [...pinnedCategories, ...enabledCategories.filter((c) => !c.isPinned)]
+    ? [...pinnedCategories, ...unpinnedCategories]
     : enabledCategories;
 
-  // 📌 Services with Pin filtering
+  // 📌 Services with Pin filtering & sorting
   const rawServices = settings.servicesList || [];
-  const pinnedServices = rawServices.filter((s) => s.isPinned);
-  const servicesToShow = pinnedServices.length > 0 ? pinnedServices : rawServices.slice(0, 4);
+  const pinnedServices = rawServices.filter((s) => Boolean(s.isPinned));
+  const unpinnedServices = rawServices.filter((s) => !s.isPinned);
+  const servicesToShow = pinnedServices.length > 0
+    ? [...pinnedServices, ...unpinnedServices]
+    : rawServices;
 
-  // 📌 Technology with Pin filtering
+  // 📌 Technology with Pin filtering & sorting
   const rawTech = settings.technologyCards || [];
-  const pinnedTech = rawTech.filter((t) => t.isPinned);
-  const techToShow = pinnedTech.length > 0 ? pinnedTech : rawTech.slice(0, 3);
+  const pinnedTech = rawTech.filter((t) => Boolean(t.isPinned));
+  const unpinnedTech = rawTech.filter((t) => !t.isPinned);
+  const techToShow = pinnedTech.length > 0
+    ? [...pinnedTech, ...unpinnedTech]
+    : rawTech;
 
-  // 📌 Sustainability with Pin filtering
+  // 📌 Sustainability with Pin filtering & sorting
   const rawSus = settings.sustainabilityCards || [];
-  const pinnedSus = rawSus.filter((s) => s.isPinned);
-  const susToShow = pinnedSus.length > 0 ? pinnedSus : rawSus.slice(0, 3);
+  const pinnedSus = rawSus.filter((s) => Boolean(s.isPinned));
+  const unpinnedSus = rawSus.filter((s) => !s.isPinned);
+  const susToShow = pinnedSus.length > 0
+    ? [...pinnedSus, ...unpinnedSus]
+    : rawSus;
 
   // 📌 News with Pin sorting
   const allNews = newsArticles || [];
@@ -1403,19 +1422,11 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
       >
         <div className="space-y-4 text-xs font-sans">
           {detailModal.image && (
-            <div
-              className={`w-full overflow-hidden rounded-2xl border border-theme-border relative shadow-inner ${
-                detailModal.type === 'product'
-                  ? 'bg-white h-44 sm:h-52 p-4 flex items-center justify-center'
-                  : 'h-44 sm:h-52 bg-slate-900'
-              }`}
-            >
+            <div className="w-full h-52 sm:h-64 overflow-hidden rounded-2xl border border-theme-border bg-slate-900 relative shadow-inner">
               <img
                 src={detailModal.image}
                 alt={detailModal.title}
-                className={`h-full w-full ${
-                  detailModal.type === 'product' ? 'object-contain' : 'object-cover'
-                }`}
+                className="h-full w-full object-cover"
                 onError={(e) => {
                   (e.target as HTMLImageElement).src = '/images/hero-fullwidth.jpg';
                 }}

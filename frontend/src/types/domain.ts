@@ -107,6 +107,8 @@ export interface LocalizedProduct {
   pdfSpecURL?: string;
   metaTitle?: string;
   metaDescription?: string;
+  isPinned?: boolean;
+  isActive?: boolean;
 }
 
 export interface LocalizedNewsArticle {

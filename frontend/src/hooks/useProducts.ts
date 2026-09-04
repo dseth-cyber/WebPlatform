@@ -28,6 +28,8 @@ const normalizeProduct = (p: any): LocalizedProduct => {
     galleryImages: p.galleryImages || (p.primaryImageURL ? [p.primaryImageURL] : ['/images/cat-round-cans.jpg']),
     pdfSpecURL: p.pdfSpecURL || p.pdf_spec_url || '/specs/lohakit-spec.pdf',
     specifications: specs,
+    isPinned: Boolean(p.isPinned),
+    isActive: p.isActive !== false,
   };
 };
 
@@ -145,6 +147,9 @@ export const useProducts = (categoryId?: string, search?: string, lang: string =
         if (settingsRes.ok) {
           const json = await settingsRes.json();
           if (json && json.data && Array.isArray(json.data.catalog_products) && json.data.catalog_products.length > 0) {
+            try {
+              localStorage.setItem('lohakit_catalog_products', JSON.stringify(json.data.catalog_products));
+            } catch (e) {}
             let list = json.data.catalog_products.map(normalizeProduct);
             // Combine with mock products if list doesn't have enough items
             const mockMapped = MOCK_PRODUCTS.map(normalizeProduct);
@@ -164,6 +169,16 @@ export const useProducts = (categoryId?: string, search?: string, lang: string =
               );
             }
             return filtered;
+          }
+        }
+
+        // Check local storage if backend didn't return
+        const cached = localStorage.getItem('lohakit_catalog_products');
+        if (cached) {
+          const parsed = JSON.parse(cached);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            let list = parsed.map(normalizeProduct);
+            return list.filter((p: any) => matchesCategory(p, categoryId));
           }
         }
 

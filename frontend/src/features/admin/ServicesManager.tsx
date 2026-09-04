@@ -257,21 +257,23 @@ export const ServicesManager: React.FC = () => {
                     <div className="flex items-center gap-2">
                       <button
                         type="button"
-                        onClick={() => {
+                        onClick={async () => {
                           const updated = [...services];
-                          updated[idx] = { ...updated[idx], isPinned: updated[idx].isPinned === false ? true : false };
+                          const nextPinned = !Boolean(updated[idx].isPinned);
+                          updated[idx] = { ...updated[idx], isPinned: nextPinned };
                           setServices(updated);
-                          showToast(updated[idx].isPinned !== false ? 'ปักหมุดแสดงที่หน้าแรกแล้ว' : 'ยกเลิกปักหมุดหน้าแรกแล้ว');
+                          await updateSettings({ servicesList: updated });
+                          showToast(nextPinned ? '📌 ปักหมุดแสดงที่หน้าแรกแล้ว' : 'ยกเลิกปักหมุดหน้าแรกแล้ว');
                         }}
                         className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-bold transition-all ${
-                          srv.isPinned !== false
+                          Boolean(srv.isPinned)
                             ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40 shadow-sm'
                             : 'bg-theme-surface text-theme-text-muted hover:text-theme-text border border-theme-border'
                         }`}
-                        title={srv.isPinned !== false ? 'คลิกเพื่อยกเลิกการปักหมุดหน้าแรก' : 'คลิกเพื่อปักหมุดแสดงที่หน้าแรก'}
+                        title={Boolean(srv.isPinned) ? 'คลิกเพื่อยกเลิกการปักหมุดหน้าแรก' : 'คลิกเพื่อปักหมุดแสดงที่หน้าแรก'}
                       >
-                        <Pin className={`h-3.5 w-3.5 ${srv.isPinned !== false ? 'fill-amber-400 text-amber-400' : ''}`} />
-                        <span>{srv.isPinned !== false ? '📌 ปักหมุดหน้าแรก' : 'ปักหมุดหน้าแรก'}</span>
+                        <Pin className={`h-3.5 w-3.5 ${Boolean(srv.isPinned) ? 'fill-amber-400 text-amber-400' : ''}`} />
+                        <span>{Boolean(srv.isPinned) ? '📌 ปักหมุดหน้าแรก' : 'ปักหมุดหน้าแรก'}</span>
                       </button>
 
                       <button
