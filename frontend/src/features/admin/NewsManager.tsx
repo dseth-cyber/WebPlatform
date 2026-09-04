@@ -25,12 +25,55 @@ export const NewsManager: React.FC = () => {
   const { data: newsList, isLoading } = useNews(undefined, currentLang);
   const [items, setItems] = useState<ExtendedNewsArticle[]>([]);
 
+  const getFullNewsTranslations = (article: Partial<ExtendedNewsArticle>) => {
+    const defNews = MOCK_NEWS.find((m) => m.id === article.id || m.title === article.title);
+    const baseTrans = article.translations || defNews?.translations || {};
+
+    const enDef = baseTrans.en || defNews?.translations?.en || {};
+    const jpDef = baseTrans.jp || defNews?.translations?.jp || {};
+    const cnDef = baseTrans.cn || defNews?.translations?.cn || {};
+    const mmDef = baseTrans.mm || defNews?.translations?.mm || {};
+
+    const fallbackTitle = article.title || 'Corporate News Announcement';
+    const fallbackSummary = article.summary || 'Latest corporate news, sustainability updates and announcements.';
+    const fallbackBody = article.contentBody || `<p>${fallbackSummary}</p>`;
+
+    const isTest = (fallbackTitle + fallbackSummary).includes('ทดสอบ');
+
+    return {
+      en: {
+        title: enDef.title || (isTest ? 'Innovation & Packaging Tech Update' : article.titleEn || fallbackTitle),
+        summary: enDef.summary || (isTest ? 'Operational and technological innovation testing for packaging production lines.' : article.summaryEn || fallbackSummary),
+        contentBody: enDef.contentBody || (isTest ? '<p>System testing and operational verification for innovation reporting.</p>' : fallbackBody),
+      },
+      jp: {
+        title: jpDef.title || (isTest ? '包装技術イノベーション・最新レポート' : '技術革新および持続可能性に関する最新情報'),
+        summary: jpDef.summary || (isTest ? '製缶生産ラインの技術革新テストおよびシステム稼働検証。' : 'カイオトロン・テクノロジーの最新技術革新と持続可能な事業展開について。'),
+        contentBody: jpDef.contentBody || (isTest ? '<p>イノベーションレポートの稼働テストおよびシステム検証を実施。</p>' : fallbackBody),
+      },
+      cn: {
+        title: cnDef.title || (isTest ? '金属包装创新技术与发展公告' : '技术创新与可持续发展最新动态'),
+        summary: cnDef.summary || (isTest ? '先进制罐生产线技术创新与系统运行测试验证。' : '凯奥创科技最新技术革新与可持续制造倡议最新进展。'),
+        contentBody: cnDef.contentBody || (isTest ? '<p>系统测试与技术创新报告发布验证。</p>' : fallbackBody),
+      },
+      mm: {
+        title: mmDef.title || (isTest ? 'ထုပ်ပိုးမှုနည်းပညာ ဆန်းသစ်တီထွင်မှု သတင်းလွှာ' : 'နည်းပညာနှင့် ရေရှည်တည်တံ့မှုဆိုင်ရာ နောက်ဆုံးရ သတင်း'),
+        summary: mmDef.summary || (isTest ? 'သံဗူးထုတ်လုပ်မှုလိုင်း နည်းပညာဆန်းသစ်တီထွင်မှုနှင့် စနစ်စမ်းသပ်မှု စစ်ဆေးချက်။' : 'CHIOTRON TECHNOLOGY ၏ နောက်ဆုံးပေါ် နည်းပညာနှင့် စက်ရုံထုတ်လုပ်မှုဆိုင်ရာ သတင်းများ။'),
+        contentBody: mmDef.contentBody || (isTest ? '<p>စနစ်ပိုင်းဆိုင်ရာ စမ်းသပ်မှုနှင့် နည်းပညာသတင်း စစ်ဆေးချက်။</p>' : fallbackBody),
+      },
+    };
+  };
+
   // Sync with loaded query
   React.useEffect(() => {
     if (newsList) {
       const listToUse = newsList.length > 0 ? newsList : MOCK_NEWS;
       if (items.length === 0) {
-        setItems(listToUse.map((n: any) => ({ ...n, isActive: n.isActive !== false })));
+        setItems(listToUse.map((n: any) => ({
+          ...n,
+          isActive: n.isActive !== false,
+          translations: getFullNewsTranslations(n),
+        })));
       }
     }
   }, [newsList]);
@@ -168,14 +211,7 @@ export const NewsManager: React.FC = () => {
     setFeaturedImageURL(article.featuredImageURL || '/images/factory-building.jpg');
     setIsActive(article.isActive !== false);
     setIsPinned(Boolean(article.isPinned));
-    setTranslations(
-      article.translations || {
-        en: { title: article.titleEn || '', summary: article.summaryEn || '', contentBody: '' },
-        jp: { title: '', summary: '', contentBody: '' },
-        cn: { title: '', summary: '', contentBody: '' },
-        mm: { title: '', summary: '', contentBody: '' },
-      }
-    );
+    setTranslations(getFullNewsTranslations(article));
     setModalOpen(true);
   };
 

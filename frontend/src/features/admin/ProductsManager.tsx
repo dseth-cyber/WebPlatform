@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useProducts, useCategories } from '../../hooks/useProducts';
+import { useProducts, useCategories, matchesCategory } from '../../hooks/useProducts';
+import { MOCK_PRODUCTS } from '../../api/mockData';
 import { SearchableSelect, SelectOption } from '../../components/ui/SearchableSelect';
 import { TableSkeleton } from '../../components/ui/TableSkeleton';
 import { Pagination } from '../../components/ui/Pagination';
@@ -263,11 +264,49 @@ export const ProductsManager: React.FC = () => {
     showToast('เปลี่ยนสถานะการแสดงผลสินค้าในฐานข้อมูลเรียบร้อยแล้ว');
   };
 
+  const getFullProductTranslations = (p: Partial<ExtendedProduct>) => {
+    const defMock = MOCK_PRODUCTS.find((m) => m.id === p.id || m.sku === p.sku);
+    const baseTrans = p.translations || defMock?.translations || {};
+
+    const enDef = baseTrans.en || defMock?.translations?.en || {};
+    const jpDef = baseTrans.jp || defMock?.translations?.jp || {};
+    const cnDef = baseTrans.cn || defMock?.translations?.cn || {};
+    const mmDef = baseTrans.mm || defMock?.translations?.mm || {};
+
+    return {
+      en: {
+        name: enDef.name || p.nameEn || p.name || 'Premium Metal Packaging Can',
+        description: enDef.description || p.descriptionEn || p.description || 'High-grade metal packaging engineered for international food safety and durability.',
+        features: enDef.features || p.features || 'Superior strength, BPA-NI lacquer coating, 100% airtight protection.',
+        applications: enDef.applications || p.applications || 'Canned food, seafood, fruits, beverage, industrial packaging.',
+      },
+      jp: {
+        name: jpDef.name || 'プレミアム食品用金属缶パッケージ',
+        description: jpDef.description || '国際食品安全基準に適合した高品質・高耐久な金属製パッケージング。',
+        features: jpDef.features || '高強度構造、BPA-NI安全コーティング、完全密封遮断。',
+        applications: jpDef.applications || '食品缶詰、水産加工品、果実、飲料、工業用途。',
+      },
+      cn: {
+        name: cnDef.name || '高端食品级马口铁金属包装罐',
+        description: cnDef.description || '严格符合国际食品安全标准的优质金属包装容器，耐压防潮气密性卓越。',
+        features: cnDef.features || '高强度结构设计、BPA-NI环保内涂层、100%阻隔密封保护。',
+        applications: cnDef.applications || '食品罐头、海鲜水产、水果蔬菜罐头、饮料及工业包装。',
+      },
+      mm: {
+        name: mmDef.name || 'အစားအသောက်သုံး အဆင့်မြင့် သံဗူးထုပ်ပိုးပစ္စည်း',
+        description: mmDef.description || 'နိုင်ငံတကာ စားသောက်ကုန် ဘေးကင်းလုံခြုံမှု စံချိန်စံညွှန်းများနှင့် ကိုက်ညီသော အရည်အသွေးမြင့် သံဗူးဖြစ်ပါသည်။',
+        features: mmDef.features || 'ခိုင်ခံ့သောတည်ဆောက်ပုံ၊ BPA-NI အကာအကွယ်လွှာ၊ ၁၀၀% လေလုံပိတ်ဆို့မှု။',
+        applications: mmDef.applications || 'ငါးသေတ္တာ၊ အသီးအနှံဗူးများ၊ အဖျော်ယမကာ၊ စက်မှုလုပ်ငန်းသုံး သံဗူးများ။',
+      },
+    };
+  };
+
   const handleOpenAdd = () => {
     setSelectedProduct(null);
     setSku('LK-CAN-' + Math.floor(100 + Math.random() * 900));
     setName('');
-    setCategoryName('Food Cans');
+    const firstCat = settings.categoryCards?.[0]?.titleTh || 'กระป๋องกลม';
+    setCategoryName(firstCat);
     setDescription('');
     setMaterial('ETP Tinplate 0.20mm');
     setCoatingType('BPA-NI Gold Epoxy');
@@ -287,21 +326,18 @@ export const ProductsManager: React.FC = () => {
     setSelectedProduct(p);
     setSku(p.sku);
     setName(p.name);
-    setCategoryName(p.categoryName);
+    // Align with categoryCards if available
+    const matchedCard = (settings.categoryCards || []).find(
+      (c) => c.titleTh === p.categoryName || c.id === p.categoryId || c.id === p.categorySlug
+    );
+    setCategoryName(matchedCard ? matchedCard.titleTh : (p.categoryName || settings.categoryCards?.[0]?.titleTh || 'กระป๋องกลม'));
     setDescription(p.description || '');
     setMaterial(p.material || 'ETP Tinplate 0.20mm');
     setCoatingType(p.coatingType || 'BPA-NI Gold Epoxy');
     setDimensions(p.specifications?.dimensions || 'D: 73mm x H: 110mm');
     setPrimaryImageURL(p.primaryImageURL || '/images/cat-round-cans.jpg');
     setIsActive(p.isActive !== false);
-    setProductTranslations(
-      p.translations || {
-        en: { name: p.nameEn || '', description: p.descriptionEn || '', features: '', applications: '' },
-        jp: { name: '', description: '', features: '', applications: '' },
-        cn: { name: '', description: '', features: '', applications: '' },
-        mm: { name: '', description: '', features: '', applications: '' },
-      }
-    );
+    setProductTranslations(getFullProductTranslations(p));
     setEditModalOpen(true);
   };
 
@@ -324,6 +360,10 @@ export const ProductsManager: React.FC = () => {
       return;
     }
 
+    const matchingCard = settings.categoryCards?.find((c) => c.titleTh === categoryName);
+    const resolvedCatId = matchingCard?.id || selectedProduct?.categoryId || 'round-cans';
+    const resolvedCatSlug = matchingCard?.id || selectedProduct?.categorySlug || 'round-cans';
+
     let updatedList: ExtendedProduct[];
     if (selectedProduct) {
       // Update
@@ -335,6 +375,8 @@ export const ProductsManager: React.FC = () => {
               name,
               nameEn: productTranslations.en?.name || name,
               descriptionEn: productTranslations.en?.description || description,
+              categoryId: resolvedCatId,
+              categorySlug: resolvedCatSlug,
               categoryName,
               description,
               material,
@@ -356,9 +398,9 @@ export const ProductsManager: React.FC = () => {
       // Create
       const newProd: ExtendedProduct = {
         id: 'prod-' + Date.now(),
-        categoryId: 'cat-food',
+        categoryId: resolvedCatId,
         categoryName,
-        categorySlug: categoryName.toLowerCase().replace(/\s+/g, '-'),
+        categorySlug: resolvedCatSlug,
         sku,
         language: currentLang,
         name,
@@ -413,14 +455,20 @@ export const ProductsManager: React.FC = () => {
 
   const categoryOptions: SelectOption[] = [
     { value: 'all', label: `✨ ${t('common.all')} (${t('common.categories')})` },
-    ...(categories ?? []).map((cat) => ({
-      value: cat.name,
-      label: cat.name,
+    ...(settings.categoryCards || []).map((cat) => ({
+      value: cat.titleTh,
+      label: `${cat.titleTh} (${cat.titleEn || cat.id})`,
     })),
   ];
 
   const filteredProducts = productsList.filter((p) => {
-    if (selectedCat !== 'all' && p.categoryName !== selectedCat) return false;
+    if (selectedCat !== 'all') {
+      const match =
+        p.categoryName === selectedCat ||
+        p.categoryId === selectedCat ||
+        matchesCategory(p, selectedCat);
+      if (!match) return false;
+    }
     if (
       searchTerm &&
       !p.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
@@ -797,11 +845,14 @@ export const ProductsManager: React.FC = () => {
               onChange={(e) => setCategoryName(e.target.value)}
               className="w-full rounded-xl border border-theme-border bg-theme-surface px-3 py-2 text-theme-text"
             >
-              <option value="Food Cans">Food Cans (กระป๋องอาหาร)</option>
-              <option value="Chemical Pails">Chemical Pails (ถังเคมีภัณฑ์)</option>
-              <option value="Aerosol Cans">Aerosol Cans (กระป๋องสเปรย์)</option>
-              <option value="EOE Closures">EOE Closures (ฝาดึงเปิดง่าย)</option>
-              <option value="General Packaging">General Packaging (บรรจุภัณฑ์ทั่วไป)</option>
+              {(settings.categoryCards || []).map((cat) => (
+                <option key={cat.id} value={cat.titleTh}>
+                  {cat.titleTh} ({cat.titleEn || cat.id})
+                </option>
+              ))}
+              {!(settings.categoryCards || []).some((c) => c.titleTh === categoryName) && categoryName && (
+                <option value={categoryName}>{categoryName}</option>
+              )}
             </select>
           </div>
 

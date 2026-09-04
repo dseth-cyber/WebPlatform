@@ -51,38 +51,22 @@ export const ProductsPage: React.FC<{ onNavigate: (path: string) => void; curren
     });
   }, [products]);
 
-  // Unified Category Options combining Homepage Categories and Catalog Categories
+  // Category Options directly synchronized with Homepage Categories & Images (settings.categoryCards)
   const categoryOptions: SelectOption[] = [
     { value: 'all', label: `✨ ${t('common.all')} (${t('common.categories')})` },
+    ...(settings.categoryCards || [])
+      .filter((c) => c.enabled !== false)
+      .map((c) => {
+        const localizedTitle =
+          (c as any).translations?.[currentLang]?.title ||
+          (currentLang === 'en' ? (c.titleEn || c.titleTh) : (c.titleTh || c.titleEn)) ||
+          c.titleTh;
+        return {
+          value: c.id,
+          label: localizedTitle,
+        };
+      }),
   ];
-
-  // 1. Add Homepage Category Cards
-  const homeCats = (settings.categoryCards || []).filter((c) => c.enabled !== false);
-  for (const hc of homeCats) {
-    if (!categoryOptions.some((opt) => opt.value === hc.id)) {
-      categoryOptions.push({
-        value: hc.id,
-        label: `🏷️ ${(hc as any).translations?.[currentLang]?.title || (currentLang === 'en' ? (hc.titleEn || hc.titleTh) : (hc.titleTh || hc.titleEn)) || hc.titleTh}`,
-      });
-    }
-  }
-
-  // 2. Add Industry Catalog Categories
-  const catalogCats = categories ?? [
-    { id: 'food-beverage-cans', name: 'กระป๋องบรรจุอาหารและเครื่องดื่ม (Food & Beverage Cans)' },
-    { id: 'chemical-paint-pails', name: 'ถังโลหะบรรจุเคมีภัณฑ์และสี (Chemical & Paint Pails)' },
-    { id: 'aerosol-spray-cans', name: 'กระป๋องสเปรย์และแอโรซอล (Aerosol & Spray Cans)' },
-    { id: 'metal-closures-lids', name: 'ฝาโลหะและฝาดึงง่าย (Metal Closures & EOE)' },
-  ];
-  for (const cc of catalogCats) {
-    const catVal = (cc as any).slug || cc.id;
-    if (!categoryOptions.some((opt) => opt.value === catVal || opt.value === cc.id)) {
-      categoryOptions.push({
-        value: catVal,
-        label: `📦 ${cc.name}`,
-      });
-    }
-  }
 
   return (
     <div className="mx-auto max-w-7xl px-4 pt-6 pb-16 sm:px-6 lg:px-8 space-y-10 font-sans">

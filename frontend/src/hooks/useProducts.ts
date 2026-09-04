@@ -5,31 +5,36 @@ import { MOCK_PRODUCTS, MOCK_CATEGORIES } from '../api/mockData';
 
 const normalizeProduct = (p: any): LocalizedProduct => {
   const specs = p.specifications || {};
+  const defMock = MOCK_PRODUCTS.find((m) => m.id === p.id || m.sku === p.sku);
+  const translations = p.translations || defMock?.translations;
+
   return {
     id: p.id || '',
-    categoryId: p.categoryId || p.category_id || '',
-    categorySlug: p.categorySlug || p.category_slug || 'food-beverage-cans',
-    categoryName: p.categoryName || p.category_name || (p.categorySlug === 'food-beverage-cans' ? 'กระป๋องอาหารและเครื่องดื่ม' : 'บรรจุภัณฑ์โลหะ'),
+    categoryId: p.categoryId || p.category_id || defMock?.categoryId || '',
+    categorySlug: p.categorySlug || p.category_slug || defMock?.categorySlug || 'food-beverage-cans',
+    categoryName: p.categoryName || p.category_name || defMock?.categoryName || (p.categorySlug === 'food-beverage-cans' ? 'กระป๋องอาหารและเครื่องดื่ม' : 'บรรจุภัณฑ์โลหะ'),
     sku: p.sku || 'LK-CAN',
     language: p.language || 'th',
     name: p.name || p.sku || 'บรรจุภัณฑ์โลหะเกรดพรีเมียม',
     slug: p.slug || p.sku || 'metal-packaging',
-    description: p.description || 'บรรจุภัณฑ์โลหะคุณภาพสูงมาตรฐานสากล สำหรับอาหารพร้อมทานและอุตสาหกรรม',
-    material: p.material || specs.material || 'Electrolytic Tinplate (ETP) 0.20mm',
-    coatingType: p.coatingType || specs.coating_type || specs.coating || 'BPA-NI Food Grade',
-    unRating: p.unRating || specs.un_rating || 'UN 1A2/Y1.4/100',
-    applications: p.applications || 'อาหารสำเร็จรูป, อาหารทะเลกระป๋อง, ผักผลไม้แปรรูป',
-    features: p.features || 'โครงสร้างแข็งแรง ทนความร้อนสูง ป้องกันการซึมผ่าน 100%',
+    description: p.description || defMock?.description || 'บรรจุภัณฑ์โลหะคุณภาพสูงมาตรฐานสากล สำหรับอาหารพร้อมทานและอุตสาหกรรม',
+    material: p.material || specs.material || defMock?.material || 'Electrolytic Tinplate (ETP) 0.20mm',
+    coatingType: p.coatingType || specs.coating_type || specs.coating || defMock?.coatingType || 'BPA-NI Food Grade',
+    unRating: p.unRating || specs.un_rating || defMock?.unRating || 'UN 1A2/Y1.4/100',
+    applications: p.applications || defMock?.applications || 'อาหารสำเร็จรูป, อาหารทะเลกระป๋อง, ผักผลไม้แปรรูป',
+    features: p.features || defMock?.features || 'โครงสร้างแข็งแรง ทนความร้อนสูง ป้องกันการซึมผ่าน 100%',
     primaryImageURL:
       p.primaryImageURL ||
       p.featuredImageUrl ||
       p.featured_image_url ||
+      defMock?.primaryImageURL ||
       '/images/cat-round-cans.jpg',
     galleryImages: p.galleryImages || (p.primaryImageURL ? [p.primaryImageURL] : ['/images/cat-round-cans.jpg']),
-    pdfSpecURL: p.pdfSpecURL || p.pdf_spec_url || '/specs/lohakit-spec.pdf',
+    pdfSpecURL: p.pdfSpecURL || p.pdf_spec_url || defMock?.pdfSpecURL || '/specs/lohakit-spec.pdf',
     specifications: specs,
     isPinned: Boolean(p.isPinned),
     isActive: p.isActive !== false,
+    translations,
   };
 };
 
@@ -47,8 +52,8 @@ export const matchesCategory = (p: any, categoryId?: string): boolean => {
   // 1. Direct match
   if (pCatId === target || pCatSlug === target || pCatName === target) return true;
 
-  // 2. Homepage Category: round-cans (กระป๋องกลม)
-  if (target === 'round-cans') {
+  // 2. Homepage Category: round-cans (กระป๋องกลม / กระป๋องกลม0000)
+  if (target === 'round-cans' || target.includes('กลม') || target.includes('round')) {
     return (
       pCatId === 'round-cans' ||
       pCatSlug.includes('food') ||
@@ -62,7 +67,7 @@ export const matchesCategory = (p: any, categoryId?: string): boolean => {
   }
 
   // 3. Homepage Category: rect-cans (กระป๋องเหลี่ยม / ถังเหล็ก)
-  if (target === 'rect-cans') {
+  if (target === 'rect-cans' || target.includes('เหลี่ยม') || target.includes('rect') || target.includes('ถัง')) {
     return (
       pCatId === 'rect-cans' ||
       pCatSlug.includes('chemical') ||
@@ -77,7 +82,7 @@ export const matchesCategory = (p: any, categoryId?: string): boolean => {
   }
 
   // 4. Homepage Category: can-lids (ฝาปิดกระป๋อง)
-  if (target === 'can-lids') {
+  if (target === 'can-lids' || target.includes('ฝาปิด') || target.includes('lid')) {
     return (
       pCatId === 'can-lids' ||
       pCatSlug.includes('closures') ||
@@ -91,7 +96,7 @@ export const matchesCategory = (p: any, categoryId?: string): boolean => {
   }
 
   // 5. Homepage Category: can-ends (ก้นกระป๋อง)
-  if (target === 'can-ends') {
+  if (target === 'can-ends' || target.includes('ก้น') || target.includes('end')) {
     return (
       pCatId === 'can-ends' ||
       pCatSlug.includes('closures') ||
@@ -106,7 +111,7 @@ export const matchesCategory = (p: any, categoryId?: string): boolean => {
   }
 
   // 6. Homepage Category: printed-cans (กระป๋องพิมพ์ลาย)
-  if (target === 'printed-cans') {
+  if (target === 'printed-cans' || target.includes('พิมพ์') || target.includes('print')) {
     return (
       pCatId === 'printed-cans' ||
       pName.includes('พิมพ์') ||
