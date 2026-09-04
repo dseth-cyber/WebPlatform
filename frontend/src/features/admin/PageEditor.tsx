@@ -25,6 +25,12 @@ import {
   ArrowRight,
   ShieldCheck,
   AlertCircle,
+  ChevronLeft,
+  ChevronRight,
+  Trash2,
+  Plus,
+  Sliders,
+  Play,
 } from 'lucide-react';
 import { compressImageFile } from '../../utils/imageCompressor';
 
@@ -72,8 +78,17 @@ export const PageEditor: React.FC<{
   const [secondaryCtaText, setSecondaryCtaText] = useState(settings.heroSecondaryButtonText || 'ชมผลิตภัณฑ์ของเรา');
   const [secondaryCtaLink, setSecondaryCtaLink] = useState(settings.heroSecondaryButtonLink || '#products');
 
-  // Form States (Column 2 - Media)
-  const [heroImage, setHeroImage] = useState(settings.heroBannerImage || '/images/hero-fullwidth.jpg');
+  // Form States (Column 2 - Media Slider up to 5 images)
+  const initialHeroImages = settings.heroImages && settings.heroImages.length > 0
+    ? settings.heroImages
+    : [settings.heroBannerImage || '/images/hero-fullwidth.jpg'];
+  const [heroImagesList, setHeroImagesList] = useState<string[]>(initialHeroImages);
+  const [activeSlideIndex, setActiveSlideIndex] = useState(0);
+  const [heroAutoSlide, setHeroAutoSlide] = useState(settings.heroAutoSlide !== false);
+  const [heroSlideInterval, setHeroSlideInterval] = useState(settings.heroSlideInterval || 5);
+  const [heroShowArrows, setHeroShowArrows] = useState(settings.heroShowArrows !== false);
+  const [heroShowDots, setHeroShowDots] = useState(settings.heroShowDots !== false);
+  const [newImageUrlInput, setNewImageUrlInput] = useState('');
 
   // Sync with global settings when loaded from DB
   React.useEffect(() => {
@@ -87,7 +102,15 @@ export const PageEditor: React.FC<{
       if (settings.heroSecondaryButtonText) setSecondaryCtaText(settings.heroSecondaryButtonText);
       if (settings.heroSecondaryButtonLink) setSecondaryCtaLink(settings.heroSecondaryButtonLink);
       if (settings.showHeroSecondaryBtn !== undefined) setShowSecondaryBtn(settings.showHeroSecondaryBtn !== false);
-      if (settings.heroBannerImage) setHeroImage(settings.heroBannerImage);
+      if (settings.heroImages && settings.heroImages.length > 0) {
+        setHeroImagesList(settings.heroImages);
+      } else if (settings.heroBannerImage) {
+        setHeroImagesList([settings.heroBannerImage]);
+      }
+      if (settings.heroAutoSlide !== undefined) setHeroAutoSlide(settings.heroAutoSlide !== false);
+      if (settings.heroSlideInterval !== undefined) setHeroSlideInterval(settings.heroSlideInterval || 5);
+      if (settings.heroShowArrows !== undefined) setHeroShowArrows(settings.heroShowArrows !== false);
+      if (settings.heroShowDots !== undefined) setHeroShowDots(settings.heroShowDots !== false);
     }
   }, [settings]);
 
@@ -191,16 +214,50 @@ export const PageEditor: React.FC<{
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
+      if (heroImagesList.length >= 5) {
+        showNotification('⚠️ ไม่สามารถเพิ่มภาพได้ เนื่องจากครบโควต้าสูงสุด 5 ภาพแล้ว');
+        return;
+      }
       try {
-        showNotification('กำลังประมวลผลและปรับขนาดภาพหน้าปก...');
+        showNotification('กำลังประมวลผลและปรับขนาดภาพ...');
         const optimizedDataUrl = await compressImageFile(file, 1920, 1080, 0.85);
-        setHeroImage(optimizedDataUrl);
+        const updated = [...heroImagesList, optimizedDataUrl];
+        setHeroImagesList(updated);
+        setActiveSlideIndex(updated.length - 1);
         setWorkflowStatus('DRAFT');
-        showNotification('อัปโหลดและเปลี่ยนภาพหน้าปกแล้ว (อยู่ในสถานะ Draft)');
+        showNotification(`✅ อัปโหลดภาพที่ ${updated.length} สำเร็จแล้ว (Draft)`);
       } catch (err) {
         showNotification('เกิดข้อผิดพลาดในการโหลดรูปภาพ');
       }
     }
+  };
+
+  const handleAddImageUrl = () => {
+    if (!newImageUrlInput.trim()) return;
+    if (heroImagesList.length >= 5) {
+      showNotification('⚠️ เพิ่มภาพได้สูงสุด 5 ภาพเท่านั้น');
+      return;
+    }
+    const updated = [...heroImagesList, newImageUrlInput.trim()];
+    setHeroImagesList(updated);
+    setActiveSlideIndex(updated.length - 1);
+    setNewImageUrlInput('');
+    setWorkflowStatus('DRAFT');
+    showNotification(`✅ เพิ่มภาพที่ ${updated.length} เรียบร้อยแล้ว`);
+  };
+
+  const handleRemoveImage = (indexToRemove: number) => {
+    if (heroImagesList.length <= 1) {
+      showNotification('⚠️ ต้องมีภาพพื้นหลังอย่างน้อย 1 ภาพ');
+      return;
+    }
+    const updated = heroImagesList.filter((_, idx) => idx !== indexToRemove);
+    setHeroImagesList(updated);
+    if (activeSlideIndex >= updated.length) {
+      setActiveSlideIndex(Math.max(0, updated.length - 1));
+    }
+    setWorkflowStatus('DRAFT');
+    showNotification('🗑️ ลบภาพออกจากสไลด์แล้ว');
   };
 
   const handleSaveDraft = () => {
@@ -213,7 +270,7 @@ export const PageEditor: React.FC<{
       subtitle: thaiDesc,
       buttonText: ctaText,
       buttonLink: ctaLink,
-      heroImage,
+      heroImage: heroImagesList[0] || '/images/hero-fullwidth.jpg',
       author: 'Administrator',
       createdAt: new Date().toISOString(),
       status: 'DRAFT',
@@ -224,6 +281,7 @@ export const PageEditor: React.FC<{
   };
 
   const handlePublish = () => {
+    const primaryHero = heroImagesList[0] || '/images/hero-fullwidth.jpg';
     updateSettings({
       heroTitle: thaiTitle,
       heroHighlight: thaiSubtitle,
@@ -234,7 +292,12 @@ export const PageEditor: React.FC<{
       heroSecondaryButtonText: secondaryCtaText,
       heroSecondaryButtonLink: secondaryCtaLink,
       showHeroSecondaryBtn: showSecondaryBtn,
-      heroBannerImage: heroImage,
+      heroBannerImage: primaryHero,
+      heroImages: heroImagesList,
+      heroAutoSlide: heroAutoSlide,
+      heroSlideInterval: heroSlideInterval,
+      heroShowArrows: heroShowArrows,
+      heroShowDots: heroShowDots,
     });
     setWorkflowStatus('PUBLISHED');
     const newRev: RevisionRecord = {
@@ -245,7 +308,7 @@ export const PageEditor: React.FC<{
       subtitle: thaiDesc,
       buttonText: ctaText,
       buttonLink: ctaLink,
-      heroImage,
+      heroImage: primaryHero,
       author: 'Administrator',
       createdAt: new Date().toISOString(),
       status: 'PUBLISHED',
@@ -262,7 +325,10 @@ export const PageEditor: React.FC<{
     setThaiDesc(rev.subtitle);
     setCtaText(rev.buttonText);
     setCtaLink(rev.buttonLink);
-    setHeroImage(rev.heroImage);
+    if (rev.heroImage) {
+      setHeroImagesList([rev.heroImage]);
+      setActiveSlideIndex(0);
+    }
     setWorkflowStatus('DRAFT');
     setRevisionModalOpen(false);
     showNotification(`🔄 กู้คืนข้อมูลจาก Revision ${rev.revisionNumber} เรียบร้อยแล้ว! (กรุณากด Preview หรือ Publish เพื่อยืนยัน)`);
@@ -513,59 +579,285 @@ export const PageEditor: React.FC<{
           </div>
         </div>
 
-        {/* COLUMN 2: ภาพพื้นหลัง Hero Media Banner */}
+        {/* COLUMN 2: ระบบจัดการภาพพื้นหลังปก Hero Slider (สูงสุด 5 ภาพ) */}
         <div className="lg:col-span-4 rounded-3xl border border-theme-border bg-theme-surface p-6 shadow-2xl space-y-4">
-          <h2 className="font-display text-sm font-bold text-theme-text border-b border-theme-border pb-3 flex items-center justify-between">
-            <span>ภาพพื้นหลังปก (Hero Media)</span>
+          <div className="border-b border-theme-border pb-3 flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <h2 className="font-display text-sm font-bold text-theme-text">ภาพพื้นหลังปก (Hero Media)</h2>
+              <span className="rounded-full bg-theme-primary/20 text-theme-primary px-2 py-0.5 text-[10px] font-bold">
+                {heroImagesList.length}/5 ภาพ
+              </span>
+            </div>
             <span className="text-[10px] text-theme-text-muted font-mono">1920x1080 Fullwidth</span>
-          </h2>
+          </div>
 
           <div className="space-y-4 text-xs">
+            {/* Live Slider Preview with Navigation */}
             <div className="aspect-[16/9] w-full overflow-hidden rounded-2xl border-2 border-theme-border bg-black relative shadow-inner group">
               <img
-                src={heroImage}
-                alt="Hero Banner Preview"
-                className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500"
+                src={heroImagesList[activeSlideIndex] || heroImagesList[0] || '/images/hero-fullwidth.jpg'}
+                alt={`Hero Banner ${activeSlideIndex + 1}`}
+                className="h-full w-full object-cover transition-all duration-500"
               />
-              <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                <span className="rounded-xl bg-black/80 px-3 py-1.5 text-[11px] font-bold text-white border border-white/20">
-                  ภาพปัจจุบันบนหน้าแรก
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/30 pointer-events-none" />
+
+              {/* Slide Counter Overlay */}
+              <div className="absolute top-2.5 left-2.5 z-10 flex items-center gap-1.5">
+                <span className="rounded-lg bg-black/75 px-2.5 py-1 text-[10px] font-bold text-white border border-white/20 backdrop-blur-sm">
+                  ภาพที่ {activeSlideIndex + 1} จาก {heroImagesList.length}
                 </span>
+                {activeSlideIndex === 0 && (
+                  <span className="rounded-lg bg-amber-500/90 text-black px-2 py-1 text-[10px] font-extrabold shadow-sm">
+                    ภาพปกเริ่มต้น
+                  </span>
+                )}
+              </div>
+
+              {/* Prev / Next Arrows for Preview */}
+              {heroImagesList.length > 1 && (
+                <>
+                  <button
+                    type="button"
+                    onClick={() => setActiveSlideIndex((prev) => (prev === 0 ? heroImagesList.length - 1 : prev - 1))}
+                    className="absolute left-2 top-1/2 -translate-y-1/2 rounded-full bg-black/60 hover:bg-black/90 p-1.5 text-white border border-white/20 transition-all opacity-80 group-hover:opacity-100"
+                    title="ภาพก่อนหน้า"
+                  >
+                    <ChevronLeft className="h-4 w-4" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setActiveSlideIndex((prev) => (prev + 1) % heroImagesList.length)}
+                    className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full bg-black/60 hover:bg-black/90 p-1.5 text-white border border-white/20 transition-all opacity-80 group-hover:opacity-100"
+                    title="ภาพถัดไป"
+                  >
+                    <ChevronRight className="h-4 w-4" />
+                  </button>
+                </>
+              )}
+
+              {/* Bottom Indicators in Preview */}
+              <div className="absolute bottom-2 inset-x-0 flex items-center justify-center gap-1.5 z-10">
+                {heroImagesList.map((_, dotIdx) => (
+                  <button
+                    key={dotIdx}
+                    type="button"
+                    onClick={() => setActiveSlideIndex(dotIdx)}
+                    className={`h-1.5 rounded-full transition-all ${
+                      activeSlideIndex === dotIdx ? 'w-5 bg-amber-400' : 'w-1.5 bg-white/50 hover:bg-white'
+                    }`}
+                  />
+                ))}
               </div>
             </div>
 
-            <div className="space-y-2">
-              <label className="font-bold text-theme-text block">URL หรือเลือกไฟล์ภาพใหม่</label>
-              <input
-                type="text"
-                value={heroImage}
-                onChange={(e) => {
-                  setHeroImage(e.target.value);
-                  setWorkflowStatus('DRAFT');
-                }}
-                placeholder="/images/hero-fullwidth.jpg"
-                className="w-full rounded-xl border border-theme-border bg-theme-surface-elevated px-3.5 py-2 text-xs text-theme-text font-mono text-[11px]"
-              />
+            {/* Thumbnails Strip with Delete and Select */}
+            <div className="space-y-1.5">
+              <div className="flex items-center justify-between text-[11px] font-bold text-theme-text">
+                <span>ลำดับภาพสไลด์ (คลิกเลือกดู หรือลบ)</span>
+                <span className="text-[10px] text-theme-text-muted">ลำดับแรก = ภาพหน้าปก</span>
+              </div>
+              <div className="grid grid-cols-5 gap-1.5">
+                {heroImagesList.map((imgUrl, idx) => {
+                  const isCurrent = activeSlideIndex === idx;
+                  return (
+                    <div
+                      key={idx}
+                      className={`group/thumb relative aspect-[16/9] rounded-xl overflow-hidden border-2 cursor-pointer transition-all ${
+                        isCurrent
+                          ? 'border-theme-primary ring-2 ring-theme-primary/30 shadow-md scale-[1.02]'
+                          : 'border-theme-border opacity-70 hover:opacity-100'
+                      }`}
+                      onClick={() => setActiveSlideIndex(idx)}
+                    >
+                      <img src={imgUrl} alt={`Thumb ${idx + 1}`} className="h-full w-full object-cover" />
+                      <span className="absolute bottom-0.5 left-1 text-[9px] font-bold text-white bg-black/70 px-1 rounded">
+                        #{idx + 1}
+                      </span>
+                      {heroImagesList.length > 1 && (
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleRemoveImage(idx);
+                          }}
+                          className="absolute top-0.5 right-0.5 rounded-full bg-red-600/90 text-white p-1 opacity-0 group-hover/thumb:opacity-100 transition-opacity hover:bg-red-700"
+                          title="ลบภาพนี้ออกจากสไลด์"
+                        >
+                          <Trash2 className="h-2.5 w-2.5" />
+                        </button>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
             </div>
 
-            <div className="flex gap-2">
-              <label className="flex-1 inline-flex items-center justify-center gap-2 rounded-xl bg-theme-primary/15 border border-theme-primary/40 px-3 py-2.5 text-xs font-bold text-theme-primary hover:bg-theme-primary hover:text-black cursor-pointer transition-all shadow-sm">
-                <UploadCloud className="h-4 w-4" />
-                <span>อัปโหลดภาพจากเครื่อง</span>
-                <input type="file" accept="image/*" onChange={handleFileUpload} className="hidden" />
-              </label>
-              <button
-                type="button"
-                onClick={() => {
-                  setHeroImage('/images/hero-fullwidth.jpg');
-                  setWorkflowStatus('DRAFT');
-                  showNotification('รีเซ็ตเป็นภาพโรงงาน Fullwidth เริ่มต้นแล้ว');
-                }}
-                className="rounded-xl border border-theme-border bg-theme-surface-elevated px-3 py-2.5 text-xs font-semibold text-theme-text hover:text-theme-primary transition-colors"
-                title="ใช้ภาพเริ่มต้น"
-              >
-                ภาพเริ่มต้น
-              </button>
+            {/* Add Image Controls: File Upload or Direct URL */}
+            {heroImagesList.length < 5 ? (
+              <div className="rounded-2xl border border-theme-border bg-theme-surface-elevated p-3 space-y-2.5">
+                <div className="flex items-center justify-between">
+                  <span className="font-bold text-theme-text flex items-center gap-1.5 text-[11px]">
+                    <Plus className="h-3.5 w-3.5 text-theme-primary" />
+                    <span>เพิ่มรูปภาพสไลด์ใหม่ ({heroImagesList.length}/5)</span>
+                  </span>
+                </div>
+
+                <div className="flex gap-2">
+                  <label className="flex-1 inline-flex items-center justify-center gap-1.5 rounded-xl bg-theme-primary/15 border border-theme-primary/40 px-3 py-2 text-xs font-bold text-theme-primary hover:bg-theme-primary hover:text-black cursor-pointer transition-all shadow-sm">
+                    <UploadCloud className="h-4 w-4" />
+                    <span>อัปโหลดรูปภาพ</span>
+                    <input type="file" accept="image/*" onChange={handleFileUpload} className="hidden" />
+                  </label>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const defaults = [
+                        '/images/hero-fullwidth.jpg',
+                        '/images/hero-cans-banner.jpg',
+                        '/images/factory-building.jpg',
+                      ];
+                      setHeroImagesList(defaults);
+                      setActiveSlideIndex(0);
+                      setWorkflowStatus('DRAFT');
+                      showNotification('รีเซ็ตเป็น 3 ภาพโรงงานเริ่มต้นแล้ว');
+                    }}
+                    className="rounded-xl border border-theme-border bg-theme-surface px-2.5 py-2 text-[11px] font-semibold text-theme-text-muted hover:text-theme-primary transition-colors"
+                    title="ใช้ชุดภาพเริ่มต้นของระบบ"
+                  >
+                    รีเซ็ตเริ่มต้น
+                  </button>
+                </div>
+
+                <div className="flex gap-1.5">
+                  <input
+                    type="text"
+                    value={newImageUrlInput}
+                    onChange={(e) => setNewImageUrlInput(e.target.value)}
+                    placeholder="หรือวาง URL ภาพ (เช่น /images/... หรือ https://...)"
+                    className="flex-1 rounded-xl border border-theme-border bg-theme-surface px-2.5 py-1.5 text-[11px] text-theme-text font-mono placeholder:text-theme-text-muted"
+                  />
+                  <button
+                    type="button"
+                    onClick={handleAddImageUrl}
+                    disabled={!newImageUrlInput.trim()}
+                    className="rounded-xl bg-theme-primary px-3 py-1.5 text-xs font-bold text-black disabled:opacity-40 disabled:cursor-not-allowed hover:brightness-110 transition-all"
+                  >
+                    เพิ่ม
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <div className="rounded-xl border border-amber-500/30 bg-amber-500/10 p-2.5 text-center text-[11px] font-semibold text-amber-500">
+                ครบจำนวนสูงสุด 5 ภาพแล้ว (ลบภาพที่ไม่ต้องการก่อนหากต้องการเพิ่มใหม่)
+              </div>
+            )}
+
+            {/* Slider Behavior Settings (Auto slide, Duration, Hover arrows, Dots) */}
+            <div className="rounded-2xl border border-theme-border bg-theme-surface-elevated p-3.5 space-y-3">
+              <div className="flex items-center gap-1.5 text-[11px] font-bold text-theme-text border-b border-theme-border/60 pb-2">
+                <Sliders className="h-3.5 w-3.5 text-theme-primary" />
+                <span>ตั้งค่าพฤติกรรมสไลด์ (Slide Settings)</span>
+              </div>
+
+              {/* Auto Slide Toggle */}
+              <div className="flex items-center justify-between">
+                <div>
+                  <div className="font-bold text-theme-text text-[11px]">เลื่อนสไลด์อัตโนมัติ (Auto-Slide)</div>
+                  <div className="text-[10px] text-theme-text-muted">เปลี่ยนภาพตามเวลา (จะหยุดชั่วคราวเมื่อชี้เมาส์)</div>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setHeroAutoSlide(!heroAutoSlide);
+                    setWorkflowStatus('DRAFT');
+                  }}
+                  className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out ${
+                    heroAutoSlide ? 'bg-theme-primary' : 'bg-zinc-600'
+                  }`}
+                >
+                  <span
+                    className={`pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow-lg ring-0 transition duration-200 ease-in-out ${
+                      heroAutoSlide ? 'translate-x-4 bg-black' : 'translate-x-0'
+                    }`}
+                  />
+                </button>
+              </div>
+
+              {/* Interval Selection (if auto-slide is enabled) */}
+              {heroAutoSlide && (
+                <div className="space-y-1.5 pt-1 border-t border-theme-border/40">
+                  <label className="font-bold text-theme-text-muted block text-[10px]">
+                    ความเร็วในการเปลี่ยนสไลด์ (วินาที)
+                  </label>
+                  <div className="grid grid-cols-4 gap-1.5">
+                    {[3, 5, 7, 10].map((sec) => (
+                      <button
+                        key={sec}
+                        type="button"
+                        onClick={() => {
+                          setHeroSlideInterval(sec);
+                          setWorkflowStatus('DRAFT');
+                        }}
+                        className={`rounded-xl py-1.5 text-xs font-bold transition-all border ${
+                          heroSlideInterval === sec
+                            ? 'bg-theme-primary text-black border-theme-primary font-black shadow-sm'
+                            : 'border-theme-border bg-theme-surface text-theme-text hover:border-theme-primary/50'
+                        }`}
+                      >
+                        {sec} วินาที
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Hover Arrows Toggle */}
+              <div className="flex items-center justify-between pt-2 border-t border-theme-border/40">
+                <div>
+                  <div className="font-bold text-theme-text text-[11px]">ปุ่มลูกศรเมื่อชี้เมาส์ (Hover Navigation)</div>
+                  <div className="text-[10px] text-theme-text-muted">แสดงลูกศร ซ้าย/ขวา เพื่อให้ผู้ใช้กดเลื่อนเอง</div>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setHeroShowArrows(!heroShowArrows);
+                    setWorkflowStatus('DRAFT');
+                  }}
+                  className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out ${
+                    heroShowArrows ? 'bg-theme-primary' : 'bg-zinc-600'
+                  }`}
+                >
+                  <span
+                    className={`pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow-lg ring-0 transition duration-200 ease-in-out ${
+                      heroShowArrows ? 'translate-x-4 bg-black' : 'translate-x-0'
+                    }`}
+                  />
+                </button>
+              </div>
+
+              {/* Dots Toggle */}
+              <div className="flex items-center justify-between pt-2 border-t border-theme-border/40">
+                <div>
+                  <div className="font-bold text-theme-text text-[11px]">จุดบอกตำแหน่งสไลด์ (Slide Dots)</div>
+                  <div className="text-[10px] text-theme-text-muted">แสดงจุดนำทางด้านล่างของแบนเนอร์</div>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setHeroShowDots(!heroShowDots);
+                    setWorkflowStatus('DRAFT');
+                  }}
+                  className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out ${
+                    heroShowDots ? 'bg-theme-primary' : 'bg-zinc-600'
+                  }`}
+                >
+                  <span
+                    className={`pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow-lg ring-0 transition duration-200 ease-in-out ${
+                      heroShowDots ? 'translate-x-4 bg-black' : 'translate-x-0'
+                    }`}
+                  />
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -740,8 +1032,8 @@ export const PageEditor: React.FC<{
             >
               {/* Background image */}
               <div
-                className="absolute inset-0 bg-cover bg-center"
-                style={{ backgroundImage: `url(${heroImage})` }}
+                className="absolute inset-0 bg-cover bg-center transition-all duration-700"
+                style={{ backgroundImage: `url(${heroImagesList[activeSlideIndex] || heroImagesList[0] || '/images/hero-fullwidth.jpg'})` }}
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/25 to-transparent z-10" />
                 <div className="absolute inset-0 bg-black/15 z-10" />

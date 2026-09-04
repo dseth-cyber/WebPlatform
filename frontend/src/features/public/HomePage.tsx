@@ -3,6 +3,8 @@ import { useTranslation } from 'react-i18next';
 import {
   ArrowRight,
   ChevronRight,
+  ChevronLeft,
+  Download,
   Factory,
   Globe,
   Users,
@@ -43,6 +45,7 @@ import { useNews } from '../../hooks/useNews';
 import { useProducts } from '../../hooks/useProducts';
 import { formatDate } from '../../utils/dateUtils';
 import { formatGoogleMapsUrl } from '../../utils/mapUtils';
+import { exportProductSpecPDF } from '../../utils/productSpecPdf';
 import { Modal } from '../../components/ui/Modal';
 
 const TECH_ICONS: Record<string, React.FC<{ className?: string }>> = {
@@ -80,7 +83,7 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
   const currentLang = i18n.language || 'th';
   const { data: newsArticles } = useNews(undefined, currentLang);
 
-  // Detail Modal State for Cards (Services, Technology, Sustainability, News)
+  // Detail Modal State for Cards (Services, Technology, Sustainability, News, Products)
   const [detailModal, setDetailModal] = useState<{
     isOpen: boolean;
     type: 'service' | 'tech' | 'sustainability' | 'news' | 'product';
@@ -93,12 +96,33 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
     date?: string;
     ctaText?: string;
     ctaAction?: () => void;
+    rawProduct?: any;
   }>({
     isOpen: false,
     type: 'service',
     title: '',
     content: '',
   });
+
+  // 🖼️ Multi-Image Hero Carousel Slider logic
+  const heroSlides = (settings.heroImages && settings.heroImages.length > 0)
+    ? settings.heroImages
+    : [settings.heroBannerImage || '/images/hero-fullwidth.jpg'];
+
+  const [currentHeroSlide, setCurrentHeroSlide] = useState(0);
+  const [isHeroHovered, setIsHeroHovered] = useState(false);
+
+  // Auto-slide interval timer (pauses when user hovers)
+  useEffect(() => {
+    if (settings.heroAutoSlide === false || heroSlides.length <= 1 || isHeroHovered) {
+      return;
+    }
+    const intervalMs = Math.max(2, settings.heroSlideInterval || 5) * 1000;
+    const timer = setInterval(() => {
+      setCurrentHeroSlide((prev) => (prev + 1) % heroSlides.length);
+    }, intervalMs);
+    return () => clearInterval(timer);
+  }, [heroSlides.length, settings.heroAutoSlide, settings.heroSlideInterval, isHeroHovered]);
 
   const enabledBadges = settings.featureBadges.filter((b) => b.enabled);
   const enabledMetrics = settings.metrics.filter((m) => m.enabled);
@@ -233,16 +257,30 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
   // SECTION 1: HOME (Hero + Highlights)
   // -------------------------------------------------------------
   const renderHomeHero = () => (
-    <section id="home" className="w-full scroll-mt-24">
-      {/* Full-bleed Panoramic Hero Banner */}
+    <section
+      id="home"
+      className="w-full scroll-mt-24 relative group"
+      onMouseEnter={() => setIsHeroHovered(true)}
+      onMouseLeave={() => setIsHeroHovered(false)}
+    >
+      {/* Full-bleed Panoramic Hero Banner Slider */}
       <div className="relative w-full overflow-hidden bg-[#070B14] pt-24 sm:pt-28 pb-14 sm:pb-18 min-h-[540px] lg:min-h-[620px] flex items-center">
-        <div
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat z-0 transition-all duration-500"
-          style={{ backgroundImage: `url('${settings.heroBannerImage || '/images/hero-fullwidth.jpg'}')` }}
-        >
-          <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/35 to-transparent z-10" />
-          <div className="absolute inset-0 bg-black/15 z-10" />
-        </div>
+        {/* Carousel Background Layers with Smooth Fade */}
+        {heroSlides.map((slideUrl, idx) => (
+          <div
+            key={idx}
+            className={`absolute inset-0 bg-cover bg-center bg-no-repeat transition-all duration-1000 ease-in-out ${
+              idx === currentHeroSlide
+                ? 'opacity-100 scale-100 z-0'
+                : 'opacity-0 scale-105 -z-10 pointer-events-none'
+            }`}
+            style={{ backgroundImage: `url('${slideUrl}')` }}
+          />
+        ))}
+
+        {/* Global Dark Overlays for Optimal Legibility */}
+        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/45 to-transparent z-10 pointer-events-none" />
+        <div className="absolute inset-0 bg-black/20 z-10 pointer-events-none" />
 
         <div className="relative z-20 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 w-full">
           <div className="max-w-xl xl:max-w-2xl space-y-6">
@@ -279,10 +317,10 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
                         onNavigate(link);
                       }
                     }}
-                    className="inline-flex items-center gap-2.5 rounded-xl bg-gradient-to-r from-[#D4AF37] via-[#C5A059] to-[#AA7C11] px-8 py-3.5 text-xs sm:text-sm font-bold text-black shadow-lg shadow-amber-500/25 hover:brightness-110 transition-all group cursor-pointer"
+                    className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-[#D4AF37] via-[#C5A059] to-[#AA7C11] px-6 py-3.5 text-xs sm:text-sm font-bold text-black shadow-xl shadow-amber-500/25 hover:brightness-110 hover:shadow-amber-500/40 transition-all cursor-pointer"
                   >
                     <span>{settings.heroButtonText || 'อ่านประวัติองค์กร'}</span>
-                    <ArrowRight className="h-4 w-4 text-black group-hover:translate-x-1 transition-transform" />
+                    <ArrowRight className="h-4 w-4" />
                   </button>
                 )}
 
@@ -313,6 +351,53 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
             )}
           </div>
         </div>
+
+        {/* Previous / Next Arrow Controls (Shown on Desktop Hover) */}
+        {heroSlides.length > 1 && settings.heroShowArrows !== false && (
+          <>
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                setCurrentHeroSlide((prev) => (prev - 1 + heroSlides.length) % heroSlides.length);
+              }}
+              className="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 z-30 flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-black/40 text-white backdrop-blur-md border border-white/20 opacity-0 group-hover:opacity-100 hover:bg-black/70 hover:scale-105 transition-all shadow-xl cursor-pointer"
+              title="ภาพก่อนหน้า"
+            >
+              <ChevronLeft className="h-5 w-5 sm:h-6 sm:w-6" />
+            </button>
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                setCurrentHeroSlide((prev) => (prev + 1) % heroSlides.length);
+              }}
+              className="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 z-30 flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-black/40 text-white backdrop-blur-md border border-white/20 opacity-0 group-hover:opacity-100 hover:bg-black/70 hover:scale-105 transition-all shadow-xl cursor-pointer"
+              title="ภาพถัดไป"
+            >
+              <ChevronRight className="h-5 w-5 sm:h-6 sm:w-6" />
+            </button>
+          </>
+        )}
+
+        {/* Slide Indicator Dots at Bottom */}
+        {heroSlides.length > 1 && settings.heroShowDots !== false && (
+          <div className="absolute bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 z-30 flex items-center gap-2 rounded-full bg-black/50 backdrop-blur-md px-3.5 py-1.5 border border-white/15">
+            {heroSlides.map((_, idx) => (
+              <button
+                key={idx}
+                type="button"
+                onClick={() => setCurrentHeroSlide(idx)}
+                className={`rounded-full transition-all duration-300 cursor-pointer ${
+                  idx === currentHeroSlide
+                    ? 'h-2 w-6 bg-gradient-to-r from-amber-400 to-amber-500 shadow-md shadow-amber-500/50'
+                    : 'h-2 w-2 bg-white/40 hover:bg-white/80'
+                }`}
+                title={`สไลด์ภาพที่ ${idx + 1}`}
+              />
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Feature Badges Bar */}
@@ -503,6 +588,7 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
                     ],
                     ctaText: 'ขอใบเสนอราคาสินค้านี้',
                     ctaAction: () => onNavigate('/contact?sku=' + encodeURIComponent(prod.sku)),
+                    rawProduct: prod,
                   });
                 }}
                 className="glow-card group cursor-pointer rounded-2xl border border-theme-border bg-theme-surface overflow-hidden shadow-lg flex flex-col justify-between transition-all hover:border-theme-primary relative"
@@ -1436,21 +1522,35 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
             <button
               type="button"
               onClick={() => setDetailModal((prev) => ({ ...prev, isOpen: false }))}
-              className="rounded-xl border border-theme-border bg-theme-surface px-5 py-2.5 font-bold text-theme-text hover:bg-theme-surface-elevated transition-colors"
+              className="rounded-xl border border-theme-border bg-theme-surface px-5 py-2.5 font-bold text-theme-text hover:bg-theme-surface-elevated transition-colors cursor-pointer"
             >
               ปิดหน้าต่าง
             </button>
 
-            {detailModal.ctaText && detailModal.ctaAction && (
-              <button
-                type="button"
-                onClick={detailModal.ctaAction}
-                className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-[#D4AF37] via-[#C5A059] to-[#AA7C11] px-6 py-2.5 text-xs font-bold text-black shadow-lg shadow-amber-500/25 hover:brightness-110 transition-all cursor-pointer"
-              >
-                <span>{detailModal.ctaText}</span>
-                <ArrowRight className="h-4 w-4 text-black" />
-              </button>
-            )}
+            <div className="flex items-center gap-3 flex-wrap">
+              {detailModal.type === 'product' && detailModal.rawProduct && (
+                <button
+                  type="button"
+                  onClick={() => exportProductSpecPDF(detailModal.rawProduct, settings)}
+                  className="flex items-center gap-2 rounded-xl border border-theme-primary/40 bg-theme-primary/10 hover:bg-theme-primary/20 text-theme-primary px-4 py-2.5 text-xs font-bold transition-all shadow-sm cursor-pointer"
+                  title="ดาวน์โหลดเอกสารสเปกสินค้า (PDF)"
+                >
+                  <Download className="h-4 w-4" />
+                  <span>ดาวน์โหลดสเปก (PDF)</span>
+                </button>
+              )}
+
+              {detailModal.ctaText && detailModal.ctaAction && (
+                <button
+                  type="button"
+                  onClick={detailModal.ctaAction}
+                  className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-[#D4AF37] via-[#C5A059] to-[#AA7C11] px-6 py-2.5 text-xs font-bold text-black shadow-lg shadow-amber-500/25 hover:brightness-110 transition-all cursor-pointer"
+                >
+                  <span>{detailModal.ctaText}</span>
+                  <ArrowRight className="h-4 w-4 text-black" />
+                </button>
+              )}
+            </div>
           </div>
         </div>
       </Modal>

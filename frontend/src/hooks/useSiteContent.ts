@@ -124,6 +124,11 @@ export interface SiteContentSettings {
   heroSecondaryButtonLink?: string;
   showHeroSecondaryBtn?: boolean; // ซ่อน/แสดง ปุ่ม "ชมผลิตภัณฑ์ของเรา"
   heroBannerImage: string;
+  heroImages?: string[]; // 🖼️ สไลด์ภาพพื้นหลังหน้าแรก (สูงสุด 5 ภาพ)
+  heroAutoSlide?: boolean; // เปิด/ปิด เลื่อนสไลด์อัตโนมัติ
+  heroSlideInterval?: number; // ระยะเวลาสไลด์อัตโนมัติ (วินาที)
+  heroShowArrows?: boolean; // แสดงปุ่มเลื่อนซ้าย/ขวา เมื่อชี้เมาส์
+  heroShowDots?: boolean; // แสดงจุดบอกตำแหน่งสไลด์
 
   // 4 Feature Badges
   featureBadges: FeatureBadgeSetting[];
@@ -212,6 +217,15 @@ export const DEFAULT_SITE_SETTINGS: SiteContentSettings = {
   heroSecondaryButtonLink: '/products',
   showHeroSecondaryBtn: true,
   heroBannerImage: '/images/hero-fullwidth.jpg',
+  heroImages: [
+    '/images/hero-fullwidth.jpg',
+    '/images/hero-cans-banner.jpg',
+    '/images/factory-building.jpg',
+  ],
+  heroAutoSlide: true,
+  heroSlideInterval: 5,
+  heroShowArrows: true,
+  heroShowDots: true,
 
   featureBadges: [
     {
@@ -608,6 +622,7 @@ export const useSiteContent = () => {
           servicesList: parsed.servicesList || DEFAULT_SITE_SETTINGS.servicesList,
           careersJobs: parsed.careersJobs || DEFAULT_SITE_SETTINGS.careersJobs,
           careersBenefits: parsed.careersBenefits || DEFAULT_SITE_SETTINGS.careersBenefits,
+          heroImages: parsed.heroImages || DEFAULT_SITE_SETTINGS.heroImages,
         };
       }
     } catch (e) {}
@@ -655,6 +670,7 @@ export const useSiteContent = () => {
                   servicesList: remoteSettings.servicesList || prev.servicesList || DEFAULT_SITE_SETTINGS.servicesList,
                   careersJobs: remoteSettings.careersJobs || prev.careersJobs || DEFAULT_SITE_SETTINGS.careersJobs,
                   careersBenefits: remoteSettings.careersBenefits || prev.careersBenefits || DEFAULT_SITE_SETTINGS.careersBenefits,
+                  heroImages: remoteSettings.heroImages || prev.heroImages || DEFAULT_SITE_SETTINGS.heroImages,
                 };
                 try {
                   localStorage.setItem(STORAGE_KEY, JSON.stringify(merged));
