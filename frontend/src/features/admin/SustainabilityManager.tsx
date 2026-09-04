@@ -408,6 +408,23 @@ export const SustainabilityManager: React.FC = () => {
                         </div>
                       </div>
                     </div>
+
+                    {/* Multi-Language Tabs for this Sustainability Card */}
+                    <MultiLangSectionEditor
+                      compact
+                      title={`แปลภาษา Card ความยั่งยืน: ${card.titleTh}`}
+                      fields={[
+                        { key: 'title', label: 'หัวข้อความยั่งยืน (Title)' },
+                        { key: 'desc', label: 'คำอธิบาย (Description)', type: 'textarea', rows: 2 },
+                      ]}
+                      value={card.translations || {
+                        en: { title: card.titleEn || '', desc: card.descEn || '' },
+                        jp: { title: '', desc: '' },
+                        cn: { title: '', desc: '' },
+                        mm: { title: '', desc: '' },
+                      }}
+                      onChange={(trans) => handleCardChange(idx, 'translations' as any, trans as any)}
+                    />
                   </div>
                 </div>
               );

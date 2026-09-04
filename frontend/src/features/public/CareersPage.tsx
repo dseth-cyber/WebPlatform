@@ -145,12 +145,12 @@ export const CareersPage: React.FC<{ onNavigate: (path: string) => void }> = ({ 
                   <div className="flex items-center justify-between gap-2">
                     <div className="flex items-center gap-2">
                       <span className="rounded-md bg-theme-primary/15 border border-theme-primary/30 px-2.5 py-1 text-[11px] font-bold text-theme-primary">
-                        {job.department}
+                        {(job as any).translations?.[currentLang]?.department || job.department}
                       </span>
                       {Boolean(job.isPinned) && (
                         <span className="flex items-center gap-1 rounded-md bg-amber-500/20 border border-amber-500/40 px-2 py-0.5 text-[10px] font-bold text-amber-300">
                           <Pin className="h-3 w-3 fill-amber-400 text-amber-400" />
-                          <span>📌 เปิดรับด่วน / แนะนำ</span>
+                          <span>📌 {isEn ? 'Urgent / Recommended' : 'เปิดรับด่วน / แนะนำ'}</span>
                         </span>
                       )}
                     </div>
@@ -161,38 +161,35 @@ export const CareersPage: React.FC<{ onNavigate: (path: string) => void }> = ({ 
 
                   <div>
                     <h3 className="font-display text-base font-bold text-theme-text leading-snug">
-                      {isEn ? (job.titleEn || job.titleTh) : job.titleTh}
+                      {(job as any).translations?.[currentLang]?.title || (isEn ? job.titleEn : job.titleTh) || job.titleTh}
                     </h3>
-                    {isEn && job.titleTh && (
-                      <span className="text-[11px] text-theme-text-muted">{job.titleTh}</span>
-                    )}
                   </div>
 
                   <div className="space-y-1.5 text-xs text-theme-text-muted">
                     <div className="flex items-center gap-2">
                       <MapPin className="h-3.5 w-3.5 text-theme-primary flex-shrink-0" />
-                      <span>{job.location}</span>
+                      <span>{(job as any).translations?.[currentLang]?.location || job.location}</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <Clock className="h-3.5 w-3.5 text-theme-primary flex-shrink-0" />
-                      <span>ประสบการณ์: {job.experience}</span>
+                      <span>{isEn ? 'Experience: ' : 'ประสบการณ์: '}{job.experience}</span>
                     </div>
                     {job.salaryRange && (
                       <div className="flex items-center gap-2 text-theme-text font-semibold">
                         <DollarSign className="h-3.5 w-3.5 text-amber-400 flex-shrink-0" />
-                        <span>เงินเดือน: {job.salaryRange}</span>
+                        <span>{isEn ? 'Salary: ' : 'เงินเดือน: '}{job.salaryRange}</span>
                       </div>
                     )}
                   </div>
 
                   <p className="text-xs text-theme-text-muted leading-relaxed line-clamp-2">
-                    {job.description}
+                    {(job as any).translations?.[currentLang]?.description || job.description}
                   </p>
 
                   {job.requirements && job.requirements.length > 0 && (
                     <div className="space-y-1.5 pt-2 border-t border-theme-border/60">
                       <span className="text-[11px] font-bold text-theme-text uppercase tracking-wider">
-                        คุณสมบัติสำคัญ:
+                        {isEn ? 'Key Requirements:' : 'คุณสมบัติสำคัญ:'}
                       </span>
                       <ul className="space-y-1 text-xs text-theme-text-muted">
                         {job.requirements.slice(0, 3).map((req, rIdx) => (
@@ -211,7 +208,17 @@ export const CareersPage: React.FC<{ onNavigate: (path: string) => void }> = ({ 
                   onClick={() => handleOpenApply(job)}
                   className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-theme-primary/15 border border-theme-primary/40 py-2.5 text-xs font-bold text-theme-primary hover:bg-theme-primary hover:text-black transition-all shadow-sm"
                 >
-                  <span>สมัครตำแหน่งนี้</span>
+                  <span>
+                    {currentLang === 'jp'
+                      ? 'この求人に応募する'
+                      : currentLang === 'cn'
+                      ? '申请该职位'
+                      : currentLang === 'mm'
+                      ? 'ဤရာထူးကို လျှောက်ထားပါ'
+                      : currentLang === 'en'
+                      ? 'Apply for this position'
+                      : 'สมัครตำแหน่งนี้'}
+                  </span>
                   <ChevronRight className="h-4 w-4" />
                 </button>
               </div>

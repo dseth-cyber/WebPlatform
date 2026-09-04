@@ -18,6 +18,7 @@ interface MultiLangSectionEditorProps {
   value: Record<LocaleCode, Record<string, string>>;
   onChange: (updated: Record<LocaleCode, Record<string, string>>) => void;
   className?: string;
+  compact?: boolean;
 }
 
 const LOCALE_TABS: Array<{ code: LocaleCode; label: string }> = [
@@ -34,6 +35,7 @@ export const MultiLangSectionEditor: React.FC<MultiLangSectionEditorProps> = ({
   value,
   onChange,
   className = '',
+  compact = false,
 }) => {
   const [activeTab, setActiveTab] = useState<LocaleCode>('en');
 
@@ -48,6 +50,78 @@ export const MultiLangSectionEditor: React.FC<MultiLangSectionEditorProps> = ({
     };
     onChange(updated);
   };
+
+  if (compact) {
+    return (
+      <div className={`space-y-3 rounded-2xl border border-theme-border/80 bg-theme-surface-elevated/70 p-3.5 ${className}`}>
+        <div className="flex items-center justify-between border-b border-theme-border/60 pb-2">
+          <span className="font-bold text-xs text-theme-text flex items-center gap-1.5">
+            <span>🌐</span>
+            <span>{title}</span>
+          </span>
+          <span className="text-[10px] text-theme-text-muted font-mono">{badge}</span>
+        </div>
+
+        {/* 4 Language Tabs */}
+        <div className="grid grid-cols-4 gap-1 rounded-xl bg-theme-surface p-1 border border-theme-border">
+          {LOCALE_TABS.map((tab) => {
+            const isActive = activeTab === tab.code;
+            return (
+              <button
+                key={tab.code}
+                type="button"
+                onClick={() => setActiveTab(tab.code)}
+                className={`rounded-lg py-1.5 text-[11px] font-bold transition-all cursor-pointer ${
+                  isActive
+                    ? 'bg-cyan-400 text-black font-black shadow-sm'
+                    : 'text-theme-text-muted hover:text-theme-text'
+                }`}
+              >
+                {tab.label}
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Fields */}
+        <div className="space-y-2.5 text-xs pt-0.5">
+          {fields.map((field) => {
+            const currentVal = value?.[activeTab]?.[field.key] || '';
+            return (
+              <div key={field.key} className="space-y-1">
+                <div className="flex items-center justify-between">
+                  <label className="font-semibold text-theme-text block text-[11px]">
+                    {field.label} ({activeTab.toUpperCase()})
+                  </label>
+                  {field.helperText && (
+                    <span className="text-[9px] text-theme-text-muted">{field.helperText}</span>
+                  )}
+                </div>
+
+                {field.type === 'textarea' ? (
+                  <textarea
+                    rows={field.rows || 2}
+                    value={currentVal}
+                    onChange={(e) => handleFieldChange(field.key, e.target.value)}
+                    placeholder={field.placeholder || `กรอก ${field.label} (${activeTab.toUpperCase()})`}
+                    className="w-full rounded-xl border border-theme-border bg-theme-surface px-3 py-1.5 text-xs text-theme-text focus:border-cyan-400 focus:outline-none transition-colors"
+                  />
+                ) : (
+                  <input
+                    type="text"
+                    value={currentVal}
+                    onChange={(e) => handleFieldChange(field.key, e.target.value)}
+                    placeholder={field.placeholder || `กรอก ${field.label} (${activeTab.toUpperCase()})`}
+                    className="w-full rounded-xl border border-theme-border bg-theme-surface px-3 py-1.5 text-xs text-theme-text focus:border-cyan-400 focus:outline-none transition-colors"
+                  />
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={`rounded-3xl border border-theme-border bg-theme-surface p-6 shadow-2xl space-y-4 ${className}`}>

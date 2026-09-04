@@ -41,6 +41,7 @@ import {
 } from 'lucide-react';
 import { compressImageFile } from '../../utils/imageCompressor';
 import { Modal } from '../../components/ui/Modal';
+import { MultiLangSectionEditor } from './MultiLangSectionEditor';
 
 export const SettingsManager: React.FC = () => {
   const { t } = useTranslation();
@@ -917,6 +918,25 @@ export const SettingsManager: React.FC = () => {
             />
           </div>
         </div>
+
+        <MultiLangSectionEditor
+          compact
+          title="แปลภาษาข้อมูลแบรนด์และนิติบุคคล (Brand & Legal Entity Translations)"
+          fields={[
+            { key: 'companyName', label: 'ชื่อบริษัท (Company Name)' },
+            { key: 'registeredCapital', label: 'ทุนจดทะเบียน (Registered Capital)' },
+            { key: 'taxId', label: 'เลขประจำตัวผู้เสียภาษี (Tax ID)' },
+            { key: 'establishedYear', label: 'ปีก่อตั้ง (Established Year)' },
+            { key: 'factoryAddress', label: 'ที่อยู่สำนักงาน / โรงงาน (Legal Address)', type: 'textarea', rows: 2 },
+          ]}
+          value={(formState.brandLegalTranslations || {
+            en: { companyName: '', registeredCapital: '', taxId: '', establishedYear: '', factoryAddress: '' },
+            jp: { companyName: '', registeredCapital: '', taxId: '', establishedYear: '', factoryAddress: '' },
+            cn: { companyName: '', registeredCapital: '', taxId: '', establishedYear: '', factoryAddress: '' },
+            mm: { companyName: '', registeredCapital: '', taxId: '', establishedYear: '', factoryAddress: '' },
+          }) as any}
+          onChange={(updated) => setFormState({ ...formState, brandLegalTranslations: updated as any })}
+        />
 
         <div className="flex justify-end pt-4 border-t border-theme-border">
           <button

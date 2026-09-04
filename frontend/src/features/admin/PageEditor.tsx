@@ -33,6 +33,8 @@ import {
   Play,
 } from 'lucide-react';
 import { compressImageFile } from '../../utils/imageCompressor';
+import { MultiLangSectionEditor } from './MultiLangSectionEditor';
+import { FeatureBadgeSetting } from '../../hooks/useSiteContent';
 
 interface RevisionRecord {
   id: string;
@@ -116,8 +118,14 @@ export const PageEditor: React.FC<{
       if (settings.heroShowDots !== undefined) setHeroShowDots(settings.heroShowDots !== false);
       if (settings.heroTextOverlayOpacity !== undefined) setHeroTextOverlayOpacity(settings.heroTextOverlayOpacity);
       if (settings.heroTranslations) setTranslations(settings.heroTranslations);
+      if (settings.featureBadges && settings.featureBadges.length > 0) {
+        setFeatureBadges(settings.featureBadges);
+      }
     }
   }, [settings]);
+
+  // Feature Badges State (4 Badges - 5 Languages Supported)
+  const [featureBadges, setFeatureBadges] = useState<FeatureBadgeSetting[]>(settings.featureBadges || []);
 
   // Form States (Column 3 - Localized Translations for EN, JP, CN, MM)
   const [translations, setTranslations] = useState({
@@ -305,6 +313,7 @@ export const PageEditor: React.FC<{
       heroShowDots: heroShowDots,
       heroTextOverlayOpacity: heroTextOverlayOpacity,
       heroTranslations: translations,
+      featureBadges: featureBadges,
     });
     setWorkflowStatus('PUBLISHED');
     const newRev: RevisionRecord = {
@@ -1000,6 +1009,113 @@ export const PageEditor: React.FC<{
               />
             </div>
           </div>
+        </div>
+      </div>
+
+      {/* 🌟 4 FEATURE BADGES / คุณภาพมาตรฐานสากล (จุดเด่น 4 ด้าน) */}
+      <div className="rounded-3xl border border-theme-border bg-theme-surface p-6 sm:p-8 shadow-2xl space-y-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-theme-border pb-4">
+          <div>
+            <h2 className="font-display text-base font-bold text-theme-text flex items-center gap-2">
+              <ShieldCheck className="h-5 w-5 text-theme-primary" />
+              <span>คุณภาพมาตรฐานสากล & จุดเด่น 4 ด้าน (Feature Badges - 5 Languages)</span>
+            </h2>
+            <p className="text-xs text-theme-text-muted mt-1">
+              แก้ไขหัวข้อ คำบรรยาย และคำแปลทั้ง 5 ภาษา (TH, EN, JP, CN, MM) ของแถบจุดเด่นใต้ภาพหน้าแรก
+            </p>
+          </div>
+          <span className="rounded-full bg-theme-primary/20 text-theme-primary px-3 py-1 text-xs font-bold w-fit">
+            4 Badges • 5 Languages
+          </span>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {featureBadges.map((badge, idx) => (
+            <div
+              key={badge.id || idx}
+              className="rounded-2xl border border-theme-border bg-theme-surface-elevated p-5 space-y-4 shadow-md"
+            >
+              <div className="flex items-center justify-between border-b border-theme-border/60 pb-3">
+                <span className="font-bold text-xs text-theme-primary flex items-center gap-1.5">
+                  <span className="flex h-5 w-5 items-center justify-center rounded-full bg-theme-primary/20 text-[10px] font-black">
+                    {idx + 1}
+                  </span>
+                  <span>{badge.title}</span>
+                </span>
+                <button
+                  type="button"
+                  onClick={() => {
+                    const updated = [...featureBadges];
+                    updated[idx] = { ...updated[idx], enabled: updated[idx].enabled === false ? true : false };
+                    setFeatureBadges(updated);
+                    setWorkflowStatus('DRAFT');
+                  }}
+                  className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[11px] font-bold border transition-colors ${
+                    badge.enabled !== false
+                      ? 'bg-emerald-500/20 text-emerald-400 border-emerald-500/40'
+                      : 'bg-slate-500/20 text-slate-400 border-slate-500/40'
+                  }`}
+                >
+                  {badge.enabled !== false ? <Eye className="h-3 w-3" /> : <EyeOff className="h-3 w-3" />}
+                  <span>{badge.enabled !== false ? 'เปิดแสดง' : 'ปิด'}</span>
+                </button>
+              </div>
+
+              {/* Thai Primary Fields */}
+              <div className="space-y-2.5 text-xs">
+                <div>
+                  <label className="font-bold text-theme-text block mb-1">หัวข้อหลัก (ภาษาไทย)</label>
+                  <input
+                    type="text"
+                    value={badge.title}
+                    onChange={(e) => {
+                      const updated = [...featureBadges];
+                      updated[idx] = { ...updated[idx], title: e.target.value };
+                      setFeatureBadges(updated);
+                      setWorkflowStatus('DRAFT');
+                    }}
+                    className="w-full rounded-xl border border-theme-border bg-theme-surface px-3 py-2 text-theme-text font-semibold focus:border-theme-primary focus:outline-none"
+                  />
+                </div>
+                <div>
+                  <label className="font-bold text-theme-text block mb-1">คำบรรยายย่อย (ภาษาไทย)</label>
+                  <input
+                    type="text"
+                    value={badge.subtitle}
+                    onChange={(e) => {
+                      const updated = [...featureBadges];
+                      updated[idx] = { ...updated[idx], subtitle: e.target.value };
+                      setFeatureBadges(updated);
+                      setWorkflowStatus('DRAFT');
+                    }}
+                    className="w-full rounded-xl border border-theme-border bg-theme-surface px-3 py-2 text-theme-text focus:border-theme-primary focus:outline-none"
+                  />
+                </div>
+              </div>
+
+              {/* 4 Translation Tabs (EN, JP, CN, MM) */}
+              <MultiLangSectionEditor
+                compact
+                title={`แปลภาษา จุดเด่น #${idx + 1}`}
+                fields={[
+                  { key: 'title', label: 'หัวข้อหลัก (Title)' },
+                  { key: 'subtitle', label: 'คำบรรยาย (Subtitle)' },
+                ]}
+                value={badge.translations || {
+                  en: { title: '', subtitle: '' },
+                  jp: { title: '', subtitle: '' },
+                  cn: { title: '', subtitle: '' },
+                  mm: { title: '', subtitle: '' },
+                }}
+                onChange={(updatedTrans) => {
+                  const updated = [...featureBadges];
+                  updated[idx] = { ...updated[idx], translations: updatedTrans as any };
+                  setFeatureBadges(updated);
+                  setWorkflowStatus('DRAFT');
+                }}
+              />
+            </div>
+          ))}
         </div>
       </div>
 

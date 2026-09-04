@@ -112,6 +112,27 @@ export const ContactManager: React.FC = () => {
   const [bHours, setBHours] = useState('');
   const [bMapUrl, setBMapUrl] = useState('');
   const [bIsPrimary, setBIsPrimary] = useState(false);
+  const [bTranslations, setBTranslations] = useState<any>({
+    en: { name: '', address: '', businessHours: '' },
+    jp: { name: '', address: '', businessHours: '' },
+    cn: { name: '', address: '', businessHours: '' },
+    mm: { name: '', address: '', businessHours: '' },
+  });
+
+  // Brand & Legal Entity Information State
+  const [companyNameTh, setCompanyNameTh] = useState(settings.companyNameTh || 'บริษัท ไคโอทรอน เทคโนโลยี จำกัด');
+  const [companyNameEn, setCompanyNameEn] = useState(settings.companyNameEn || 'CHIOTRON TECHNOLOGY CO., LTD.');
+  const [taxId, setTaxId] = useState(settings.taxId || '0745548001234');
+  const [registeredCapital, setRegisteredCapital] = useState(settings.registeredCapital || '100,000,000 บาท');
+  const [establishedYear, setEstablishedYear] = useState(settings.establishedYear || '1986');
+  const [brandLegalTranslations, setBrandLegalTranslations] = useState<any>(
+    settings.brandLegalTranslations || {
+      en: { companyName: 'CHIOTRON TECHNOLOGY CO., LTD.', registeredCapital: '100,000,000 THB', taxId: '0745548001234', establishedYear: '1986', factoryAddress: '88 Moo 3, Setthakit 1 Rd., Samut Sakhon 74110, Thailand' },
+      jp: { companyName: 'カイオトロン・テクノロジー株式会社', registeredCapital: '1億バーツ', taxId: '0745548001234', establishedYear: '1986年', factoryAddress: 'タイ王国サムットサーコーン県セータキット1路ムー3、88番地' },
+      cn: { companyName: '凯奥创科技有限公司', registeredCapital: '1亿泰铢', taxId: '0745548001234', establishedYear: '1986年', factoryAddress: '泰国龙仔厝府经济一路3组88号' },
+      mm: { companyName: 'CHIOTRON TECHNOLOGY ကုမ္ပဏီလီမိတက်', registeredCapital: 'ဘတ်ငွေ ၁၀၀,၀၀၀,၀၀၀', taxId: '0745548001234', establishedYear: '၁၉၈၆', factoryAddress: 'အမှတ် ၈၈၊ မူ ၃၊ စစ်သကစ် ၁ လမ်း၊ စမွတ်စာခွန် ၇၄၁၁၀၊ ထိုင်းနိုင်ငံ' },
+    }
+  );
 
   // Sync with global settings when loaded from DB
   React.useEffect(() => {
@@ -122,6 +143,12 @@ export const ContactManager: React.FC = () => {
       if (settings.businessHours) setBusinessHours(settings.businessHours);
       if (settings.branches) setBranches(settings.branches);
       if (settings.contactTranslations) setContactTranslations(settings.contactTranslations);
+      if (settings.companyNameTh) setCompanyNameTh(settings.companyNameTh);
+      if (settings.companyNameEn) setCompanyNameEn(settings.companyNameEn);
+      if (settings.taxId) setTaxId(settings.taxId);
+      if (settings.registeredCapital) setRegisteredCapital(settings.registeredCapital);
+      if (settings.establishedYear) setEstablishedYear(settings.establishedYear);
+      if (settings.brandLegalTranslations) setBrandLegalTranslations(settings.brandLegalTranslations);
     }
   }, [settings]);
 
@@ -139,8 +166,14 @@ export const ContactManager: React.FC = () => {
         email,
         businessHours,
         contactTranslations,
+        companyNameTh,
+        companyNameEn,
+        taxId,
+        registeredCapital,
+        establishedYear,
+        brandLegalTranslations,
       });
-      showToast('บันทึกข้อมูลการติดต่อโรงงานลงฐานข้อมูลเรียบร้อยแล้ว!');
+      showToast('บันทึกข้อมูลการติดต่อและข้อมูลนิติบุคคลลงฐานข้อมูลเรียบร้อยแล้ว!');
     } catch (err) {
       showToast('เกิดข้อผิดพลาดในการบันทึกข้อมูล');
     } finally {
@@ -160,6 +193,12 @@ export const ContactManager: React.FC = () => {
     setBHours('จันทร์ - ศุกร์ 08:30 - 17:30 น.');
     setBMapUrl('');
     setBIsPrimary(false);
+    setBTranslations({
+      en: { name: '', address: '', businessHours: '' },
+      jp: { name: '', address: '', businessHours: '' },
+      cn: { name: '', address: '', businessHours: '' },
+      mm: { name: '', address: '', businessHours: '' },
+    });
     setBranchModalOpen(true);
   };
 
@@ -177,6 +216,12 @@ export const ContactManager: React.FC = () => {
     setBHours(b.businessHoursTh || '');
     setBMapUrl(b.mapUrl || '');
     setBIsPrimary(Boolean(b.isPrimary));
+    setBTranslations(b.translations || {
+      en: { name: b.nameEn || '', address: b.addressEn || '', businessHours: b.businessHoursTh || '' },
+      jp: { name: '', address: '', businessHours: '' },
+      cn: { name: '', address: '', businessHours: '' },
+      mm: { name: '', address: '', businessHours: '' },
+    });
     setBranchModalOpen(true);
   };
 
@@ -202,6 +247,7 @@ export const ContactManager: React.FC = () => {
               businessHoursTh: bHours,
               mapUrl: bMapUrl,
               isPrimary: bIsPrimary,
+              translations: bTranslations,
             }
           : bIsPrimary
           ? { ...item, isPrimary: false }
@@ -220,6 +266,7 @@ export const ContactManager: React.FC = () => {
         businessHoursTh: bHours,
         mapUrl: bMapUrl,
         isPrimary: bIsPrimary,
+        translations: bTranslations,
         enabled: true,
       };
       if (bIsPrimary) {
@@ -385,11 +432,99 @@ export const ContactManager: React.FC = () => {
               onClick={handleSaveContactInfo}
               className="btn-primary-action text-xs font-black px-6 py-2.5 shadow-xl flex items-center gap-2 disabled:opacity-50"
             >
-              <Save className="h-4 w-4 text-black" />
-              <span>{isSaving ? 'กำลังบันทึก...' : 'บันทึกข้อมูลการติดต่อโรงงาน'}</span>
+              <Save className="h-4 w-4" />
+              <span>{isSaving ? 'กำลังบันทึก...' : 'บันทึกข้อมูลการติดต่อ'}</span>
             </button>
           </div>
         </div>
+
+      {/* 1.25 BRAND & LEGAL ENTITY INFORMATION (ข้อมูลแบรนด์และนิติบุคคล) */}
+      <div className="rounded-3xl border border-theme-border bg-theme-surface p-6 sm:p-8 shadow-2xl space-y-6 text-xs">
+        <div className="flex items-center justify-between border-b border-theme-border pb-3">
+          <h3 className="font-display text-sm font-bold text-theme-text flex items-center gap-2">
+            <Building2 className="h-4 w-4 text-theme-primary" />
+            <span>ข้อมูลแบรนด์และนิติบุคคล (Brand & Legal Entity Information)</span>
+          </h3>
+          <span className="text-[10px] text-theme-text-muted font-mono">5 Languages Supported</span>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label className="font-bold text-theme-text block mb-1">ชื่อบริษัท (ภาษาไทย)</label>
+            <input
+              type="text"
+              value={companyNameTh}
+              onChange={(e) => setCompanyNameTh(e.target.value)}
+              className="w-full rounded-xl border border-theme-border bg-theme-surface-elevated px-3 py-2 text-theme-text font-semibold"
+            />
+          </div>
+          <div>
+            <label className="font-bold text-theme-text block mb-1">Company Name (English)</label>
+            <input
+              type="text"
+              value={companyNameEn}
+              onChange={(e) => setCompanyNameEn(e.target.value)}
+              className="w-full rounded-xl border border-theme-border bg-theme-surface-elevated px-3 py-2 text-theme-text font-semibold"
+            />
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div>
+            <label className="font-bold text-theme-text block mb-1">เลขประจำตัวผู้เสียภาษี (Tax ID)</label>
+            <input
+              type="text"
+              value={taxId}
+              onChange={(e) => setTaxId(e.target.value)}
+              className="w-full rounded-xl border border-theme-border bg-theme-surface-elevated px-3 py-2 text-theme-text font-mono"
+            />
+          </div>
+          <div>
+            <label className="font-bold text-theme-text block mb-1">ทุนจดทะเบียน</label>
+            <input
+              type="text"
+              value={registeredCapital}
+              onChange={(e) => setRegisteredCapital(e.target.value)}
+              className="w-full rounded-xl border border-theme-border bg-theme-surface-elevated px-3 py-2 text-theme-text"
+            />
+          </div>
+          <div>
+            <label className="font-bold text-theme-text block mb-1">ปีก่อตั้ง (Established Year)</label>
+            <input
+              type="text"
+              value={establishedYear}
+              onChange={(e) => setEstablishedYear(e.target.value)}
+              className="w-full rounded-xl border border-theme-border bg-theme-surface-elevated px-3 py-2 text-theme-text font-mono"
+            />
+          </div>
+        </div>
+
+        <MultiLangSectionEditor
+          compact
+          title="แปลภาษาข้อมูลแบรนด์และนิติบุคคล (Brand & Legal Entity Translations)"
+          fields={[
+            { key: 'companyName', label: 'ชื่อบริษัท (Company Name)' },
+            { key: 'registeredCapital', label: 'ทุนจดทะเบียน (Registered Capital)' },
+            { key: 'taxId', label: 'เลขประจำตัวผู้เสียภาษี (Tax ID)' },
+            { key: 'establishedYear', label: 'ปีก่อตั้ง (Established Year)' },
+            { key: 'factoryAddress', label: 'ที่อยู่สำนักงาน / โรงงาน (Legal Address)', type: 'textarea', rows: 2 },
+          ]}
+          value={brandLegalTranslations}
+          onChange={setBrandLegalTranslations}
+        />
+
+        <div className="flex justify-end pt-2 border-t border-theme-border">
+          <button
+            type="button"
+            disabled={isSaving}
+            onClick={handleSaveContactInfo}
+            className="btn-primary-action text-xs font-black px-6 py-2.5 shadow-xl flex items-center gap-2 disabled:opacity-50"
+          >
+            <Save className="h-4 w-4 text-black" />
+            <span>{isSaving ? 'กำลังบันทึก...' : 'บันทึกข้อมูลนิติบุคคลและติดต่อ'}</span>
+          </button>
+        </div>
+      </div>
 
       {/* 1.5 Multi-Language Translations (EN, JP, CN, MM) */}
       <MultiLangSectionEditor
@@ -831,6 +966,19 @@ export const ContactManager: React.FC = () => {
               <p>• <strong>วิธีที่ 3 (ชื่อสถานที่):</strong> พิมพ์ชื่อบริษัทหรือที่อยู่ เช่น <code className="text-theme-primary font-mono">บริษัท ไคโอทรอน เทคโนโลยี จำกัด สมุทรสาคร</code> (ระบบจะสร้างลิงก์ค้นหาให้อัตโนมัติ)</p>
             </div>
           </div>
+
+          {/* Branch Multi-Language Translations (EN, JP, CN, MM) */}
+          <MultiLangSectionEditor
+            compact
+            title="แปลภาษาข้อมูลสาขา (Branch Multi-Language Translations)"
+            fields={[
+              { key: 'name', label: 'ชื่อสาขา (Branch Name)' },
+              { key: 'address', label: 'ที่อยู่สาขา (Address)', type: 'textarea', rows: 2 },
+              { key: 'businessHours', label: 'เวลาทำการ (Business Hours)' },
+            ]}
+            value={bTranslations as any}
+            onChange={setBTranslations}
+          />
 
           <div className="flex items-center gap-2 pt-1">
             <input

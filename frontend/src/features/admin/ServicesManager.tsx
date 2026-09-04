@@ -425,6 +425,23 @@ export const ServicesManager: React.FC = () => {
                         </div>
                       </div>
                     </div>
+
+                    {/* Multi-Language Tabs for this Service Card */}
+                    <MultiLangSectionEditor
+                      compact
+                      title={`แปลภาษา Card บริการ: ${srv.titleTh}`}
+                      fields={[
+                        { key: 'title', label: 'ชื่อบริการ (Service Title)' },
+                        { key: 'desc', label: 'คำอธิบายบริการ (Service Description)', type: 'textarea', rows: 2 },
+                      ]}
+                      value={srv.translations || {
+                        en: { title: srv.titleEn || '', desc: srv.descEn || '' },
+                        jp: { title: '', desc: '' },
+                        cn: { title: '', desc: '' },
+                        mm: { title: '', desc: '' },
+                      }}
+                      onChange={(trans) => handleServiceChange(idx, 'translations', trans)}
+                    />
                   </div>
                 </div>
               );

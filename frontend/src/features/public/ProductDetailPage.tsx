@@ -101,12 +101,12 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ slug, onNa
               {product.categoryName}
             </span>
             <h1 className="font-display text-2xl sm:text-4xl font-black text-theme-text leading-tight">
-              {product.name}
+              {(product as any).translations?.[currentLang]?.name || (currentLang === 'en' ? (product as any).nameEn : product.name) || product.name}
             </h1>
           </div>
 
           <p className="text-sm text-theme-text-muted leading-relaxed">
-            {product.description}
+            {(product as any).translations?.[currentLang]?.description || (currentLang === 'en' ? (product as any).descriptionEn : product.description) || product.description}
           </p>
 
           {/* Quick Specifications Table */}
@@ -143,7 +143,7 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ slug, onNa
               className="flex-1 min-w-[200px] flex items-center justify-center gap-2 rounded-xl bg-theme-primary py-3.5 px-6 text-sm font-bold text-black shadow-lg shadow-theme-primary/25 hover:bg-theme-primary-hover transition-all"
             >
               <PhoneCall className="h-4 w-4" />
-              <span>{t('common.requestQuote')}</span>
+              <span>{t('common.requestQuoteBtn') || t('common.requestQuote')}</span>
             </button>
 
             <button

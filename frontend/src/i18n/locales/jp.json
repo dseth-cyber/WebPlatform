@@ -53,7 +53,13 @@
     "language": "言語切替",
     "reauthRequired": "重要操作の実行にはパスワードの再認証が必要です",
     "password": "パスワード",
-    "verify": "パスワード確認"
+    "verify": "パスワード確認",
+    "catalogTab": "製品カタログ",
+    "categoriesTab": "カテゴリー",
+    "viewAllProducts": "すべての製品を見る",
+    "requestQuoteBtn": "お見積り依頼",
+    "closeModal": "閉じる",
+    "viewAllNews": "すべてのニュースを読む"
   },
   "dashboard": {
     "title": "全体ダッシュボード (Dashboard)",

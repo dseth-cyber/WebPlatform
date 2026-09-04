@@ -27,7 +27,7 @@ const AVAILABLE_ICONS: Record<string, React.FC<{ className?: string }>> = {
 };
 
 export const SustainabilityPage: React.FC<{ onNavigate: (path: string) => void }> = ({ onNavigate }) => {
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { settings } = useSiteContent();
   const currentLang = (i18n.language || 'th') as 'th' | 'en' | 'jp' | 'cn' | 'mm';
   const isNonThai = currentLang !== 'th';
@@ -130,8 +130,8 @@ export const SustainabilityPage: React.FC<{ onNavigate: (path: string) => void }
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         {sortedCards.map((card) => {
           const IconComp = AVAILABLE_ICONS[card.icon] || Leaf;
-          const title = isNonThai ? (card.titleEn || card.titleTh) : (card.titleTh || card.titleEn);
-          const desc = isNonThai ? (card.descEn || card.descTh) : (card.descTh || card.descEn);
+          const title = (card as any).translations?.[currentLang]?.title || (isNonThai ? card.titleEn : card.titleTh) || card.titleTh;
+          const desc = (card as any).translations?.[currentLang]?.desc || (isNonThai ? card.descEn : card.descTh) || card.descTh;
 
           return (
             <div
@@ -221,19 +221,35 @@ export const SustainabilityPage: React.FC<{ onNavigate: (path: string) => void }
 
             <div className="space-y-3">
               <h3 className="font-display text-xl sm:text-2xl font-black text-theme-text leading-snug">
-                {isEn ? selectedCard.titleEn : selectedCard.titleTh}
+                {(selectedCard as any).translations?.[currentLang]?.title || (isEn ? selectedCard.titleEn : selectedCard.titleTh) || selectedCard.titleTh}
               </h3>
               <p className="text-xs font-bold text-emerald-400">
-                {isEn ? 'ESG & Sustainable Manufacturing Policy' : 'นโยบายสิ่งแวดล้อมและความยั่งยืน (ESG)'}
+                {currentLang === 'jp'
+                  ? 'ESG・持続可能性製造方針'
+                  : currentLang === 'cn'
+                  ? 'ESG与可持续制造方针'
+                  : currentLang === 'mm'
+                  ? 'ESG နှင့် ရေရှည်တည်တံ့သော ထုတ်လုပ်မှုမူဝါဒ'
+                  : currentLang === 'en'
+                  ? 'ESG & Sustainable Manufacturing Policy'
+                  : 'นโยบายสิ่งแวดล้อมและความยั่งยืน (ESG)'}
               </p>
               <p className="text-xs sm:text-sm text-theme-text leading-relaxed whitespace-pre-line pt-2">
-                {isEn ? selectedCard.descEn : selectedCard.descTh}
+                {(selectedCard as any).translations?.[currentLang]?.desc || (isEn ? selectedCard.descEn : selectedCard.descTh) || selectedCard.descTh}
               </p>
 
               {/* Highlights Checklist */}
               <div className="space-y-2 pt-3 border-t border-theme-border">
                 <h4 className="font-bold text-theme-text text-xs">
-                  {isEn ? 'Key Action & Environmental Impact:' : 'ผลสัมฤทธิ์และจุดเด่นด้านสิ่งแวดล้อม:'}
+                  {currentLang === 'jp'
+                    ? '環境への取り組みと成果:'
+                    : currentLang === 'cn'
+                    ? '环境成果与重点措施:'
+                    : currentLang === 'mm'
+                    ? 'ပတ်ဝန်းကျင်ဆိုင်ရာ ထိခိုက်မှုလျှော့ချရေး အဓိကလုပ်ဆောင်ချက်များ:'
+                    : currentLang === 'en'
+                    ? 'Key Action & Environmental Impact:'
+                    : 'ผลสัมฤทธิ์และจุดเด่นด้านสิ่งแวดล้อม:'}
                 </h4>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                   {getCardHighlights(selectedCard.id).map((item, idx) => (
@@ -255,7 +271,7 @@ export const SustainabilityPage: React.FC<{ onNavigate: (path: string) => void }
                 onClick={() => setSelectedCard(null)}
                 className="rounded-xl border border-theme-border bg-theme-surface px-5 py-2.5 font-bold text-theme-text hover:bg-theme-surface-elevated transition-colors"
               >
-                ปิดหน้าต่าง
+                {t('common.closeModal') || 'ปิดหน้าต่าง'}
               </button>
 
               <button
@@ -266,7 +282,17 @@ export const SustainabilityPage: React.FC<{ onNavigate: (path: string) => void }
                 }}
                 className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 px-6 py-2.5 text-xs font-bold text-black shadow-lg shadow-emerald-500/25 hover:brightness-110 transition-all cursor-pointer"
               >
-                <span>{isEn ? 'Inquire About ESG Projects' : 'ติดต่อสอบถามโครงการความยั่งยืน'}</span>
+                <span>
+                  {currentLang === 'jp'
+                    ? 'ESGプロジェクトについて問い合わせ'
+                    : currentLang === 'cn'
+                    ? '咨询可持续发展(ESG)项目'
+                    : currentLang === 'mm'
+                    ? 'ESG စီမံကိန်းများနှင့်ပတ်သက်၍ စုံစမ်းမေးမြန်းပါ'
+                    : currentLang === 'en'
+                    ? 'Inquire About ESG Projects'
+                    : 'ติดต่อสอบถามโครงการความยั่งยืน'}
+                </span>
                 <ArrowRight className="h-4 w-4 text-black" />
               </button>
             </div>

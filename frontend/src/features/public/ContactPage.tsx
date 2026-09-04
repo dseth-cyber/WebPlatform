@@ -36,7 +36,8 @@ const contactSchema = z.object({
 type ContactFormData = z.infer<typeof contactSchema>;
 
 export const ContactPage: React.FC<{ onNavigate: (path: string) => void }> = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const currentLang = (i18n.language || 'th') as 'th' | 'en' | 'jp' | 'cn' | 'mm';
   const { settings } = useSiteContent();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
@@ -290,6 +291,7 @@ export const ContactPage: React.FC<{ onNavigate: (path: string) => void }> = () 
                   const isSelected = b.id === selectedBranchId;
                   const icon =
                     b.type === 'headquarters' ? '🏢' : b.type === 'factory' ? '🏭' : b.type === 'warehouse' ? '📦' : '📍';
+                  const tabLabel = ((b as any).translations?.[currentLang]?.name || (currentLang === 'en' ? b.nameEn : b.nameTh) || b.nameTh).split('(')[0];
                   return (
                     <button
                       key={b.id}
@@ -302,7 +304,7 @@ export const ContactPage: React.FC<{ onNavigate: (path: string) => void }> = () 
                       }`}
                     >
                       <span>{icon}</span>
-                      <span className="truncate">{b.nameTh.split('(')[0]}</span>
+                      <span className="truncate">{tabLabel}</span>
                     </button>
                   );
                 })}
@@ -313,23 +315,20 @@ export const ContactPage: React.FC<{ onNavigate: (path: string) => void }> = () 
             <div className="space-y-4 text-xs">
               <div>
                 <span className="text-[10px] font-bold uppercase tracking-wider text-theme-primary block mb-0.5">
-                  {currentBranch.nameEn || 'LOCATION'}
+                  {(currentBranch as any).translations?.[currentLang]?.name ? currentLang.toUpperCase() : (currentBranch.nameEn || 'LOCATION')}
                 </span>
-                <h4 className="font-display font-bold text-sm text-theme-text">{currentBranch.nameTh}</h4>
+                <h4 className="font-display font-bold text-sm text-theme-text">
+                  {(currentBranch as any).translations?.[currentLang]?.name || (currentLang === 'en' ? currentBranch.nameEn : currentBranch.nameTh) || currentBranch.nameTh}
+                </h4>
               </div>
 
               <div className="flex items-start gap-3 border-t border-theme-border/50 pt-4">
                 <MapPin className="h-5 w-5 text-theme-primary flex-shrink-0 mt-0.5" />
                 <div>
-                  <span className="font-bold text-theme-text block">ที่อยู่</span>
+                  <span className="font-bold text-theme-text block">{t('contact.address')}</span>
                   <p className="text-theme-text-muted mt-0.5 leading-relaxed">
-                    {currentBranch.addressTh}
+                    {(currentBranch as any).translations?.[currentLang]?.address || (currentLang === 'en' ? (currentBranch.addressEn || currentBranch.addressTh) : currentBranch.addressTh)}
                   </p>
-                  {currentBranch.addressEn && (
-                    <p className="text-[11px] text-theme-text-dim mt-1 leading-relaxed">
-                      {currentBranch.addressEn}
-                    </p>
-                  )}
                 </div>
               </div>
 
@@ -337,7 +336,7 @@ export const ContactPage: React.FC<{ onNavigate: (path: string) => void }> = () 
                 <div className="flex items-start gap-3 border-t border-theme-border/50 pt-4">
                   <Phone className="h-5 w-5 text-theme-primary flex-shrink-0 mt-0.5" />
                   <div>
-                    <span className="font-bold text-theme-text block">เบอร์โทรศัพท์</span>
+                    <span className="font-bold text-theme-text block">{t('contact.phone')}</span>
                     <a
                       href={`tel:${currentBranch.phone.replace(/[^0-9+]/g, '')}`}
                       className="text-theme-text-muted hover:text-theme-primary font-mono mt-0.5 inline-block"
@@ -352,7 +351,7 @@ export const ContactPage: React.FC<{ onNavigate: (path: string) => void }> = () 
                 <div className="flex items-start gap-3 border-t border-theme-border/50 pt-4">
                   <Mail className="h-5 w-5 text-theme-primary flex-shrink-0 mt-0.5" />
                   <div>
-                    <span className="font-bold text-theme-text block">อีเมลติดต่อ</span>
+                    <span className="font-bold text-theme-text block">{t('contact.email')}</span>
                     <a
                       href={`mailto:${currentBranch.email}`}
                       className="text-theme-text-muted hover:text-theme-primary font-mono mt-0.5 inline-block"
@@ -363,12 +362,14 @@ export const ContactPage: React.FC<{ onNavigate: (path: string) => void }> = () 
                 </div>
               )}
 
-              {currentBranch.businessHoursTh && (
+              {((currentBranch as any).translations?.[currentLang]?.businessHours || currentBranch.businessHoursTh) && (
                 <div className="flex items-start gap-3 border-t border-theme-border/50 pt-4">
                   <Clock className="h-5 w-5 text-theme-primary flex-shrink-0 mt-0.5" />
                   <div>
                     <span className="font-bold text-theme-text block">{t('contact.hours')}</span>
-                    <p className="text-theme-text-muted mt-0.5">{currentBranch.businessHoursTh}</p>
+                    <p className="text-theme-text-muted mt-0.5">
+                      {(currentBranch as any).translations?.[currentLang]?.businessHours || currentBranch.businessHoursTh}
+                    </p>
                   </div>
                 </div>
               )}
@@ -380,9 +381,75 @@ export const ContactPage: React.FC<{ onNavigate: (path: string) => void }> = () 
               rel="noreferrer"
               className="flex items-center justify-center gap-2 w-full rounded-xl border border-theme-border bg-theme-surface-elevated py-3 text-xs font-bold text-theme-text hover:bg-theme-surface hover:border-theme-primary hover:text-theme-primary transition-all shadow-sm"
             >
-              <span>เปิดแผนที่ Google Maps นำทางสู่สาขานี้</span>
+              <span>{currentLang === 'en' ? 'Open in Google Maps' : 'เปิดแผนที่ Google Maps นำทางสู่สาขานี้'}</span>
               <ExternalLink className="h-4 w-4 text-theme-primary" />
             </a>
+          </div>
+
+          {/* ข้อมูลแบรนด์และนิติบุคคล (Brand & Legal Entity Information) */}
+          <div className="rounded-3xl border border-theme-border bg-theme-surface p-6 sm:p-8 space-y-4 shadow-xl">
+            <div className="border-b border-theme-border pb-3 flex items-center justify-between">
+              <h3 className="font-display text-sm sm:text-base font-bold text-theme-text flex items-center gap-2">
+                <Building2 className="h-4 w-4 text-theme-primary" />
+                <span>{currentLang === 'en' ? 'Brand & Legal Entity Information' : 'ข้อมูลแบรนด์และนิติบุคคล'}</span>
+              </h3>
+              <span className="rounded-full bg-theme-primary/10 border border-theme-primary/30 px-2 py-0.5 text-[10px] font-bold text-theme-primary">
+                {currentLang.toUpperCase()}
+              </span>
+            </div>
+
+            <div className="space-y-3 text-xs">
+              <div>
+                <span className="text-[11px] font-bold text-theme-text-dim block">
+                  {currentLang === 'en' ? 'Registered Company Name' : 'ชื่อจดทะเบียนนิติบุคคล'}
+                </span>
+                <p className="font-bold text-theme-text text-sm mt-0.5">
+                  {(settings.brandLegalTranslations as any)?.[currentLang]?.legalName ||
+                    (currentLang === 'en' ? settings.companyNameEn : settings.companyNameTh) ||
+                    settings.companyNameTh ||
+                    'บริษัท ไคโอทรอน เทคโนโลยี จำกัด'}
+                </p>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3 pt-1 border-t border-theme-border/50">
+                <div>
+                  <span className="text-[11px] font-bold text-theme-text-dim block">
+                    {currentLang === 'en' ? 'Tax ID' : 'เลขประจำตัวผู้เสียภาษี'}
+                  </span>
+                  <p className="font-mono text-theme-text mt-0.5">
+                    {(settings.brandLegalTranslations as any)?.[currentLang]?.taxId || settings.taxId || '0105566089123'}
+                  </p>
+                </div>
+                <div>
+                  <span className="text-[11px] font-bold text-theme-text-dim block">
+                    {currentLang === 'en' ? 'Registered Capital' : 'ทุนจดทะเบียน'}
+                  </span>
+                  <p className="text-theme-text mt-0.5">
+                    {(settings.brandLegalTranslations as any)?.[currentLang]?.registeredCapital || '150,000,000 THB'}
+                  </p>
+                </div>
+              </div>
+
+              <div className="pt-1 border-t border-theme-border/50">
+                <span className="text-[11px] font-bold text-theme-text-dim block">
+                  {currentLang === 'en' ? 'Headquarters Address' : 'ที่ตั้งสำนักงานใหญ่'}
+                </span>
+                <p className="text-theme-text-muted mt-0.5 leading-relaxed">
+                  {(settings.brandLegalTranslations as any)?.[currentLang]?.headquartersAddress ||
+                    settings.factoryAddress}
+                </p>
+              </div>
+
+              <div className="pt-1 border-t border-theme-border/50">
+                <span className="text-[11px] font-bold text-theme-text-dim block">
+                  {currentLang === 'en' ? 'Certified Quality Standards' : 'การรับรองมาตรฐานสากล'}
+                </span>
+                <p className="text-theme-primary font-semibold mt-0.5">
+                  {(settings.brandLegalTranslations as any)?.[currentLang]?.industryCertifications ||
+                    'ISO 9001:2015, FSSC 22000, HACCP, GMP, BPA-NI'}
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </div>

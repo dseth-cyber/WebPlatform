@@ -62,7 +62,7 @@ export const ProductsPage: React.FC<{ onNavigate: (path: string) => void; curren
     if (!categoryOptions.some((opt) => opt.value === hc.id)) {
       categoryOptions.push({
         value: hc.id,
-        label: `🏷️ ${currentLang === 'en' ? (hc.titleEn || hc.titleTh) : (hc.titleTh || hc.titleEn)}`,
+        label: `🏷️ ${(hc as any).translations?.[currentLang]?.title || (currentLang === 'en' ? (hc.titleEn || hc.titleTh) : (hc.titleTh || hc.titleEn)) || hc.titleTh}`,
       });
     }
   }
@@ -179,12 +179,12 @@ export const ProductsPage: React.FC<{ onNavigate: (path: string) => void; curren
                     {product.categoryName}
                   </span>
                   <h3 className="font-display text-base font-bold text-theme-text group-hover:text-theme-primary transition-colors line-clamp-2 mt-0.5">
-                    {product.name}
+                    {(product as any).translations?.[currentLang]?.name || (currentLang === 'en' ? (product as any).nameEn : product.name) || product.name}
                   </h3>
                 </div>
 
                 <p className="text-xs text-theme-text-muted line-clamp-2 leading-relaxed">
-                  {product.description}
+                  {(product as any).translations?.[currentLang]?.description || (currentLang === 'en' ? (product as any).descriptionEn : product.description) || product.description}
                 </p>
 
                 {/* Technical Specifications Quick Badges */}

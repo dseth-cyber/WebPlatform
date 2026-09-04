@@ -408,6 +408,23 @@ export const TechnologyManager: React.FC = () => {
                         </div>
                       </div>
                     </div>
+
+                    {/* Multi-Language Tabs for this Tech Card */}
+                    <MultiLangSectionEditor
+                      compact
+                      title={`แปลภาษา Card เทคโนโลยี: ${card.titleTh}`}
+                      fields={[
+                        { key: 'title', label: 'ชื่อเทคโนโลยี (Tech Title)' },
+                        { key: 'desc', label: 'คำอธิบายเทคโนโลยี (Tech Description)', type: 'textarea', rows: 2 },
+                      ]}
+                      value={card.translations || {
+                        en: { title: card.titleEn || '', desc: card.descEn || '' },
+                        jp: { title: '', desc: '' },
+                        cn: { title: '', desc: '' },
+                        mm: { title: '', desc: '' },
+                      }}
+                      onChange={(trans) => handleCardChange(idx, 'translations' as any, trans as any)}
+                    />
                   </div>
                 </div>
               );

@@ -144,10 +144,10 @@ export const ServicesPage: React.FC<{ onNavigate: (path: string) => void }> = ({
                     )}
                   </div>
                   <h3 className="font-display text-lg font-bold text-theme-text">
-                    {isNonThai ? (srv.titleEn || srv.titleTh) : (srv.titleTh || srv.titleEn)}
+                    {(srv as any).translations?.[currentLang]?.title || (isNonThai ? srv.titleEn : srv.titleTh) || srv.titleTh}
                   </h3>
                   <p className="text-xs text-theme-text-muted leading-relaxed">
-                    {isNonThai ? (srv.descEn || srv.descTh) : (srv.descTh || srv.descEn)}
+                    {(srv as any).translations?.[currentLang]?.desc || (isNonThai ? srv.descEn : srv.descTh) || srv.descTh}
                   </p>
                 {srv.features && srv.features.length > 0 && (
                   <div className="space-y-2 pt-2 border-t border-theme-border/50">
@@ -166,7 +166,15 @@ export const ServicesPage: React.FC<{ onNavigate: (path: string) => void }> = ({
                   onClick={() => onNavigate('/contact')}
                   className="w-full rounded-xl bg-theme-primary/15 border border-theme-primary/30 py-2.5 text-xs font-bold text-theme-primary hover:bg-theme-primary hover:text-black transition-all shadow-sm text-center"
                 >
-                  ปรึกษาทีมวิศวกรผู้เชี่ยวชาญ
+                  {currentLang === 'jp'
+                    ? '専門エンジニアに相談'
+                    : currentLang === 'cn'
+                    ? '咨询专业工程师团队'
+                    : currentLang === 'mm'
+                    ? 'ကျွမ်းကျင် အင်ဂျင်နီယာများနှင့် ဆွေးနွေးပါ'
+                    : currentLang === 'en'
+                    ? 'Consult Our Expert Engineers'
+                    : 'ปรึกษาทีมวิศวกรผู้เชี่ยวชาญ'}
                 </button>
               </div>
             </div>

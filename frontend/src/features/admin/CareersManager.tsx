@@ -485,6 +485,27 @@ export const CareersManager: React.FC = () => {
                       className="w-full rounded-lg border border-theme-border bg-theme-surface px-2.5 py-1.5 text-xs text-theme-text font-mono focus:outline-none leading-relaxed"
                     />
                   </div>
+
+                  {/* Multi-Language Tabs for this Job Position */}
+                  <div className="pt-2">
+                    <MultiLangSectionEditor
+                      compact
+                      title={`แปลภาษาตำแหน่งงาน: ${job.titleTh || 'ตำแหน่งงาน'}`}
+                      fields={[
+                        { key: 'title', label: 'ชื่อตำแหน่งงาน (Job Title)' },
+                        { key: 'department', label: 'แผนก / ฝ่าย (Department)' },
+                        { key: 'location', label: 'สถานที่ปฏิบัติงาน (Location)' },
+                        { key: 'description', label: 'หน้าที่ความรับผิดชอบ (Description)', type: 'textarea', rows: 2 },
+                      ]}
+                      value={job.translations || {
+                        en: { title: job.titleEn || '', department: '', location: '', description: '' },
+                        jp: { title: '', department: '', location: '', description: '' },
+                        cn: { title: '', department: '', location: '', description: '' },
+                        mm: { title: '', department: '', location: '', description: '' },
+                      }}
+                      onChange={(trans) => handleJobChange(idx, 'translations' as any, trans as any)}
+                    />
+                  </div>
                 </div>
               </div>
             ))}

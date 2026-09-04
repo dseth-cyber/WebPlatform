@@ -8,10 +8,14 @@ import { TableSkeleton } from '../../components/ui/TableSkeleton';
 import { Plus, Edit, Trash2, Newspaper, Eye, EyeOff, Check, Image as ImageIcon, UploadCloud, Pin } from 'lucide-react';
 import { LocalizedNewsArticle } from '../../types/domain';
 import { MOCK_NEWS } from '../../api/mockData';
+import { MultiLangSectionEditor } from './MultiLangSectionEditor';
 
 interface ExtendedNewsArticle extends LocalizedNewsArticle {
   isActive?: boolean;
   isPinned?: boolean;
+  titleEn?: string;
+  summaryEn?: string;
+  translations?: Record<string, Record<string, string>>;
 }
 
 export const NewsManager: React.FC = () => {
@@ -48,6 +52,12 @@ export const NewsManager: React.FC = () => {
   const [featuredImageURL, setFeaturedImageURL] = useState('');
   const [isActive, setIsActive] = useState(true);
   const [isPinned, setIsPinned] = useState(false);
+  const [translations, setTranslations] = useState<Record<string, Record<string, string>>>({
+    en: { title: '', summary: '', contentBody: '' },
+    jp: { title: '', summary: '', contentBody: '' },
+    cn: { title: '', summary: '', contentBody: '' },
+    mm: { title: '', summary: '', contentBody: '' },
+  });
 
   // Notification State
   const [toastMessage, setToastMessage] = useState<string | null>(null);
@@ -139,6 +149,12 @@ export const NewsManager: React.FC = () => {
     setFeaturedImageURL('/images/factory-building.jpg');
     setIsActive(true);
     setIsPinned(false);
+    setTranslations({
+      en: { title: '', summary: '', contentBody: '' },
+      jp: { title: '', summary: '', contentBody: '' },
+      cn: { title: '', summary: '', contentBody: '' },
+      mm: { title: '', summary: '', contentBody: '' },
+    });
     setModalOpen(true);
   };
 
@@ -152,6 +168,14 @@ export const NewsManager: React.FC = () => {
     setFeaturedImageURL(article.featuredImageURL || '/images/factory-building.jpg');
     setIsActive(article.isActive !== false);
     setIsPinned(Boolean(article.isPinned));
+    setTranslations(
+      article.translations || {
+        en: { title: article.titleEn || '', summary: article.summaryEn || '', contentBody: '' },
+        jp: { title: '', summary: '', contentBody: '' },
+        cn: { title: '', summary: '', contentBody: '' },
+        mm: { title: '', summary: '', contentBody: '' },
+      }
+    );
     setModalOpen(true);
   };
 
@@ -182,6 +206,8 @@ export const NewsManager: React.FC = () => {
           ? {
               ...item,
               title,
+              titleEn: translations.en?.title || title,
+              summaryEn: translations.en?.summary || summary,
               slug: slug || title.toLowerCase().replace(/\s+/g, '-'),
               category,
               summary,
@@ -189,6 +215,7 @@ export const NewsManager: React.FC = () => {
               featuredImageURL,
               isActive,
               isPinned,
+              translations,
             }
           : item
       );
@@ -203,11 +230,14 @@ export const NewsManager: React.FC = () => {
         category,
         language: currentLang,
         title,
+        titleEn: translations.en?.title || title,
+        summaryEn: translations.en?.summary || summary,
         summary,
         contentBody,
         featuredImageURL,
         isActive,
         isPinned,
+        translations,
         publishedAt: new Date().toISOString(),
       };
       updatedList = [newArt, ...items];
@@ -511,6 +541,21 @@ export const NewsManager: React.FC = () => {
               onChange={(e) => setContentBody(e.target.value)}
               placeholder="รายละเอียดข่าวสารทั้งหมด..."
               className="w-full rounded-xl border border-theme-border bg-theme-surface px-3 py-2 text-theme-text font-sans"
+            />
+          </div>
+
+          {/* 5-Language Translation Tabs for News Article */}
+          <div className="pt-2">
+            <MultiLangSectionEditor
+              compact
+              title="แปลภาษาข่าวสาร (News Translations: EN, JP, CN, MM)"
+              fields={[
+                { key: 'title', label: 'หัวข้อข่าวสาร (Title)' },
+                { key: 'summary', label: 'เนื้อหาย่อ (Summary)', type: 'textarea', rows: 2 },
+                { key: 'contentBody', label: 'เนื้อหาข่าวฉบับเต็ม (Full Content Body)', type: 'textarea', rows: 3 },
+              ]}
+              value={translations}
+              onChange={setTranslations}
             />
           </div>
 

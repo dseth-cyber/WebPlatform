@@ -53,7 +53,13 @@
     "language": "语言",
     "reauthRequired": "执行危险操作需要重新验证密码",
     "password": "密码",
-    "verify": "验证密码"
+    "verify": "验证密码",
+    "catalogTab": "产品目录",
+    "categoriesTab": "产品分类",
+    "viewAllProducts": "查看全部产品",
+    "requestQuoteBtn": "索取报价",
+    "closeModal": "关闭窗口",
+    "viewAllNews": "查看全部新闻"
   },
   "dashboard": {
     "title": "总览仪表盘 (Dashboard)",

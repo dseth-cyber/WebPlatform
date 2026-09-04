@@ -25,15 +25,31 @@ export const NewsPage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
           Press & Updates
         </span>
         <h1 className="font-display text-3xl sm:text-5xl font-black text-theme-text leading-tight">
-          ข่าวสารและกิจกรรมองค์กร
+          {currentLang === 'jp'
+            ? '企業ニュース＆アクティビティ'
+            : currentLang === 'cn'
+            ? '企业新闻与最新动态'
+            : currentLang === 'mm'
+            ? 'ကော်ပိုရိတ် သတင်းများနှင့် လှုပ်ရှားမှုများ'
+            : currentLang === 'en'
+            ? 'Corporate News & Updates'
+            : 'ข่าวสารและกิจกรรมองค์กร'}
         </h1>
         <p className="text-sm text-theme-text-muted leading-relaxed">
-          อัปเดตนวัตกรรม เทคโนโลยีการผลิต และกิจกรรมเพื่อสังคมและความยั่งยืนของ บริษัท ไคโอทรอน เทคโนโลยี จำกัด (CHIOTRON TECHNOLOGY)
+          {currentLang === 'jp'
+            ? 'CHIOTRON TECHNOLOGYの革新技術、CSR活動、持続可能性に関する最新情報をお届けします。'
+            : currentLang === 'cn'
+            ? '为您呈现 CHIOTRON TECHNOLOGY 的最新制造技术、CSR社会责任与可持续发展动态。'
+            : currentLang === 'mm'
+            ? 'CHIOTRON TECHNOLOGY ၏ နောက်ဆုံးပေါ် ဆန်းသစ်တီထွင်မှု၊ လူမှုရေးတာဝန်ယူမှုနှင့် ရေရှည်တည်တံ့မှုဆိုင်ရာ သတင်းများ။'
+            : currentLang === 'en'
+            ? 'Updates on innovations, manufacturing technologies, and sustainability initiatives from CHIOTRON TECHNOLOGY.'
+            : 'อัปเดตนวัตกรรม เทคโนโลยีการผลิต และกิจกรรมเพื่อสังคมและความยั่งยืนของ บริษัท ไคโอทรอน เทคโนโลยี จำกัด (CHIOTRON TECHNOLOGY)'}
         </p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {sortedNews.map((news) => (
+        {sortedNews.map((news: any) => (
           <div
             key={news.id}
             onClick={() => onNavigate(`/news/${news.slug}`)}
@@ -52,7 +68,7 @@ export const NewsPage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
                 {Boolean(news.isPinned) && (
                   <span className="absolute top-3 left-3 flex items-center gap-1 rounded-md bg-amber-500/90 text-slate-950 font-bold px-2 py-0.5 text-[10px] shadow-sm backdrop-blur-md">
                     <Pin className="h-3 w-3 fill-slate-950" />
-                    <span>ข่าวเด่น</span>
+                    <span>{currentLang === 'en' ? 'Featured' : 'ข่าวเด่น'}</span>
                   </span>
                 )}
               </div>
@@ -71,11 +87,11 @@ export const NewsPage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
                 </div>
 
                 <h3 className="font-display text-base font-bold text-theme-text group-hover:text-theme-primary transition-colors line-clamp-2">
-                  {news.title}
+                  {news.translations?.[currentLang]?.title || (currentLang === 'en' ? news.titleEn : news.title) || news.title}
                 </h3>
 
                 <p className="text-xs text-theme-text-muted line-clamp-3 leading-relaxed">
-                  {news.summary}
+                  {news.translations?.[currentLang]?.summary || (currentLang === 'en' ? news.summaryEn : news.summary) || news.summary}
                 </p>
               </div>
             </div>

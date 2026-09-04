@@ -53,7 +53,13 @@
     "language": "ภาษา",
     "reauthRequired": "กรุณายืนยันรหัสผ่านเพื่อดำเนินการต่อ",
     "password": "รหัสผ่าน",
-    "verify": "ยืนยันรหัสผ่าน"
+    "verify": "ยืนยันรหัสผ่าน",
+    "catalogTab": "สินค้าแคตตาล็อก",
+    "categoriesTab": "หมวดหมู่",
+    "viewAllProducts": "ดูผลิตภัณฑ์ทั้งหมด",
+    "requestQuoteBtn": "ขอใบเสนอราคา",
+    "closeModal": "ปิดหน้าต่าง",
+    "viewAllNews": "อ่านข่าวสารทั้งหมด"
   },
   "dashboard": {
     "title": "แผงควบคุมภาพรวม (Dashboard)",

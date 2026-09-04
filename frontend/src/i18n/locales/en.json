@@ -53,7 +53,13 @@
     "language": "Language",
     "reauthRequired": "Password re-authentication required for destructive action",
     "password": "Password",
-    "verify": "Verify Password"
+    "verify": "Verify Password",
+    "catalogTab": "Product Catalog",
+    "categoriesTab": "Categories",
+    "viewAllProducts": "View All Products",
+    "requestQuoteBtn": "Request Quote",
+    "closeModal": "Close Window",
+    "viewAllNews": "View All News"
   },
   "dashboard": {
     "title": "Overview Dashboard",

@@ -138,10 +138,10 @@ export const TechnologyPage: React.FC<{ onNavigate: (path: string) => void }> = 
                     )}
                   </div>
                   <h3 className="font-display text-base font-bold text-theme-text">
-                    {isNonThai ? (card.titleEn || card.titleTh) : (card.titleTh || card.titleEn)}
+                    {(card as any).translations?.[currentLang]?.title || (isNonThai ? card.titleEn : card.titleTh) || card.titleTh}
                   </h3>
                   <p className="text-xs text-theme-text-muted leading-relaxed">
-                    {isNonThai ? (card.descEn || card.descTh) : (card.descTh || card.descEn)}
+                    {(card as any).translations?.[currentLang]?.desc || (isNonThai ? card.descEn : card.descTh) || card.descTh}
                   </p>
                 </div>
               </div>

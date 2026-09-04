@@ -75,7 +75,7 @@ const SRV_ICONS: Record<string, React.FC<{ className?: string }>> = {
 };
 
 export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onNavigate }) => {
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { settings } = useSiteContent();
 
   const isEn = (i18n.language || 'th') === 'en';
@@ -104,12 +104,17 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
     content: '',
   });
 
-  // 🖼️ Multi-Image Hero Carousel Slider logic
+  // 🖼️ Multi-Image Hero Carousel Slider logic (Infinite Seamless Circular Loop)
   const heroSlides = (settings.heroImages && settings.heroImages.length > 0)
     ? settings.heroImages
     : [settings.heroBannerImage || '/images/hero-fullwidth.jpg'];
 
-  const [currentHeroSlide, setCurrentHeroSlide] = useState(0);
+  const extendedSlides = heroSlides.length > 1
+    ? [heroSlides[heroSlides.length - 1], ...heroSlides, heroSlides[0]]
+    : heroSlides;
+
+  const [currentSlideIndex, setCurrentSlideIndex] = useState(heroSlides.length > 1 ? 1 : 0);
+  const [enableTransition, setEnableTransition] = useState(true);
   const [isHeroHovered, setIsHeroHovered] = useState(false);
 
   // Auto-slide interval timer (pauses when user hovers)
@@ -119,10 +124,50 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
     }
     const intervalMs = Math.max(2, settings.heroSlideInterval || 5) * 1000;
     const timer = setInterval(() => {
-      setCurrentHeroSlide((prev) => (prev + 1) % heroSlides.length);
+      setEnableTransition(true);
+      setCurrentSlideIndex((prev) => prev + 1);
     }, intervalMs);
     return () => clearInterval(timer);
   }, [heroSlides.length, settings.heroAutoSlide, settings.heroSlideInterval, isHeroHovered]);
+
+  // Re-enable transition after instantaneous clone-to-real reset
+  useEffect(() => {
+    if (!enableTransition) {
+      const raf = requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          setEnableTransition(true);
+        });
+      });
+      return () => cancelAnimationFrame(raf);
+    }
+  }, [enableTransition]);
+
+  const handleHeroNext = () => {
+    if (heroSlides.length <= 1) return;
+    setEnableTransition(true);
+    setCurrentSlideIndex((prev) => prev + 1);
+  };
+
+  const handleHeroPrev = () => {
+    if (heroSlides.length <= 1) return;
+    setEnableTransition(true);
+    setCurrentSlideIndex((prev) => prev - 1);
+  };
+
+  const handleTrackTransitionEnd = () => {
+    if (heroSlides.length <= 1) return;
+    if (currentSlideIndex >= heroSlides.length + 1) {
+      setEnableTransition(false);
+      setCurrentSlideIndex(1);
+    } else if (currentSlideIndex <= 0) {
+      setEnableTransition(false);
+      setCurrentSlideIndex(heroSlides.length);
+    }
+  };
+
+  const activeDotIndex = heroSlides.length <= 1
+    ? 0
+    : (currentSlideIndex - 1 + heroSlides.length) % heroSlides.length;
 
   const enabledBadges = settings.featureBadges.filter((b) => b.enabled);
   const enabledMetrics = settings.metrics.filter((m) => m.enabled);
@@ -374,21 +419,23 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
     >
       {/* Full-bleed Panoramic Hero Banner Slider */}
       <div className="relative w-full overflow-hidden bg-[#070B14] pt-24 sm:pt-28 pb-14 sm:pb-18 min-h-[540px] lg:min-h-[620px] flex items-center">
-        {/* Continuous Horizontal Carousel Slider Track (Zero Black Gap & Smooth Slide from Left to Right / Right to Left) */}
+        {/* Continuous Horizontal Carousel Slider Track (Infinite Seamless Circular Loop - Zero Black Gap) */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
           <div
-            className="flex h-full w-full transition-transform duration-700 ease-in-out"
+            className="flex h-full w-full"
             style={{
-              width: `${heroSlides.length * 100}%`,
-              transform: `translateX(-${(currentHeroSlide * 100) / heroSlides.length}%)`,
+              width: `${extendedSlides.length * 100}%`,
+              transform: `translateX(-${(currentSlideIndex * 100) / extendedSlides.length}%)`,
+              transition: enableTransition ? 'transform 700ms ease-in-out' : 'none',
             }}
+            onTransitionEnd={handleTrackTransitionEnd}
           >
-            {heroSlides.map((slideUrl, idx) => (
+            {extendedSlides.map((slideUrl, idx) => (
               <div
                 key={idx}
                 className="h-full bg-cover bg-center bg-no-repeat flex-shrink-0"
                 style={{
-                  width: `${100 / heroSlides.length}%`,
+                  width: `${100 / extendedSlides.length}%`,
                   backgroundImage: `url('${slideUrl}')`,
                 }}
               />
@@ -498,7 +545,7 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
               type="button"
               onClick={(e) => {
                 e.stopPropagation();
-                setCurrentHeroSlide((prev) => (prev - 1 + heroSlides.length) % heroSlides.length);
+                handleHeroPrev();
               }}
               className="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 z-30 flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-black/40 text-white backdrop-blur-md border border-white/20 opacity-0 group-hover:opacity-100 hover:bg-black/70 hover:scale-105 transition-all shadow-xl cursor-pointer"
               title="ภาพก่อนหน้า"
@@ -509,7 +556,7 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
               type="button"
               onClick={(e) => {
                 e.stopPropagation();
-                setCurrentHeroSlide((prev) => (prev + 1) % heroSlides.length);
+                handleHeroNext();
               }}
               className="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 z-30 flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-black/40 text-white backdrop-blur-md border border-white/20 opacity-0 group-hover:opacity-100 hover:bg-black/70 hover:scale-105 transition-all shadow-xl cursor-pointer"
               title="ภาพถัดไป"
@@ -526,9 +573,12 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
               <button
                 key={idx}
                 type="button"
-                onClick={() => setCurrentHeroSlide(idx)}
+                onClick={() => {
+                  setEnableTransition(true);
+                  setCurrentSlideIndex(idx + 1);
+                }}
                 className={`rounded-full transition-all duration-300 cursor-pointer ${
-                  idx === currentHeroSlide
+                  idx === activeDotIndex
                     ? 'h-2 w-6 bg-gradient-to-r from-amber-400 to-amber-500 shadow-md shadow-amber-500/50'
                     : 'h-2 w-2 bg-white/40 hover:bg-white/80'
                 }`}
@@ -556,10 +606,14 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
                   </div>
                   <div>
                     <h3 className="font-display text-sm sm:text-base font-bold text-theme-text group-hover:text-theme-primary transition-colors">
-                      {badge.title}
+                      {currentLang !== 'th' && badge.translations?.[currentLang as 'en'|'jp'|'cn'|'mm']?.title
+                        ? badge.translations[currentLang as 'en'|'jp'|'cn'|'mm'].title
+                        : badge.title}
                     </h3>
                     <p className="text-xs text-theme-text-muted mt-0.5 leading-snug">
-                      {badge.subtitle}
+                      {currentLang !== 'th' && badge.translations?.[currentLang as 'en'|'jp'|'cn'|'mm']?.subtitle
+                        ? badge.translations[currentLang as 'en'|'jp'|'cn'|'mm'].subtitle
+                        : badge.subtitle}
                     </p>
                   </div>
                 </div>
@@ -673,7 +727,7 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
                 }`}
               >
                 <Package className="h-3.5 w-3.5" />
-                <span>สินค้าแคตตาล็อก ({productsToShow.length})</span>
+                <span>{t('common.catalogTab')} ({productsToShow.length})</span>
               </button>
               <button
                 type="button"
@@ -685,7 +739,7 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
                 }`}
               >
                 <Tag className="h-3.5 w-3.5" />
-                <span>หมวดหมู่ ({categoriesToShow.length})</span>
+                <span>{t('common.categoriesTab')} ({categoriesToShow.length})</span>
               </button>
             </div>
 
@@ -694,7 +748,7 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
               onClick={() => onNavigate('/products')}
               className="inline-flex items-center gap-2 rounded-xl border border-theme-border bg-theme-surface px-5 py-2.5 text-xs font-bold text-theme-text hover:bg-theme-surface-elevated hover:border-theme-primary hover:shadow-[0_0_15px_var(--color-primary-glow)] transition-all self-start sm:self-auto"
             >
-              <span>ดูผลิตภัณฑ์ทั้งหมด</span>
+              <span>{t('common.viewAllProducts')}</span>
               <ChevronRight className="h-4 w-4 text-theme-primary" />
             </button>
           </div>
@@ -703,29 +757,33 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
         {/* 1. CATALOG PRODUCTS VIEW (Shows exact products from Admin Panel Database) */}
         {productViewMode === 'catalog' && (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-            {productsToShow.map((prod: any) => (
+            {productsToShow.map((prod: any) => {
+              const prodName = (currentLang !== 'th' && prod.translations?.[currentLang]?.name) || prod.name;
+              const prodDesc = (currentLang !== 'th' && prod.translations?.[currentLang]?.description) || prod.description ||
+                (currentLang === 'th'
+                  ? 'บรรจุภัณฑ์โลหะคุณภาพสูงมาตรฐานสากล ผลิตด้วยเครื่องจักรอัตโนมัติความเร็วสูง รองรับการฆ่าเชื้อความร้อน Retort และได้มาตรฐานสัมผัสอาหาร BPA-NI'
+                  : 'High-quality industrial and food-grade metal packaging certified to international standards with BPA-NI coating.');
+              return (
               <div
                 key={prod.id || prod.sku}
                 onClick={() => {
                   setDetailModal({
                     isOpen: true,
                     type: 'product',
-                    title: prod.name,
-                    subtitle: `รหัสสินค้า: ${prod.sku} | หมวดหมู่: ${prod.categoryName}`,
+                    title: prodName,
+                    subtitle: `${currentLang === 'th' ? 'รหัสสินค้า' : 'SKU'}: ${prod.sku} | ${prod.categoryName}`,
                     category: prod.categoryName,
                     image: prod.primaryImageURL || prod.featuredImageUrl || '/images/cat-round-cans.jpg',
-                    content:
-                      prod.description ||
-                      'บรรจุภัณฑ์โลหะคุณภาพสูงมาตรฐานสากล ผลิตด้วยเครื่องจักรอัตโนมัติความเร็วสูง รองรับการฆ่าเชื้อความร้อน Retort และได้มาตรฐานสัมผัสอาหาร BPA-NI',
+                    content: prodDesc,
                     features: [
-                      `รหัส SKU: ${prod.sku}`,
-                      `วัสดุโครงสร้าง: ${prod.material || 'Electrolytic Tinplate ETP'}`,
-                      `สารเคลือบภายใน: ${prod.coatingType || 'BPA-NI Food Contact Safe'}`,
-                      `ขนาด/มิติ: ${prod.specifications?.dimensions || 'ตามมาตรฐานหรือสั่งผลิต'}`,
-                      `การรับรองมาตรฐาน: ${prod.unRating || 'ISO 9001:2015 / FSSC 22000'}`,
-                      `การนำไปใช้: ${prod.applications || 'อาหารสำเร็จรูป, เครื่องดื่ม และเคมีภัณฑ์'}`,
+                      `SKU: ${prod.sku}`,
+                      `${currentLang === 'th' ? 'วัสดุโครงสร้าง' : 'Material'}: ${prod.material || 'Electrolytic Tinplate ETP'}`,
+                      `${currentLang === 'th' ? 'สารเคลือบภายใน' : 'Coating'}: ${prod.coatingType || 'BPA-NI Food Contact Safe'}`,
+                      `${currentLang === 'th' ? 'ขนาด/มิติ' : 'Dimensions'}: ${prod.specifications?.dimensions || 'Standard / Custom'}`,
+                      `${currentLang === 'th' ? 'การรับรองมาตรฐาน' : 'Certifications'}: ${prod.unRating || 'ISO 9001:2015 / FSSC 22000'}`,
+                      `${currentLang === 'th' ? 'การนำไปใช้' : 'Applications'}: ${prod.applications || 'Food, Beverages, Chemicals'}`,
                     ],
-                    ctaText: 'ขอใบเสนอราคาสินค้านี้',
+                    ctaText: t('common.requestQuoteBtn'),
                     ctaAction: () => onNavigate('/contact?sku=' + encodeURIComponent(prod.sku)),
                     rawProduct: prod,
                   });
@@ -735,7 +793,7 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
                 <div className="aspect-[4/3] w-full overflow-hidden bg-slate-900">
                   <img
                     src={prod.primaryImageURL || prod.featuredImageUrl || '/images/cat-round-cans.jpg'}
-                    alt={prod.name}
+                    alt={prodName}
                     className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500"
                     onError={(e) => {
                       (e.target as HTMLImageElement).src = '/images/cat-round-cans.jpg';
@@ -747,7 +805,7 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
                   <div className="space-y-1.5">
                     <div className="flex items-center justify-between gap-2">
                       <span className="text-[10px] font-bold uppercase tracking-wider text-theme-primary truncate">
-                        {prod.categoryName || 'บรรจุภัณฑ์โลหะ'}
+                        {prod.categoryName || 'Metal Packaging'}
                       </span>
                       <span className="font-mono text-[10px] font-bold text-theme-text-muted bg-theme-surface-elevated px-2 py-0.5 rounded border border-theme-border flex-shrink-0">
                         {prod.sku}
@@ -755,7 +813,7 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
                     </div>
 
                     <h3 className="font-display font-bold text-xs sm:text-sm text-theme-text group-hover:text-theme-primary transition-colors line-clamp-2 leading-snug">
-                      {prod.name}
+                      {prodName}
                     </h3>
 
                     {(prod.material || prod.specifications?.dimensions) && (
@@ -768,7 +826,7 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
 
                   <div className="pt-2 border-t border-theme-border/60 flex items-center justify-between">
                     <span className="text-[11px] font-bold text-theme-primary group-hover:underline flex items-center gap-1">
-                      <span>ดูรายละเอียด</span>
+                      <span>{t('common.viewDetails')}</span>
                       <ChevronRight className="h-3 w-3" />
                     </span>
                     <button
@@ -779,19 +837,23 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
                       }}
                       className="rounded-lg bg-theme-primary/10 hover:bg-theme-primary hover:text-black text-theme-primary px-2.5 py-1 text-[10px] font-bold transition-all border border-theme-primary/20"
                     >
-                      ขอใบเสนอราคา
+                      {t('common.requestQuoteBtn')}
                     </button>
                   </div>
                 </div>
               </div>
-            ))}
+            );
+            })}
           </div>
         )}
 
         {/* 2. CATEGORIES VIEW (Category cards) */}
         {productViewMode === 'categories' && (
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-6">
-            {categoriesToShow.map((cat) => (
+            {categoriesToShow.map((cat) => {
+              const catTitle = (currentLang !== 'th' && (cat as any).translations?.[currentLang]?.title) || (currentLang === 'en' ? cat.titleEn : cat.titleTh) || cat.titleTh;
+              const catSub = currentLang === 'th' ? cat.titleEn : ((cat as any).translations?.['th']?.title || cat.titleTh);
+              return (
               <div
                 key={cat.id}
                 onClick={() => onNavigate(cat.path)}
@@ -800,21 +862,22 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
                 <div className="aspect-[4/3] w-full overflow-hidden bg-slate-900">
                   <img
                     src={cat.image}
-                    alt={cat.titleTh}
+                    alt={catTitle}
                     className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
                 </div>
 
                 <div className="bg-theme-surface-elevated p-3 text-center border-t border-theme-border group-hover:bg-theme-surface-hover transition-colors">
                   <h3 className="font-display font-bold text-xs sm:text-sm text-theme-text group-hover:text-theme-primary transition-colors">
-                    {cat.titleTh}
+                    {catTitle}
                   </h3>
                   <span className="text-[10px] font-mono tracking-wider text-theme-text-muted block mt-0.5 group-hover:text-theme-primary transition-colors">
-                    {cat.titleEn}
+                    {catSub}
                   </span>
                 </div>
               </div>
-            ))}
+            );
+            })}
           </div>
         )}
       </section>
@@ -854,8 +917,8 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         {servicesToShow.map((srv) => {
           const IconComp = SRV_ICONS[srv.icon] || Layers;
-          const srvTitle = currentLang === 'th' ? (srv.titleTh || srv.titleEn) : (srv.titleEn || srv.titleTh);
-          const srvDesc = currentLang === 'th' ? (srv.descTh || srv.descEn) : (srv.descEn || srv.descTh);
+          const srvTitle = (currentLang !== 'th' && (srv as any).translations?.[currentLang]?.title) || (currentLang === 'en' ? srv.titleEn : (currentLang === 'th' ? srv.titleTh : (srv.titleEn || srv.titleTh))) || srv.titleTh;
+          const srvDesc = (currentLang !== 'th' && (srv as any).translations?.[currentLang]?.desc) || (currentLang === 'en' ? srv.descEn : (currentLang === 'th' ? srv.descTh : (srv.descEn || srv.descTh))) || srv.descTh;
 
           return (
             <div
@@ -922,7 +985,7 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
                 </div>
 
                 <div className="pt-3 border-t border-theme-border flex items-center gap-1.5 text-xs font-bold text-theme-primary group-hover:underline">
-                  <span>ดูรายละเอียดบริการ</span>
+                  <span>{currentLang === 'th' ? 'ดูรายละเอียดบริการ' : currentLang === 'jp' ? 'サービス詳細を見る' : currentLang === 'cn' ? '查看服务详情' : currentLang === 'mm' ? 'ဝန်ဆောင်မှုအသေးစိတ်ကြည့်ရန်' : 'View Service Details'}</span>
                   <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-1 transition-transform" />
                 </div>
               </div>
@@ -966,8 +1029,8 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {techToShow.map((card) => {
           const IconComp = TECH_ICONS[card.icon] || Cpu;
-          const techTitle = currentLang === 'th' ? (card.titleTh || card.titleEn) : (card.titleEn || card.titleTh);
-          const techDesc = currentLang === 'th' ? (card.descTh || card.descEn) : (card.descEn || card.descTh);
+          const techTitle = (currentLang !== 'th' && (card as any).translations?.[currentLang]?.title) || (currentLang === 'en' ? card.titleEn : (currentLang === 'th' ? card.titleTh : (card.titleEn || card.titleTh))) || card.titleTh;
+          const techDesc = (currentLang !== 'th' && (card as any).translations?.[currentLang]?.desc) || (currentLang === 'en' ? card.descEn : (currentLang === 'th' ? card.descTh : (card.descEn || card.descTh))) || card.descTh;
 
           return (
             <div
@@ -1023,7 +1086,7 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
                 </div>
 
                 <div className="pt-3 border-t border-theme-border flex items-center gap-1.5 text-xs font-bold text-theme-primary group-hover:underline">
-                  <span>ดูรายละเอียดเทคโนโลยี</span>
+                  <span>{currentLang === 'th' ? 'ดูรายละเอียดเทคโนโลยี' : currentLang === 'jp' ? '技術詳細を見る' : currentLang === 'cn' ? '查看技术详情' : currentLang === 'mm' ? 'နည်းပညာအသေးစိတ်ကြည့်ရန်' : 'View Tech Details'}</span>
                   <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-1 transition-transform" />
                 </div>
               </div>
@@ -1067,8 +1130,8 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         {susToShow.map((card) => {
           const IconComp = SUS_ICONS[card.icon] || Leaf;
-          const susTitle = currentLang === 'th' ? (card.titleTh || card.titleEn) : (card.titleEn || card.titleTh);
-          const susDesc = currentLang === 'th' ? (card.descTh || card.descEn) : (card.descEn || card.descTh);
+          const susTitle = (currentLang !== 'th' && (card as any).translations?.[currentLang]?.title) || (currentLang === 'en' ? card.titleEn : (currentLang === 'th' ? card.titleTh : (card.titleEn || card.titleTh))) || card.titleTh;
+          const susDesc = (currentLang !== 'th' && (card as any).translations?.[currentLang]?.desc) || (currentLang === 'en' ? card.descEn : (currentLang === 'th' ? card.descTh : (card.descEn || card.descTh))) || card.descTh;
 
           return (
             <div
@@ -1122,7 +1185,7 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
                 </div>
 
                 <div className="pt-3 border-t border-emerald-500/20 flex items-center gap-1.5 text-xs font-bold text-emerald-500 group-hover:underline">
-                  <span>ดูรายละเอียดความยั่งยืน</span>
+                  <span>{currentLang === 'th' ? 'ดูรายละเอียดความยั่งยืน' : currentLang === 'jp' ? 'サステナビリティ詳細' : currentLang === 'cn' ? '查看可持续发展详情' : currentLang === 'mm' ? 'ရေရှည်တည်တံ့မှုအသေးစိတ်' : 'View ESG Details'}</span>
                   <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-1 transition-transform" />
                 </div>
               </div>
@@ -1145,7 +1208,7 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
               News & Announcements
             </span>
             <h2 className="font-display text-2xl sm:text-4xl font-black text-theme-text">
-              ข่าวสารและกิจกรรมล่าสุด (News & Press)
+              {currentLang === 'th' ? 'ข่าวสารและกิจกรรมล่าสุด (News & Press)' : 'News & Announcements'}
             </h2>
             <div className="h-1 w-12 bg-theme-primary rounded-full" />
           </div>
@@ -1155,21 +1218,23 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
             onClick={() => onNavigate('/news')}
             className="inline-flex items-center gap-2 rounded-xl border border-theme-border bg-theme-surface px-5 py-2.5 text-xs font-bold text-theme-text hover:border-theme-primary transition-all self-start sm:self-auto"
           >
-            <span>อ่านข่าวสารทั้งหมด</span>
+            <span>{t('common.viewAllNews')}</span>
             <ChevronRight className="h-4 w-4 text-theme-primary" />
           </button>
         </div>
 
         {displayedNews.length === 0 ? (
           <div className="p-8 text-center text-xs text-theme-text-muted rounded-2xl border border-theme-border bg-theme-surface">
-            กำลังอัปเดตข่าวสารและกิจกรรมล่าสุด...
+            {currentLang === 'th' ? 'กำลังอัปเดตข่าวสารและกิจกรรมล่าสุด...' : 'No news updates currently.'}
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {displayedNews.map((item: any) => {
               const itemImage = item.featuredImageURL || item.image || '/images/factory-building.jpg';
               const itemDate = item.publishedAt ? formatDate(item.publishedAt, currentLang) : (item.date || '');
-              const itemSummary = item.summary || item.excerpt || (item.contentBody ? item.contentBody.substring(0, 110) + '...' : '');
+              const itemTitle = (currentLang !== 'th' && item.translations?.[currentLang]?.title) || item.title;
+              const itemSummary = (currentLang !== 'th' && item.translations?.[currentLang]?.summary) || item.summary || item.excerpt || (item.contentBody ? item.contentBody.substring(0, 110) + '...' : '');
+              const itemBody = (currentLang !== 'th' && item.translations?.[currentLang]?.contentBody) || item.contentBody || itemSummary;
 
               return (
                 <div
@@ -1178,13 +1243,13 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
                     setDetailModal({
                       isOpen: true,
                       type: 'news',
-                      title: item.title,
-                      subtitle: item.category || 'ข่าวสารองค์กร',
+                      title: itemTitle,
+                      subtitle: item.category || 'News',
                       category: item.category || 'News',
                       image: itemImage,
                       date: itemDate,
-                      content: item.contentBody || itemSummary,
-                      ctaText: isEn ? 'Read Full Article & Press' : 'อ่านข่าวสารฉบับเต็ม',
+                      content: itemBody,
+                      ctaText: currentLang === 'th' ? 'อ่านข่าวสารฉบับเต็ม' : 'Read Full Article',
                       ctaAction: () => {
                         setDetailModal((prev) => ({ ...prev, isOpen: false }));
                         onNavigate(item.slug ? `/news/${item.slug}` : '/news');
@@ -1288,7 +1353,7 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
                       }`}
                     >
                       <span>{icon}</span>
-                      <span className="truncate">{b.nameTh.split('(')[0]}</span>
+                      <span className="truncate">{((currentLang !== 'th' && (b as any).translations?.[currentLang]?.name) || (currentLang === 'en' ? (b.nameEn || b.nameTh) : b.nameTh)).split('(')[0]}</span>
                     </button>
                   );
                 })}
@@ -1300,7 +1365,7 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
                 {currentBranch.nameEn || 'LOCATION'}
               </span>
               <h4 className="font-display font-bold text-sm text-theme-text mt-0.5">
-                {currentBranch.nameTh}
+                {(currentLang !== 'th' && (currentBranch as any).translations?.[currentLang]?.name) || (currentLang === 'en' ? (currentBranch.nameEn || currentBranch.nameTh) : currentBranch.nameTh)}
               </h4>
             </div>
 
@@ -1308,7 +1373,7 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
               <div className="flex items-start gap-2.5">
                 <MapPin className="h-4 w-4 text-theme-primary flex-shrink-0 mt-0.5" />
                 <span className="leading-relaxed">
-                  {currentBranch.addressTh}
+                  {(currentLang !== 'th' && (currentBranch as any).translations?.[currentLang]?.address) || (currentLang === 'en' ? ((currentBranch as any).addressEn || currentBranch.addressTh) : currentBranch.addressTh)}
                 </span>
               </div>
 
@@ -1336,10 +1401,10 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
                 </div>
               )}
 
-              {currentBranch.businessHoursTh && (
+              {(currentBranch.businessHoursTh || (currentBranch as any).translations?.[currentLang]?.businessHours) && (
                 <div className="flex items-center gap-2.5">
                   <Clock className="h-4 w-4 text-theme-primary flex-shrink-0" />
-                  <span>{currentBranch.businessHoursTh}</span>
+                  <span>{(currentLang !== 'th' && (currentBranch as any).translations?.[currentLang]?.businessHours) || currentBranch.businessHoursTh}</span>
                 </div>
               )}
             </div>
@@ -1663,7 +1728,7 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
               onClick={() => setDetailModal((prev) => ({ ...prev, isOpen: false }))}
               className="rounded-xl border border-theme-border bg-theme-surface px-5 py-2.5 font-bold text-theme-text hover:bg-theme-surface-elevated transition-colors cursor-pointer"
             >
-              ปิดหน้าต่าง
+              {t('common.closeModal')}
             </button>
 
             <div className="flex items-center gap-3 flex-wrap">

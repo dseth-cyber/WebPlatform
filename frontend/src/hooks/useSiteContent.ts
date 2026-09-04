@@ -5,6 +5,7 @@ export interface FeatureBadgeSetting {
   title: string;
   subtitle: string;
   enabled: boolean;
+  translations?: Record<string, { title: string; subtitle: string }>;
 }
 
 export interface CategoryCardSetting {
@@ -15,6 +16,7 @@ export interface CategoryCardSetting {
   path: string;
   enabled: boolean;
   isPinned?: boolean; // 📌 ปักหมุดแสดงที่หน้าแรก
+  translations?: Record<string, { title: string }>;
 }
 
 export interface MetricSetting {
@@ -42,6 +44,7 @@ export interface SustainabilityCardSetting {
   descEn: string;
   image?: string;
   isPinned?: boolean; // 📌 ปักหมุดแสดงที่หน้าแรก
+  translations?: Record<string, { title: string; desc: string }>;
 }
 
 export interface TechnologyCardSetting {
@@ -53,6 +56,7 @@ export interface TechnologyCardSetting {
   descEn: string;
   image?: string;
   isPinned?: boolean; // 📌 ปักหมุดแสดงที่หน้าแรก
+  translations?: Record<string, { title: string; desc: string }>;
 }
 
 export interface ServiceItemSetting {
@@ -65,6 +69,7 @@ export interface ServiceItemSetting {
   features: string[];
   image?: string;
   isPinned?: boolean; // 📌 ปักหมุดแสดงที่หน้าแรก
+  translations?: Record<string, { title: string; desc: string }>;
 }
 
 export interface CareerJobSetting {
@@ -80,6 +85,7 @@ export interface CareerJobSetting {
   salaryRange?: string;
   active: boolean;
   isPinned?: boolean; // 📌 ปักหมุดแสดงที่หน้าแรก
+  translations?: Record<string, { title: string; department?: string; location?: string; description?: string }>;
 }
 
 export interface BranchLocationSetting {
@@ -97,6 +103,7 @@ export interface BranchLocationSetting {
   mapUrl?: string;
   isPrimary?: boolean;
   enabled: boolean;
+  translations?: Record<string, { name: string; address: string; businessHours?: string }>;
 }
 
 export interface SiteContentSettings {
@@ -139,6 +146,17 @@ export interface SiteContentSettings {
   sustainabilityTranslations?: Record<'en' | 'jp' | 'cn' | 'mm', { badge: string; heading: string; description: string }>;
   careersTranslations?: Record<'en' | 'jp' | 'cn' | 'mm', { badge: string; heading: string; subtitle: string }>;
   contactTranslations?: Record<'en' | 'jp' | 'cn' | 'mm', { bio: string; businessHours: string }>;
+  brandLegalTranslations?: Record<string, {
+    companyName?: string;
+    legalName?: string;
+    registeredCapital?: string;
+    taxId?: string;
+    establishedYear?: string;
+    factoryAddress?: string;
+    headquartersAddress?: string;
+    industryCertifications?: string;
+    [key: string]: string | undefined;
+  }>;
 
   // 4 Feature Badges
   featureBadges: FeatureBadgeSetting[];
@@ -399,30 +417,85 @@ export const DEFAULT_SITE_SETTINGS: SiteContentSettings = {
     },
   },
 
+  brandLegalTranslations: {
+    en: {
+      companyName: 'CHIOTRON TECHNOLOGY CO., LTD.',
+      registeredCapital: '100,000,000 THB',
+      taxId: '0745548001234',
+      establishedYear: '1986',
+      factoryAddress: '88 Moo 3, Setthakit 1 Rd, Khlong Maduea, Krathum Baen, Samut Sakhon 74110, Thailand',
+    },
+    jp: {
+      companyName: 'カイオトロン・テクノロジー株式会社',
+      registeredCapital: '1億タイバーツ (100,000,000 THB)',
+      taxId: '0745548001234',
+      establishedYear: '1986年',
+      factoryAddress: 'タイ国サムットサコーン県クラトゥムベーン郡クロンマドゥア区 セータキット1通り 88番地',
+    },
+    cn: {
+      companyName: '凯奥创科技有限公司',
+      registeredCapital: '1亿泰铢 (100,000,000 THB)',
+      taxId: '0745548001234',
+      establishedYear: '1986年',
+      factoryAddress: '泰国龙仔厝府甲吞烹县空玛得区经济1路88号 邮编74110',
+    },
+    mm: {
+      companyName: 'CHIOTRON TECHNOLOGY ကုမ္ပဏီလီမိတက်',
+      registeredCapital: 'ဘတ်ငွေ ၁၀၀,၀၀၀,၀၀၀',
+      taxId: '0745548001234',
+      establishedYear: '၁၉၈၆',
+      factoryAddress: 'အမှတ် ၈၈၊ မူ ၃၊ စစ်သကစ် ၁ လမ်း၊ စမွတ်စာခွန် ၇၄၁၁၀၊ ထိုင်းနိုင်ငံ',
+    },
+  },
+
   featureBadges: [
     {
       id: 'f1',
       title: 'คุณภาพมาตรฐานสากล',
       subtitle: 'ได้รับการรับรองมาตรฐานระดับสากล',
       enabled: true,
+      translations: {
+        en: { title: 'World-Class Quality', subtitle: 'Certified to international quality standards' },
+        jp: { title: '国際基準の品質', subtitle: '世界基準の国際認証を取得' },
+        cn: { title: '国际标准品质', subtitle: '通过多项国际权威认证' },
+        mm: { title: 'နိုင်ငံတကာစံချိန်မီအရည်အသွေး', subtitle: 'နိုင်ငံတကာစံချိန်စံညွှန်းများဖြင့် အသိအမှတ်ပြုထားသည်' },
+      },
     },
     {
       id: 'f2',
       title: 'เทคโนโลยีทันสมัย',
       subtitle: 'เครื่องจักรและเทคโนโลยีการผลิตที่ล้ำสมัย',
       enabled: true,
+      translations: {
+        en: { title: 'Modern Technology', subtitle: 'Cutting-edge machinery and manufacturing technologies' },
+        jp: { title: '先進テクノロジー', subtitle: '最先端の機械と製造テクノロジーを導入' },
+        cn: { title: '先进制造工艺', subtitle: '尖端智能机械与高精尖生产技术' },
+        mm: { title: 'ခေတ်မီနည်းပညာ', subtitle: 'ခေတ်မီစက်ယန္တရားများနှင့် ထုတ်လုပ်မှုနည်းပညာများ' },
+      },
     },
     {
       id: 'f3',
       title: 'ความปลอดภัย',
       subtitle: 'ควบคุมคุณภาพทุกขั้นตอนเพื่อความปลอดภัยสูงสุด',
       enabled: true,
+      translations: {
+        en: { title: 'Certified Safety', subtitle: 'Total quality control for uncompromising safety' },
+        jp: { title: '安全性の追求', subtitle: '最高水準の安全を確保する全工程品質管理' },
+        cn: { title: '安全与可靠', subtitle: '全流程严苛质量监控确保极致安全' },
+        mm: { title: 'ဘေးကင်းလုံခြုံရေး', subtitle: 'အမြင့်မားဆုံး ဘေးကင်းရေးအတွက် အဆင့်ဆင့်စစ်ဆေးသည်' },
+      },
     },
     {
       id: 'f4',
       title: 'บริการลูกค้า',
       subtitle: 'ใส่ใจทุกความต้องการด้วยหัวใจบริการ',
       enabled: true,
+      translations: {
+        en: { title: 'Customer Care', subtitle: 'Attentive service focused on your exact packaging needs' },
+        jp: { title: '顧客第一のサービス', subtitle: 'お客様のあらゆるニーズに真心を込めて対応' },
+        cn: { title: '用心客户服务', subtitle: '真诚专注满足客户的每一个定制需求' },
+        mm: { title: 'ဖောက်သည်ဝန်ဆောင်မှု', subtitle: 'ဖောက်သည်များ၏ လိုအပ်ချက်တိုင်းကို စေတနာဖြင့် ဝန်ဆောင်မှုပေးသည်' },
+      },
     },
   ],
 
@@ -708,6 +781,12 @@ export const DEFAULT_SITE_SETTINGS: SiteContentSettings = {
       mapUrl: 'https://maps.google.com/?q=Sathon+Bangkok',
       isPrimary: true,
       enabled: true,
+      translations: {
+        en: { name: 'Head Office & Commercial Center', address: '123/45 South Sathon Road, Yannawa, Sathon, Bangkok 10120, Thailand', businessHours: 'Mon - Fri: 08:30 - 17:30 (Closed Sat - Sun)' },
+        jp: { name: '本社（バンコク・サトーン）', address: 'タイ国バンコク都サトーン区ヤンナワー サトーン南通り 123/45', businessHours: '月〜金: 08:30 - 17:30（土日祝 休）' },
+        cn: { name: '曼谷总部（Head Office）', address: '泰国曼谷沙吞区严那瓦南沙吞路123/45号 邮编10120', businessHours: '周一至周五: 08:30 - 17:30（周末休息）' },
+        mm: { name: 'ရုံးချုပ် (ဘန်ကောက်)', address: '၁၂၃/၄၅ တောင်ဆာသွန်လမ်း၊ ယာနဝါ၊ ဆာသွန်၊ ဘန်ကောက် ၁၀၁၂၀၊ ထိုင်းနိုင်ငံ', businessHours: 'တနင်္လာ - သောကြာ: ၀၈:၃၀ - ၁၇:၃၀' },
+      },
     },
     {
       id: 'branch-plant-1',
@@ -724,6 +803,12 @@ export const DEFAULT_SITE_SETTINGS: SiteContentSettings = {
       mapUrl: 'https://maps.google.com/?q=Samut+Sakhon+Industrial+Estate',
       isPrimary: false,
       enabled: true,
+      translations: {
+        en: { name: 'Samut Sakhon Smart Plant & Operations', address: '88/9 Moo 4, Samut Sakhon Industrial Estate, Bang Krachao, Mueang, Samut Sakhon 74000, Thailand', businessHours: 'Mon - Sat: 08:00 - 17:00 (Operations 24/7)' },
+        jp: { name: 'サムットサコーン製造工場', address: 'タイ国サムットサコーン県ムアン郡バーンクラチャオ サムットサコーン工業団地 88/9', businessHours: '月〜土: 08:00 - 17:00（製造ライン 24時間稼働）' },
+        cn: { name: '龙仔厝智能制造工厂', address: '泰国龙仔厝府直辖县曼卡超区龙仔厝工业区88/9号 邮编74000', businessHours: '周一至周六: 08:00 - 17:00（车间24小时运转）' },
+        mm: { name: 'စမွတ်စာခွန် စက်ရုံ', address: '၈၈/၉ မူ ၄၊ စမွတ်စာခွန် စက်မှုဇုန်၊ စမွတ်စာခွန် ၇၄၀၀၀၊ ထိုင်းနိုင်ငံ', businessHours: 'တနင်္လာ - စနေ: ၀၈:၀၀ - ၁၇:၀၀' },
+      },
     },
     {
       id: 'branch-logistics',
@@ -739,6 +824,12 @@ export const DEFAULT_SITE_SETTINGS: SiteContentSettings = {
       mapUrl: 'https://maps.google.com/?q=Laem+Chabang+Port',
       isPrimary: false,
       enabled: true,
+      translations: {
+        en: { name: 'Chonburi Eastern Logistics Hub', address: '45/12 Moo 7, Bowin, Si Racha, Chonburi 20230, Thailand (Near Laem Chabang Port)', businessHours: 'Mon - Sat: 08:00 - 18:00' },
+        jp: { name: 'チョンブリー物流センター', address: 'タイ国チョンブリー県シラチャ郡ボーウィン 45/12（レムチャバン港至近）', businessHours: '月〜土: 08:00 - 18:00' },
+        cn: { name: '春武里东部物流集散中心', address: '泰国春武里府是拉差县波温区45/12号（毗邻廉差邦深水港）', businessHours: '周一至周六: 08:00 - 18:00' },
+        mm: { name: 'ချွန်းဘူရီ ထောက်ပံ့ပို့ဆောင်ရေးဂိုဒေါင်', address: '၄၅/၁၂ မူ ၇၊ ဘိုဝင်း၊ သီရာချာ၊ ချွန်းဘူရီ ၂၀၂၃၀၊ ထိုင်းနိုင်ငံ', businessHours: 'တနင်္လာ - စနေ: ၀၈:၀၀ - ၁၈:၀၀' },
+      },
     },
   ],
 };
@@ -802,6 +893,9 @@ export const useSiteContent = () => {
           sustainabilityTranslations: parsed.sustainabilityTranslations || DEFAULT_SITE_SETTINGS.sustainabilityTranslations,
           careersTranslations: parsed.careersTranslations || DEFAULT_SITE_SETTINGS.careersTranslations,
           contactTranslations: parsed.contactTranslations || DEFAULT_SITE_SETTINGS.contactTranslations,
+          brandLegalTranslations: parsed.brandLegalTranslations || DEFAULT_SITE_SETTINGS.brandLegalTranslations,
+          featureBadges: parsed.featureBadges || DEFAULT_SITE_SETTINGS.featureBadges,
+          branches: parsed.branches || DEFAULT_SITE_SETTINGS.branches,
         };
       }
     } catch (e) {}
@@ -857,6 +951,9 @@ export const useSiteContent = () => {
                   sustainabilityTranslations: remoteSettings.sustainabilityTranslations || prev.sustainabilityTranslations || DEFAULT_SITE_SETTINGS.sustainabilityTranslations,
                   careersTranslations: remoteSettings.careersTranslations || prev.careersTranslations || DEFAULT_SITE_SETTINGS.careersTranslations,
                   contactTranslations: remoteSettings.contactTranslations || prev.contactTranslations || DEFAULT_SITE_SETTINGS.contactTranslations,
+                  brandLegalTranslations: remoteSettings.brandLegalTranslations || prev.brandLegalTranslations || DEFAULT_SITE_SETTINGS.brandLegalTranslations,
+                  featureBadges: remoteSettings.featureBadges || prev.featureBadges || DEFAULT_SITE_SETTINGS.featureBadges,
+                  branches: remoteSettings.branches || prev.branches || DEFAULT_SITE_SETTINGS.branches,
                 };
                 try {
                   localStorage.setItem(STORAGE_KEY, JSON.stringify(merged));

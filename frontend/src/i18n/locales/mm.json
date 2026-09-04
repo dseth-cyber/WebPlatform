@@ -53,7 +53,13 @@
     "language": "ဘာသာစကား",
     "reauthRequired": "လျှို့ဝှက်နံပါတ် အတည်ပြုရန် လိုအပ်သည်",
     "password": "လျှို့ဝှက်နံပါတ်",
-    "verify": "အတည်ပြုရန်"
+    "verify": "အတည်ပြုရန်",
+    "catalogTab": "ထုတ်ကုန်ကတ်တလောက်",
+    "categoriesTab": "အမျိုးအစားများ",
+    "viewAllProducts": "ထုတ်ကုန်အားလုံးကြည့်ရန်",
+    "requestQuoteBtn": "စျေးနှုန်းတောင်းခံရန်",
+    "closeModal": "ပိတ်ရန်",
+    "viewAllNews": "သတင်းအားလုံးဖတ်ရန်"
   },
   "dashboard": {
     "title": "ခြုံငုံသုံးသပ်ချက် ဒက်ရှ်ဘုတ် (Dashboard)",

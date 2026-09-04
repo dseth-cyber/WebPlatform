@@ -10,10 +10,14 @@ import { Plus, Edit, Trash2, Package, Search, Check, Image as ImageIcon, Eye, Ey
 import { LocalizedProduct } from '../../types/domain';
 import { useSiteContent, CategoryCardSetting } from '../../hooks/useSiteContent';
 import { compressImageFile } from '../../utils/imageCompressor';
+import { MultiLangSectionEditor } from './MultiLangSectionEditor';
 
 interface ExtendedProduct extends LocalizedProduct {
   isActive?: boolean;
   isPinned?: boolean;
+  nameEn?: string;
+  descriptionEn?: string;
+  translations?: Record<string, Record<string, string>>;
 }
 
 export const ProductsManager: React.FC = () => {
@@ -76,6 +80,19 @@ export const ProductsManager: React.FC = () => {
   const [catFormPath, setCatFormPath] = useState('');
   const [catFormPinned, setCatFormPinned] = useState(false);
   const [catFormEnabled, setCatFormEnabled] = useState(true);
+  const [catFormTranslations, setCatFormTranslations] = useState<Record<string, Record<string, string>>>({
+    en: { title: '' },
+    jp: { title: '' },
+    cn: { title: '' },
+    mm: { title: '' },
+  });
+
+  const [productTranslations, setProductTranslations] = useState<Record<string, Record<string, string>>>({
+    en: { name: '', description: '', features: '', applications: '' },
+    jp: { name: '', description: '', features: '', applications: '' },
+    cn: { name: '', description: '', features: '', applications: '' },
+    mm: { name: '', description: '', features: '', applications: '' },
+  });
 
   const handleOpenEditCategory = (idx: number) => {
     const cat = settings.categoryCards?.[idx];
@@ -88,6 +105,14 @@ export const ProductsManager: React.FC = () => {
     setCatFormPath(cat.path);
     setCatFormPinned(cat.isPinned || false);
     setCatFormEnabled(cat.enabled !== false);
+    setCatFormTranslations(
+      cat.translations || {
+        en: { title: cat.titleEn || '' },
+        jp: { title: '' },
+        cn: { title: '' },
+        mm: { title: '' },
+      }
+    );
     setCategoryModalOpen(true);
   };
 
@@ -101,6 +126,12 @@ export const ProductsManager: React.FC = () => {
     setCatFormPath('/products?category=' + newId);
     setCatFormPinned(false);
     setCatFormEnabled(true);
+    setCatFormTranslations({
+      en: { title: '' },
+      jp: { title: '' },
+      cn: { title: '' },
+      mm: { title: '' },
+    });
     setCategoryModalOpen(true);
   };
 
@@ -127,11 +158,12 @@ export const ProductsManager: React.FC = () => {
     const catData: CategoryCardSetting = {
       id: catFormId || ('cat-' + Date.now()),
       titleTh: catFormTitleTh.trim(),
-      titleEn: catFormTitleEn.trim(),
+      titleEn: catFormTranslations.en?.title || catFormTitleEn.trim(),
       image: catFormImage.trim() || '/images/cat-round-cans.jpg',
       path: catFormPath.trim() || `/products?category=${catFormId}`,
       isPinned: catFormPinned,
       enabled: catFormEnabled,
+      translations: catFormTranslations as any,
     };
 
     if (editingCatIdx !== null && currentList[editingCatIdx]) {
@@ -242,6 +274,12 @@ export const ProductsManager: React.FC = () => {
     setDimensions('D: 73mm x H: 110mm');
     setPrimaryImageURL('/images/cat-round-cans.jpg');
     setIsActive(true);
+    setProductTranslations({
+      en: { name: '', description: '', features: '', applications: '' },
+      jp: { name: '', description: '', features: '', applications: '' },
+      cn: { name: '', description: '', features: '', applications: '' },
+      mm: { name: '', description: '', features: '', applications: '' },
+    });
     setEditModalOpen(true);
   };
 
@@ -256,6 +294,14 @@ export const ProductsManager: React.FC = () => {
     setDimensions(p.specifications?.dimensions || 'D: 73mm x H: 110mm');
     setPrimaryImageURL(p.primaryImageURL || '/images/cat-round-cans.jpg');
     setIsActive(p.isActive !== false);
+    setProductTranslations(
+      p.translations || {
+        en: { name: p.nameEn || '', description: p.descriptionEn || '', features: '', applications: '' },
+        jp: { name: '', description: '', features: '', applications: '' },
+        cn: { name: '', description: '', features: '', applications: '' },
+        mm: { name: '', description: '', features: '', applications: '' },
+      }
+    );
     setEditModalOpen(true);
   };
 
@@ -287,11 +333,14 @@ export const ProductsManager: React.FC = () => {
               ...item,
               sku,
               name,
+              nameEn: productTranslations.en?.name || name,
+              descriptionEn: productTranslations.en?.description || description,
               categoryName,
               description,
               material,
               coatingType,
               isActive,
+              translations: productTranslations,
               specifications: {
                 ...item.specifications,
                 dimensions,
@@ -313,6 +362,8 @@ export const ProductsManager: React.FC = () => {
         sku,
         language: currentLang,
         name,
+        nameEn: productTranslations.en?.name || name,
+        descriptionEn: productTranslations.en?.description || description,
         slug: sku.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
         description,
         features: 'High precision seam welding, ISO 9001 certified',
@@ -320,6 +371,7 @@ export const ProductsManager: React.FC = () => {
         material,
         coatingType,
         isActive,
+        translations: productTranslations,
         specifications: {
           dimensions,
           thickness: '0.20mm',
@@ -820,6 +872,22 @@ export const ProductsManager: React.FC = () => {
             </div>
           </div>
 
+          {/* 5-Language Translation Tabs for Product */}
+          <div className="pt-2">
+            <MultiLangSectionEditor
+              compact
+              title="แปลภาษาสินค้า (Product Translations: EN, JP, CN, MM)"
+              fields={[
+                { key: 'name', label: 'ชื่อสินค้า (Product Name)' },
+                { key: 'description', label: 'รายละเอียดสินค้า (Description)', type: 'textarea', rows: 2 },
+                { key: 'features', label: 'คุณสมบัติเด่น (Features)' },
+                { key: 'applications', label: 'การนำไปใช้งาน (Applications)' },
+              ]}
+              value={productTranslations}
+              onChange={setProductTranslations}
+            />
+          </div>
+
           <div className="flex justify-end gap-2 pt-4 border-t border-theme-border">
             <button
               type="button"
@@ -945,6 +1013,19 @@ export const ProductsManager: React.FC = () => {
               />
               <span className="font-bold text-theme-text">🟢 เปิดแสดงผล (Active)</span>
             </label>
+          </div>
+
+          {/* 5-Language Translation Tabs for Category */}
+          <div className="pt-2">
+            <MultiLangSectionEditor
+              compact
+              title="แปลภาษาหมวดหมู่สินค้า (Category Translations: EN, JP, CN, MM)"
+              fields={[
+                { key: 'title', label: 'ชื่อหมวดหมู่สินค้า (Category Title)' },
+              ]}
+              value={catFormTranslations}
+              onChange={setCatFormTranslations}
+            />
           </div>
 
           <div className="flex justify-end gap-2 pt-4 border-t border-theme-border">
