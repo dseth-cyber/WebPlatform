@@ -4,40 +4,76 @@ import { useProducts, useCategories } from '../../hooks/useProducts';
 import { SearchableSelect, SelectOption } from '../../components/ui/SearchableSelect';
 import { Search, ArrowRight, Download, SlidersHorizontal, Package, Plus, Settings } from 'lucide-react';
 
-export const ProductsPage: React.FC<{ onNavigate: (path: string) => void }> = ({ onNavigate }) => {
+import { useSiteContent } from '../../hooks/useSiteContent';
+
+export const ProductsPage: React.FC<{ onNavigate: (path: string) => void; currentPath?: string }> = ({
+  onNavigate,
+  currentPath,
+}) => {
   const { t, i18n } = useTranslation();
   const currentLang = i18n.language || 'th';
+  const { settings } = useSiteContent();
 
-  const [selectedCategory, setSelectedCategory] = useState<string>(() => {
+  const getCategoryParam = () => {
     try {
-      const param = new URLSearchParams(window.location.search).get('category');
+      const search = currentPath?.includes('?') ? currentPath.split('?')[1] : window.location.search;
+      const param = new URLSearchParams(search).get('category');
       return param || 'all';
     } catch (e) {
       return 'all';
     }
-  });
+  };
+
+  const [selectedCategory, setSelectedCategory] = useState<string>(getCategoryParam);
 
   useEffect(() => {
-    try {
-      const param = new URLSearchParams(window.location.search).get('category');
-      if (param) {
-        setSelectedCategory(param);
-      }
-    } catch (e) {}
-  }, []);
+    const cat = getCategoryParam();
+    setSelectedCategory(cat);
+  }, [currentPath]);
+
+  const handleCategoryChange = (newCat: string) => {
+    setSelectedCategory(newCat);
+    const newUrl = newCat === 'all' ? '/products' : `/products?category=${encodeURIComponent(newCat)}`;
+    window.history.replaceState({}, '', newUrl);
+  };
 
   const [searchTerm, setSearchTerm] = useState<string>('');
 
   const { data: categories } = useCategories(currentLang);
   const { data: products, isLoading } = useProducts(selectedCategory, searchTerm, currentLang);
 
+  // Unified Category Options combining Homepage Categories and Catalog Categories
   const categoryOptions: SelectOption[] = [
     { value: 'all', label: `✨ ${t('common.all')} (${t('common.categories')})` },
-    ...(categories ?? []).map((cat) => ({
-      value: cat.id,
-      label: cat.name,
-    })),
   ];
+
+  // 1. Add Homepage Category Cards
+  const homeCats = (settings.categoryCards || []).filter((c) => c.enabled !== false);
+  for (const hc of homeCats) {
+    if (!categoryOptions.some((opt) => opt.value === hc.id)) {
+      categoryOptions.push({
+        value: hc.id,
+        label: `🏷️ ${currentLang === 'en' ? (hc.titleEn || hc.titleTh) : (hc.titleTh || hc.titleEn)}`,
+      });
+    }
+  }
+
+  // 2. Add Industry Catalog Categories
+  const catalogCats = categories ?? [
+    { id: 'food-beverage-cans', name: 'กระป๋องบรรจุอาหารและเครื่องดื่ม (Food & Beverage Cans)' },
+    { id: 'chemical-paint-pails', name: 'ถังโลหะบรรจุเคมีภัณฑ์และสี (Chemical & Paint Pails)' },
+    { id: 'aerosol-spray-cans', name: 'กระป๋องสเปรย์และแอโรซอล (Aerosol & Spray Cans)' },
+    { id: 'metal-closures-lids', name: 'ฝาโลหะและฝาดึงง่าย (Metal Closures & EOE)' },
+  ];
+  for (const cc of catalogCats) {
+    const catVal = (cc as any).slug || cc.id;
+    if (!categoryOptions.some((opt) => opt.value === catVal || opt.value === cc.id)) {
+      categoryOptions.push({
+        value: catVal,
+        label: `📦 ${cc.name}`,
+      });
+    }
+  }
 
   return (
     <div className="mx-auto max-w-7xl px-4 pt-6 pb-16 sm:px-6 lg:px-8 space-y-10 font-sans">
@@ -66,7 +102,7 @@ export const ProductsPage: React.FC<{ onNavigate: (path: string) => void }> = ({
           <SearchableSelect
             options={categoryOptions}
             value={selectedCategory}
-            onChange={setSelectedCategory}
+            onChange={handleCategoryChange}
             placeholder={t('products.filterCategory')}
           />
         </div>

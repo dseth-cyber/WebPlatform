@@ -31,6 +31,110 @@ const normalizeProduct = (p: any): LocalizedProduct => {
   };
 };
 
+export const matchesCategory = (p: any, categoryId?: string): boolean => {
+  if (!categoryId || categoryId === 'all') return true;
+
+  const target = categoryId.toLowerCase().trim();
+  const pCatId = (p.categoryId || '').toLowerCase();
+  const pCatName = (p.categoryName || '').toLowerCase();
+  const pCatSlug = (p.categorySlug || '').toLowerCase();
+  const pName = (p.name || '').toLowerCase();
+  const pSku = (p.sku || '').toLowerCase();
+  const pDesc = (p.description || '').toLowerCase();
+
+  // 1. Direct match
+  if (pCatId === target || pCatSlug === target || pCatName === target) return true;
+
+  // 2. Homepage Category: round-cans (กระป๋องกลม)
+  if (target === 'round-cans') {
+    return (
+      pCatId === 'round-cans' ||
+      pCatSlug.includes('food') ||
+      pCatName.includes('อาหาร') ||
+      pCatName.includes('กลม') ||
+      pName.includes('กระป๋องอาหาร') ||
+      pName.includes('กระป๋องกลม') ||
+      pSku.includes('CAN') ||
+      pCatSlug.includes('aerosol')
+    );
+  }
+
+  // 3. Homepage Category: rect-cans (กระป๋องเหลี่ยม / ถังเหล็ก)
+  if (target === 'rect-cans') {
+    return (
+      pCatId === 'rect-cans' ||
+      pCatSlug.includes('chemical') ||
+      pCatSlug.includes('paint') ||
+      pCatName.includes('เคมี') ||
+      pCatName.includes('ถัง') ||
+      pCatName.includes('เหลี่ยม') ||
+      pName.includes('ถัง') ||
+      pName.includes('เหลี่ยม') ||
+      pSku.includes('PAIL')
+    );
+  }
+
+  // 4. Homepage Category: can-lids (ฝาปิดกระป๋อง)
+  if (target === 'can-lids') {
+    return (
+      pCatId === 'can-lids' ||
+      pCatSlug.includes('closures') ||
+      pCatSlug.includes('lids') ||
+      pCatName.includes('ฝา') ||
+      pCatName.includes('eoe') ||
+      pName.includes('ฝา') ||
+      pSku.includes('EOE') ||
+      pSku.includes('LID')
+    );
+  }
+
+  // 5. Homepage Category: can-ends (ก้นกระป๋อง)
+  if (target === 'can-ends') {
+    return (
+      pCatId === 'can-ends' ||
+      pCatSlug.includes('closures') ||
+      pCatSlug.includes('ends') ||
+      pCatSlug.includes('lids') ||
+      pCatName.includes('ก้น') ||
+      pCatName.includes('ฝา') ||
+      pName.includes('ก้น') ||
+      pSku.includes('END') ||
+      pSku.includes('EOE')
+    );
+  }
+
+  // 6. Homepage Category: printed-cans (กระป๋องพิมพ์ลาย)
+  if (target === 'printed-cans') {
+    return (
+      pCatId === 'printed-cans' ||
+      pName.includes('พิมพ์') ||
+      pDesc.includes('พิมพ์') ||
+      pCatName.includes('พิมพ์') ||
+      pSku.includes('PRINT')
+    );
+  }
+
+  // 7. Standard Catalog categories
+  if (target === 'food-beverage-cans' || target === 'cat-1') {
+    return pCatSlug.includes('food') || pCatName.includes('อาหาร') || pName.includes('กระป๋องอาหาร');
+  }
+
+  if (target === 'chemical-paint-pails' || target === 'cat-2') {
+    return pCatSlug.includes('chemical') || pCatSlug.includes('paint') || pCatName.includes('เคมี') || pName.includes('ถัง');
+  }
+
+  if (target === 'aerosol-spray-cans' || target === 'cat-3') {
+    return pCatSlug.includes('aerosol') || pCatSlug.includes('spray') || pCatName.includes('สเปรย์') || pName.includes('สเปรย์');
+  }
+
+  if (target === 'metal-closures-lids' || target === 'cat-4') {
+    return pCatSlug.includes('closures') || pCatSlug.includes('lids') || pCatName.includes('ฝา') || pName.includes('ฝา');
+  }
+
+  // 8. General fallback
+  return pCatName.includes(target) || pCatSlug.includes(target) || pName.includes(target);
+};
+
 export const useProducts = (categoryId?: string, search?: string, lang: string = 'th') => {
   return useQuery<LocalizedProduct[]>({
     queryKey: ['products', categoryId, search, lang],
@@ -42,17 +146,24 @@ export const useProducts = (categoryId?: string, search?: string, lang: string =
           const json = await settingsRes.json();
           if (json && json.data && Array.isArray(json.data.catalog_products) && json.data.catalog_products.length > 0) {
             let list = json.data.catalog_products.map(normalizeProduct);
-            if (categoryId && categoryId !== 'all') {
-              list = list.filter((p: any) => p.categoryId === categoryId || p.categoryName === categoryId);
+            // Combine with mock products if list doesn't have enough items
+            const mockMapped = MOCK_PRODUCTS.map(normalizeProduct);
+            const combinedList = [...list];
+            for (const mp of mockMapped) {
+              if (!combinedList.some((p) => p.sku === mp.sku)) {
+                combinedList.push(mp);
+              }
             }
+
+            let filtered = combinedList.filter((p: any) => matchesCategory(p, categoryId));
             if (search) {
-              list = list.filter(
+              filtered = filtered.filter(
                 (p: any) =>
                   p.name.toLowerCase().includes(search.toLowerCase()) ||
                   p.sku.toLowerCase().includes(search.toLowerCase())
               );
             }
-            return list;
+            return filtered;
           }
         }
 
@@ -62,14 +173,12 @@ export const useProducts = (categoryId?: string, search?: string, lang: string =
         );
         const rawList = res.data ?? [];
         if (rawList.length > 0) {
-          return rawList.map(normalizeProduct);
+          let list = rawList.map(normalizeProduct);
+          return list.filter((p: any) => matchesCategory(p, categoryId));
         }
-        return MOCK_PRODUCTS;
+        return MOCK_PRODUCTS.filter((p: any) => matchesCategory(p, categoryId));
       } catch (e) {
-        let prods = [...MOCK_PRODUCTS];
-        if (categoryId && categoryId !== 'all') {
-          prods = prods.filter((p) => p.categoryId === categoryId);
-        }
+        let prods = [...MOCK_PRODUCTS].filter((p: any) => matchesCategory(p, categoryId));
         if (search) {
           prods = prods.filter(
             (p) =>

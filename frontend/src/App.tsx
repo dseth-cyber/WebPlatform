@@ -142,7 +142,7 @@ export const App: React.FC = () => {
     }
 
     if (basePath.startsWith('/products')) {
-      return <ProductsPage onNavigate={navigate} />;
+      return <ProductsPage onNavigate={navigate} currentPath={currentPath} />;
     }
 
     if (basePath === '/about' || basePath === '/company') {
