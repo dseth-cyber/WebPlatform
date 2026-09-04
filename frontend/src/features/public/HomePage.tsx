@@ -278,9 +278,30 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
           />
         ))}
 
-        {/* Global Dark Overlays for Optimal Legibility */}
-        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/45 to-transparent z-10 pointer-events-none" />
-        <div className="absolute inset-0 bg-black/20 z-10 pointer-events-none" />
+        {/* Configurable Dark Overlay behind Hero Text for Optimal Clarity & Legibility */}
+        {(() => {
+          const opacityVal = settings.heroTextOverlayOpacity !== undefined ? settings.heroTextOverlayOpacity : 30;
+          if (opacityVal === 0) return null;
+          const decimal = opacityVal / 100;
+          return (
+            <>
+              {/* Left-to-right gradient overlay behind text */}
+              <div
+                className="absolute inset-0 z-10 pointer-events-none transition-opacity duration-500"
+                style={{
+                  background: `linear-gradient(to right, rgba(0,0,0,${Math.min(0.95, decimal * 1.5).toFixed(2)}) 0%, rgba(0,0,0,${(decimal * 0.8).toFixed(2)}) 45%, rgba(0,0,0,${(decimal * 0.2).toFixed(2)}) 75%, transparent 100%)`,
+                }}
+              />
+              {/* Radial soft vignette behind headline text */}
+              <div
+                className="absolute inset-y-0 left-0 w-full max-w-3xl z-10 pointer-events-none transition-opacity duration-500"
+                style={{
+                  background: `radial-gradient(ellipse at 25% 45%, rgba(0,0,0,${decimal.toFixed(2)}) 0%, transparent 75%)`,
+                }}
+              />
+            </>
+          );
+        })()}
 
         <div className="relative z-20 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 w-full">
           <div className="max-w-xl xl:max-w-2xl space-y-6">

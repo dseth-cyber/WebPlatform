@@ -129,6 +129,7 @@ export interface SiteContentSettings {
   heroSlideInterval?: number; // ระยะเวลาสไลด์อัตโนมัติ (วินาที)
   heroShowArrows?: boolean; // แสดงปุ่มเลื่อนซ้าย/ขวา เมื่อชี้เมาส์
   heroShowDots?: boolean; // แสดงจุดบอกตำแหน่งสไลด์
+  heroTextOverlayOpacity?: number; // ระดับความฟุ้ง/เงาดำหลังตัวหนังสือ (0, 10, 20, 30, 40, 50, 60, 70%)
 
   // 4 Feature Badges
   featureBadges: FeatureBadgeSetting[];
@@ -226,6 +227,7 @@ export const DEFAULT_SITE_SETTINGS: SiteContentSettings = {
   heroSlideInterval: 5,
   heroShowArrows: true,
   heroShowDots: true,
+  heroTextOverlayOpacity: 30,
 
   featureBadges: [
     {

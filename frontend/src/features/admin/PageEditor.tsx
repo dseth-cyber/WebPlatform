@@ -88,6 +88,9 @@ export const PageEditor: React.FC<{
   const [heroSlideInterval, setHeroSlideInterval] = useState(settings.heroSlideInterval || 5);
   const [heroShowArrows, setHeroShowArrows] = useState(settings.heroShowArrows !== false);
   const [heroShowDots, setHeroShowDots] = useState(settings.heroShowDots !== false);
+  const [heroTextOverlayOpacity, setHeroTextOverlayOpacity] = useState<number>(
+    settings.heroTextOverlayOpacity !== undefined ? settings.heroTextOverlayOpacity : 30
+  );
   const [newImageUrlInput, setNewImageUrlInput] = useState('');
 
   // Sync with global settings when loaded from DB
@@ -111,6 +114,7 @@ export const PageEditor: React.FC<{
       if (settings.heroSlideInterval !== undefined) setHeroSlideInterval(settings.heroSlideInterval || 5);
       if (settings.heroShowArrows !== undefined) setHeroShowArrows(settings.heroShowArrows !== false);
       if (settings.heroShowDots !== undefined) setHeroShowDots(settings.heroShowDots !== false);
+      if (settings.heroTextOverlayOpacity !== undefined) setHeroTextOverlayOpacity(settings.heroTextOverlayOpacity);
     }
   }, [settings]);
 
@@ -298,6 +302,7 @@ export const PageEditor: React.FC<{
       heroSlideInterval: heroSlideInterval,
       heroShowArrows: heroShowArrows,
       heroShowDots: heroShowDots,
+      heroTextOverlayOpacity: heroTextOverlayOpacity,
     });
     setWorkflowStatus('PUBLISHED');
     const newRev: RevisionRecord = {
@@ -858,6 +863,46 @@ export const PageEditor: React.FC<{
                   />
                 </button>
               </div>
+
+              {/* 🌑 ความฟุ้ง/เงาดำหลังตัวหนังสือ (Text Background Overlay Opacity) */}
+              <div className="space-y-2 pt-2.5 border-t border-theme-border/40">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <div className="font-bold text-theme-text text-[11px] flex items-center gap-1.5">
+                      <span>ความฟุ้งเงาดำหลังตัวหนังสือ</span>
+                      <span className="rounded-md bg-theme-primary/20 text-theme-primary px-1.5 py-0.5 text-[10px] font-black">
+                        {heroTextOverlayOpacity}%
+                      </span>
+                    </div>
+                    <div className="text-[10px] text-theme-text-muted">
+                      {heroTextOverlayOpacity === 0
+                        ? 'ปิดเงาดำ (ภาพพื้นหลังชัดเจน 100%)'
+                        : `ลด/เพิ่มเงาดำเพื่อความคมชัดของข้อความ (${heroTextOverlayOpacity}%)`}
+                    </div>
+                  </div>
+                </div>
+
+                {/* 0%, 10%, 20%, 30%, 40%, 50%, 60%, 70% Buttons */}
+                <div className="grid grid-cols-4 gap-1.5">
+                  {[0, 10, 20, 30, 40, 50, 60, 70].map((pct) => (
+                    <button
+                      key={pct}
+                      type="button"
+                      onClick={() => {
+                        setHeroTextOverlayOpacity(pct);
+                        setWorkflowStatus('DRAFT');
+                      }}
+                      className={`rounded-xl py-1.5 text-xs font-bold transition-all border ${
+                        heroTextOverlayOpacity === pct
+                          ? 'bg-theme-primary text-black border-theme-primary font-black shadow-sm'
+                          : 'border-theme-border bg-theme-surface text-theme-text hover:border-theme-primary/50'
+                      }`}
+                    >
+                      {pct}%
+                    </button>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -1030,13 +1075,27 @@ export const PageEditor: React.FC<{
                   : 'w-[360px]'
               }`}
             >
-              {/* Background image */}
+              {/* Background image & configurable overlay */}
               <div
                 className="absolute inset-0 bg-cover bg-center transition-all duration-700"
                 style={{ backgroundImage: `url(${heroImagesList[activeSlideIndex] || heroImagesList[0] || '/images/hero-fullwidth.jpg'})` }}
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/25 to-transparent z-10" />
-                <div className="absolute inset-0 bg-black/15 z-10" />
+                {heroTextOverlayOpacity > 0 && (
+                  <>
+                    <div
+                      className="absolute inset-0 z-10 pointer-events-none transition-opacity duration-300"
+                      style={{
+                        background: `linear-gradient(to right, rgba(0,0,0,${Math.min(0.95, (heroTextOverlayOpacity / 100) * 1.5).toFixed(2)}) 0%, rgba(0,0,0,${((heroTextOverlayOpacity / 100) * 0.8).toFixed(2)}) 45%, rgba(0,0,0,${((heroTextOverlayOpacity / 100) * 0.2).toFixed(2)}) 75%, transparent 100%)`,
+                      }}
+                    />
+                    <div
+                      className="absolute inset-y-0 left-0 w-full max-w-2xl z-10 pointer-events-none transition-opacity duration-300"
+                      style={{
+                        background: `radial-gradient(ellipse at 25% 45%, rgba(0,0,0,${(heroTextOverlayOpacity / 100).toFixed(2)}) 0%, transparent 75%)`,
+                      }}
+                    />
+                  </>
+                )}
               </div>
 
               {/* Foreground content */}
