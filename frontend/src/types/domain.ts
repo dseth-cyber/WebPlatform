@@ -84,6 +84,10 @@ export interface ProductCategory {
   sortOrder: number;
   name: string;
   description?: string;
+  translations?: Record<string, {
+    title?: string;
+    description?: string;
+  }>;
 }
 
 export interface LocalizedProduct {
@@ -109,6 +113,12 @@ export interface LocalizedProduct {
   metaDescription?: string;
   isPinned?: boolean;
   isActive?: boolean;
+  translations?: Record<string, {
+    name?: string;
+    description?: string;
+    features?: string;
+    applications?: string;
+  }>;
 }
 
 export interface LocalizedNewsArticle {
@@ -124,6 +134,11 @@ export interface LocalizedNewsArticle {
   metaTitle?: string;
   metaDescription?: string;
   isPinned?: boolean; // 📌 ปักหมุดข่าวเด่นหน้าแรก
+  translations?: Record<string, {
+    title?: string;
+    summary?: string;
+    contentBody?: string;
+  }>;
 }
 
 export interface MediaFile {

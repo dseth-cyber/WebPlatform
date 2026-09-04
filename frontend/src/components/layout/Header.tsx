@@ -83,6 +83,27 @@ export const Header: React.FC<HeaderProps> = ({ currentPath, onNavigate }) => {
   const currentLang = i18n.language || 'th';
   const isEn = currentLang === 'en';
 
+  // Localized company name & subtitle for Logo branding
+  const localizedCompanyName = (() => {
+    if (currentLang === 'th') return settings.companyNameTh || 'บริษัท ไคโอทรอน เทคโนโลยี จำกัด';
+    if (currentLang === 'en') return settings.companyNameEn || 'CHIOTRON TECHNOLOGY CO., LTD.';
+    const translatedName = (settings.brandLegalTranslations as any)?.[currentLang]?.companyName;
+    if (translatedName) return translatedName;
+    if (currentLang === 'jp') return 'カイオトロン・テクノロジー株式会社';
+    if (currentLang === 'cn') return '凯奥创科技有限公司';
+    if (currentLang === 'mm') return 'CHIOTRON TECHNOLOGY ကုမ္ပဏီလီမိတက်';
+    return settings.companyNameEn || 'CHIOTRON TECHNOLOGY CO., LTD.';
+  })();
+
+  const localizedCompanySub = (() => {
+    if (currentLang === 'th') return settings.companyNameEn || 'CHIOTRON TECHNOLOGY CO., LTD.';
+    if (currentLang === 'en') return 'METAL PACKAGING EXCELLENCE';
+    if (currentLang === 'jp') return 'CHIOTRON TECHNOLOGY CO., LTD.';
+    if (currentLang === 'cn') return 'CHIOTRON TECHNOLOGY CO., LTD.';
+    if (currentLang === 'mm') return 'CHIOTRON TECHNOLOGY CO., LTD.';
+    return settings.companyNameEn || 'CHIOTRON TECHNOLOGY CO., LTD.';
+  })();
+
   const navLinks = (settings.navTabs && settings.navTabs.length > 0
     ? settings.navTabs
     : [
@@ -105,6 +126,8 @@ export const Header: React.FC<HeaderProps> = ({ currentPath, onNavigate }) => {
         const translated = t(i18nKey);
         if (translated && translated !== i18nKey) {
           localizedLabel = translated;
+        } else if (tab.key === 'careers') {
+          localizedLabel = currentLang === 'jp' ? '採用情報' : currentLang === 'cn' ? '招贤纳士' : currentLang === 'mm' ? 'အလုပ်အကိုင် အခွင့်အလမ်းများ' : 'Careers';
         } else if (tab.labelEn) {
           localizedLabel = tab.labelEn;
         }
@@ -150,7 +173,7 @@ export const Header: React.FC<HeaderProps> = ({ currentPath, onNavigate }) => {
             {settings.logoImage ? (
               <img
                 src={settings.logoImage}
-                alt={settings.companyNameTh}
+                alt={localizedCompanyName}
                 className="h-11 w-auto max-w-[140px] object-contain rounded-lg drop-shadow-md group-hover:scale-105 transition-transform"
               />
             ) : (
@@ -168,14 +191,14 @@ export const Header: React.FC<HeaderProps> = ({ currentPath, onNavigate }) => {
                   isTransparentOverDark ? 'text-white drop-shadow-sm' : 'text-theme-text'
                 }`}
               >
-                {settings.companyNameTh || 'บริษัท ไคโอทรอน เทคโนโลยี จำกัด'}
+                {localizedCompanyName}
               </span>
               <span
                 className={`text-[10px] sm:text-[11px] font-bold tracking-wider uppercase ${
                   isTransparentOverDark ? 'text-slate-300 drop-shadow-sm' : 'text-theme-text-muted'
                 }`}
               >
-                {settings.companyNameEn || 'CHIOTRON TECHNOLOGY CO., LTD.'}
+                {localizedCompanySub}
               </span>
             </div>
           </div>

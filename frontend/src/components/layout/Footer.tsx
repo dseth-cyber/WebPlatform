@@ -17,6 +17,27 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
   const footerBio = contactTrans?.bio || settings.footerBio || 'ผู้นำนวัตกรรมผลิตกระป๋องอาหารสำเร็จรูป ถังเคมีภัณฑ์ และฝาเปิดง่าย EOE มาตรฐานส่งออกสากล ด้วยเครื่องจักรอัตโนมัติความเร็วสูง';
   const businessHoursText = contactTrans?.businessHours || settings.businessHours || 'จันทร์ - ศุกร์ 08:30 - 17:30 น.';
 
+  // Localized company name & subtitle for Footer branding
+  const localizedCompanyName = (() => {
+    if (currentLang === 'th') return settings.companyNameTh || 'บริษัท ไคโอทรอน เทคโนโลยี จำกัด';
+    if (currentLang === 'en') return settings.companyNameEn || 'CHIOTRON TECHNOLOGY CO., LTD.';
+    const translatedName = (settings.brandLegalTranslations as any)?.[currentLang]?.companyName;
+    if (translatedName) return translatedName;
+    if (currentLang === 'jp') return 'カイオトロン・テクノロジー株式会社';
+    if (currentLang === 'cn') return '凯奥创科技有限公司';
+    if (currentLang === 'mm') return 'CHIOTRON TECHNOLOGY ကုမ္ပဏီလီမိတက်';
+    return settings.companyNameEn || 'CHIOTRON TECHNOLOGY CO., LTD.';
+  })();
+
+  const localizedCompanySub = (() => {
+    if (currentLang === 'th') return settings.companyNameEn || 'CHIOTRON TECHNOLOGY CO., LTD.';
+    if (currentLang === 'en') return 'METAL PACKAGING EXCELLENCE';
+    if (currentLang === 'jp') return 'CHIOTRON TECHNOLOGY CO., LTD.';
+    if (currentLang === 'cn') return 'CHIOTRON TECHNOLOGY CO., LTD.';
+    if (currentLang === 'mm') return 'CHIOTRON TECHNOLOGY CO., LTD.';
+    return settings.companyNameEn || 'CHIOTRON TECHNOLOGY CO., LTD.';
+  })();
+
   const labels = {
     products: currentLang === 'th' ? 'ผลิตภัณฑ์บรรจุภัณฑ์' : currentLang === 'jp' ? '包装製品' : currentLang === 'cn' ? '包装产品' : currentLang === 'mm' ? 'ထုပ်ပိုးမှုထုတ်ကုန်များ' : 'Packaging Products',
     about: currentLang === 'th' ? 'เกี่ยวกับเรา' : currentLang === 'jp' ? '企業情報' : currentLang === 'cn' ? '关于我们' : currentLang === 'mm' ? 'ကျွန်ုပ်တို့အကြောင်း' : 'About Us',
@@ -61,7 +82,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
               {settings.logoImage ? (
                 <img
                   src={settings.logoImage}
-                  alt={settings.companyNameTh}
+                  alt={localizedCompanyName}
                   className="h-10 w-auto max-w-[120px] object-contain rounded-lg drop-shadow-md group-hover:scale-105 transition-transform"
                 />
               ) : (
@@ -75,10 +96,10 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
 
               <div>
                 <h4 className="font-display font-black text-sm text-theme-text group-hover:text-theme-primary transition-colors">
-                  {settings.companyNameEn || 'CHIOTRON TECHNOLOGY CO., LTD.'}
+                  {localizedCompanyName}
                 </h4>
                 <p className="text-[10px] text-theme-text-dim">
-                  {settings.companyNameTh || 'บริษัท ไคโอทรอน เทคโนโลยี จำกัด'}
+                  {localizedCompanySub}
                 </p>
               </div>
             </div>
@@ -103,7 +124,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                       className="hover:text-theme-primary transition-colors flex items-center gap-1 text-left"
                     >
                       <span>
-                        {isNonThai ? (cat.titleEn || cat.titleTh) : (cat.titleTh || cat.titleEn)}
+                        {(cat as any).translations?.[currentLang]?.title || (isNonThai ? (cat.titleEn || cat.titleTh) : (cat.titleTh || cat.titleEn))}
                       </span>
                       <ArrowUpRight className="h-3 w-3 opacity-40" />
                     </button>

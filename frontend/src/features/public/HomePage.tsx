@@ -706,10 +706,10 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="space-y-1">
             <span className="text-xs font-bold uppercase tracking-wider text-theme-primary">
-              Packaging Catalog
+              {t('common.productsSectionBadge')}
             </span>
             <h2 className="font-display text-2xl sm:text-4xl font-black text-theme-text">
-              ผลิตภัณฑ์ของเรา (Products)
+              {t('common.productsSectionTitle')}
             </h2>
             <div className="h-1 w-12 bg-theme-primary rounded-full" />
           </div>
@@ -1205,10 +1205,10 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="space-y-1">
             <span className="text-xs font-bold uppercase tracking-wider text-theme-primary">
-              News & Announcements
+              {t('common.newsSectionBadge')}
             </span>
             <h2 className="font-display text-2xl sm:text-4xl font-black text-theme-text">
-              {currentLang === 'th' ? 'ข่าวสารและกิจกรรมล่าสุด (News & Press)' : 'News & Announcements'}
+              {t('common.newsSectionTitle')}
             </h2>
             <div className="h-1 w-12 bg-theme-primary rounded-full" />
           </div>
@@ -1261,7 +1261,7 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
                   <div className="relative h-48 w-full overflow-hidden bg-slate-900">
                     <img
                       src={itemImage}
-                      alt={item.title}
+                      alt={itemTitle}
                       className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-700"
                       onError={(e) => {
                         (e.target as HTMLImageElement).src = '/images/factory-building.jpg';
@@ -1281,7 +1281,7 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
                         </div>
                       )}
                       <h3 className="font-display font-bold text-base text-theme-text group-hover:text-theme-primary transition-colors line-clamp-2">
-                        {item.title}
+                        {itemTitle}
                       </h3>
                       <p className="text-xs text-theme-text-muted leading-relaxed line-clamp-2">
                         {itemSummary}
@@ -1289,7 +1289,7 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
                     </div>
 
                     <div className="pt-3 border-t border-theme-border flex items-center gap-1 text-xs font-bold text-theme-primary group-hover:underline">
-                      <span>อ่านต่อ</span>
+                      <span>{t('common.readMore')}</span>
                       <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-1 transition-transform" />
                     </div>
                   </div>
@@ -1309,10 +1309,10 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
     <section id="contact" className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-8 scroll-mt-28">
       <div className="space-y-1">
         <span className="text-xs font-bold uppercase tracking-wider text-theme-primary">
-          Get in Touch
+          {t('common.contactSectionBadge')}
         </span>
         <h2 className="font-display text-2xl sm:text-4xl font-black text-theme-text">
-          ติดต่อเรา (Contact Us)
+          {t('common.contactSectionTitle')}
         </h2>
         <div className="h-1 w-12 bg-theme-primary rounded-full" />
       </div>
@@ -1324,12 +1324,12 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
             <div className="flex items-center justify-between border-b border-theme-border pb-3">
               <h3 className="font-display font-bold text-base sm:text-lg text-theme-text flex items-center gap-2">
                 <Building2 className="h-5 w-5 text-theme-primary" />
-                <span>สถานที่ตั้งและสาขา ({branches.length})</span>
+                <span>{t('common.locationsAndBranches')} ({branches.length})</span>
               </h3>
               {currentBranch.isPrimary && (
                 <span className="flex items-center gap-1 rounded-full bg-amber-500/15 border border-amber-500/30 px-2 py-0.5 text-[9px] font-bold text-amber-500">
                   <Star className="h-2.5 w-2.5 fill-amber-400" />
-                  สาขาหลัก
+                  {t('common.mainBranch')}
                 </span>
               )}
             </div>
@@ -1429,7 +1429,7 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
                 rel="noreferrer"
                 className="font-bold text-theme-primary hover:underline flex items-center gap-1"
               >
-                <span>เปิดแผนที่นำทาง Google Maps</span>
+                <span>{t('common.openGoogleMaps')}</span>
                 <ExternalLink className="h-3 w-3" />
               </a>
 
@@ -1438,7 +1438,7 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
                 onClick={() => onNavigate('/contact')}
                 className="font-bold text-theme-text-muted hover:text-theme-primary transition-colors flex items-center gap-1"
               >
-                <span>ดูข้อมูลติดต่อทั้งหมด</span>
+                <span>{t('common.viewAllContact')}</span>
                 <ChevronRight className="h-3 w-3" />
               </button>
             </div>
@@ -1450,10 +1450,10 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
           <div className="space-y-1">
             <h3 className="font-display font-bold text-base sm:text-lg text-theme-text flex items-center gap-2">
               <Send className="h-4 w-4 text-theme-primary" />
-              <span>ส่งข้อความสอบถามหรือขอใบเสนอราคา (Quick Inquiry)</span>
+              <span>{t('common.quickInquiry')}</span>
             </h3>
             <p className="text-xs text-theme-text-muted">
-              วิศวกรฝ่ายขายจะติดต่อกลับเพื่อให้คำปรึกษาและใบเสนอราคาภายใน 24 ชม.
+              {t('common.quickInquiryDesc')}
             </p>
           </div>
 
@@ -1461,10 +1461,10 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
             <div className="rounded-2xl border border-emerald-500/40 bg-emerald-500/10 p-6 text-center space-y-2">
               <CheckCircle className="h-10 w-10 text-emerald-400 mx-auto" />
               <h4 className="font-display font-bold text-sm text-theme-text">
-                ส่งข้อมูลติดต่อสำเร็จเรียบร้อย!
+                {t('common.inquirySuccess')}
               </h4>
               <p className="text-xs text-theme-text-muted">
-                เจ้าหน้าที่ฝ่ายวิศวกรรมการผลิตจะติดต่อกลับไปยังท่านโดยเร็วที่สุด ขอบพระคุณครับ
+                {t('common.inquirySuccessDesc')}
               </p>
             </div>
           ) : (
@@ -1472,28 +1472,28 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-xs font-semibold text-theme-text mb-1">
-                    ชื่อ-นามสกุล / บริษัทผู้ติดต่อ *
+                    {t('common.fullNameOrCompany')}
                   </label>
                   <input
                     type="text"
                     required
                     value={contactName}
                     onChange={(e) => setContactName(e.target.value)}
-                    placeholder="คุณสมชาย (บจก. ตัวอย่างอาหาร)"
+                    placeholder={t('common.fullNameOrCompanyPlaceholder')}
                     className="w-full rounded-xl border border-theme-border bg-theme-surface-elevated px-3.5 py-2.5 text-xs text-theme-text focus:border-theme-primary focus:outline-none"
                   />
                 </div>
 
                 <div>
                   <label className="block text-xs font-semibold text-theme-text mb-1">
-                    อีเมลหรือเบอร์โทรศัพท์สำหรับติดต่อกลับ *
+                    {t('common.emailOrPhone')}
                   </label>
                   <input
                     type="text"
                     required
                     value={contactEmail}
                     onChange={(e) => setContactEmail(e.target.value)}
-                    placeholder="somchai@example.com หรือ 081-234-5678"
+                    placeholder={t('common.emailOrPhonePlaceholder')}
                     className="w-full rounded-xl border border-theme-border bg-theme-surface-elevated px-3.5 py-2.5 text-xs text-theme-text focus:border-theme-primary focus:outline-none"
                   />
                 </div>
@@ -1501,14 +1501,14 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
 
               <div>
                 <label className="block text-xs font-semibold text-theme-text mb-1">
-                  ข้อความ / รายละเอียดสินค้าที่ต้องการสอบถาม *
+                  {t('common.inquiryMessage')}
                 </label>
                 <textarea
                   rows={4}
                   required
                   value={contactMessage}
                   onChange={(e) => setContactMessage(e.target.value)}
-                  placeholder="ระบุขนาดกระป๋อง ความต้องการเคลือบสารภายใน หรือจำนวนที่ต้องการสอบถาม..."
+                  placeholder={t('common.inquiryMessagePlaceholder')}
                   className="w-full rounded-xl border border-theme-border bg-theme-surface-elevated px-3.5 py-2.5 text-xs text-theme-text focus:border-theme-primary focus:outline-none leading-relaxed"
                 />
               </div>
@@ -1518,7 +1518,7 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
                 className="inline-flex items-center justify-center gap-2 rounded-xl bg-theme-primary px-7 py-3 text-xs font-bold text-black shadow-lg shadow-theme-primary/20 hover:opacity-90 transition-all cursor-pointer w-full sm:w-auto"
               >
                 <Send className="h-4 w-4" />
-                <span>ส่งข้อความถึงฝ่ายขาย</span>
+                <span>{t('common.sendToSales')}</span>
               </button>
             </form>
           )}
@@ -1530,92 +1530,109 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
   // -------------------------------------------------------------
   // SECTION 9: CAREERS (#careers)
   // -------------------------------------------------------------
-  const renderCareers = () => (
-    <section id="careers" className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-8 scroll-mt-28">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div className="space-y-1">
-          <span className="text-xs font-bold uppercase tracking-wider text-theme-primary">
-            {settings.careersBadge || 'Careers & Opportunities'}
-          </span>
-          <h2 className="font-display text-2xl sm:text-4xl font-black text-theme-text">
-            {settings.careersHeading || 'ร่วมเป็นส่วนหนึ่งของการขับเคลื่อนอุตสาหกรรมบรรจุภัณฑ์สู่อนาคต'}
-          </h2>
-          <div className="h-1 w-12 bg-theme-primary rounded-full" />
-        </div>
+  const renderCareers = () => {
+    const careersTrans = currentLang !== 'th' && settings.careersTranslations ? (settings.careersTranslations as any)[currentLang] : null;
+    const careersBadge = careersTrans?.badge || settings.careersBadge || 'Careers & Opportunities';
+    const careersHeading = careersTrans?.heading || settings.careersHeading || 'ร่วมเป็นส่วนหนึ่งของการขับเคลื่อนอุตสาหกรรมบรรจุภัณฑ์สู่อนาคต';
+    const careersSubtitle = careersTrans?.subtitle || settings.careersSubtitle || 'สร้างสรรค์นวัตกรรม เติบโตไปพร้อมกับทีมงานมืออาชีพในสภาพแวดล้อมที่ทันสมัย ปลอดภัย และมั่นคง';
 
-        <button
-          type="button"
-          onClick={() => onNavigate('/careers')}
-          className="inline-flex items-center gap-2 rounded-xl border border-theme-primary/40 bg-theme-primary/10 px-5 py-2.5 text-xs font-bold text-theme-primary hover:bg-theme-primary hover:text-black transition-all self-start sm:self-auto"
-        >
-          <span>ดูตำแหน่งงานว่างทั้งหมด</span>
-          <ChevronRight className="h-4 w-4" />
-        </button>
-      </div>
-
-      <p className="text-xs sm:text-sm text-theme-text-muted leading-relaxed max-w-3xl">
-        {settings.careersSubtitle}
-      </p>
-
-      {/* Benefits Grid Preview */}
-      {settings.careersBenefits && settings.careersBenefits.length > 0 && (
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-          {settings.careersBenefits.slice(0, 6).map((benefit, bIdx) => (
-            <div
-              key={bIdx}
-              className="glow-card flex items-center gap-2.5 p-3.5 rounded-xl border border-theme-border bg-theme-surface text-xs text-theme-text"
-            >
-              <CheckCircle className="h-4 w-4 text-theme-primary flex-shrink-0" />
-              <span className="text-[11px] leading-snug">{benefit}</span>
-            </div>
-          ))}
-        </div>
-      )}
-
-      {/* Open Job Positions preview */}
-      {(() => {
-        const activeJobs = (settings.careersJobs || []).filter((j) => j.active !== false);
-        const pinnedJobs = activeJobs.filter((j) => Boolean(j.isPinned));
-        const jobsToShow = pinnedJobs.length > 0 ? pinnedJobs : activeJobs.slice(0, 3);
-
-        return (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {jobsToShow.map((job) => (
-              <div
-                key={job.id}
-                className="glow-card flex flex-col justify-between rounded-2xl border border-theme-border bg-theme-surface p-6 space-y-4 transition-all"
-              >
-                <div className="space-y-2.5">
-                  <div className="flex items-center gap-2 text-[10px] font-mono text-theme-primary font-bold">
-                    <Briefcase className="h-3.5 w-3.5" />
-                    <span>{job.department}</span>
-                  </div>
-                  <h3 className="font-display font-bold text-base text-theme-text">
-                    {isEn ? (job.titleEn || job.titleTh) : (job.titleTh || job.titleEn)}
-                  </h3>
-                  <p className="text-xs text-theme-text-muted line-clamp-2">
-                    {job.description}
-                  </p>
-                </div>
-
-                <div className="pt-3 border-t border-theme-border flex items-center justify-between">
-                  <span className="text-[11px] text-theme-text-dim">{job.location}</span>
-                  <button
-                    type="button"
-                    onClick={() => onNavigate('/careers')}
-                    className="text-xs font-bold text-theme-primary hover:underline flex items-center gap-1"
-                  >
-                    <span>สมัครงาน</span>
-                    <ArrowRight className="h-3 w-3" />
-                  </button>
-                </div>
-              </div>
-            ))}
+    return (
+      <section id="careers" className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-8 scroll-mt-28">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="space-y-1">
+            <span className="text-xs font-bold uppercase tracking-wider text-theme-primary">
+              {careersBadge}
+            </span>
+            <h2 className="font-display text-2xl sm:text-4xl font-black text-theme-text">
+              {careersHeading}
+            </h2>
+            <div className="h-1 w-12 bg-theme-primary rounded-full" />
           </div>
-        );
-      })()}
-    </section>
-  );
+
+          <button
+            type="button"
+            onClick={() => onNavigate('/careers')}
+            className="inline-flex items-center gap-2 rounded-xl border border-theme-primary/40 bg-theme-primary/10 px-5 py-2.5 text-xs font-bold text-theme-primary hover:bg-theme-primary hover:text-black transition-all self-start sm:self-auto"
+          >
+            <span>{t('common.viewAllJobs')}</span>
+            <ChevronRight className="h-4 w-4" />
+          </button>
+        </div>
+
+        <p className="text-xs sm:text-sm text-theme-text-muted leading-relaxed max-w-3xl">
+          {careersSubtitle}
+        </p>
+
+        {/* Benefits Grid Preview */}
+        {(() => {
+          const benefitsList = (currentLang !== 'th' && (settings as any).careersBenefitsTranslations?.[currentLang]) || settings.careersBenefits || [];
+          if (benefitsList.length === 0) return null;
+          return (
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+              {benefitsList.slice(0, 6).map((benefit: string, bIdx: number) => (
+                <div
+                  key={bIdx}
+                  className="glow-card flex items-center gap-2.5 p-3.5 rounded-xl border border-theme-border bg-theme-surface text-xs text-theme-text"
+                >
+                  <CheckCircle className="h-4 w-4 text-theme-primary flex-shrink-0" />
+                  <span className="text-[11px] leading-snug">{benefit}</span>
+                </div>
+              ))}
+            </div>
+          );
+        })()}
+
+        {/* Open Job Positions preview */}
+        {(() => {
+          const activeJobs = (settings.careersJobs || []).filter((j) => j.active !== false);
+          const pinnedJobs = activeJobs.filter((j) => Boolean(j.isPinned));
+          const jobsToShow = pinnedJobs.length > 0 ? pinnedJobs : activeJobs.slice(0, 3);
+
+          return (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {jobsToShow.map((job) => {
+                const jobTitle = (job as any).translations?.[currentLang]?.title || (isEn ? (job.titleEn || job.titleTh) : (job.titleTh || job.titleEn));
+                const jobDept = (job as any).translations?.[currentLang]?.department || job.department;
+                const jobDesc = (job as any).translations?.[currentLang]?.description || job.description;
+                const jobLoc = (job as any).translations?.[currentLang]?.location || job.location;
+                return (
+                  <div
+                    key={job.id}
+                    className="glow-card flex flex-col justify-between rounded-2xl border border-theme-border bg-theme-surface p-6 space-y-4 transition-all"
+                  >
+                    <div className="space-y-2.5">
+                      <div className="flex items-center gap-2 text-[10px] font-mono text-theme-primary font-bold">
+                        <Briefcase className="h-3.5 w-3.5" />
+                        <span>{jobDept}</span>
+                      </div>
+                      <h3 className="font-display font-bold text-base text-theme-text">
+                        {jobTitle}
+                      </h3>
+                      <p className="text-xs text-theme-text-muted line-clamp-2">
+                        {jobDesc}
+                      </p>
+                    </div>
+
+                    <div className="pt-3 border-t border-theme-border flex items-center justify-between">
+                      <span className="text-[11px] text-theme-text-dim">{jobLoc}</span>
+                      <button
+                        type="button"
+                        onClick={() => onNavigate('/careers')}
+                        className="text-xs font-bold text-theme-primary hover:underline flex items-center gap-1"
+                      >
+                        <span>{t('common.applyNow')}</span>
+                        <ArrowRight className="h-3 w-3" />
+                      </button>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          );
+        })()}
+      </section>
+    );
+  };
 
   // -------------------------------------------------------------
   // DYNAMIC SECTION DISPATCHER

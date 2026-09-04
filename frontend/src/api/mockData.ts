@@ -1,10 +1,58 @@
 import { LocalizedPage, LocalizedProduct, ProductCategory, LocalizedNewsArticle, MediaFile, UserAdmin, AuditLog } from '../types/domain';
 
 export const MOCK_CATEGORIES: ProductCategory[] = [
-  { id: 'cat-1', slug: 'food-beverage-cans', sortOrder: 1, name: 'กระป๋องบรรจุอาหารและเครื่องดื่ม (Food & Beverage Cans)', description: 'Food-grade tinplate containers, BPA-NI certified' },
-  { id: 'cat-2', slug: 'chemical-paint-pails', sortOrder: 2, name: 'ถังโลหะบรรจุเคมีภัณฑ์และสี (Chemical & Paint Pails)', description: 'Heavy-duty UN certified industrial drums & pails' },
-  { id: 'cat-3', slug: 'aerosol-spray-cans', sortOrder: 3, name: 'กระป๋องสเปรย์และแอโรซอล (Aerosol & Spray Cans)', description: 'High-pressure resistant 3-piece aerosol cans' },
-  { id: 'cat-4', slug: 'metal-closures-lids', sortOrder: 4, name: 'ฝาโลหะและฝาดึงง่าย (Metal Closures & EOE)', description: 'Easy Open Ends (EOE) & paint ring/lids' },
+  {
+    id: 'cat-1',
+    slug: 'food-beverage-cans',
+    sortOrder: 1,
+    name: 'กระป๋องบรรจุอาหารและเครื่องดื่ม (Food & Beverage Cans)',
+    description: 'Food-grade tinplate containers, BPA-NI certified',
+    translations: {
+      en: { title: 'Food & Beverage Cans', description: 'Food-grade tinplate containers, BPA-NI certified' },
+      jp: { title: '食品・飲料用缶', description: '食品グレードBPAフリー缶、レトルト殺菌対応' },
+      cn: { title: '食品与饮料包装罐', description: '食品级马口铁包装，BPA-NI安全认证' },
+      mm: { title: 'အစားအသောက်နှင့် အဖျော်ယမကာဗူးများ', description: 'စားသောက်ကုန်အဆင့် သတ္တုဗူးများ၊ BPA-NI လက်မှတ်ရ' },
+    },
+  },
+  {
+    id: 'cat-2',
+    slug: 'chemical-paint-pails',
+    sortOrder: 2,
+    name: 'ถังโลหะบรรจุเคมีภัณฑ์และสี (Chemical & Paint Pails)',
+    description: 'Heavy-duty UN certified industrial drums & pails',
+    translations: {
+      en: { title: 'Chemical & Paint Pails', description: 'Heavy-duty UN certified industrial drums & pails' },
+      jp: { title: '化学品・塗料用ペール缶', description: '高耐久UN認証産業用ペール缶・ドラム' },
+      cn: { title: '化工与油漆金属桶', description: '重型UN联合国认证工业涂料桶与化工钢桶' },
+      mm: { title: 'ဓါတုပစ္စည်းနှင့် ဆေးသုတ်ပုံးများ', description: 'UN လက်မှတ်ရ စက်မှုလုပ်ငန်းသုံး သံပုံးများ' },
+    },
+  },
+  {
+    id: 'cat-3',
+    slug: 'aerosol-spray-cans',
+    sortOrder: 3,
+    name: 'กระป๋องสเปรย์และแอโรซอล (Aerosol & Spray Cans)',
+    description: 'High-pressure resistant 3-piece aerosol cans',
+    translations: {
+      en: { title: 'Aerosol & Spray Cans', description: 'High-pressure resistant 3-piece aerosol cans' },
+      jp: { title: 'エアゾールスプレー缶', description: '高耐圧3ピースエアゾール缶' },
+      cn: { title: '气雾剂与喷雾罐', description: '高耐压三片式精密气雾剂喷雾罐' },
+      mm: { title: 'စပရေးနှင့် အေရိုဆောဗူးများ', description: 'ဖိအားဒဏ်ခံ ၃ ပိုင်းစပ် စပရေးဗူးများ' },
+    },
+  },
+  {
+    id: 'cat-4',
+    slug: 'metal-closures-lids',
+    sortOrder: 4,
+    name: 'ฝาโลหะและฝาดึงง่าย (Metal Closures & EOE)',
+    description: 'Easy Open Ends (EOE) & paint ring/lids',
+    translations: {
+      en: { title: 'Metal Closures & EOE', description: 'Easy Open Ends (EOE) & paint ring/lids' },
+      jp: { title: '金属キャップ・イージーオープン蓋', description: 'イージーオープンエンド (EOE) および各種缶蓋' },
+      cn: { title: '金属密封盖与易拉盖', description: '易拉盖 (EOE) 及工业涂料盖' },
+      mm: { title: 'သတ္တုအဖုံးများနှင့် EOE များ', description: 'အလွယ်တကူဖွင့်နိုင်သော သံဗူးအဖုံးများနှင့် အဖုံးများ' },
+    },
+  },
 ];
 
 export const MOCK_PRODUCTS: LocalizedProduct[] = [
@@ -36,6 +84,32 @@ export const MOCK_PRODUCTS: LocalizedProduct[] = [
       'https://images.unsplash.com/photo-1584727638084-5f43df65e49f?auto=format&fit=crop&w=800&q=80',
     ],
     pdfSpecURL: '/specs/LK-CAN-300-401.pdf',
+    translations: {
+      en: {
+        name: 'Standard Sanitary Food Can 300x401',
+        description: 'Premium 3-piece welded food can with food-grade BPA-NI gold lacquer coating. Engineered for canned seafood, fruits, and sauces.',
+        features: 'High thermal resistance for autoclave retort (121°C), 100% light & oxygen hermetic barrier, ultra-HD 6-color offset printing.',
+        applications: 'Canned fish (tuna, sardines), processed fruits (pineapple, rambutan), tomato sauce, ready soups.',
+      },
+      jp: {
+        name: '標準3ピース食品缶 300x401',
+        description: '食品グレードBPAフリーの金ラッカーを内面コーティングした高品質3ピース製缶。水産缶詰、果実加工品、調味ソースに最適です。',
+        features: '121°Cオートクレーブ殺菌耐熱性、光・酸素遮断性100%、高精細6色オフセットUV印刷。',
+        applications: '魚介缶詰 (ツナ、イワシ)、加工フルーツ (パイナップル、ランブータン)、トマトペースト、レトルトスープ。',
+      },
+      cn: {
+        name: '标准三片装食品罐 300x401',
+        description: '高端三片式焊接食品罐，内壁涂覆食品级BPA-NI环保金漆，适用于水产海鲜、罐头水果及浓缩酱料。',
+        features: '耐121°C高温高压杀菌 (Retort)，100%隔绝光线与氧气，高精度6色UV胶印。',
+        applications: '鱼类罐头 (金枪鱼、沙丁鱼)、热带水果 (菠萝、红毛丹)、番茄酱、即食浓汤。',
+      },
+      mm: {
+        name: 'စံချိန်မီ သတ္တု အစားအသောက်ဘူး 300x401',
+        description: 'အစားအသောက်အဆင့် BPA-NI ရွှေရောင်ဆေးဖြင့် အတွင်းပိုင်းသုတ်ထားသော အဆင့်မြင့် ၃ ပိုင်းစပ် သံဗူးဖြစ်ပါသည်။ ငါးသေတ္တာ၊ သစ်သီးနှင့် ဆော့စ်များအတွက် အထူးသင့်လျော်သည်။',
+        features: '၁၂၁ ဒီဂရီ အပူချိန်ဒဏ်ခံနိုင်ခြင်း၊ အလင်းနှင့် လေကို ၁၀၀% ကာကွယ်ပေးခြင်း၊ ၆ ရောင် ပုံနှိပ်စနစ်။',
+        applications: 'ငါးသေတ္တာ (တူနာ၊ ဆာဒင်း)၊ သစ်သီးဗူး (နာနတ်သီး၊ ကြက်မောက်သီး)၊ ခရမ်းချဉ်သီးဆော့စ်။',
+      },
+    },
   },
   {
     id: 'prod-2',
@@ -64,6 +138,32 @@ export const MOCK_PRODUCTS: LocalizedProduct[] = [
       'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=800&q=80',
     ],
     pdfSpecURL: '/specs/LK-PAIL-20L-IND.pdf',
+    translations: {
+      en: {
+        name: '20L Industrial Chemical Pail (UN Certified)',
+        description: 'Heavy-gauge tapered steel pail with lever lock ring and UN international certification for hazardous chemicals, thinners, and industrial oils.',
+        features: 'UN certified for hazardous transport, 100% leak-proof EPDM rubber gasket, superior solvent resistance.',
+        applications: 'Industrial coatings, solvent thinners, resins, adhesives, engine lubricants, agrochemicals.',
+      },
+      jp: {
+        name: '20L 産業化学品用ペール缶 (UN規格認証)',
+        description: 'レバーロックリングとUN国際輸送認証を備えた重防食用20Lテーパー鋼製ペール缶。化学薬品、シンナー、工業用塗料に最適です。',
+        features: 'UN危険物輸送規格認証、EPDM耐薬品性ガスケットによる完全密閉、有機溶剤への卓越した耐性。',
+        applications: '工業用塗料、シンナー希釈剤、エポキシ樹脂、工業用接着剤、エンジンオイル、農業化学品。',
+      },
+      cn: {
+        name: '20升工业化工钢桶 (UN联合国认证)',
+        description: '重型锥形马口铁钢桶，配杠杆式锁紧圈，符合UN联合国危险货物运输标准，适用于化工溶剂、油漆涂料及特种润滑油。',
+        features: '符合UN危险品包装运输认证，EPDM环保橡胶垫圈100%防漏，卓越耐腐蚀抗溶剂性能。',
+        applications: '工业涂料、稀释剂、环氧树脂、特种胶粘剂、发动机油、农用化学品。',
+      },
+      mm: {
+        name: '၂၀ လီတာ စက်မှုလုပ်ငန်းသုံး ဓါတုပစ္စည်းပုံး (UN လက်မှတ်ရ)',
+        description: 'အန္တရာယ်ရှိသော ဓါတုပစ္စည်းများ၊ ဆေးဖျော်ရည်နှင့် စက်ဆီများ သယ်ယူပို့ဆောင်ရန် UN အသိအမှတ်ပြု လက်မှတ်ရ သံပုံးဖြစ်ပါသည်။',
+        features: 'UN နိုင်ငံတကာ စံချိန်စံညွှန်းမီ၊ ယိုစိမ့်မှုမရှိစေသော EPDM ရာဘာပြားပါဝင်မှု၊ ဓါတုဒဏ်ခံနိုင်ရည်မြင့်မားမှု။',
+        applications: 'စက်မှုလုပ်ငန်းသုံး ဆေးသုတ်ဆေးများ၊ သင်နာ၊ ကော်၊ စက်ဆီ၊ စိုက်ပျိုးရေးဆေးများ။',
+      },
+    },
   },
   {
     id: 'prod-3',
@@ -91,6 +191,32 @@ export const MOCK_PRODUCTS: LocalizedProduct[] = [
       'https://images.unsplash.com/photo-1616401784845-180882ba9ba8?auto=format&fit=crop&w=800&q=80',
     ],
     pdfSpecURL: '/specs/LK-AERO-65X190.pdf',
+    translations: {
+      en: {
+        name: 'High-Pressure Aerosol Can 65x190 mm',
+        description: 'High-performance 3-piece aerosol container with burst pressure rating up to 15 bar, ideal for technical sprays, lubricants, and automotive maintenance.',
+        features: 'Burst pressure resistance exceeding 15 bar (1.5 MPa), precision Soudronic seam welding.',
+        applications: 'Industrial spray paints, multi-purpose lubricants, brake cleaners, air fresheners.',
+      },
+      jp: {
+        name: '高耐圧エアゾールスプレー缶 65x190mm',
+        description: '最大15バールの耐圧性能を誇る高性能3ピースエアゾール缶。塗料スプレー、潤滑油、自動車メンテナンス製品に最適です。',
+        features: '破壊圧力15 bar (1.5 MPa) 以上、高精度Soudronicシーム溶接技術。',
+        applications: '工業用カラースプレー、万能防錆潤滑剤、ブレーキクリーナー、ルームフレグランス。',
+      },
+      cn: {
+        name: '高耐压气雾气雾剂罐 65x190毫米',
+        description: '高品质三片式气雾金属罐，耐爆破压力高达15巴，广泛应用于喷漆、精密润滑剂及汽车养护用品。',
+        features: '爆破承压能力超15巴 (1.5 MPa)，瑞士Soudronic高精度电阻点焊。',
+        applications: '工业自喷漆、多用途防锈润滑剂、刹车清洗剂、空气清新剂。',
+      },
+      mm: {
+        name: 'ဖိအားမြင့် စပရေးဗူး 65x190 မီလီမီတာ',
+        description: 'ဖိအား ၁၅ ဘားအထိ ခံနိုင်ရည်ရှိသော အရည်အသွေးမြင့် ၃ ပိုင်းစပ် စပရေးဗူးဖြစ်ပြီး ဆေးဖြန်းဗူးများ၊ စက်ချောဆီများနှင့် ကားထိန်းသိမ်းရေးပစ္စည်းများအတွက် သင့်လျော်ပါသည်။',
+        features: 'ဖိအား ၁၅ ဘားအထက် ခံနိုင်ရည်၊ တိကျသေချာသော Soudronic ဂဟေဆက်စနစ်။',
+        applications: 'စက်မှုသုံး ဆေးစပရေး၊ ချောဆီစပရေး၊ ဘရိတ်ဆေးရည်၊ အမွှေးနံ့သာစပရေး။',
+      },
+    },
   },
   {
     id: 'prod-4',
@@ -117,6 +243,32 @@ export const MOCK_PRODUCTS: LocalizedProduct[] = [
       'https://images.unsplash.com/photo-1589939705384-5185137a7f0f?auto=format&fit=crop&w=800&q=80',
     ],
     pdfSpecURL: '/specs/LK-EOE-300-FS.pdf',
+    translations: {
+      en: {
+        name: 'Easy Open End (EOE) Can Lid Size 300',
+        description: 'Smooth, safe-edge Easy Open End (EOE) lid engineered with BPA-NI coating and 100% hermetic oxygen barrier for canned food containers.',
+        features: 'Full aperture opening, BPA-NI non-intent compliance, PVC-free sealant compound.',
+        applications: 'Canned seafood, canned fruits, processed meats, pet foods.',
+      },
+      jp: {
+        name: 'イージーオープンエンド (EOE) 缶蓋 300号',
+        description: '開けやすく手を切りにくいセーフティエッジ設計のイージーオープンエンド (EOE)。BPA-NIコーティングで酸素透過を100%遮断します。',
+        features: 'フルアパーチャー全開式、BPA-NI対応、PVCフリー高密閉ガスケット。',
+        applications: '魚介缶詰、フルーツ缶、レトルト食肉加工品、ペットフード。',
+      },
+      cn: {
+        name: '易拉盖 Easy Open End (EOE) 300型',
+        description: '全开式易拉盖 (EOE)，开启顺畅安全不割手，采用BPA-NI环保涂层，100%阻隔氧气渗透。',
+        features: '全开口刻痕设计、BPA-NI环保合规、无PVC密封胶圈。',
+        applications: '水产罐头、水果罐头、肉类罐头、高端宠物食品。',
+      },
+      mm: {
+        name: 'အလွယ်တကူဖွင့်နိုင်သော သံဗူးအဖုံး EOE 300',
+        description: 'အန္တရာယ်ကင်းစွာ အလွယ်တကူဖွင့်နိုင်သော EOE သံဗူးအဖုံးဖြစ်ပြီး BPA-NI အကာအကွယ်ဖြင့် အစားအသောက်များကို လတ်ဆတ်စွာ ထိန်းသိမ်းပေးပါသည်။',
+        features: 'အပြည့်အဝဖွင့်နိုင်သောဒီဇိုင်း၊ BPA-NI စံချိန်မီ၊ PVC-free ပေါင်းစပ်မှု။',
+        applications: 'ငါးသေတ္တာ၊ သစ်သီးဗူး၊ အသားဗူး၊ အိမ်မွေးတိရစ္ဆာန် အစာဗူးများ။',
+      },
+    },
   },
   {
     id: 'prod-5',
@@ -251,6 +403,28 @@ export const MOCK_NEWS: LocalizedNewsArticle[] = [
     contentBody: '<p>บริษัท ไคโอทรอน เทคโนโลยี จำกัด (CHIOTRON TECHNOLOGY) ได้เสร็จสิ้นการติดตั้งระบบ Solar Rooftop ณ โรงงานจังหวัดสมุทรสาคร เพื่อมุ่งสู่ความเป็นกลางทางคาร์บอน...</p>',
     featuredImageURL: 'https://images.unsplash.com/photo-1509391365360-2e959784a276?auto=format&fit=crop&w=800&q=80',
     publishedAt: '2026-08-15T09:00:00Z',
+    translations: {
+      en: {
+        title: 'Chiotron Technology Completes 1.2 MW Solar Rooftop Installation to Cut 1,200 Tons of Carbon Annually',
+        summary: 'Transitioning toward a 100% green manufacturing facility with on-site clean solar energy, reducing greenhouse emissions.',
+        contentBody: '<p>CHIOTRON TECHNOLOGY CO., LTD. has successfully commissioned a 1.2 MW solar rooftop system at our Samut Sakhon manufacturing complex...</p>',
+      },
+      jp: {
+        title: 'カイオトロン・テクノロジー、年間1,200トンのCO2を削減する1.2MW屋上太陽光発電システムを導入',
+        summary: '100%クリーンエネルギーによる環境調和型グリーン工場の実現に向けた持続可能性の取り組み。',
+        contentBody: '<p>カイオトロン・テクノロジー株式会社は、サムットサコーン工場において1.2MW規模の屋上太陽光発電（ソーラールーフトップ）設備の稼働を開始しました...</p>',
+      },
+      cn: {
+        title: '凯奥创科技完成1.2兆瓦屋顶光伏系统安装，年减少碳排放1200吨',
+        summary: '践行绿色低碳制造承诺，全面采用清洁太阳能能源助力可持续工业发展。',
+        contentBody: '<p>凯奥创科技有限公司于龙仔厝府制造基地正式启用1.2兆瓦屋顶太阳能光伏发电系统，致力于实现全厂清洁能源供电与碳中和目标...</p>',
+      },
+      mm: {
+        title: 'CHIOTRON TECHNOLOGY သည် တစ်နှစ်လျှင် ကာဗွန်တန်ချိန် ၁,၂၀၀ လျှော့ချမည့် 1.2 MW ဆိုလာစနစ် တပ်ဆင်ပြီးစီး',
+        summary: '၁၀၀% သန့်ရှင်းသော စွမ်းအင်ဖြင့် စိမ်းလန်းသော စက်ရုံတည်ဆောက်ရေးသို့ ရှေးရှုဆောင်ရွက်ခြင်း။',
+        contentBody: '<p>CHIOTRON TECHNOLOGY ကုမ္ပဏီလီမိတက်သည် စမွတ်စာခွန် စက်ရုံတွင် ၁.၂ မဂ္ဂါဝပ်ရှိ အမိုးပေါ်ဆိုလာစနစ် တပ်ဆင်လည်ပတ်ခြင်းကို အောင်မြင်စွာ ဆောင်ရွက်ပြီးစီးခဲ့ပါသည်...</p>',
+      },
+    },
   },
   {
     id: 'news-2',
@@ -262,6 +436,28 @@ export const MOCK_NEWS: LocalizedNewsArticle[] = [
     contentBody: '<p>เพื่อรองรับการเติบโตของอุตสาหกรรมอาหารส่งออก ทางบริษัทฯ ได้ลงทุนขยายสายการผลิตกระป๋อง 3 ชิ้น ความเร็ว 600 กระป๋องต่อนาที...</p>',
     featuredImageURL: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=800&q=80',
     publishedAt: '2026-07-20T10:30:00Z',
+    translations: {
+      en: {
+        title: 'New High-Speed Swiss Canmaking Line Launched to Boost Export Capacity by 30%',
+        summary: 'Featuring advanced Soudronic seam welders and real-time AI visual quality inspection, ensuring zero defect tolerance.',
+        contentBody: '<p>To support surging demand across global food packaging supply chains, Chiotron Technology has expanded capacity with a new 600 cpm line...</p>',
+      },
+      jp: {
+        title: 'スイス製最新鋭・高速製缶ラインを稼働開始、輸出向け生産能力を30%拡大',
+        summary: 'Soudronic溶接機とAI画像検査システムにより、シーム欠陥のリアルタイム全数検査を実現。',
+        contentBody: '<p>輸出向け食品缶詰市場の急成長に対応し、スイスSoudronic社製の最新鋭高速自動製缶ライン（分速600缶）を増設いたしました...</p>',
+      },
+      cn: {
+        title: '引进瑞士新一代高速精密制罐生产线，出口产能提升30%',
+        summary: '配备先进Soudronic电阻焊机与AI智能视觉全检系统，实现全天候高品质实时监控。',
+        contentBody: '<p>为满足国际食品出口企业日益增长的高标准需求，凯奥创科技投资扩建了每分钟600罐的瑞士进口全自动三片罐生产线...</p>',
+      },
+      mm: {
+        title: 'ဆွစ်ဇာလန်နည်းပညာသုံး အမြန်နှုန်းမြင့် သံဗူးထုတ်လုပ်ရေးလိုင်းသစ်ကို တိုးချဲ့မိတ်ဆက်',
+        summary: 'AI အလိုအလျောက် စစ်ဆေးရေးစနစ်ဖြင့် ထုတ်လုပ်မှုစွမ်းရည် ၃၀% တိုးမြှင့်လိုက်ပါသည်။',
+        contentBody: '<p>နိုင်ငံတကာ စားသောက်ကုန်တင်ပို့မှု ဈေးကွက်တိုးတက်မှုကို အထောက်အကူပြုရန် တစ်မိနစ်လျှင် သံဗူး ၆၀၀ ထုတ်လုပ်နိုင်သော ဆွစ်ဇာလန်စက်လိုင်းသစ်ကို တပ်ဆင်ခဲ့ပါသည်...</p>',
+      },
+    },
   },
 ];
 

@@ -12,7 +12,8 @@
     "news": "ニュース・新着情報",
     "contact": "お問い合わせ",
     "admin": "CMS管理",
-    "quote": "お見積り依頼"
+    "quote": "お見積り依頼",
+    "careers": "採用情報"
   },
   "common": {
     "readMore": "続きを読む",
@@ -59,7 +60,30 @@
     "viewAllProducts": "すべての製品を見る",
     "requestQuoteBtn": "お見積り依頼",
     "closeModal": "閉じる",
-    "viewAllNews": "すべてのニュースを読む"
+    "viewAllNews": "すべてのニュースを見る",
+    "openGoogleMaps": "Googleマップでルート案内",
+    "viewAllContact": "すべての連絡先情報を見る",
+    "applyNow": "応募する",
+    "viewAllJobs": "すべての募集要項を見る",
+    "quickInquiry": "お問い合わせ・お見積もり依頼 (Quick Inquiry)",
+    "quickInquiryDesc": "セールスエンジニアが24時間以内にご連絡・お見積もりをご案内いたします。",
+    "fullNameOrCompany": "お名前 / 貴社名 *",
+    "fullNameOrCompanyPlaceholder": "山田 太郎 (株式会社〇〇食品)",
+    "emailOrPhone": "メールアドレス / お電話番号 *",
+    "emailOrPhonePlaceholder": "info@example.com または 080-1234-5678",
+    "inquiryMessage": "お問い合わせ内容 / 製品仕様 *",
+    "inquiryMessagePlaceholder": "缶のサイズ、内面塗料、ご希望ロット数などをご記入ください...",
+    "sendToSales": "営業担当へ送信する",
+    "inquirySuccess": "お問い合わせを送信いたしました！",
+    "inquirySuccessDesc": "担当エンジニアより速やかにご連絡申し上げます。お問い合わせいただき誠にありがとうございます。",
+    "locationsAndBranches": "拠点・事業所一覧",
+    "mainBranch": "本社",
+    "productsSectionBadge": "製品カタログ",
+    "productsSectionTitle": "製品情報 (Products)",
+    "newsSectionBadge": "ニュース・お知らせ",
+    "newsSectionTitle": "最新ニュース＆活動報告",
+    "contactSectionBadge": "お問い合わせ",
+    "contactSectionTitle": "お問い合わせ (Contact Us)"
   },
   "dashboard": {
     "title": "全体ダッシュボード (Dashboard)",

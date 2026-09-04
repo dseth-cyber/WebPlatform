@@ -196,6 +196,7 @@ export interface SiteContentSettings {
   careersHeading: string;
   careersSubtitle: string;
   careersBenefits: string[];
+  careersBenefitsTranslations?: Record<'en' | 'jp' | 'cn' | 'mm', string[]>;
   careersJobs: CareerJobSetting[];
 
   // Contact Info & Footer (No hardcoding - 100% editable from Admin)
@@ -507,6 +508,12 @@ export const DEFAULT_SITE_SETTINGS: SiteContentSettings = {
       image: '/images/cat-round-cans.jpg',
       path: '/products?category=round-cans',
       enabled: true,
+      translations: {
+        en: { title: 'Round Cans' },
+        jp: { title: '丸缶' },
+        cn: { title: '圆罐' },
+        mm: { title: 'အဝိုင်းပုံ သံဗူး' },
+      },
     },
     {
       id: 'rect-cans',
@@ -515,6 +522,12 @@ export const DEFAULT_SITE_SETTINGS: SiteContentSettings = {
       image: '/images/cat-rect-cans.jpg',
       path: '/products?category=rect-cans',
       enabled: true,
+      translations: {
+        en: { title: 'Rectangular Cans' },
+        jp: { title: '角缶' },
+        cn: { title: '方罐' },
+        mm: { title: 'လေးထောင့် သံဗူး' },
+      },
     },
     {
       id: 'can-lids',
@@ -523,6 +536,12 @@ export const DEFAULT_SITE_SETTINGS: SiteContentSettings = {
       image: '/images/cat-can-lids.jpg',
       path: '/products?category=can-lids',
       enabled: true,
+      translations: {
+        en: { title: 'Can Lids & Closures' },
+        jp: { title: '缶蓋・キャップ' },
+        cn: { title: '密封盖' },
+        mm: { title: 'သံဗူးအဖုံးများ' },
+      },
     },
     {
       id: 'can-ends',
@@ -531,6 +550,12 @@ export const DEFAULT_SITE_SETTINGS: SiteContentSettings = {
       image: '/images/cat-can-ends.jpg',
       path: '/products?category=can-ends',
       enabled: true,
+      translations: {
+        en: { title: 'Can Ends' },
+        jp: { title: '缶底' },
+        cn: { title: '罐底' },
+        mm: { title: 'သံဗူးအောက်ခြေ' },
+      },
     },
     {
       id: 'printed-cans',
@@ -539,6 +564,12 @@ export const DEFAULT_SITE_SETTINGS: SiteContentSettings = {
       image: '/images/cat-printed-cans.jpg',
       path: '/products?category=printed-cans',
       enabled: true,
+      translations: {
+        en: { title: 'Printed & Decorated Cans' },
+        jp: { title: '印刷缶' },
+        cn: { title: '印花金属罐' },
+        mm: { title: 'ဒီဇိုင်းပုံနှိပ် သံဗူးများ' },
+      },
     },
   ],
 
@@ -573,6 +604,12 @@ export const DEFAULT_SITE_SETTINGS: SiteContentSettings = {
       descTh: 'โลหะสามารถรีไซเคิลวนซ้ำได้อย่างไม่จำกัด ช่วยลดการปล่อยคาร์บอนไดออกไซด์ได้ถึง 75% เมื่อเทียบกับการผลิตโลหะใหม่จากแร่',
       descEn: 'Metal can be recycled endlessly without quality degradation, saving up to 75% CO2 compared to virgin ore extraction.',
       image: '/images/hero-fullwidth.jpg',
+      translations: {
+        en: { title: 'Infinitely Recyclable', desc: 'Metal can be recycled endlessly without quality degradation, saving up to 75% CO2 compared to virgin ore extraction.' },
+        jp: { title: '無限リサイクル性', desc: '金属は品質を損なうことなく何度でも無限にリサイクル可能。バージン鉱石からの精錬と比較してCO2を最大75%削減します。' },
+        cn: { title: '无限次循环再生', desc: '金属材料可100%无限次回收重熔而不降级，与原矿冶炼相比可减少高达75%的碳排放。' },
+        mm: { title: 'အကြိမ်ကြိမ် ပြန်လည်အသုံးပြုနိုင်ခြင်း', desc: 'သတ္တုသည် အရည်အသွေးမကျဘဲ အကြိမ်ကြိမ် ပြန်လည်အသုံးပြုနိုင်ပြီး ကာဗွန်ဒိုင်အောက်ဆိုဒ် ထုတ်လွှတ်မှုကို ၇၅% ထိ လျှော့ချပေးပါသည်။' },
+      },
     },
     {
       id: 'sus-2',
@@ -582,6 +619,12 @@ export const DEFAULT_SITE_SETTINGS: SiteContentSettings = {
       descTh: 'โรงงานสมุทรสาครใช้พลังงานไฟฟ้าจากแสงอาทิตย์บนหลังคาโรงงาน ช่วยลดก๊าซเรือนกระจกกว่า 1,200 ตันคาร์บอนต่อปี',
       descEn: 'Our plant operates with clean solar rooftop energy, mitigating over 1,200 metric tons of carbon annually.',
       image: '/images/factory-building.jpg',
+      translations: {
+        en: { title: 'Solar Rooftop 1.2 MW', desc: 'Our plant operates with clean solar rooftop energy, mitigating over 1,200 metric tons of carbon annually.' },
+        jp: { title: '屋上太陽光発電 1.2 MW', desc: 'サムットサコーン工場では1.2MWの屋上太陽光発電システムを導入し、年間1,200トン以上のCO2削減に貢献しています。' },
+        cn: { title: '1.2兆瓦屋顶光伏清洁能源', desc: '龙仔厝工厂配备1.2 MW屋顶光伏发电系统，每年减少温室气体排放超过1,200吨。' },
+        mm: { title: '၁.၂ မဂ္ဂါဝပ် ဆိုလာခေါင်မိုး', desc: 'စက်ရုံခေါင်မိုးပေါ်တွင် ၁.၂ မဂ္ဂါဝပ် နေရောင်ခြည်စွမ်းအင်သုံး လျှပ်စစ်ထုတ်လုပ်ပြီး တစ်နှစ်လျှင် ကာဗွန် ၁,၂၀၀ တန် လျှော့ချပေးပါသည်။' },
+      },
     },
     {
       id: 'sus-3',
@@ -591,6 +634,12 @@ export const DEFAULT_SITE_SETTINGS: SiteContentSettings = {
       descTh: 'ระบบบำบัดและหมุนเวียนน้ำในกระบวนการหล่อเย็นแบบปิด 100% ไม่มีการปล่อยน้ำเสียสู่แหล่งน้ำสาธารณะ',
       descEn: 'Closed-loop cooling and water reclamation facility ensures zero hazardous industrial wastewater discharge.',
       image: '/images/cat-round-cans.jpg',
+      translations: {
+        en: { title: 'Zero Industrial Wastewater', desc: 'Closed-loop cooling and water reclamation facility ensures zero hazardous industrial wastewater discharge.' },
+        jp: { title: '工業排水ゼロシステム', desc: '完全密閉型の冷却水循環・高度浄化システムにより、公共水域への産業排水ゼロを実現しています。' },
+        cn: { title: '工业废水零排放', desc: '全封闭式冷却水循环与深度中水回用系统，实现生产废水100%内循环与零外部排放。' },
+        mm: { title: 'စက်မှုစွန့်ပစ်ရေ သုည ရေဆိုးစနစ်', desc: 'အအေးခံစနစ်တွင် ရေကို ၁၀၀% ပြန်လည်အသုံးပြုပြီး အများပြည်သူပိုင် ရေထွက်ပေါက်များသို့ ရေဆိုးစွန့်ထုတ်ခြင်း လုံးဝမရှိပါ။' },
+      },
     },
   ],
 
@@ -608,6 +657,12 @@ export const DEFAULT_SITE_SETTINGS: SiteContentSettings = {
       descTh: 'เครื่องเชื่อมตะเข็บไฟฟ้าอัตโนมัติความเร็วสูง 600 กระป๋องต่อนาที พร้อมระบบควบคุมความร้อนสม่ำเสมอ รอยเชื่อมเรียบเนียน ป้องกันการรั่วซึม 100%',
       descEn: 'High-speed 600 cpm automatic electronic seam welder with adaptive heat control, delivering leak-proof hermetic integrity.',
       image: '/images/factory-building.jpg',
+      translations: {
+        en: { title: 'Soudronic High-Speed Canbody Welder (Switzerland)', desc: 'High-speed 600 cpm automatic electronic seam welder with adaptive heat control, delivering leak-proof hermetic integrity.' },
+        jp: { title: 'スイス・ソウロニック社製 超高速シーム溶接機', desc: '毎分600缶の高速自動溶接と高精度熱制御システムにより、極めて均一で堅牢な気密シールを実現。' },
+        cn: { title: '瑞士Soudronic高速全自动罐身焊机', desc: '每分钟高达600罐的电子全自动缝焊，配备自适应温控，焊缝极致平整且100%防漏。' },
+        mm: { title: 'Soudronic အမြန်နှုန်းမြင့် သံဗူးဂဟေဆက်စက် (ဆွစ်ဇာလန်)', desc: 'တစ်မိနစ်လျှင် ဘူးပေါင်း ၆၀၀ အလိုအလျောက် ဂဟေဆက်နိုင်ပြီး ယိုစိမ့်မှု လုံးဝမရှိစေရန် အပူချိန်ထိန်းစနစ် ပါဝင်ပါသည်။' },
+      },
     },
     {
       id: 'tech-2',
@@ -617,6 +672,12 @@ export const DEFAULT_SITE_SETTINGS: SiteContentSettings = {
       descTh: 'ระบบกล้องตรวจจับข้อบกพร่องด้วยปัญญาประดิษฐ์ (AI) ตรวจสอบความสมบูรณ์ของแล็กเกอร์และมิติฝา EOE ทุกชิ้นแบบ Real-time',
       descEn: 'Real-time AI computer vision defect scanner verifying lacquer continuity, double seam dimensions, and easy-open end integrity.',
       image: '/images/cat-printed-cans.jpg',
+      translations: {
+        en: { title: 'AI Visual Camera Seam & Defect Inspection System', desc: 'Real-time AI computer vision defect scanner verifying lacquer continuity, double seam dimensions, and easy-open end integrity.' },
+        jp: { title: 'AIスマート画像外観・二重巻締検査システム', desc: 'AI画像認識カメラがラッカー塗布状態、ダブルシーム寸法、イージーオープン蓋の完全性をリアルタイム全数検査。' },
+        cn: { title: 'AI智能视觉卷封与微缺陷在线全检系统', desc: '搭载AI机器视觉，实时在线全检内部涂料连续性、双重卷封尺寸及易拉盖完整性。' },
+        mm: { title: 'AI ကင်မရာသုံး အပြစ်အနာအဆာ စစ်ဆေးရေးစနစ်', desc: 'AI နည်းပညာဖြင့် သံဗူးအဖုံးနှင့် အတွင်းပိုင်းအလွှာများကို အချိန်နှင့်တပြေးညီ အပြစ်အနာအဆာ မရှိစေရန် စစ်ဆေးပေးပါသည်။' },
+      },
     },
     {
       id: 'tech-3',
@@ -626,6 +687,12 @@ export const DEFAULT_SITE_SETTINGS: SiteContentSettings = {
       descTh: 'เครื่องปั๊มลอนและบานปากกระป๋องความแม่นยำสูง เพิ่มความแข็งแรงต่อแรงดันสุญญากาศขณะผ่านกระบวนการฆ่าเชื้อ (Autoclave Retort)',
       descEn: 'High-precision flanging and body beading machinery engineered to withstand intense vacuum and autoclave retort sterilization.',
       image: '/images/cat-round-cans.jpg',
+      translations: {
+        en: { title: 'Automatic Nitrogen Flanging & Beading Lines', desc: 'High-precision flanging and body beading machinery engineered to withstand intense vacuum and autoclave retort sterilization.' },
+        jp: { title: '高精度フランジング＆ビーディング自動ライン', desc: 'レトルト殺菌工程（オートクレーブ）における高圧・真空状態に耐えうる高強度ビード加工を実現。' },
+        cn: { title: '全自动高精度翻边与压筋成型机组', desc: '高精度罐口翻边与罐身环形压筋设备，极大提升耐真空及高温高压杀菌耐抗能力。' },
+        mm: { title: 'အလိုအလျောက် သံဗူးပုံစံသွင်းလိုင်းများ', desc: 'အပူချိန်မြင့် သန့်စင်သည့်လုပ်ငန်းစဉ်များတွင် ဖိအားဒဏ်ခံနိုင်စေရန် တိကျစွာ ပုံသွင်းထုတ်လုပ်ပေးပါသည်။' },
+      },
     },
     {
       id: 'tech-4',
@@ -635,6 +702,12 @@ export const DEFAULT_SITE_SETTINGS: SiteContentSettings = {
       descTh: 'แท่นพิมพ์แผ่นโลหะระบบยูวี 6 สี ช่วยให้หมึกแห้งตัวทันที ให้ความเงางามและทนทานต่อการขูดขีดสูงสุด',
       descEn: 'Advanced 6-color ultraviolet sheet-fed offset press ensuring instantaneous ink curing, vibrant gamut, and scratch resistance.',
       image: '/images/cat-rect-cans.jpg',
+      translations: {
+        en: { title: 'Automated 6-Color UV Offset Metal Printing Press', desc: 'Advanced 6-color ultraviolet sheet-fed offset press ensuring instantaneous ink curing, vibrant gamut, and scratch resistance.' },
+        jp: { title: '全自動6色UVオフセット金属印刷機', desc: '瞬時硬化UVインキによる高精細6色オフセット印刷。鮮やかな発色と卓越した耐摩耗性を両立。' },
+        cn: { title: '全自动六色UV金属胶印机', desc: '先进的六色紫外光固化单张金属印花机，油墨瞬间固化，色彩鲜艳锐利且耐刮擦。' },
+        mm: { title: '၆ ရောင်စုံ UV သတ္တုပုံနှိပ်စက်', desc: 'အရည်အသွေးမြင့် ၆ ရောင်စုံ ခရမ်းလွန်ရောင်ခြည်သုံး ပုံနှိပ်စက်ဖြစ်ပြီး အရောင်စိုပြေကာ ခြစ်ရာမထင်စေပါ။' },
+      },
     },
   ],
 
@@ -657,6 +730,12 @@ export const DEFAULT_SITE_SETTINGS: SiteContentSettings = {
         'กำลังการผลิตสูง ส่งมอบตรงเวลา',
       ],
       image: '/images/cat-round-cans.jpg',
+      translations: {
+        en: { title: 'OEM & ODM Can Manufacturing', desc: 'Comprehensive 3-piece sanitary food can, chemical pail, and closure fabrication tailored to custom client specifications.' },
+        jp: { title: 'OEM/ODM 金属缶受託製造サービス', desc: '食品用3ピース缶、化学品ペール缶、イージーオープン蓋など、お客様の規格に合わせた高精度な受託生産。' },
+        cn: { title: 'OEM/ODM 食品与工业金属罐代工制造', desc: '为食品三片罐、化工桶及易拉盖提供全流程量身定制代工，精准匹配客户严苛规格。' },
+        mm: { title: 'OEM & ODM သံဗူးထုတ်လုပ်မှု ဝန်ဆောင်မှု', desc: 'စားသောက်ကုန်သုံး ၃ ပိုင်းစပ် သံဗူးများ၊ ဓာတုဗေဒသုံး ပုံးများနှင့် အဖုံးများကို စိတ်ကြိုက်ထုတ်လုပ်ပေးပါသည်။' },
+      },
     },
     {
       id: 'srv-2',
@@ -671,6 +750,12 @@ export const DEFAULT_SITE_SETTINGS: SiteContentSettings = {
         'ตรวจวัดความแม่นยำของสีด้วยระบบ Spectrophotometer',
       ],
       image: '/images/cat-printed-cans.jpg',
+      translations: {
+        en: { title: 'High-Precision 6-Color Metal Offset Printing', desc: 'Ultra-high definition 6-color offset lithography on tinplate and aluminum sheets with high thermal endurance.' },
+        jp: { title: '高精細6色金属オフセット印刷', desc: 'ブリキおよびアルミシートへの超高精細6色オフセット印刷。耐熱性・耐薬品性に優れた食品安全インキ使用。' },
+        cn: { title: '高精度六色金属薄板平版胶印', desc: '采用食品接触级安全环保油墨，在马口铁及铝板上呈现超高清六色图案，耐高温灭菌。' },
+        mm: { title: '၆ ရောင်စုံ တိကျသော သတ္တုပုံနှိပ်ဝန်ဆောင်မှု', desc: 'စားသောက်ကုန်အဆင့်မီ ဘေးကင်းသော ဆေးရည်များဖြင့် သံပြားပေါ်တွင် ပုံနှိပ်ပေးပါသည်။' },
+      },
     },
     {
       id: 'srv-3',
@@ -685,6 +770,12 @@ export const DEFAULT_SITE_SETTINGS: SiteContentSettings = {
         'บริการตรวจวัด Double Seam หน้างาน',
       ],
       image: '/images/cat-can-lids.jpg',
+      translations: {
+        en: { title: 'Tooling & Engineering Support', desc: 'Dedicated engineering consultancy, precision seamer chuck/roll tooling optimization, and seam cross-section analysis.' },
+        jp: { title: '金型設計・エンジニアリング技術支援', desc: '巻締ロール・チャック工具の最適化、二重巻締断面解析、お客様の巻締機アライメント調整を技術支援。' },
+        cn: { title: '精密模具设计与卷封技术工程支持', desc: '专业工程师团队提供全方位咨询、罐型结构优化、封罐机滚轮模具调校及卷封切片分析。' },
+        mm: { title: 'ဒီဇိုင်းနှင့် အင်ဂျင်နီယာဆိုင်ရာ အကူအညီ', desc: 'သံဗူးဖွဲ့စည်းပုံဒီဇိုင်းနှင့် စက်ယန္တရားများ ချိန်ညှိမှုအတွက် ကျွမ်းကျင်အင်ဂျင်နီယာများမှ အကြံဉာဏ်ပေးပါသည်။' },
+      },
     },
   ],
 
@@ -700,6 +791,40 @@ export const DEFAULT_SITE_SETTINGS: SiteContentSettings = {
     'ชุดยูนิฟอร์มและอุปกรณ์ PPE ความปลอดภัยมาตรฐานสากล',
     'โอกาสฝึกอบรมและดูงานเทคโนโลยีต่างประเทศ',
   ],
+  careersBenefitsTranslations: {
+    en: [
+      'Annual Performance Bonuses',
+      'Provident Fund Scheme',
+      'Group Health Insurance & Annual Check-up',
+      'Attendance Allowance & Overtime Pay (OT)',
+      'Uniforms & Safety PPE to International Standards',
+      'Overseas Technical Training & Factory Visits',
+    ],
+    jp: [
+      '年次業績賞与・インセンティブ',
+      '確定拠出年金・積立基金制度',
+      '団体医療保険および年次定期健康診断',
+      '精勤手当および時間外勤務手当（残業手当）',
+      '国際安全基準ユニフォーム＆保護具（PPE）支給',
+      '海外技術研修・最新製缶技術視察機会',
+    ],
+    cn: [
+      '年终绩效奖金与业绩分红',
+      '公积金/养老保障计划',
+      '团体商业医疗保险与年度健康体检',
+      '全勤奖及合规加班补助 (OT)',
+      '国际标准劳保工装与安全PPE装备',
+      '海外先进制造技术培训与进修机会',
+    ],
+    mm: [
+      'နှစ်စဉ် လုပ်ငန်းစွမ်းဆောင်ရည် ဘောနပ်စ်',
+      'အရန်ငွေစု ရန်ပုံငွေ အစီအစဉ်',
+      'အဖွဲ့လိုက် ကျန်းမာရေးအာမခံနှင့် နှစ်စဉ် ကျန်းမာရေးစစ်ဆေးမှု',
+      'ရက်မှန်ကြေးနှင့် အချိန်ပိုလုပ်ခ (OT)',
+      'နိုင်ငံတကာစံချိန်မီ ယူနီဖောင်းနှင့် လုံခြုံရေးအကာအကွယ်ပစ္စည်းများ',
+      'ပြည်ပနည်းပညာ လေ့လာသင်တန်း အခွင့်အလမ်းများ',
+    ],
+  },
   careersJobs: [
     {
       id: 'job-1',
@@ -717,6 +842,12 @@ export const DEFAULT_SITE_SETTINGS: SiteContentSettings = {
       ],
       salaryRange: '30,000 - 45,000 บาท/เดือน',
       active: true,
+      translations: {
+        en: { title: 'Production Engineer (High-Speed Can Welding)', department: 'Production & Engineering', location: 'Samut Sakhon Plant', description: 'Operate and tune Soudronic high-speed seam welders, oversee canbody integrity, and collaborate with maintenance engineering.' },
+        jp: { title: '高速製缶溶接ライン製造エンジニア', department: '製造・エンジニアリング部門', location: 'タイ・サムットサコーン工場', description: 'スイス・ソウロニック高速製缶ラインの運転調整、溶接シーム品質管理、設備保全の統括。' },
+        cn: { title: '高速焊接生产线工程师 (Production Engineer)', department: '生产工程部', location: '龙仔厝府工厂', description: '负责Soudronic高速罐身焊机操控与工艺调校，监控焊缝卷封质量，配合设备维护。' },
+        mm: { title: 'ထုတ်လုပ်မှု အင်ဂျင်နီယာ (ဂဟေဆက်လိုင်း)', department: 'ထုတ်လုပ်မှုနှင့် အင်ဂျင်နီယာဌာန', location: 'စမွတ်စာခွန် စက်ရုံ', description: 'Soudronic အမြန်နှုန်းမြင့် စက်များကို ထိန်းချုပ်မောင်းနှင်ပြီး ထုတ်လုပ်မှုအရည်အသွေးကို စစ်ဆေးရမည်။' },
+      },
     },
     {
       id: 'job-2',
@@ -733,6 +864,12 @@ export const DEFAULT_SITE_SETTINGS: SiteContentSettings = {
       ],
       salaryRange: '24,000 - 35,000 บาท/เดือน',
       active: true,
+      translations: {
+        en: { title: 'QA/QC Specialist (Food Packaging Standards)', department: 'Quality Assurance', location: 'Samut Sakhon Plant', description: 'Inspect double seam integrity, tensile and pressure resistance, internal lacquer continuity, and manage FSSC 22000 audits.' },
+        jp: { title: '品質保証・分析スペシャリスト (QA/QC)', department: '品質保証部門', location: 'タイ・サムットサコーン工場', description: '二重巻締寸法測定、耐圧・引張強度試験、内面ラッカー通電検査、FSSC 22000監査対応。' },
+        cn: { title: '质量控制与化验专员 (QA/QC Specialist)', department: '品质保障部', location: '龙仔厝府工厂', description: '执行双重卷封检测、耐压/拉力试验、内部耐腐蚀涂膜测试及FSSC 22000食品安全体系审核。' },
+        mm: { title: 'အရည်အသွေးထိန်းသိမ်းရေး ကျွမ်းကျင်သူ (QA/QC)', department: 'အရည်အသွေးအာမခံဌာန', location: 'စမွတ်စာခွန် စက်ရုံ', description: 'သံဗူးလုံခြုံမှု၊ ဖိအားဒဏ်ခံနိုင်မှုနှင့် အတွင်းပိုင်းအလွှာများကို FSSC 22000 စံချိန်စံညွှန်းဖြင့် စစ်ဆေးရမည်။' },
+      },
     },
     {
       id: 'job-3',
@@ -749,6 +886,12 @@ export const DEFAULT_SITE_SETTINGS: SiteContentSettings = {
       ],
       salaryRange: '35,000 - 60,000 บาท/เดือน + ค่าคอมมิชชัน',
       active: true,
+      translations: {
+        en: { title: 'Overseas Sales Executive (International B2B)', department: 'Sales & Business Development', location: 'Head Office (Bangkok) / Hybrid', description: 'Cultivate and manage export accounts for food and industrial metal packaging across Asia, Europe, and Middle East.' },
+        jp: { title: '海外営業・アカウントエグゼクティブ', department: '海外営業・事業開発部', location: 'バンコク本社 / ハイブリッド勤務', description: 'アジア・欧州・中東市場に向けた食品加工メーカー向け金属パッケージングの海外B2B営業展開。' },
+        cn: { title: '海外业务经理 (Overseas Sales Executive)', department: '海外销售与业务拓展部', location: '曼谷总部 / 混合办公', description: '负责亚洲、欧美及中东食品加工巨头与跨国客户的B2B金属包装出口拓展与客户维护。' },
+        mm: { title: 'နိုင်ငံတကာ အရောင်းအရာရှိ (Overseas Sales)', department: 'အရောင်းနှင့် စီးပွားရေးဌာန', location: 'ရုံးချုပ် (ဘန်ကောက်) / Hybrid', description: 'အာရှနှင့် ဥရောပရှိ စားသောက်ကုန်လုပ်ငန်းကြီးများသို့ သတ္တုထုပ်ပိုးပစ္စည်းများ တင်ပို့ရောင်းချမှုကို တာဝန်ယူရမည်။' },
+      },
     },
   ],
 
@@ -836,6 +979,24 @@ export const DEFAULT_SITE_SETTINGS: SiteContentSettings = {
 
 const STORAGE_KEY = 'lohakit_site_content_settings';
 
+const mergeCards = <T extends { id: string; translations?: any }>(
+  saved: T[] | undefined,
+  defaults: T[]
+): T[] => {
+  if (!saved || saved.length === 0) return defaults;
+  return saved.map((card) => {
+    const def = defaults.find((d) => d.id === card.id);
+    if (!def) return card;
+    return {
+      ...card,
+      translations: {
+        ...(def.translations || {}),
+        ...(card.translations || {}),
+      },
+    };
+  });
+};
+
 export const updateBrowserFavicon = (
   iconUrl?: string,
   logoText?: string,
@@ -880,11 +1041,13 @@ export const useSiteContent = () => {
           ...DEFAULT_SITE_SETTINGS,
           ...parsed,
           navTabs: parsed.navTabs && parsed.navTabs.length > 0 ? parsed.navTabs : DEFAULT_SITE_SETTINGS.navTabs,
-          sustainabilityCards: parsed.sustainabilityCards || DEFAULT_SITE_SETTINGS.sustainabilityCards,
-          technologyCards: parsed.technologyCards || DEFAULT_SITE_SETTINGS.technologyCards,
-          servicesList: parsed.servicesList || DEFAULT_SITE_SETTINGS.servicesList,
-          careersJobs: parsed.careersJobs || DEFAULT_SITE_SETTINGS.careersJobs,
+          categoryCards: mergeCards(parsed.categoryCards, DEFAULT_SITE_SETTINGS.categoryCards),
+          sustainabilityCards: mergeCards(parsed.sustainabilityCards, DEFAULT_SITE_SETTINGS.sustainabilityCards),
+          technologyCards: mergeCards(parsed.technologyCards, DEFAULT_SITE_SETTINGS.technologyCards),
+          servicesList: mergeCards(parsed.servicesList, DEFAULT_SITE_SETTINGS.servicesList),
+          careersJobs: mergeCards(parsed.careersJobs, DEFAULT_SITE_SETTINGS.careersJobs),
           careersBenefits: parsed.careersBenefits || DEFAULT_SITE_SETTINGS.careersBenefits,
+          careersBenefitsTranslations: parsed.careersBenefitsTranslations || DEFAULT_SITE_SETTINGS.careersBenefitsTranslations,
           heroImages: parsed.heroImages || DEFAULT_SITE_SETTINGS.heroImages,
           heroTranslations: parsed.heroTranslations || DEFAULT_SITE_SETTINGS.heroTranslations,
           aboutTranslations: parsed.aboutTranslations || DEFAULT_SITE_SETTINGS.aboutTranslations,
@@ -894,8 +1057,8 @@ export const useSiteContent = () => {
           careersTranslations: parsed.careersTranslations || DEFAULT_SITE_SETTINGS.careersTranslations,
           contactTranslations: parsed.contactTranslations || DEFAULT_SITE_SETTINGS.contactTranslations,
           brandLegalTranslations: parsed.brandLegalTranslations || DEFAULT_SITE_SETTINGS.brandLegalTranslations,
-          featureBadges: parsed.featureBadges || DEFAULT_SITE_SETTINGS.featureBadges,
-          branches: parsed.branches || DEFAULT_SITE_SETTINGS.branches,
+          featureBadges: mergeCards(parsed.featureBadges, DEFAULT_SITE_SETTINGS.featureBadges),
+          branches: mergeCards(parsed.branches, DEFAULT_SITE_SETTINGS.branches || []),
         };
       }
     } catch (e) {}
@@ -937,12 +1100,13 @@ export const useSiteContent = () => {
                   ...prev,
                   ...remoteSettings,
                   navTabs: remoteSettings.navTabs || prev.navTabs || DEFAULT_SITE_SETTINGS.navTabs,
-                  categoryCards: remoteSettings.categoryCards || prev.categoryCards || DEFAULT_SITE_SETTINGS.categoryCards,
-                  sustainabilityCards: remoteSettings.sustainabilityCards || prev.sustainabilityCards || DEFAULT_SITE_SETTINGS.sustainabilityCards,
-                  technologyCards: remoteSettings.technologyCards || prev.technologyCards || DEFAULT_SITE_SETTINGS.technologyCards,
-                  servicesList: remoteSettings.servicesList || prev.servicesList || DEFAULT_SITE_SETTINGS.servicesList,
-                  careersJobs: remoteSettings.careersJobs || prev.careersJobs || DEFAULT_SITE_SETTINGS.careersJobs,
+                  categoryCards: mergeCards(remoteSettings.categoryCards || prev.categoryCards, DEFAULT_SITE_SETTINGS.categoryCards),
+                  sustainabilityCards: mergeCards(remoteSettings.sustainabilityCards || prev.sustainabilityCards, DEFAULT_SITE_SETTINGS.sustainabilityCards),
+                  technologyCards: mergeCards(remoteSettings.technologyCards || prev.technologyCards, DEFAULT_SITE_SETTINGS.technologyCards),
+                  servicesList: mergeCards(remoteSettings.servicesList || prev.servicesList, DEFAULT_SITE_SETTINGS.servicesList),
+                  careersJobs: mergeCards(remoteSettings.careersJobs || prev.careersJobs, DEFAULT_SITE_SETTINGS.careersJobs),
                   careersBenefits: remoteSettings.careersBenefits || prev.careersBenefits || DEFAULT_SITE_SETTINGS.careersBenefits,
+                  careersBenefitsTranslations: remoteSettings.careersBenefitsTranslations || prev.careersBenefitsTranslations || DEFAULT_SITE_SETTINGS.careersBenefitsTranslations,
                   heroImages: remoteSettings.heroImages || prev.heroImages || DEFAULT_SITE_SETTINGS.heroImages,
                   heroTranslations: remoteSettings.heroTranslations || prev.heroTranslations || DEFAULT_SITE_SETTINGS.heroTranslations,
                   aboutTranslations: remoteSettings.aboutTranslations || prev.aboutTranslations || DEFAULT_SITE_SETTINGS.aboutTranslations,
@@ -952,8 +1116,8 @@ export const useSiteContent = () => {
                   careersTranslations: remoteSettings.careersTranslations || prev.careersTranslations || DEFAULT_SITE_SETTINGS.careersTranslations,
                   contactTranslations: remoteSettings.contactTranslations || prev.contactTranslations || DEFAULT_SITE_SETTINGS.contactTranslations,
                   brandLegalTranslations: remoteSettings.brandLegalTranslations || prev.brandLegalTranslations || DEFAULT_SITE_SETTINGS.brandLegalTranslations,
-                  featureBadges: remoteSettings.featureBadges || prev.featureBadges || DEFAULT_SITE_SETTINGS.featureBadges,
-                  branches: remoteSettings.branches || prev.branches || DEFAULT_SITE_SETTINGS.branches,
+                  featureBadges: mergeCards(remoteSettings.featureBadges || prev.featureBadges, DEFAULT_SITE_SETTINGS.featureBadges),
+                  branches: mergeCards(remoteSettings.branches || prev.branches, DEFAULT_SITE_SETTINGS.branches || []),
                 };
                 try {
                   localStorage.setItem(STORAGE_KEY, JSON.stringify(merged));
