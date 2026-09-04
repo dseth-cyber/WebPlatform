@@ -120,12 +120,12 @@ export const Header: React.FC<HeaderProps> = ({ currentPath, onNavigate }) => {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 w-full transition-all duration-300 font-sans border-none shadow-none ${
-        isScrolled
-          ? 'bg-theme-bg/85 backdrop-blur-xl'
-          : isHome
-          ? 'bg-gradient-to-b from-black/80 via-black/25 to-transparent'
-          : 'bg-transparent'
+      className={`fixed top-0 left-0 right-0 z-[100] w-full transition-all duration-300 font-sans ${
+        isHome
+          ? isScrolled
+            ? 'bg-theme-bg/95 backdrop-blur-xl border-b border-theme-border/60 shadow-sm'
+            : 'bg-gradient-to-b from-black/80 via-black/25 to-transparent border-none shadow-none'
+          : 'bg-theme-bg/95 backdrop-blur-xl border-b border-theme-border/60 shadow-sm'
       }`}
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">

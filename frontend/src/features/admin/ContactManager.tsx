@@ -23,6 +23,7 @@ import {
   Star,
 } from 'lucide-react';
 import { Modal } from '../../components/ui/Modal';
+import { formatGoogleMapsUrl } from '../../utils/mapUtils';
 import { ConfirmDialog } from '../../components/ui/ConfirmDialog';
 
 interface CustomerInquiry {
@@ -485,7 +486,7 @@ export const ContactManager: React.FC = () => {
                     <div className="flex items-center gap-1">
                       {b.mapUrl && (
                         <a
-                          href={b.mapUrl}
+                          href={formatGoogleMapsUrl(b.mapUrl, b.addressTh)}
                           target="_blank"
                           rel="noreferrer"
                           className="rounded-lg p-1.5 text-theme-text-dim hover:text-theme-primary"
@@ -779,14 +780,33 @@ export const ContactManager: React.FC = () => {
           </div>
 
           <div>
-            <label className="font-bold text-theme-text block mb-1">ลิงก์ Google Maps (สำหรับกดนำทาง)</label>
+            <div className="flex items-center justify-between mb-1">
+              <label className="font-bold text-theme-text block">ลิงก์ Google Maps (สำหรับให้ลูกค้ากดเปิดแผนที่นำทาง)</label>
+              {bMapUrl && (
+                <a
+                  href={formatGoogleMapsUrl(bMapUrl, bAddressTh)}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-[11px] font-bold text-theme-primary hover:underline flex items-center gap-1"
+                >
+                  <ExternalLink className="h-3 w-3" />
+                  ทดสอบเปิดดูแผนที่
+                </a>
+              )}
+            </div>
             <input
               type="text"
               value={bMapUrl}
               onChange={(e) => setBMapUrl(e.target.value)}
-              placeholder="https://maps.google.com/?q=..."
-              className="w-full rounded-xl border border-theme-border bg-theme-surface-elevated px-3 py-2 text-theme-text font-mono"
+              placeholder="เช่น https://maps.app.goo.gl/... หรือ 13.6265, 100.2642 หรือ ชื่อสถานที่"
+              className="w-full rounded-xl border border-theme-border bg-theme-surface-elevated px-3 py-2 text-theme-text font-mono text-xs"
             />
+            <div className="mt-1.5 p-2.5 rounded-xl bg-theme-surface border border-theme-border/70 text-[11px] text-theme-text-muted space-y-1">
+              <span className="font-bold text-theme-text block">💡 สามารถเลือกใส่ได้ 3 รูปแบบตามสะดวก:</span>
+              <p>• <strong>วิธีที่ 1 (แนะนำ):</strong> ลิงก์แชร์จาก Google Maps &gt; เปิด Google Maps &gt; กด <strong>"แชร์" (Share)</strong> &gt; <strong>"คัดลอกลิงก์"</strong> (เช่น <code className="text-theme-primary font-mono">https://maps.app.goo.gl/...</code>)</p>
+              <p>• <strong>วิธีที่ 2 (พิกัด):</strong> ใส่ตัวเลข ละติจูด,ลองจิจูด ตรงๆ ได้เลย เช่น <code className="text-theme-primary font-mono">13.6265, 100.2642</code> (คลิกขวาบนแผนที่จะมีตัวเลขพิกัดให้คัดลอก)</p>
+              <p>• <strong>วิธีที่ 3 (ชื่อสถานที่):</strong> พิมพ์ชื่อบริษัทหรือที่อยู่ เช่น <code className="text-theme-primary font-mono">บริษัท ไคโอทรอน เทคโนโลยี จำกัด สมุทรสาคร</code> (ระบบจะสร้างลิงก์ค้นหาให้อัตโนมัติ)</p>
+            </div>
           </div>
 
           <div className="flex items-center gap-2 pt-1">

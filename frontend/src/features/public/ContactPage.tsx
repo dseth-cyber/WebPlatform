@@ -6,6 +6,7 @@ import { z } from 'zod';
 import { apiClient } from '../../api/client';
 import { useSiteContent } from '../../hooks/useSiteContent';
 import { SearchableSelect, SelectOption } from '../../components/ui/SearchableSelect';
+import { formatGoogleMapsUrl } from '../../utils/mapUtils';
 import {
   MapPin,
   Phone,
@@ -374,7 +375,7 @@ export const ContactPage: React.FC<{ onNavigate: (path: string) => void }> = () 
             </div>
 
             <a
-              href={currentBranch.mapUrl || `https://maps.google.com/?q=${encodeURIComponent(currentBranch.addressTh)}`}
+              href={formatGoogleMapsUrl(currentBranch.mapUrl, currentBranch.addressTh)}
               target="_blank"
               rel="noreferrer"
               className="flex items-center justify-center gap-2 w-full rounded-xl border border-theme-border bg-theme-surface-elevated py-3 text-xs font-bold text-theme-text hover:bg-theme-surface hover:border-theme-primary hover:text-theme-primary transition-all shadow-sm"

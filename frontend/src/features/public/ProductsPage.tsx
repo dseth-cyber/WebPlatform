@@ -57,12 +57,9 @@ export const ProductsPage: React.FC<{ onNavigate: (path: string) => void }> = ({
       </div>
 
       {/* Filter and Search Bar */}
-      <div
-        style={{ position: 'relative', zIndex: 50 }}
-        className="rounded-2xl border border-theme-border bg-theme-surface-elevated/70 p-4 backdrop-blur-md shadow-glass-edge flex flex-col md:flex-row gap-4 items-center justify-between"
-      >
+      <div className="relative z-20 rounded-2xl border border-theme-border bg-theme-surface-elevated/70 p-4 backdrop-blur-md shadow-glass-edge flex flex-col md:flex-row gap-4 items-center justify-between">
         {/* Category Filter Dropdown using SearchableSelect */}
-        <div style={{ position: 'relative', zIndex: 60 }} className="w-full md:w-80">
+        <div className="relative z-30 w-full md:w-80">
           <label className="text-[10px] font-bold uppercase tracking-wider text-theme-text-dim block mb-1">
             {t('products.filterCategory')}
           </label>
@@ -93,7 +90,7 @@ export const ProductsPage: React.FC<{ onNavigate: (path: string) => void }> = ({
       </div>
 
       {/* Products Grid */}
-      <div style={{ position: 'relative', zIndex: 1 }}>
+      <div className="relative z-10">
       {isLoading ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {Array.from({ length: 6 }).map((_, i) => (

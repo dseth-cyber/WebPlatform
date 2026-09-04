@@ -42,6 +42,7 @@ import { useSiteContent } from '../../hooks/useSiteContent';
 import { useNews } from '../../hooks/useNews';
 import { useProducts } from '../../hooks/useProducts';
 import { formatDate } from '../../utils/dateUtils';
+import { formatGoogleMapsUrl } from '../../utils/mapUtils';
 import { Modal } from '../../components/ui/Modal';
 
 const TECH_ICONS: Record<string, React.FC<{ className?: string }>> = {
@@ -1155,10 +1156,7 @@ export const HomePage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
 
             <div className="flex items-center justify-between text-[11px] pt-1">
               <a
-                href={
-                  currentBranch.mapUrl ||
-                  `https://maps.google.com/?q=${encodeURIComponent(currentBranch.addressTh)}`
-                }
+                href={formatGoogleMapsUrl(currentBranch.mapUrl, currentBranch.addressTh)}
                 target="_blank"
                 rel="noreferrer"
                 className="font-bold text-theme-primary hover:underline flex items-center gap-1"
