@@ -129,11 +129,13 @@ export const AuditLogManager: React.FC = () => {
           <button
             type="button"
             onClick={() => setAutoPurgeModalOpen(true)}
-            className="flex items-center gap-1.5 rounded-xl border border-theme-border bg-theme-surface px-3.5 py-2 text-xs font-semibold text-theme-text hover:border-theme-primary transition-colors"
-            title="ตั้งค่านโยบายลบประวัติอัตโนมัติ"
+            className="flex items-center gap-1.5 rounded-xl border border-theme-border bg-theme-surface px-3.5 py-2 text-xs font-semibold text-theme-text hover:border-theme-primary transition-colors cursor-pointer"
+            title={t('admin.autoRetentionModalTitle', 'ตั้งค่านโยบายลบประวัติอัตโนมัติ')}
           >
             <Clock className="h-3.5 w-3.5 text-theme-primary" />
-            <span>ตั้งค่าลบอัตโนมัติ ({retentionDays === '0' ? 'ไม่ลบ' : `${retentionDays} วัน`})</span>
+            <span>
+              {t('admin.autoPurgeSettings', 'ตั้งค่าลบอัตโนมัติ')} ({retentionDays === '0' ? t('admin.neverPurge', 'ไม่ลบ') : `${retentionDays} ${t('admin.days', 'วัน')}`})
+            </span>
           </button>
 
           {/* Refresh Button */}
@@ -141,9 +143,9 @@ export const AuditLogManager: React.FC = () => {
             type="button"
             onClick={() => {
               refetch();
-              showToast('รีเฟรชประวัติ Log ล่าสุดแล้ว');
+              showToast(t('admin.refreshSuccess', 'รีเฟรชประวัติ Log ล่าสุดแล้ว'));
             }}
-            className="flex items-center gap-1.5 rounded-xl border border-theme-border bg-theme-surface px-3.5 py-2 text-xs font-semibold text-theme-text hover:bg-theme-surface-hover"
+            className="flex items-center gap-1.5 rounded-xl border border-theme-border bg-theme-surface px-3.5 py-2 text-xs font-semibold text-theme-text hover:bg-theme-surface-hover cursor-pointer"
           >
             <RefreshCw className="h-3.5 w-3.5" />
             <span>{t('admin.refresh', 'รีเฟรช')}</span>
@@ -153,7 +155,7 @@ export const AuditLogManager: React.FC = () => {
           <button
             type="button"
             onClick={() => setPurgeAllConfirmOpen(true)}
-            className="flex items-center gap-1.5 rounded-xl border border-red-500/30 bg-red-500/10 px-3.5 py-2 text-xs font-bold text-red-400 hover:bg-red-500/20 transition-colors"
+            className="flex items-center gap-1.5 rounded-xl border border-red-500/30 bg-red-500/10 px-3.5 py-2 text-xs font-bold text-red-400 hover:bg-red-500/20 transition-colors cursor-pointer"
           >
             <Trash2 className="h-3.5 w-3.5" />
             <span>{t('admin.purgeAll', 'ล้างทั้งหมด')}</span>
@@ -169,7 +171,7 @@ export const AuditLogManager: React.FC = () => {
             type="text"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder="ค้นหา Actor, Action หรือ Resource..."
+            placeholder={t('admin.searchAuditLogs', 'ค้นหา Actor, Action หรือ Resource...')}
             className="w-full rounded-xl border border-theme-border bg-theme-surface-elevated py-2 pl-9 pr-3 text-xs text-theme-text placeholder-theme-text-dim focus:border-theme-primary focus:outline-none"
           />
         </div>
@@ -180,16 +182,16 @@ export const AuditLogManager: React.FC = () => {
             <button
               type="button"
               onClick={() => setDeleteConfirmOpen(true)}
-              className="flex items-center gap-1.5 rounded-xl bg-red-500 px-4 py-2 text-xs font-bold text-white shadow-lg shadow-red-500/30 hover:bg-red-600 transition-all animate-fadeIn"
+              className="flex items-center gap-1.5 rounded-xl bg-red-500 px-4 py-2 text-xs font-bold text-white shadow-lg shadow-red-500/30 hover:bg-red-600 transition-all animate-fadeIn cursor-pointer"
             >
               <Trash2 className="h-3.5 w-3.5" />
-              <span>ลบรายการที่เลือก ({selectedIds.length})</span>
+              <span>{t('admin.deleteSelected', 'ลบรายการที่เลือก')} ({selectedIds.length})</span>
             </button>
           )}
 
           {/* Rows Per Page Selector */}
           <div className="flex items-center gap-2 text-xs text-theme-text-muted">
-            <span>แสดง:</span>
+            <span>{t('admin.showRows', 'แสดง:')}</span>
             <select
               value={pageSize}
               onChange={(e) => {
@@ -198,10 +200,10 @@ export const AuditLogManager: React.FC = () => {
               }}
               className="rounded-xl border border-theme-border bg-theme-surface-elevated px-2.5 py-1.5 text-xs text-theme-text font-bold"
             >
-              <option value={10}>10 แถว / หน้า</option>
-              <option value={20}>20 แถว / หน้า</option>
-              <option value={50}>50 แถว / หน้า</option>
-              <option value={100}>100 แถว / หน้า</option>
+              <option value={10}>10 {t('admin.rowsPerPage', 'แถว / หน้า')}</option>
+              <option value={20}>20 {t('admin.rowsPerPage', 'แถว / หน้า')}</option>
+              <option value={50}>50 {t('admin.rowsPerPage', 'แถว / หน้า')}</option>
+              <option value={100}>100 {t('admin.rowsPerPage', 'แถว / หน้า')}</option>
             </select>
           </div>
         </div>
@@ -227,19 +229,19 @@ export const AuditLogManager: React.FC = () => {
                       className="rounded border-theme-border text-theme-primary focus:ring-0 cursor-pointer"
                     />
                   </th>
-                  <th className="py-3 px-4">Date & Time</th>
-                  <th className="py-3 px-4">Actor</th>
-                  <th className="py-3 px-4">Action</th>
-                  <th className="py-3 px-4">Resource</th>
-                  <th className="py-3 px-4">IP Address</th>
-                  <th className="py-3 px-4 text-right">Inspect Diff</th>
+                  <th className="py-3 px-4">{t('admin.tableDateTime', 'Date & Time')}</th>
+                  <th className="py-3 px-4">{t('admin.tableActor', 'Actor')}</th>
+                  <th className="py-3 px-4">{t('admin.tableAction', 'Action')}</th>
+                  <th className="py-3 px-4">{t('admin.tableResource', 'Resource')}</th>
+                  <th className="py-3 px-4">{t('admin.tableIpAddress', 'IP Address')}</th>
+                  <th className="py-3 px-4 text-right">{t('admin.tableInspectDiff', 'Inspect Diff')}</th>
                 </tr>
               </thead>
               <tbody>
                 {paginatedLogs.length === 0 ? (
                   <tr>
                     <td colSpan={7} className="py-8 text-center text-xs text-theme-text-dim">
-                      ไม่พบประวัติการทำงาน
+                      {t('admin.noAuditLogs', 'ไม่พบประวัติการทำงาน')}
                     </td>
                   </tr>
                 ) : (
@@ -261,7 +263,7 @@ export const AuditLogManager: React.FC = () => {
                           />
                         </td>
                         <td className="py-3 px-4 text-theme-text-dim">
-                          {new Date(log.createdAt).toLocaleString('th-TH')}
+                          {new Date(log.createdAt).toLocaleString()}
                         </td>
                         <td className="py-3 px-4 text-theme-text font-sans font-medium">
                           {log.userName || log.userEmail || 'Administrator'}
@@ -277,10 +279,10 @@ export const AuditLogManager: React.FC = () => {
                           <button
                             type="button"
                             onClick={() => setSelectedLog(log)}
-                            className="inline-flex items-center gap-1 rounded-lg border border-theme-border bg-theme-surface px-2.5 py-1 text-xs font-semibold text-theme-text hover:text-theme-primary hover:border-theme-primary transition-colors"
+                            className="inline-flex items-center gap-1 rounded-lg border border-theme-border bg-theme-surface px-2.5 py-1 text-xs font-semibold text-theme-text hover:text-theme-primary hover:border-theme-primary transition-colors cursor-pointer"
                           >
                             <Eye className="h-3 w-3" />
-                            <span>View Diff</span>
+                            <span>{t('admin.viewDiff', 'View Diff')}</span>
                           </button>
                         </td>
                       </tr>
@@ -306,32 +308,32 @@ export const AuditLogManager: React.FC = () => {
       <Modal
         isOpen={autoPurgeModalOpen}
         onClose={() => setAutoPurgeModalOpen(false)}
-        title="ตั้งค่านโยบายลบ Log อัตโนมัติ (Audit Log Auto-Retention)"
+        title={t('admin.autoRetentionModalTitle', 'ตั้งค่านโยบายลบ Log อัตโนมัติ (Audit Log Auto-Retention)')}
         maxWidth="md"
       >
         <div className="space-y-4 text-xs font-sans">
           <div className="flex items-center gap-3 p-3.5 rounded-2xl bg-theme-surface-elevated border border-theme-border">
             <Clock className="h-6 w-6 text-theme-primary flex-shrink-0" />
             <p className="text-theme-text-muted">
-              ระบบจะล้างประวัติการทำงาน (Audit Trail) ที่มีอายุเกินระยะเวลาที่กำหนดโดยอัตโนมัติ เพื่อประหยัดพื้นที่ฐานข้อมูล
+              {t('admin.autoRetentionDesc', 'ระบบจะล้างประวัติการทำงาน (Audit Trail) ที่มีอายุเกินระยะเวลาที่กำหนดโดยอัตโนมัติ เพื่อประหยัดพื้นที่ฐานข้อมูล')}
             </p>
           </div>
 
           <div>
             <label className="font-bold text-theme-text block mb-1.5">
-              ระยะเวลาเก็บประวัติ Log (Retention Period)
+              {t('admin.retentionPeriod', 'ระยะเวลาเก็บประวัติ Log (Retention Period)')}
             </label>
             <select
               value={retentionDays}
               onChange={(e) => setRetentionDays(e.target.value)}
               className="w-full rounded-xl border border-theme-border bg-theme-surface px-3.5 py-2.5 text-xs text-theme-text font-bold"
             >
-              <option value="30">เก็บไว้ 30 วัน (ลบประวัติที่เก่ากว่า 1 เดือน)</option>
-              <option value="60">เก็บไว้ 60 วัน (ลบประวัติที่เก่ากว่า 2 เดือน)</option>
-              <option value="90">เก็บไว้ 90 วัน (ลบประวัติที่เก่ากว่า 3 เดือน - แนะนำ)</option>
-              <option value="180">เก็บไว้ 180 วัน (ลบประวัติที่เก่ากว่า 6 เดือน)</option>
-              <option value="365">เก็บไว้ 365 วัน (ลบประวัติที่เก่ากว่า 1 ปี)</option>
-              <option value="0">เก็บไว้ตลอดไป (ไม่ลบอัตโนมัติ)</option>
+              <option value="30">{t('admin.retention30', 'เก็บไว้ 30 วัน (ลบประวัติที่เก่ากว่า 1 เดือน)')}</option>
+              <option value="60">{t('admin.retention60', 'เก็บไว้ 60 วัน (ลบประวัติที่เก่ากว่า 2 เดือน)')}</option>
+              <option value="90">{t('admin.retention90', 'เก็บไว้ 90 วัน (ลบประวัติที่เก่ากว่า 3 เดือน - แนะนำ)')}</option>
+              <option value="180">{t('admin.retention180', 'เก็บไว้ 180 วัน (ลบประวัติที่เก่ากว่า 6 เดือน)')}</option>
+              <option value="365">{t('admin.retention365', 'เก็บไว้ 365 วัน (ลบประวัติที่เก่ากว่า 1 ปี)')}</option>
+              <option value="0">{t('admin.retentionForever', 'เก็บไว้ตลอดไป (ไม่ลบอัตโนมัติ)')}</option>
             </select>
           </div>
 
@@ -339,16 +341,16 @@ export const AuditLogManager: React.FC = () => {
             <button
               type="button"
               onClick={() => setAutoPurgeModalOpen(false)}
-              className="rounded-xl border border-theme-border bg-theme-surface px-4 py-2 font-semibold text-theme-text hover:bg-theme-surface-elevated"
+              className="rounded-xl border border-theme-border bg-theme-surface px-4 py-2 font-semibold text-theme-text hover:bg-theme-surface-elevated cursor-pointer"
             >
-              ยกเลิก
+              {t('common.cancel', 'ยกเลิก')}
             </button>
             <button
               type="button"
               onClick={handleSaveRetention}
-              className="rounded-xl bg-theme-primary px-6 py-2 font-black text-black shadow-lg shadow-theme-primary/25 hover:bg-theme-primary-hover"
+              className="rounded-xl bg-theme-primary px-6 py-2 font-black text-black shadow-lg shadow-theme-primary/25 hover:bg-theme-primary-hover cursor-pointer"
             >
-              บันทึกนโยบาย
+              {t('admin.savePolicy', 'บันทึกนโยบาย')}
             </button>
           </div>
         </div>

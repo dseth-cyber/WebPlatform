@@ -923,11 +923,11 @@ export const SettingsManager: React.FC = () => {
           compact
           title={t('admin.brandLegalTranslationsTitle')}
           fields={[
-            { key: 'companyName', label: t('admin.companyNameEn', 'Company Name (English)') },
-            { key: 'registeredCapital', label: t('admin.registeredCapital', 'ทุนจดทะเบียน (Registered Capital)') },
-            { key: 'taxId', label: t('admin.taxId', 'เลขประจำตัวผู้เสียภาษี (Tax ID)') },
-            { key: 'establishedYear', label: t('admin.establishedYear', 'ปีก่อตั้ง (Established Year)') },
-            { key: 'factoryAddress', label: t('admin.legalAddress', 'ที่อยู่สำนักงาน / โรงงาน (Legal Address)'), type: 'textarea', rows: 2 },
+            { key: 'companyName', label: t('admin.companyName', 'Company Name'), labelKey: 'admin.companyName' },
+            { key: 'registeredCapital', label: t('admin.registeredCapital', 'ทุนจดทะเบียน (Registered Capital)'), labelKey: 'admin.registeredCapital' },
+            { key: 'taxId', label: t('admin.taxId', 'เลขประจำตัวผู้เสียภาษี (Tax ID)'), labelKey: 'admin.taxId' },
+            { key: 'establishedYear', label: t('admin.establishedYear', 'ปีก่อตั้ง (Established Year)'), labelKey: 'admin.establishedYear' },
+            { key: 'factoryAddress', label: t('admin.legalAddress', 'ที่อยู่สำนักงาน / โรงงาน (Legal Address)'), labelKey: 'admin.legalAddress', type: 'textarea', rows: 2 },
           ]}
           value={(formState.brandLegalTranslations || {
             en: { companyName: '', registeredCapital: '', taxId: '', establishedYear: '', factoryAddress: '' },

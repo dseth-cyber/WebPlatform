@@ -457,7 +457,7 @@ export const ServicesManager: React.FC = () => {
             className="inline-flex items-center gap-2 rounded-xl bg-theme-primary px-6 py-3 text-xs font-bold text-black shadow-lg shadow-theme-primary/20 hover:opacity-90 disabled:opacity-50 transition-all"
           >
             <Save className="h-4 w-4" />
-            <span>{isSaving ? t('admin.saving', 'กำลังบันทึกข้อมูล...') : t('admin.saveAllSettings', 'บันทึกการเปลี่ยนแปลงทั้งหมด')}</span>
+            <span>{isSaving ? t('admin.saving', 'กำลังบันทึกข้อมูล...') : t('admin.saveAllChanges', 'บันทึกการเปลี่ยนแปลงทั้งหมด')}</span>
           </button>
         </div>
       </form>

@@ -68,6 +68,9 @@ export const MultiLangSectionEditor: React.FC<MultiLangSectionEditorProps> = ({
         return t('admin.fieldCompanyBio', 'Company Bio / Overview');
       case 'Business Hours':
         return t('admin.businessHours', 'Business Hours');
+      case 'Company Name':
+      case 'Company Name (English)':
+        return t('admin.companyName', 'Company Name');
       default:
         return field.label;
     }

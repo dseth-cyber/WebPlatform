@@ -173,10 +173,10 @@ export const MediaLibrary: React.FC = () => {
         <button
           type="button"
           onClick={() => setUploadModalOpen(true)}
-          className="flex items-center gap-2 rounded-xl bg-theme-primary px-5 py-2.5 text-xs font-black text-black shadow-lg shadow-theme-primary/25 hover:bg-theme-primary-hover transition-all"
+          className="flex items-center gap-2 rounded-xl bg-theme-primary px-5 py-2.5 text-xs font-black text-black shadow-lg shadow-theme-primary/25 hover:bg-theme-primary-hover transition-all cursor-pointer"
         >
           <UploadCloud className="h-4 w-4 text-black" />
-          <span>+ อัปโหลดไฟล์ใหม่</span>
+          <span>{t('admin.uploadNewFile', '+ อัปโหลดไฟล์ใหม่')}</span>
         </button>
       </div>
 
@@ -196,7 +196,7 @@ export const MediaLibrary: React.FC = () => {
             type="text"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder="ค้นหาชื่อไฟล์..."
+            placeholder={t('admin.searchFilename', 'ค้นหาชื่อไฟล์...')}
             className="w-full rounded-xl border border-theme-border bg-theme-surface-elevated py-2 pl-9 pr-3 text-xs text-theme-text placeholder-theme-text-dim focus:border-theme-primary focus:outline-none"
           />
         </div>
@@ -258,11 +258,11 @@ export const MediaLibrary: React.FC = () => {
 
             <div className="grid grid-cols-2 gap-3 bg-theme-surface p-4 rounded-xl border border-theme-border font-mono text-[11px]">
               <div>
-                <span className="text-theme-text-dim block">ชื่อไฟล์:</span>
+                <span className="text-theme-text-dim block">{t('admin.filename', 'ชื่อไฟล์:')}</span>
                 <span className="text-theme-text truncate block font-bold">{selectedMedia.filename}</span>
               </div>
               <div>
-                <span className="text-theme-text-dim block">โฟลเดอร์:</span>
+                <span className="text-theme-text-dim block">{t('admin.folder', 'โฟลเดอร์:')}</span>
                 <span className="text-theme-primary uppercase font-bold">{selectedMedia.folder}</span>
               </div>
               <div>
@@ -279,20 +279,20 @@ export const MediaLibrary: React.FC = () => {
               <button
                 type="button"
                 onClick={() => handleCopyURL(selectedMedia.url, selectedMedia.id)}
-                className="flex items-center gap-1.5 rounded-xl border border-theme-border bg-theme-surface px-4 py-2 text-xs font-bold text-theme-text hover:text-theme-primary hover:border-theme-primary transition-all"
+                className="flex items-center gap-1.5 rounded-xl border border-theme-border bg-theme-surface px-4 py-2 text-xs font-bold text-theme-text hover:text-theme-primary hover:border-theme-primary transition-all cursor-pointer"
               >
                 {copiedId === selectedMedia.id ? (
                   <Check className="h-4 w-4 text-emerald-400" />
                 ) : (
                   <Copy className="h-4 w-4" />
                 )}
-                <span>{copiedId === selectedMedia.id ? 'คัดลอก URL แล้ว!' : 'คัดลอก Asset URL'}</span>
+                <span>{copiedId === selectedMedia.id ? t('admin.copied', 'คัดลอก URL แล้ว!') : t('admin.copyAssetUrl', 'คัดลอก Asset URL')}</span>
               </button>
 
               <button
                 type="button"
                 onClick={() => handleDeleteMedia(selectedMedia.id)}
-                className="flex items-center gap-1.5 rounded-xl border border-red-500/20 bg-red-500/10 px-4 py-2 text-xs font-bold text-red-400 hover:bg-red-500/20 transition-all"
+                className="flex items-center gap-1.5 rounded-xl border border-red-500/20 bg-red-500/10 px-4 py-2 text-xs font-bold text-red-400 hover:bg-red-500/20 transition-all cursor-pointer"
               >
                 <Trash2 className="h-4 w-4" />
                 <span>{t('admin.deleteFile', 'ลบไฟล์นี้')}</span>
@@ -306,14 +306,14 @@ export const MediaLibrary: React.FC = () => {
       <Modal
         isOpen={uploadModalOpen}
         onClose={() => setUploadModalOpen(false)}
-        title="อัปโหลดไฟล์สื่อใหม่ (Upload Assets)"
+        title={t('admin.uploadMediaModalTitle', 'อัปโหลดไฟล์สื่อใหม่ (Upload Assets)')}
         maxWidth="md"
       >
         <div className="space-y-4 text-xs font-sans">
           <div className="rounded-2xl border-2 border-dashed border-theme-primary/40 bg-theme-surface/50 p-8 text-center space-y-3">
             <UploadCloud className="h-10 w-10 text-theme-primary mx-auto animate-bounce" />
             <p className="font-bold text-sm text-theme-text">{t('admin.dragDropMedia', 'ลากไฟล์มาวางที่นี่ หรือคลิกเพื่อเลือกไฟล์')}</p>
-            <p className="text-[11px] text-theme-text-dim">รองรับ JPG, PNG, WEBP, SVG, PDF สูงสุด 50MB</p>
+            <p className="text-[11px] text-theme-text-dim">{t('admin.mediaFormatHint', 'รองรับ JPG, PNG, WEBP, SVG, PDF สูงสุด 50MB')}</p>
             <input
               type="file"
               multiple
@@ -325,9 +325,9 @@ export const MediaLibrary: React.FC = () => {
             <button
               type="button"
               onClick={() => document.getElementById('file-upload-input')?.click()}
-              className="mt-2 rounded-xl bg-theme-primary px-5 py-2.5 text-xs font-black text-black shadow-md hover:bg-theme-primary-hover"
+              className="mt-2 rounded-xl bg-theme-primary px-5 py-2.5 text-xs font-black text-black shadow-md hover:bg-theme-primary-hover cursor-pointer"
             >
-              เลือกไฟล์จากเครื่อง
+              {t('admin.browseFiles', 'เลือกไฟล์จากเครื่อง')}
             </button>
           </div>
 
@@ -335,9 +335,9 @@ export const MediaLibrary: React.FC = () => {
             <button
               type="button"
               onClick={() => setUploadModalOpen(false)}
-              className="rounded-xl border border-theme-border bg-theme-surface px-4 py-2 text-theme-text"
+              className="rounded-xl border border-theme-border bg-theme-surface px-4 py-2 text-theme-text cursor-pointer hover:bg-theme-surface-elevated"
             >
-              ยกเลิก
+              {t('common.cancel', 'ยกเลิก')}
             </button>
           </div>
         </div>

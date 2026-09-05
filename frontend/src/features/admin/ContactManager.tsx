@@ -503,10 +503,10 @@ export const ContactManager: React.FC = () => {
           compact
           title={t('admin.brandLegalTranslationsTitle', 'แปลภาษาข้อมูลแบรนด์และนิติบุคคล (Brand & Legal Entity Translations)')}
           fields={[
-            { key: 'companyName', label: `${t('admin.companyNameThLabel', 'ชื่อบริษัท')} (Company Name)` },
-            { key: 'registeredCapital', label: `${t('admin.registeredCapital', 'ทุนจดทะเบียน')} (Registered Capital)` },
-            { key: 'taxId', label: `${t('admin.taxId', 'เลขประจำตัวผู้เสียภาษี')} (Tax ID)` },
-            { key: 'establishedYear', label: `${t('admin.establishedYear', 'ปีก่อตั้ง')} (Established Year)` },
+            { key: 'companyName', label: t('admin.companyName', 'ชื่อบริษัท'), labelKey: 'admin.companyName' },
+            { key: 'registeredCapital', label: t('admin.registeredCapital', 'ทุนจดทะเบียน (Registered Capital)'), labelKey: 'admin.registeredCapital' },
+            { key: 'taxId', label: t('admin.taxId', 'เลขประจำตัวผู้เสียภาษี (Tax ID)'), labelKey: 'admin.taxId' },
+            { key: 'establishedYear', label: t('admin.establishedYear', 'ปีก่อตั้ง (Established Year)'), labelKey: 'admin.establishedYear' },
             { key: 'factoryAddress', label: t('admin.legalAddress', 'ที่อยู่สำนักงาน / โรงงาน (Legal Address)'), labelKey: 'admin.legalAddress', type: 'textarea', rows: 2 },
           ]}
           value={brandLegalTranslations}

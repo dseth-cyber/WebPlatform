@@ -554,9 +554,9 @@ export const UsersManager: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setResetModalOpen(false)}
-                className="rounded-xl border border-theme-border bg-theme-surface px-4 py-2 font-semibold text-theme-text hover:bg-theme-surface-elevated transition-colors"
+                className="rounded-xl border border-theme-border bg-theme-surface px-4 py-2 font-semibold text-theme-text hover:bg-theme-surface-elevated transition-colors cursor-pointer"
               >
-                ยกเลิก
+                {t('common.cancel', 'ยกเลิก')}
               </button>
               <button
                 type="button"
@@ -565,7 +565,7 @@ export const UsersManager: React.FC = () => {
                 className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 px-6 py-2.5 font-black text-black shadow-lg shadow-amber-500/25 hover:brightness-110 transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
               >
                 <Lock className="h-4 w-4 text-black" />
-                <span>{isResetting ? 'กำลังบันทึก...' : 'ยืนยันการเปลี่ยนรหัสผ่าน'}</span>
+                <span>{isResetting ? t('admin.saving', 'กำลังบันทึก...') : t('admin.confirmPasswordChange', 'ยืนยันการเปลี่ยนรหัสผ่าน')}</span>
               </button>
             </div>
           </div>
@@ -576,23 +576,23 @@ export const UsersManager: React.FC = () => {
       <Modal
         isOpen={modalOpen}
         onClose={() => setModalOpen(false)}
-        title={editingUser ? `แก้ไขข้อมูลผู้ใช้: ${editingUser.fullName}` : 'เพิ่มผู้ใช้งานระบบใหม่'}
+        title={editingUser ? `${t('admin.editUser', 'แก้ไขข้อมูลผู้ใช้')}: ${editingUser.fullName}` : t('admin.addNewUserModal', 'เพิ่มผู้ใช้งานระบบใหม่')}
         maxWidth="lg"
       >
         <div className="space-y-4 text-xs font-sans">
           <div>
-            <label className="font-bold text-theme-text block mb-1">ชื่อ-นามสกุล (Full Name) *</label>
+            <label className="font-bold text-theme-text block mb-1">{t('admin.userFullName', 'ชื่อ-นามสกุล (Full Name)')} *</label>
             <input
               type="text"
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
-              placeholder="เช่น สมชาย ใจดี"
+              placeholder={t('admin.fullNamePlaceholder', 'เช่น สมชาย ใจดี')}
               className="w-full rounded-xl border border-theme-border bg-theme-surface px-3 py-2 text-theme-text"
             />
           </div>
 
           <div>
-            <label className="font-bold text-theme-text block mb-1">อีเมลผู้ใช้งาน (Email) *</label>
+            <label className="font-bold text-theme-text block mb-1">{t('admin.userEmail', 'อีเมลผู้ใช้งาน (Email)')} *</label>
             <input
               type="email"
               value={email}
@@ -606,21 +606,21 @@ export const UsersManager: React.FC = () => {
           {!editingUser && (
             <div className="space-y-1.5">
               <div className="flex items-center justify-between">
-                <label className="font-bold text-theme-text block">รหัสผ่านเริ่มต้น (Initial Password)</label>
+                <label className="font-bold text-theme-text block">{t('admin.initialPassword', 'รหัสผ่านเริ่มต้น (Initial Password)')}</label>
                 <button
                   type="button"
                   onClick={() => generateStrongPassword('add')}
-                  className="text-[10px] font-bold text-theme-primary hover:underline flex items-center gap-1"
+                  className="text-[10px] font-bold text-theme-primary hover:underline flex items-center gap-1 cursor-pointer"
                 >
                   <RefreshCw className="h-3 w-3" />
-                  <span>🎲 สุ่มรหัสผ่าน</span>
+                  <span>🎲 {t('admin.generatePassword', 'สุ่มรหัสผ่าน')}</span>
                 </button>
               </div>
               <input
                 type="text"
                 value={initialPassword}
                 onChange={(e) => setInitialPassword(e.target.value)}
-                placeholder="เว้นว่างไว้หากต้องการให้ระบบสุ่มรหัสผ่านอัตโนมัติ"
+                placeholder={t('admin.passwordPlaceholder', 'เว้นว่างไว้หากต้องการให้ระบบสุ่มรหัสผ่านอัตโนมัติ')}
                 className="w-full rounded-xl border border-theme-border bg-theme-surface px-3 py-2 text-theme-text font-mono text-xs"
               />
             </div>
@@ -628,28 +628,28 @@ export const UsersManager: React.FC = () => {
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="font-bold text-theme-text block mb-1">สิทธิ์การใช้งาน (Role)</label>
+              <label className="font-bold text-theme-text block mb-1">{t('admin.role', 'สิทธิ์การใช้งาน (Role)')}</label>
               <select
                 value={role}
                 onChange={(e) => setRole(e.target.value)}
                 className="w-full rounded-xl border border-theme-border bg-theme-surface px-3 py-2 text-theme-text"
               >
-                <option value="SUPER_ADMIN">SUPER_ADMIN (ผู้ดูแลระบบสูงสุด)</option>
-                <option value="CONTENT_EDITOR">CONTENT_EDITOR (ผู้จัดการเนื้อหา)</option>
-                <option value="PRODUCT_MANAGER">PRODUCT_MANAGER (ผู้จัดการสินค้า)</option>
-                <option value="AUDITOR">AUDITOR (ผู้ตรวจสอบ Log)</option>
+                <option value="SUPER_ADMIN">SUPER_ADMIN ({t('admin.roleSuperAdmin', 'ผู้ดูแลระบบสูงสุด')})</option>
+                <option value="CONTENT_EDITOR">CONTENT_EDITOR ({t('admin.roleContentEditor', 'ผู้จัดการเนื้อหา')})</option>
+                <option value="PRODUCT_MANAGER">PRODUCT_MANAGER ({t('admin.roleProductManager', 'ผู้จัดการสินค้า')})</option>
+                <option value="AUDITOR">AUDITOR ({t('admin.roleAuditor', 'ผู้ตรวจสอบ Log')})</option>
               </select>
             </div>
             <div>
-              <label className="font-bold text-theme-text block mb-1">สถานะ (Status)</label>
+              <label className="font-bold text-theme-text block mb-1">{t('admin.status', 'สถานะ (Status)')}</label>
               <select
                 value={status}
                 onChange={(e) => setStatus(e.target.value as 'ACTIVE' | 'SUSPENDED' | 'LOCKED')}
                 className="w-full rounded-xl border border-theme-border bg-theme-surface px-3 py-2 text-theme-text"
               >
-                <option value="ACTIVE">ACTIVE (เปิดใช้งาน)</option>
-                <option value="SUSPENDED">SUSPENDED (ระงับการใช้งาน)</option>
-                <option value="LOCKED">LOCKED (ถูกล็อค)</option>
+                <option value="ACTIVE">ACTIVE ({t('admin.statusActive', 'เปิดใช้งาน')})</option>
+                <option value="SUSPENDED">SUSPENDED ({t('admin.statusSuspended', 'ระงับการใช้งาน')})</option>
+                <option value="LOCKED">LOCKED ({t('admin.statusLocked', 'ถูกล็อค')})</option>
               </select>
             </div>
           </div>
@@ -658,16 +658,16 @@ export const UsersManager: React.FC = () => {
             <button
               type="button"
               onClick={() => setModalOpen(false)}
-              className="rounded-xl border border-theme-border bg-theme-surface px-4 py-2 font-semibold text-theme-text hover:bg-theme-surface-elevated transition-colors"
+              className="rounded-xl border border-theme-border bg-theme-surface px-4 py-2 font-semibold text-theme-text hover:bg-theme-surface-elevated transition-colors cursor-pointer"
             >
-              ยกเลิก
+              {t('common.cancel', 'ยกเลิก')}
             </button>
             <button
               type="button"
               onClick={handleSave}
               className="rounded-xl bg-theme-primary px-6 py-2.5 font-black text-black shadow-lg shadow-theme-primary/25 hover:bg-theme-primary-hover transition-all cursor-pointer"
             >
-              บันทึกผู้ใช้
+              {t('admin.saveUser', 'บันทึกผู้ใช้')}
             </button>
           </div>
         </div>
