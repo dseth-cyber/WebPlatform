@@ -7,7 +7,7 @@ if [ -z "$1" ]; then
 fi
 
 BACKUP_FILE="$1"
-DB_CONTAINER="${DB_CONTAINER:-lohakit_postgres}"
+DB_CONTAINER="${DB_CONTAINER:-chiotron_postgres}"
 DB_USER="${DB_USER:-lohakit_admin}"
 DB_NAME="${DB_NAME:-lohakit_cms}"
 

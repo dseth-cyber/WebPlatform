@@ -6,7 +6,7 @@ TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
 BACKUP_FILE="${BACKUP_DIR}/lohakit_media_${TIMESTAMP}.tar.gz"
 
 SOURCE_DIR="./storage/uploads"
-MINIO_CONTAINER="${MINIO_CONTAINER:-lohakit_minio}"
+MINIO_CONTAINER="${MINIO_CONTAINER:-chiotron_minio}"
 
 mkdir -p "${BACKUP_DIR}"
 

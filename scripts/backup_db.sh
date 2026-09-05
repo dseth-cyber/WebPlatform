@@ -5,7 +5,7 @@ BACKUP_DIR="${BACKUP_DIR:-./backups/db}"
 TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
 BACKUP_FILE="${BACKUP_DIR}/lohakit_db_${TIMESTAMP}.sql.gz"
 
-DB_CONTAINER="${DB_CONTAINER:-lohakit_postgres}"
+DB_CONTAINER="${DB_CONTAINER:-chiotron_postgres}"
 DB_USER="${DB_USER:-lohakit_admin}"
 DB_NAME="${DB_NAME:-lohakit_cms}"
 

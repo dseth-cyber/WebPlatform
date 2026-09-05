@@ -12,7 +12,7 @@ RED='\033[0;31m'
 NC='\033[0m' # No Color
 
 echo -e "${CYAN}======================================================================${NC}"
-echo -e "${CYAN}   CHIOTRON TECHNOLOGY - Automatic One-Click Setup                   ${NC}"
+echo -e "${CYAN}   CHIOTRON TECHNOLOGY - Automatic One-Click Setup (HTTPS)            ${NC}"
 echo -e "${CYAN}======================================================================${NC}"
 echo ""
 
@@ -31,8 +31,8 @@ if ! docker info &> /dev/null; then
 fi
 
 # 3. Build & start containers
-echo -e "${GREEN}[1/3] Building and starting containers (PostgreSQL, MinIO, Go API, Nginx)...${NC}"
-docker compose up -d --build
+echo -e "${GREEN}[1/3] Building and starting CHIOTRON containers (chiotron_postgres, chiotron_minio, chiotron_api, chiotron_nginx)...${NC}"
+docker compose up -d --build --remove-orphans
 
 # 4. Wait for services
 echo ""
@@ -46,11 +46,11 @@ docker compose exec -T api /app/seeder || echo -e "${YELLOW}[NOTE] Seeder execut
 
 echo ""
 echo -e "${CYAN}======================================================================${NC}"
-echo -e "${GREEN}   INSTALLATION COMPLETED SUCCESSFULLY!                               ${NC}"
+echo -e "${GREEN}   INSTALLATION COMPLETED SUCCESSFULLY! (SECURED WITH HTTPS)          ${NC}"
 echo -e "${CYAN}======================================================================${NC}"
 echo ""
-echo -e "  * Website (Public)    : http://localhost"
-echo -e "  * Admin CMS Portal    : http://localhost/admin"
+echo -e "  * Website (Public)    : https://localhost"
+echo -e "  * Admin CMS Portal    : https://localhost/admin"
 echo -e "  * MinIO Storage UI    : http://localhost:9001 (User: lohakit_minio / Pass: LohakitMinIOSecureKey2026!)"
 echo ""
 echo -e "${YELLOW}  --- Default Superadmin Credentials ---${NC}"

@@ -117,36 +117,64 @@ docker compose exec -T api /app/seeder
 
 | รายการ | ค่าเริ่มต้น (Default Value) |
 |---|---|
-| **URL เข้าสู่ระบบ CMS** | [http://localhost/admin](http://localhost/admin) |
+| **URL เข้าสู่ระบบ CMS (HTTPS)** | [https://localhost/admin](https://localhost/admin) |
 | **บัญชีผู้ใช้งาน (Email)** | `admin@localhost.co.th` |
 | **รหัสผ่าน (Password)** | `AdminLocalhost2026!` |
 
 ---
 
-## 🌐 พอร์ตและ URL การเข้าถึงระบบ (Service Endpoints)
+## 🌐 พอร์ตและ URL การเข้าถึงระบบ (Service Endpoints & Container Names)
 
-| บริการ (Service) | URL การเข้าถึง | ข้อมูลการเข้าสู่ระบบ | รายละเอียด |
-|---|---|---|---|
-| **เว็บไซต์สำหรับผู้เข้าชม (Public Web)** | [http://localhost](http://localhost) | ไม่ต้องล็อกอิน | เว็บไซต์หลัก 5 ภาษา รองรับ Responsive |
-| **ระบบจัดการเนื้อหา (Admin CMS)** | [http://localhost/admin](http://localhost/admin) | `admin@localhost.co.th`<br>`AdminLocalhost2026!` | แผงควบคุมเนื้อหา แคตตาล็อก ผู้ใช้ และการตั้งค่า |
-| **REST API Backend** | [http://localhost:8080/api/v1](http://localhost:8080/api/v1) | - | Go HTTP API Server |
-| **MinIO Storage Console** | [http://localhost:9001](http://localhost:9001) | `lohakit_minio`<br>`LohakitMinIOSecureKey2026!` | จัดการไฟล์และคลังรูปภาพ Object Storage |
+ระบบทำงานด้วย 4 คอนเทนเนอร์ภายใต้ชื่อ **`chiotron`**:
+
+| บริการ (Service) | ชื่อคอนเทนเนอร์ (Container Name) | URL การเข้าถึง | ข้อมูลการเข้าสู่ระบบ | รายละเอียด |
+|---|---|---|---|---|
+| **เว็บเซิร์ฟเวอร์ (Nginx + SSL)** | `chiotron_nginx` | [https://localhost](https://localhost)<br>*(พอร์ต 80 redirect ไป 443 อัตโนมัติ)* | ไม่ต้องล็อกอิน | เว็บไซต์หลัก 5 ภาษา รองรับ HTTPS/HTTP2 |
+| **ระบบจัดการเนื้อหา (Admin CMS)** | `chiotron_nginx` | [https://localhost/admin](https://localhost/admin) | `admin@localhost.co.th`<br>`AdminLocalhost2026!` | แผงควบคุมเนื้อหา แคตตาล็อก ผู้ใช้ และการตั้งค่า |
+| **REST API Backend (Go)** | `chiotron_api` | [https://localhost/api/v1](https://localhost/api/v1)<br>*(Direct: http://localhost:8080)* | - | Go HTTP API Server ประสิทธิภาพสูง |
+| **MinIO Storage Console** | `chiotron_minio` | [http://localhost:9001](http://localhost:9001) | `lohakit_minio`<br>`LohakitMinIOSecureKey2026!` | จัดการไฟล์และคลังรูปภาพ Object Storage |
+| **ฐานข้อมูล PostgreSQL 16** | `chiotron_postgres` | `localhost:5432` | User: `lohakit_admin`<br>DB: `lohakit_cms` | ฐานข้อมูลหลักของระบบ |
+
+---
+
+## 📱 การเข้าใช้งานผ่าน IP Address ภายในเครือข่าย (LAN / Wi-Fi Access)
+
+หากต้องการเปิดดูเว็บไซต์หรือเข้า CMS ผ่านอุปกรณ์อื่นในเครือข่ายเดียวกัน (เช่น มือถือ, แท็บเล็ต หรือคอมพิวเตอร์เครื่องอื่น):
+
+### 1. URL สำหรับเข้าใช้งาน:
+พิมพ์ IP ของเครื่องโฮสต์ด้วย **`https://`** เช่น:
+- **หน้าเว็บสาธารณะ**: `https://192.168.30.77/`
+- **ระบบแอดมิน CMS**: `https://192.168.30.77/admin`
+*(ตรวจสอบ IP เครื่องโฮสต์ได้ด้วยคำสั่ง `ipconfig` ใน Command Prompt / PowerShell)*
+
+### 2. หากเข้าผ่าน IP จากเครื่องอื่นไม่ได้ (สาเหตุจาก Windows Defender Firewall):
+โดยปกติ Windows Defender Firewall จะบล็อกการเชื่อมต่อขาเข้าพอร์ต 80 และ 443 จากภายนอก ให้เปิด PowerShell (Run as Administrator) บนเครื่องโฮสต์ แล้วรันคำสั่งนี้เพียงบรรทัดเดียว:
+```powershell
+New-NetFirewallRule -DisplayName "CHIOTRON Web (HTTP/HTTPS)" -Direction Inbound -LocalPort 80,443 -Protocol TCP -Action Allow
+```
+
+### 3. การแจ้งเตือนใบรับรองความปลอดภัยบนเบราว์เซอร์ (Self-Signed SSL Warning):
+เนื่องจากระบบใช้ใบรับรองความปลอดภัยสำหรับใช้งานภายใน (Internal SSL) เมื่อเปิดหน้าเว็บครั้งแรก เบราว์เซอร์จะแสดงคำเตือนว่า *"การเชื่อมต่อของคุณไม่เป็นส่วนตัว (Your connection is not private)"*
+- ให้คลิกที่ **"ขั้นสูง (Advanced)"**
+- จากนั้นคลิก **"ไปยัง 192.168.x.x (ไม่ปลอดภัย) / Proceed to ... (unsafe)"** เพื่อเข้าสู่เว็บไซต์ได้ตามปกติ
 
 ---
 
 ## 🔧 คำแนะนำการดูแลและการแก้ไขปัญหา (Troubleshooting & Maintenance)
 
-### 1. หากเครื่องปลายทางมีโปรแกรมอื่นใช้งานพอร์ต 80 อยู่แล้ว (เช่น IIS หรือ Apache)
+### 1. หากเครื่องปลายทางมีโปรแกรมอื่นใช้งานพอร์ต 80 หรือ 443 อยู่แล้ว (เช่น IIS หรือ Skype)
 สามารถปรับพอร์ตของ Nginx ในไฟล์ [docker-compose.yml](file:///d:/Antygravity/weblc/docker-compose.yml) ตรงส่วน `nginx.ports`:
 ```yaml
 ports:
-  - "8000:80"   # เปลี่ยนให้เข้าผ่าน http://localhost:8000
+  - "8081:80"
+  - "8443:443"   # เปลี่ยนให้เข้าผ่าน https://localhost:8443
 ```
 
 ### 2. การตรวจสอบสถานะคอนเทนเนอร์ (Check Status)
 ```bash
 docker compose ps
 ```
+*(ควรแสดงสถานะ `Up` หรือ `healthy` ครบทั้ง 4 คอนเทนเนอร์ `chiotron_*`)*
 
 ### 3. การดูบันทึกการทำงานของระบบ (View Logs)
 ```bash

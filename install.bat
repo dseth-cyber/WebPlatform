@@ -4,7 +4,7 @@ setlocal enabledelayedexpansion
 title CHIOTRON TECHNOLOGY WebPlatform Installer
 
 echo ======================================================================
-echo    CHIOTRON TECHNOLOGY - Automatic One-Click Setup
+echo    CHIOTRON TECHNOLOGY - Automatic One-Click Setup (HTTPS)
 echo ======================================================================
 echo.
 
@@ -26,8 +26,15 @@ if %errorlevel% neq 0 (
     exit /b 1
 )
 
-echo [1/3] Starting Docker containers (PostgreSQL, MinIO, Go API, Nginx)...
-docker compose up -d --build
+:: 3. Configure Windows Firewall (Allows other devices on LAN to access via IP)
+echo [*] Ensuring Windows Firewall permits inbound HTTP (80) and HTTPS (443)...
+netsh advfirewall firewall show rule name="CHIOTRON WebPlatform (HTTP/HTTPS)" >nul 2>nul
+if %errorlevel% neq 0 (
+    netsh advfirewall firewall add rule name="CHIOTRON WebPlatform (HTTP/HTTPS)" dir=in action=allow protocol=TCP localport=80,443 >nul 2>nul
+)
+
+echo [1/3] Building and starting CHIOTRON containers (chiotron_postgres, chiotron_minio, chiotron_api, chiotron_nginx)...
+docker compose up -d --build --remove-orphans
 if %errorlevel% neq 0 (
     echo [ERROR] Failed to start Docker containers!
     pause
@@ -47,11 +54,11 @@ if %errorlevel% neq 0 (
 
 echo.
 echo ======================================================================
-echo    INSTALLATION COMPLETED SUCCESSFULLY!
+echo    INSTALLATION COMPLETED SUCCESSFULLY! (SECURED WITH HTTPS)
 echo ======================================================================
 echo.
-echo   * Website (Public)    : http://localhost
-echo   * Admin CMS Portal    : http://localhost/admin
+echo   * Website (Public)    : https://localhost
+echo   * Admin CMS Portal    : https://localhost/admin
 echo   * MinIO Storage UI    : http://localhost:9001 (User: lohakit_minio / Pass: LohakitMinIOSecureKey2026!)
 echo.
 echo   --- Default Superadmin Credentials ---
@@ -60,8 +67,8 @@ echo   Password : AdminLocalhost2026!
 echo ======================================================================
 echo.
 
-:: Automatically open browser to Admin Portal
-start http://localhost/admin
+:: Automatically open browser to HTTPS Admin Portal
+start https://localhost/admin
 
 echo The application is ready to use. You may close this window.
 pause
