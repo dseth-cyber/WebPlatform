@@ -404,10 +404,10 @@ export const NewsManager: React.FC = () => {
                               ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 hover:bg-emerald-500/30'
                               : 'bg-slate-500/20 text-slate-400 border border-slate-500/30 hover:bg-slate-500/30'
                           }`}
-                          title="คลิกเพื่อ เปิด/ปิด การแสดงผลข่าวสารนี้บนหน้าเว็บ"
+                          title={t('admin.clickToToggleVisibility', 'คลิกเพื่อ เปิด/ปิด การแสดงผลข่าวสารนี้บนหน้าเว็บ')}
                         >
                           {article.isActive !== false ? <Eye className="h-3 w-3" /> : <EyeOff className="h-3 w-3" />}
-                          <span>{article.isActive !== false ? 'เผยแพร่' : 'ซ่อน'}</span>
+                          <span>{article.isActive !== false ? t('admin.publishStatusPublished', 'เผยแพร่') : t('admin.hide', 'ซ่อน')}</span>
                         </button>
                       </td>
                       <td className="py-3 px-4 text-right space-x-2">
@@ -465,7 +465,7 @@ export const NewsManager: React.FC = () => {
       <Modal
         isOpen={modalOpen}
         onClose={() => setModalOpen(false)}
-        title={editingArticle ? 'แก้ไขข่าวสาร (Edit Article)' : 'เพิ่มข่าวสารใหม่ (Create Article)'}
+        title={editingArticle ? t('admin.editArticle', 'แก้ไขข่าวสาร (Edit Article)') : t('admin.createArticle', 'เพิ่มข่าวสารใหม่ (Create Article)')}
         maxWidth="2xl"
       >
         <div className="space-y-4 text-xs">
@@ -483,7 +483,7 @@ export const NewsManager: React.FC = () => {
                 }`}
               >
                 {isActive ? <Eye className="h-3.5 w-3.5" /> : <EyeOff className="h-3.5 w-3.5" />}
-                <span>{isActive ? 'เผยแพร่' : 'ฉบับร่าง'}</span>
+                <span>{isActive ? t('admin.publishStatusPublished', 'เผยแพร่') : t('admin.publishStatusDraft', 'ฉบับร่าง')}</span>
               </button>
             </div>
 
@@ -502,24 +502,24 @@ export const NewsManager: React.FC = () => {
                 }`}
               >
                 <Pin className={`h-3 w-3 ${isPinned ? 'fill-black' : ''}`} />
-                <span>{isPinned ? '📌 ปักหมุดแล้ว' : 'ไม่ปักหมุด'}</span>
+                <span>{isPinned ? `📌 ${t('admin.pinned', 'ปักหมุดแล้ว')}` : t('admin.unpinned', 'ไม่ปักหมุด')}</span>
               </button>
             </div>
           </div>
 
           <div>
-            <label className="font-bold text-theme-text block mb-1">หัวข้อข่าวสาร (Title) *</label>
+            <label className="font-bold text-theme-text block mb-1">{t('admin.newsTitle', 'หัวข้อข่าวสาร (Title)')} *</label>
             <input
               type="text"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              placeholder="เช่น บริษัท โลหะกิจฯ เปิดตัวสายการผลิตใหม่ความเร็วสูง..."
+              placeholder={t('admin.newsTitlePlaceholder', 'เช่น บริษัท โลหะกิจฯ เปิดตัวสายการผลิตใหม่ความเร็วสูง...')}
               className="w-full rounded-xl border border-theme-border bg-theme-surface px-3 py-2 text-theme-text"
             />
           </div>
 
           <div>
-            <label className="font-bold text-theme-text block mb-1">หมวดหมู่ (Category)</label>
+            <label className="font-bold text-theme-text block mb-1">{t('admin.category', 'หมวดหมู่ (Category)')}</label>
             <select
               value={category}
               onChange={(e) => setCategory(e.target.value)}
@@ -534,7 +534,7 @@ export const NewsManager: React.FC = () => {
 
           {/* Image Attachment & Preview */}
           <div className="rounded-2xl border border-theme-border bg-theme-surface-elevated p-3.5 space-y-3">
-            <label className="font-bold text-theme-text block">รูปภาพหน้าปกข่าวสาร (Featured Image)</label>
+            <label className="font-bold text-theme-text block">{t('admin.featuredImage', 'รูปภาพหน้าปกข่าวสาร (Featured Image)')}</label>
             <div className="flex items-center gap-4">
               <img
                 src={featuredImageURL || '/images/factory-building.jpg'}
@@ -551,7 +551,7 @@ export const NewsManager: React.FC = () => {
                 />
                 <label className="inline-flex items-center gap-1.5 rounded-lg border border-theme-border bg-theme-surface px-3 py-1 text-[11px] font-bold text-theme-primary hover:border-theme-primary cursor-pointer transition-all">
                   <UploadCloud className="h-3.5 w-3.5" />
-                  <span>เลือกรูปภาพจากคอมพิวเตอร์ / อัปโหลด</span>
+                  <span>{t('admin.uploadImage', 'เลือกรูปภาพจากคอมพิวเตอร์ / อัปโหลด')}</span>
                   <input type="file" accept="image/*" onChange={handleFileUpload} className="hidden" />
                 </label>
               </div>
@@ -559,23 +559,23 @@ export const NewsManager: React.FC = () => {
           </div>
 
           <div>
-            <label className="font-bold text-theme-text block mb-1">เนื้อหาย่อ (Summary)</label>
+            <label className="font-bold text-theme-text block mb-1">{t('admin.newsSummary', 'เนื้อหาย่อ (Summary)')}</label>
             <textarea
               rows={2}
               value={summary}
               onChange={(e) => setSummary(e.target.value)}
-              placeholder="สรุปเนื้อหาสำคัญของข่าวสาร..."
+              placeholder={t('admin.newsSummaryPlaceholder', 'สรุปเนื้อหาสำคัญของข่าวสาร...')}
               className="w-full rounded-xl border border-theme-border bg-theme-surface px-3 py-2 text-theme-text"
             />
           </div>
 
           <div>
-            <label className="font-bold text-theme-text block mb-1">เนื้อหาข่าวฉบับเต็ม (Full Content Body)</label>
+            <label className="font-bold text-theme-text block mb-1">{t('admin.newsFullContent', 'เนื้อหาข่าวฉบับเต็ม (Full Content Body)')}</label>
             <textarea
               rows={4}
               value={contentBody}
               onChange={(e) => setContentBody(e.target.value)}
-              placeholder="รายละเอียดข่าวสารทั้งหมด..."
+              placeholder={t('admin.newsBodyPlaceholder', 'รายละเอียดข่าวสารทั้งหมด...')}
               className="w-full rounded-xl border border-theme-border bg-theme-surface px-3 py-2 text-theme-text font-sans"
             />
           </div>
@@ -584,11 +584,11 @@ export const NewsManager: React.FC = () => {
           <div className="pt-2">
             <MultiLangSectionEditor
               compact
-              title="แปลภาษาข่าวสาร (News Translations: EN, JP, CN, MM)"
+              title={t('admin.newsTranslationsTitle', 'แปลภาษาข่าวสาร (News Translations: EN, JP, CN, MM)')}
               fields={[
-                { key: 'title', label: 'หัวข้อข่าวสาร (Title)' },
-                { key: 'summary', label: 'เนื้อหาย่อ (Summary)', type: 'textarea', rows: 2 },
-                { key: 'contentBody', label: 'เนื้อหาข่าวฉบับเต็ม (Full Content Body)', type: 'textarea', rows: 3 },
+                { key: 'title', label: t('admin.newsTitle', 'หัวข้อข่าวสาร (Title)') },
+                { key: 'summary', label: t('admin.newsSummary', 'เนื้อหาย่อ (Summary)'), type: 'textarea', rows: 2 },
+                { key: 'contentBody', label: t('admin.newsFullContent', 'เนื้อหาข่าวฉบับเต็ม (Full Content Body)'), type: 'textarea', rows: 3 },
               ]}
               value={translations}
               onChange={setTranslations}
@@ -601,14 +601,14 @@ export const NewsManager: React.FC = () => {
               onClick={() => setModalOpen(false)}
               className="rounded-xl border border-theme-border bg-theme-surface px-4 py-2 font-semibold text-theme-text hover:bg-theme-surface-elevated transition-colors"
             >
-              ยกเลิก
+              {t('admin.cancel', 'ยกเลิก')}
             </button>
             <button
               type="button"
               onClick={handleSave}
               className="btn-primary-action text-xs font-black px-6 py-2.5"
             >
-              บันทึกข่าวสาร (ลง Database)
+              {t('admin.saveNews', 'บันทึกข่าวสาร (ลง Database)')}
             </button>
           </div>
         </div>
@@ -619,8 +619,8 @@ export const NewsManager: React.FC = () => {
         isOpen={deleteConfirmOpen}
         onClose={() => setDeleteConfirmOpen(false)}
         onConfirm={handleDelete}
-        title="ยืนยันการลบข่าวสาร"
-        message="คุณแน่ใจหรือไม่ว่าต้องการลบรายการข่าวสารนี้ออกจากฐานข้อมูล?"
+        title={t('admin.confirmDeleteNews', 'ยืนยันการลบข่าวสาร')}
+        message={t('admin.confirmDeleteNewsMsg', 'คุณแน่ใจหรือไม่ว่าต้องการลบรายการข่าวสารนี้ออกจากฐานข้อมูล?')}
         variant="danger"
       />
     </div>

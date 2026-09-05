@@ -202,7 +202,7 @@ export const TechnologyManager: React.FC = () => {
                 type="text"
                 value={heading}
                 onChange={(e) => setHeading(e.target.value)}
-                placeholder="เทคโนโลยีการผลิตกระป๋องโลหะความเร็วสูงและ AI อัจฉริยะ"
+                placeholder={t('admin.techHeadingPlaceholder', 'เทคโนโลยีการผลิตกระป๋องโลหะความเร็วสูงและ AI อัจฉริยะ')}
                 className="w-full rounded-xl border border-theme-border bg-theme-surface-elevated px-3.5 py-2.5 text-xs font-bold text-theme-text focus:border-theme-primary focus:outline-none"
               />
             </div>
@@ -215,7 +215,7 @@ export const TechnologyManager: React.FC = () => {
                 rows={3}
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                placeholder="คำอธิบายความแม่นยำ เครื่องจักร และสายการผลิตอัตโนมัติ..."
+                placeholder={t('admin.techDescPlaceholder', 'คำอธิบายความแม่นยำ เครื่องจักร และสายการผลิตอัตโนมัติ...')}
                 className="w-full rounded-xl border border-theme-border bg-theme-surface-elevated px-3.5 py-2.5 text-xs text-theme-text focus:border-theme-primary focus:outline-none leading-relaxed"
               />
             </div>
@@ -243,7 +243,7 @@ export const TechnologyManager: React.FC = () => {
                 <span>{t('admin.techCardsSection', '2. รายการเครื่องจักรและนวัตกรรม AI (Technology Cards)')}</span>
               </h2>
               <p className="text-[11px] text-theme-text-muted mt-0.5">
-                แสดงผลเป็น Card พร้อมเอฟเฟกต์แสงเรือง (.glow-card) บนหน้าเว็บ
+                {t('admin.techGlowCardHint', 'แสดงผลเป็น Card พร้อมเอฟเฟกต์แสงเรือง (.glow-card) บนหน้าเว็บ')}
               </p>
             </div>
 
@@ -253,7 +253,7 @@ export const TechnologyManager: React.FC = () => {
               className="inline-flex items-center gap-1.5 rounded-lg border border-theme-primary/40 bg-theme-primary/10 px-3 py-1.5 text-xs font-bold text-theme-primary hover:bg-theme-primary/20 transition-colors"
             >
               <Plus className="h-3.5 w-3.5" />
-              <span>เพิ่มเครื่องจักร/เทคโนโลยี</span>
+              <span>{t('admin.addTechCard', 'เพิ่มเครื่องจักร/เทคโนโลยี')}</span>
             </button>
           </div>
 
@@ -290,24 +290,24 @@ export const TechnologyManager: React.FC = () => {
                           updated[idx] = { ...updated[idx], isPinned: nextPinned };
                           setCards(updated);
                           await updateSettings({ technologyCards: updated });
-                          showToast(nextPinned ? '📌 ปักหมุดแสดงที่หน้าแรกแล้ว' : 'ยกเลิกปักหมุดหน้าแรกแล้ว');
+                          showToast(nextPinned ? `📌 ${t('admin.pinnedToHome', 'ปักหมุดแสดงที่หน้าแรกแล้ว')}` : t('admin.unpinnedFromHome', 'ยกเลิกปักหมุดหน้าแรกแล้ว'));
                         }}
                         className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-bold transition-all ${
                           Boolean(card.isPinned)
                             ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40 shadow-sm'
                             : 'bg-theme-surface text-theme-text-muted hover:text-theme-text border border-theme-border'
                         }`}
-                        title={Boolean(card.isPinned) ? 'คลิกเพื่อยกเลิกการปักหมุดหน้าแรก' : 'คลิกเพื่อปักหมุดแสดงที่หน้าแรก'}
+                        title={Boolean(card.isPinned) ? t('admin.clickToUnpin', 'คลิกเพื่อยกเลิกการปักหมุดหน้าแรก') : t('admin.clickToPin', 'คลิกเพื่อปักหมุดแสดงที่หน้าแรก')}
                       >
                         <Pin className={`h-3.5 w-3.5 ${Boolean(card.isPinned) ? 'fill-amber-400 text-amber-400' : ''}`} />
-                        <span>{Boolean(card.isPinned) ? '📌 ปักหมุดหน้าแรก' : 'ปักหมุดหน้าแรก'}</span>
+                        <span>{Boolean(card.isPinned) ? `📌 ${t('admin.pinned', 'ปักหมุดแล้ว')}` : t('admin.pinToHome', 'ปักหมุดหน้าแรก')}</span>
                       </button>
 
                       <button
                         type="button"
                         onClick={() => handleDeleteCard(idx)}
                         className="rounded-lg p-1.5 text-theme-text-dim hover:bg-red-500/20 hover:text-red-400 transition-colors"
-                        title="ลบรายการนี้"
+                        title={t('admin.deleteItem', 'ลบรายการนี้')}
                       >
                         <Trash2 className="h-4 w-4" />
                       </button>
@@ -318,7 +318,7 @@ export const TechnologyManager: React.FC = () => {
                     <div className="grid grid-cols-2 gap-3">
                       <div>
                         <label className="block text-[11px] font-semibold text-theme-text mb-1">
-                          ไอคอน (Icon)
+                          {t('admin.icon', 'ไอคอน (Icon)')}
                         </label>
                         <select
                           value={card.icon}
@@ -337,7 +337,7 @@ export const TechnologyManager: React.FC = () => {
 
                       <div>
                         <label className="block text-[11px] font-semibold text-theme-text mb-1">
-                          ชื่อเทคโนโลยี (ภาษาอังกฤษ)
+                          {t('admin.techTitleEn', 'ชื่อเทคโนโลยี (ภาษาอังกฤษ)')}
                         </label>
                         <input
                           type="text"
@@ -351,33 +351,33 @@ export const TechnologyManager: React.FC = () => {
 
                     <div>
                       <label className="block text-[11px] font-semibold text-theme-text mb-1">
-                        ชื่อเทคโนโลยี / เครื่องจักร (ภาษาไทย)
+                        {t('admin.techTitleTh', 'ชื่อเทคโนโลยี / เครื่องจักร (ภาษาไทย)')}
                       </label>
                       <input
                         type="text"
                         value={card.titleTh}
                         onChange={(e) => handleCardChange(idx, 'titleTh', e.target.value)}
-                        placeholder="ชื่อเครื่องจักรหรือนวัตกรรมการผลิต..."
+                        placeholder={t('admin.techCardTitlePlaceholder', 'ชื่อเครื่องจักรหรือนวัตกรรมการผลิต...')}
                         className="w-full rounded-lg border border-theme-border bg-theme-surface px-2.5 py-1.5 text-xs font-semibold text-theme-text focus:outline-none"
                       />
                     </div>
 
                     <div>
                       <label className="block text-[11px] font-semibold text-theme-text mb-1">
-                        คำอธิบายคุณสมบัติและสเปก (ภาษาไทย)
+                        {t('admin.techDescTh', 'คำอธิบายคุณสมบัติและสเปก (ภาษาไทย)')}
                       </label>
                       <textarea
                         rows={2}
                         value={card.descTh}
                         onChange={(e) => handleCardChange(idx, 'descTh', e.target.value)}
-                        placeholder="ความเร็ว ความแม่นยำ และคุณสมบัติเด่น..."
+                        placeholder={t('admin.techCardDescPlaceholder', 'ความเร็ว ความแม่นยำ และคุณสมบัติเด่น...')}
                         className="w-full rounded-lg border border-theme-border bg-theme-surface px-2.5 py-1.5 text-xs text-theme-text focus:outline-none leading-relaxed"
                       />
                     </div>
 
                     <div>
                       <label className="block text-[11px] font-semibold text-theme-text mb-1">
-                        รูปภาพประจำ Card (Image)
+                        {t('admin.cardImage', 'รูปภาพประจำ Card (Image)')}
                       </label>
                       <div className="flex items-center gap-3">
                         {card.image && (
@@ -412,10 +412,10 @@ export const TechnologyManager: React.FC = () => {
                     {/* Multi-Language Tabs for this Tech Card */}
                     <MultiLangSectionEditor
                       compact
-                      title={`แปลภาษา Card เทคโนโลยี: ${card.titleTh}`}
+                      title={`${t('admin.translateTechCard', 'แปลภาษา Card เทคโนโลยี')}: ${card.titleTh || ''}`}
                       fields={[
-                        { key: 'title', label: 'ชื่อเทคโนโลยี (Tech Title)' },
-                        { key: 'desc', label: 'คำอธิบายเทคโนโลยี (Tech Description)', type: 'textarea', rows: 2 },
+                        { key: 'title', label: t('admin.techTitle', 'ชื่อเทคโนโลยี (Tech Title)') },
+                        { key: 'desc', label: t('admin.techDesc', 'คำอธิบายเทคโนโลยี (Tech Description)'), type: 'textarea', rows: 2 },
                       ]}
                       value={card.translations || {
                         en: { title: card.titleEn || '', desc: card.descEn || '' },
@@ -440,7 +440,7 @@ export const TechnologyManager: React.FC = () => {
             className="inline-flex items-center gap-2 rounded-xl bg-theme-primary px-6 py-3 text-xs font-bold text-black shadow-lg shadow-theme-primary/20 hover:opacity-90 disabled:opacity-50 transition-all"
           >
             <Save className="h-4 w-4" />
-            <span>{isSaving ? 'กำลังบันทึกข้อมูล...' : 'บันทึกการเปลี่ยนแปลงทั้งหมด'}</span>
+            <span>{isSaving ? t('admin.saving', 'กำลังบันทึกข้อมูล...') : t('admin.saveAllChanges', 'บันทึกการเปลี่ยนแปลงทั้งหมด')}</span>
           </button>
         </div>
       </form>

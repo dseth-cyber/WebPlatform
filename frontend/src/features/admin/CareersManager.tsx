@@ -170,7 +170,7 @@ export const CareersManager: React.FC = () => {
           <div className="border-b border-theme-border/60 pb-3">
             <h2 className="font-display text-sm font-bold text-theme-text flex items-center gap-2">
               <Sparkles className="h-4 w-4 text-theme-primary" />
-              <span>1. ข้อมูลหัวข้อหน้าสมัครงาน (Page Banner & Header)</span>
+              <span>{t('admin.careersBannerSection', '1. ข้อมูลหัวข้อหน้าสมัครงาน (Page Banner & Header)')}</span>
             </h2>
           </div>
 
@@ -196,20 +196,20 @@ export const CareersManager: React.FC = () => {
                 type="text"
                 value={heading}
                 onChange={(e) => setHeading(e.target.value)}
-                placeholder="ร่วมเป็นส่วนหนึ่งของการขับเคลื่อนอุตสาหกรรมบรรจุภัณฑ์สู่อนาคต"
+                placeholder={t('admin.careersHeadingPlaceholder', 'ร่วมเป็นส่วนหนึ่งของการขับเคลื่อนอุตสาหกรรมบรรจุภัณฑ์สู่อนาคต')}
                 className="w-full rounded-xl border border-theme-border bg-theme-surface-elevated px-3.5 py-2.5 text-xs font-bold text-theme-text focus:border-theme-primary focus:outline-none"
               />
             </div>
 
             <div>
               <label className="block text-xs font-semibold text-theme-text mb-1.5">
-                สโลแกนเชิญชวนร่วมงาน (Subtitle / Culture Pitch)
+                {t('admin.careersCulturePitch', 'สโลแกนเชิญชวนร่วมงาน (Subtitle / Culture Pitch)')}
               </label>
               <textarea
                 rows={2}
                 value={subtitle}
                 onChange={(e) => setSubtitle(e.target.value)}
-                placeholder="สร้างสรรค์นวัตกรรม เติบโตไปพร้อมกับทีมงานมืออาชีพ..."
+                placeholder={t('admin.careersCulturePlaceholder', 'สร้างสรรค์นวัตกรรม เติบโตไปพร้อมกับทีมงานมืออาชีพ...')}
                 className="w-full rounded-xl border border-theme-border bg-theme-surface-elevated px-3.5 py-2.5 text-xs text-theme-text focus:border-theme-primary focus:outline-none leading-relaxed"
               />
             </div>
@@ -233,10 +233,10 @@ export const CareersManager: React.FC = () => {
           <div className="border-b border-theme-border/60 pb-3">
             <h2 className="font-display text-sm font-bold text-theme-text flex items-center gap-2">
               <Gift className="h-4 w-4 text-theme-primary" />
-              <span>2. สิทธิประโยชน์และสวัสดิการพนักงาน (Company Benefits)</span>
+              <span>{t('admin.companyBenefitsSection', '2. สิทธิประโยชน์และสวัสดิการพนักงาน (Company Benefits)')}</span>
             </h2>
             <p className="text-[11px] text-theme-text-muted mt-0.5">
-              พิมพ์สวัสดิการของบริษัท โดยแยก 1 รายการ ต่อ 1 บรรทัด
+              {t('admin.companyBenefitsDesc', 'พิมพ์สวัสดิการของบริษัท โดยแยก 1 รายการ ต่อ 1 บรรทัด')}
             </p>
           </div>
 
@@ -244,7 +244,7 @@ export const CareersManager: React.FC = () => {
             rows={5}
             value={benefitsText}
             onChange={(e) => setBenefitsText(e.target.value)}
-            placeholder="โบนัสประจำปีและโบนัสผลงาน&#10;กองทุนสำรองเลี้ยงชีพ (Provident Fund)&#10;ประกันสุขภาพกลุ่มและตรวจสุขภาพประจำปี&#10;เบี้ยขยันและค่าทำงานล่วงเวลา (OT)"
+            placeholder={t('admin.benefitsPlaceholder', 'โบนัสประจำปีและโบนัสผลงาน\nกองทุนสำรองเลี้ยงชีพ (Provident Fund)\nประกันสุขภาพกลุ่มและตรวจสุขภาพประจำปี\nเบี้ยขยันและค่าทำงานล่วงเวลา (OT)')}
             className="w-full rounded-xl border border-theme-border bg-theme-surface-elevated px-3.5 py-2.5 text-xs text-theme-text font-mono focus:border-theme-primary focus:outline-none leading-relaxed"
           />
         </div>
@@ -255,10 +255,10 @@ export const CareersManager: React.FC = () => {
             <div>
               <h2 className="font-display text-sm font-bold text-theme-text flex items-center gap-2">
                 <Briefcase className="h-4 w-4 text-theme-primary" />
-                <span>3. ตำแหน่งงานที่เปิดรับสมัคร (Job Openings)</span>
+                <span>{t('admin.jobOpeningsSection', '3. ตำแหน่งงานที่เปิดรับสมัคร (Job Openings)')}</span>
               </h2>
               <p className="text-[11px] text-theme-text-muted mt-0.5">
-                สามารถเปิด/ปิดการรับสมัครชั่วคราว หรือเพิ่ม/ลบตำแหน่งงานได้
+                {t('admin.jobOpeningsDesc', 'สามารถเปิด/ปิดการรับสมัครชั่วคราว หรือเพิ่ม/ลบตำแหน่งงานได้')}
               </p>
             </div>
 
@@ -299,7 +299,7 @@ export const CareersManager: React.FC = () => {
                               : 'bg-slate-700 text-slate-400'
                           }`}
                         >
-                          {job.active ? 'กำลังเปิดรับสมัคร (Active)' : 'ปิดรับสมัครชั่วคราว'}
+                          {job.active ? t('admin.recruitingActive', 'กำลังเปิดรับสมัคร (Active)') : t('admin.recruitingClosed', 'ปิดรับสมัครชั่วคราว')}
                         </span>
                         {Boolean(job.isPinned) && (
                           <span className="flex items-center gap-1 rounded px-2 py-0.5 text-[10px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30">
@@ -326,8 +326,8 @@ export const CareersManager: React.FC = () => {
                         await updateSettings({ careersJobs: updated });
                         showToast(
                           nextPinned
-                            ? `📌 ปักหมุดตำแหน่งงาน "${job.titleTh || 'นี้'}" บนหน้าแรกแล้ว`
-                            : `ยกเลิกการปักหมุด "${job.titleTh || 'นี้'}" แล้ว`
+                            ? `📌 ${t('admin.pinnedToHome', 'ปักหมุดตำแหน่งงานบนหน้าแรกแล้ว')}`
+                            : t('admin.unpinnedFromHome', 'ยกเลิกการปักหมุดแล้ว')
                         );
                       }}
                       className={`flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-bold transition-all ${
@@ -335,10 +335,10 @@ export const CareersManager: React.FC = () => {
                           ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40 shadow-sm'
                           : 'bg-theme-surface text-theme-text-muted hover:text-theme-text border border-theme-border'
                       }`}
-                      title={Boolean(job.isPinned) ? 'คลิกเพื่อยกเลิกการปักหมุดหน้าแรก' : 'คลิกเพื่อปักหมุดแสดงที่หน้าแรก'}
+                      title={Boolean(job.isPinned) ? t('admin.clickToUnpin', 'คลิกเพื่อยกเลิกการปักหมุดหน้าแรก') : t('admin.clickToPin', 'คลิกเพื่อปักหมุดแสดงที่หน้าแรก')}
                     >
                       <Pin className={`h-3.5 w-3.5 ${Boolean(job.isPinned) ? 'fill-amber-400 text-amber-400' : ''}`} />
-                      <span>{Boolean(job.isPinned) ? '📌 ปักหมุดหน้าแรก' : 'ปักหมุดหน้าแรก'}</span>
+                      <span>{Boolean(job.isPinned) ? `📌 ${t('admin.pinned', 'ปักหมุดแล้ว')}` : t('admin.pinToHome', 'ปักหมุดหน้าแรก')}</span>
                     </button>
 
                     {/* Toggle Active Switch */}
@@ -346,7 +346,7 @@ export const CareersManager: React.FC = () => {
                       type="button"
                       onClick={() => handleJobChange(idx, 'active', !job.active)}
                       className="inline-flex items-center gap-1 text-xs font-semibold px-2 py-1 rounded-lg border border-theme-border hover:bg-theme-surface transition-colors"
-                      title={job.active ? 'คลิกเพื่อปิดรับสมัครชั่วคราว' : 'คลิกเพื่อเปิดรับสมัคร'}
+                      title={job.active ? t('admin.clickToPauseRecruiting', 'คลิกเพื่อปิดรับสมัครชั่วคราว') : t('admin.clickToOpenRecruiting', 'คลิกเพื่อเปิดรับสมัคร')}
                     >
                       {job.active ? (
                         <ToggleRight className="h-5 w-5 text-emerald-400" />
@@ -354,7 +354,7 @@ export const CareersManager: React.FC = () => {
                         <ToggleLeft className="h-5 w-5 text-slate-400" />
                       )}
                       <span className="text-[11px] text-theme-text-muted">
-                        {job.active ? 'เปิดรับ' : 'ปิดรับ'}
+                        {job.active ? t('admin.openStatus', 'เปิดรับ') : t('admin.closedStatus', 'ปิดรับ')}
                       </span>
                     </button>
 
@@ -362,7 +362,7 @@ export const CareersManager: React.FC = () => {
                       type="button"
                       onClick={() => handleDeleteJob(idx)}
                       className="rounded-lg p-1.5 text-theme-text-dim hover:bg-red-500/20 hover:text-red-400 transition-colors"
-                      title="ลบตำแหน่งนี้"
+                      title={t('admin.deleteItem', 'ลบตำแหน่งนี้')}
                     >
                       <Trash2 className="h-4 w-4" />
                     </button>
@@ -373,20 +373,20 @@ export const CareersManager: React.FC = () => {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                     <div>
                       <label className="block text-[11px] font-semibold text-theme-text mb-1">
-                        ชื่อตำแหน่งงาน (ภาษาไทย) *
+                        {t('admin.jobTitleTh', 'ชื่อตำแหน่งงาน (ภาษาไทย)')} *
                       </label>
                       <input
                         type="text"
                         value={job.titleTh}
                         onChange={(e) => handleJobChange(idx, 'titleTh', e.target.value)}
-                        placeholder="เช่น วิศวกรควบคุมเครื่องเชื่อมความเร็วสูง"
+                        placeholder={t('admin.jobTitlePlaceholder', 'เช่น วิศวกรควบคุมเครื่องเชื่อมความเร็วสูง')}
                         className="w-full rounded-lg border border-theme-border bg-theme-surface px-2.5 py-1.5 text-xs font-bold text-theme-text focus:outline-none"
                       />
                     </div>
 
                     <div>
                       <label className="block text-[11px] font-semibold text-theme-text mb-1">
-                        ชื่อตำแหน่งงาน (ภาษาอังกฤษ)
+                        {t('admin.jobTitleEn', 'ชื่อตำแหน่งงาน (ภาษาอังกฤษ)')}
                       </label>
                       <input
                         type="text"
@@ -401,54 +401,54 @@ export const CareersManager: React.FC = () => {
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                     <div>
                       <label className="block text-[11px] font-semibold text-theme-text mb-1">
-                        แผนก / ฝ่าย
+                        {t('admin.department', 'แผนก / ฝ่าย')}
                       </label>
                       <input
                         type="text"
                         value={job.department}
                         onChange={(e) => handleJobChange(idx, 'department', e.target.value)}
-                        placeholder="ฝ่ายผลิต, QA/QC, ฝ่ายขาย"
+                        placeholder={t('admin.deptPlaceholder', 'ฝ่ายผลิต, QA/QC, ฝ่ายขาย')}
                         className="w-full rounded-lg border border-theme-border bg-theme-surface px-2.5 py-1.5 text-xs text-theme-text focus:outline-none"
                       />
                     </div>
 
                     <div>
                       <label className="block text-[11px] font-semibold text-theme-text mb-1">
-                        ประเภทงาน
+                        {t('admin.jobType', 'ประเภทงาน')}
                       </label>
                       <select
                         value={job.type}
                         onChange={(e) => handleJobChange(idx, 'type', e.target.value)}
                         className="w-full rounded-lg border border-theme-border bg-theme-surface px-2.5 py-1.5 text-xs text-theme-text focus:outline-none"
                       >
-                        <option value="งานประจำ (Full-Time)">งานประจำ (Full-Time)</option>
-                        <option value="สัญญาจ้าง (Contract)">สัญญาจ้าง (Contract)</option>
-                        <option value="นักศึกษาฝึกงาน (Internship)">นักศึกษาฝึกงาน (Internship)</option>
+                        <option value="งานประจำ (Full-Time)">{t('admin.jobTypeFullTime', 'งานประจำ (Full-Time)')}</option>
+                        <option value="สัญญาจ้าง (Contract)">{t('admin.jobTypeContract', 'สัญญาจ้าง (Contract)')}</option>
+                        <option value="นักศึกษาฝึกงาน (Internship)">{t('admin.jobTypeInternship', 'นักศึกษาฝึกงาน (Internship)')}</option>
                       </select>
                     </div>
 
                     <div>
                       <label className="block text-[11px] font-semibold text-theme-text mb-1">
-                        สถานที่ปฏิบัติงาน
+                        {t('admin.location', 'สถานที่ปฏิบัติงาน')}
                       </label>
                       <input
                         type="text"
                         value={job.location}
                         onChange={(e) => handleJobChange(idx, 'location', e.target.value)}
-                        placeholder="โรงงานกระทุ่มแบน"
+                        placeholder={t('admin.locationPlaceholder', 'โรงงานกระทุ่มแบน')}
                         className="w-full rounded-lg border border-theme-border bg-theme-surface px-2.5 py-1.5 text-xs text-theme-text focus:outline-none"
                       />
                     </div>
 
                     <div>
                       <label className="block text-[11px] font-semibold text-theme-text mb-1">
-                        อัตราเงินเดือน
+                        {t('admin.salary', 'อัตราเงินเดือน')}
                       </label>
                       <input
                         type="text"
                         value={job.salaryRange || ''}
                         onChange={(e) => handleJobChange(idx, 'salaryRange', e.target.value)}
-                        placeholder="30,000 - 45,000 บาท"
+                        placeholder={t('admin.salaryPlaceholder', '30,000 - 45,000 บาท')}
                         className="w-full rounded-lg border border-theme-border bg-theme-surface px-2.5 py-1.5 text-xs text-theme-text focus:outline-none"
                       />
                     </div>
@@ -456,20 +456,20 @@ export const CareersManager: React.FC = () => {
 
                   <div>
                     <label className="block text-[11px] font-semibold text-theme-text mb-1">
-                      หน้าที่ความรับผิดชอบ (Job Description)
+                      {t('admin.jobDescription', 'หน้าที่ความรับผิดชอบ (Job Description)')}
                     </label>
                     <textarea
                       rows={2}
                       value={job.description}
                       onChange={(e) => handleJobChange(idx, 'description', e.target.value)}
-                      placeholder="ขอบเขตงานและความรับผิดชอบในตำแหน่งนี้..."
+                      placeholder={t('admin.jobDescPlaceholder', 'ขอบเขตงานและความรับผิดชอบในตำแหน่งนี้...')}
                       className="w-full rounded-lg border border-theme-border bg-theme-surface px-2.5 py-1.5 text-xs text-theme-text focus:outline-none leading-relaxed"
                     />
                   </div>
 
                   <div>
                     <label className="block text-[11px] font-semibold text-theme-text mb-1">
-                      คุณสมบัติผู้สมัคร (Requirements - แยก 1 ข้อต่อ 1 บรรทัด)
+                      {t('admin.jobRequirements', 'คุณสมบัติผู้สมัคร (Requirements - แยก 1 ข้อต่อ 1 บรรทัด)')}
                     </label>
                     <textarea
                       rows={3}
@@ -481,7 +481,7 @@ export const CareersManager: React.FC = () => {
                           e.target.value.split('\n').filter((l) => l.trim().length > 0)
                         )
                       }
-                      placeholder="วุฒิปริญญาตรี สาขาที่เกี่ยวข้อง&#10;มีประสบการณ์ 2 ปีขึ้นไป&#10;สามารถเข้ากะได้"
+                      placeholder={t('admin.jobReqsPlaceholder', 'วุฒิปริญญาตรี สาขาที่เกี่ยวข้อง\nมีประสบการณ์ 2 ปีขึ้นไป\nสามารถเข้ากะได้')}
                       className="w-full rounded-lg border border-theme-border bg-theme-surface px-2.5 py-1.5 text-xs text-theme-text font-mono focus:outline-none leading-relaxed"
                     />
                   </div>
@@ -490,12 +490,12 @@ export const CareersManager: React.FC = () => {
                   <div className="pt-2">
                     <MultiLangSectionEditor
                       compact
-                      title={`แปลภาษาตำแหน่งงาน: ${job.titleTh || 'ตำแหน่งงาน'}`}
+                      title={`${t('admin.translateJob', 'แปลภาษาตำแหน่งงาน')}: ${job.titleTh || ''}`}
                       fields={[
-                        { key: 'title', label: 'ชื่อตำแหน่งงาน (Job Title)' },
-                        { key: 'department', label: 'แผนก / ฝ่าย (Department)' },
-                        { key: 'location', label: 'สถานที่ปฏิบัติงาน (Location)' },
-                        { key: 'description', label: 'หน้าที่ความรับผิดชอบ (Description)', type: 'textarea', rows: 2 },
+                        { key: 'title', label: t('admin.jobTitle', 'ชื่อตำแหน่งงาน (Job Title)') },
+                        { key: 'department', label: `${t('admin.department', 'แผนก / ฝ่าย')} (Department)` },
+                        { key: 'location', label: `${t('admin.location', 'สถานที่ปฏิบัติงาน')} (Location)` },
+                        { key: 'description', label: t('admin.jobDescription', 'หน้าที่ความรับผิดชอบ (Description)'), type: 'textarea', rows: 2 },
                       ]}
                       value={job.translations || {
                         en: { title: job.titleEn || '', department: '', location: '', description: '' },
@@ -520,7 +520,7 @@ export const CareersManager: React.FC = () => {
             className="inline-flex items-center gap-2 rounded-xl bg-theme-primary px-6 py-3 text-xs font-bold text-black shadow-lg shadow-theme-primary/20 hover:opacity-90 disabled:opacity-50 transition-all"
           >
             <Save className="h-4 w-4" />
-            <span>{isSaving ? 'กำลังบันทึกข้อมูล...' : 'บันทึกการเปลี่ยนแปลงทั้งหมด'}</span>
+            <span>{isSaving ? t('admin.saving', 'กำลังบันทึกข้อมูล...') : t('admin.saveAllChanges', 'บันทึกการเปลี่ยนแปลงทั้งหมด')}</span>
           </button>
         </div>
       </form>

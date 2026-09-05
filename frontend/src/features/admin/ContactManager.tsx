@@ -380,11 +380,11 @@ export const ContactManager: React.FC = () => {
       <div className="rounded-3xl border border-theme-border bg-theme-surface p-6 sm:p-8 shadow-2xl space-y-4 text-xs">
         <h3 className="font-display text-sm font-bold text-theme-text flex items-center gap-2 border-b border-theme-border pb-3">
           <MapPin className="h-4 w-4 text-theme-primary" />
-          <span>ข้อมูลโรงงานและช่องทางการติดต่อ (Factory Contact Info)</span>
+          <span>{t('admin.factoryContactInfo', 'ข้อมูลโรงงานและช่องทางการติดต่อ (Factory Contact Info)')}</span>
         </h3>
 
         <div>
-          <label className="font-bold text-theme-text block mb-1">ที่อยู่โรงงาน (ภาษาไทย)</label>
+          <label className="font-bold text-theme-text block mb-1">{t('admin.factoryAddressTh', 'ที่อยู่โรงงาน (ภาษาไทย)')}</label>
           <textarea
             rows={2}
             value={address}
@@ -404,7 +404,7 @@ export const ContactManager: React.FC = () => {
             />
           </div>
           <div>
-            <label className="font-bold text-theme-text block mb-1">อีเมลติดต่อฝ่ายขาย (Sales Email)</label>
+            <label className="font-bold text-theme-text block mb-1">{t('admin.salesEmail', 'อีเมลติดต่อฝ่ายขาย (Sales Email)')}</label>
             <input
               type="email"
               value={email}
@@ -415,7 +415,7 @@ export const ContactManager: React.FC = () => {
         </div>
 
           <div>
-            <label className="font-bold text-theme-text block mb-1">เวลาทำการ (Business Hours)</label>
+            <label className="font-bold text-theme-text block mb-1">{t('admin.businessHoursLabel', 'เวลาทำการ (Business Hours)')}</label>
             <input
               type="text"
               value={businessHours}
@@ -433,7 +433,7 @@ export const ContactManager: React.FC = () => {
               className="btn-primary-action text-xs font-black px-6 py-2.5 shadow-xl flex items-center gap-2 disabled:opacity-50"
             >
               <Save className="h-4 w-4" />
-              <span>{isSaving ? 'กำลังบันทึก...' : 'บันทึกข้อมูลการติดต่อ'}</span>
+              <span>{isSaving ? t('admin.saving', 'กำลังบันทึก...') : t('admin.saveContactInfo', 'บันทึกข้อมูลการติดต่อ')}</span>
             </button>
           </div>
         </div>
@@ -443,14 +443,14 @@ export const ContactManager: React.FC = () => {
         <div className="flex items-center justify-between border-b border-theme-border pb-3">
           <h3 className="font-display text-sm font-bold text-theme-text flex items-center gap-2">
             <Building2 className="h-4 w-4 text-theme-primary" />
-            <span>ข้อมูลแบรนด์และนิติบุคคล (Brand & Legal Entity Information)</span>
+            <span>{t('admin.brandLegalInfo', 'ข้อมูลแบรนด์และนิติบุคคล (Brand & Legal Entity Information)')}</span>
           </h3>
           <span className="text-[10px] text-theme-text-muted font-mono">5 Languages Supported</span>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label className="font-bold text-theme-text block mb-1">ชื่อบริษัท (ภาษาไทย)</label>
+            <label className="font-bold text-theme-text block mb-1">{t('admin.companyNameThLabel', 'ชื่อบริษัท (ภาษาไทย)')}</label>
             <input
               type="text"
               value={companyNameTh}
@@ -459,7 +459,7 @@ export const ContactManager: React.FC = () => {
             />
           </div>
           <div>
-            <label className="font-bold text-theme-text block mb-1">Company Name (English)</label>
+            <label className="font-bold text-theme-text block mb-1">{t('admin.companyNameEnLabel', 'Company Name (English)')}</label>
             <input
               type="text"
               value={companyNameEn}
@@ -471,7 +471,7 @@ export const ContactManager: React.FC = () => {
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div>
-            <label className="font-bold text-theme-text block mb-1">เลขประจำตัวผู้เสียภาษี (Tax ID)</label>
+            <label className="font-bold text-theme-text block mb-1">{t('admin.taxId', 'เลขประจำตัวผู้เสียภาษี (Tax ID)')}</label>
             <input
               type="text"
               value={taxId}
@@ -489,7 +489,7 @@ export const ContactManager: React.FC = () => {
             />
           </div>
           <div>
-            <label className="font-bold text-theme-text block mb-1">ปีก่อตั้ง (Established Year)</label>
+            <label className="font-bold text-theme-text block mb-1">{t('admin.establishedYear', 'ปีก่อตั้ง (Established Year)')}</label>
             <input
               type="text"
               value={establishedYear}
@@ -501,12 +501,12 @@ export const ContactManager: React.FC = () => {
 
         <MultiLangSectionEditor
           compact
-          title="แปลภาษาข้อมูลแบรนด์และนิติบุคคล (Brand & Legal Entity Translations)"
+          title={t('admin.brandLegalTranslationsTitle', 'แปลภาษาข้อมูลแบรนด์และนิติบุคคล (Brand & Legal Entity Translations)')}
           fields={[
-            { key: 'companyName', label: 'ชื่อบริษัท (Company Name)' },
-            { key: 'registeredCapital', label: 'ทุนจดทะเบียน (Registered Capital)' },
-            { key: 'taxId', label: 'เลขประจำตัวผู้เสียภาษี (Tax ID)' },
-            { key: 'establishedYear', label: 'ปีก่อตั้ง (Established Year)' },
+            { key: 'companyName', label: `${t('admin.companyNameThLabel', 'ชื่อบริษัท')} (Company Name)` },
+            { key: 'registeredCapital', label: `${t('admin.registeredCapital', 'ทุนจดทะเบียน')} (Registered Capital)` },
+            { key: 'taxId', label: `${t('admin.taxId', 'เลขประจำตัวผู้เสียภาษี')} (Tax ID)` },
+            { key: 'establishedYear', label: `${t('admin.establishedYear', 'ปีก่อตั้ง')} (Established Year)` },
             { key: 'factoryAddress', label: 'ที่อยู่สำนักงาน / โรงงาน (Legal Address)', type: 'textarea', rows: 2 },
           ]}
           value={brandLegalTranslations}
@@ -521,14 +521,14 @@ export const ContactManager: React.FC = () => {
             className="btn-primary-action text-xs font-black px-6 py-2.5 shadow-xl flex items-center gap-2 disabled:opacity-50"
           >
             <Save className="h-4 w-4 text-black" />
-            <span>{isSaving ? 'กำลังบันทึก...' : 'บันทึกข้อมูลนิติบุคคลและติดต่อ'}</span>
+            <span>{isSaving ? t('admin.saving', 'กำลังบันทึก...') : t('admin.saveBrandAndContact', 'บันทึกข้อมูลนิติบุคคลและติดต่อ')}</span>
           </button>
         </div>
       </div>
 
       {/* 1.5 Multi-Language Translations (EN, JP, CN, MM) */}
       <MultiLangSectionEditor
-        title="แปลภาษา (Multi-Language) - ติดต่อเรา & ข้อมูลองค์กร"
+        title={`${t('admin.multiLangTitle', 'แปลภาษา (Multi-Language)')} - ${t('contact.title', 'ติดต่อเรา')} & ${t('admin.brandLegalInfo', 'ข้อมูลองค์กร')}`}
         fields={[
           { key: 'bio', label: 'Company Bio / Overview', type: 'textarea', rows: 3 },
           { key: 'businessHours', label: 'Business Hours' },
@@ -543,10 +543,10 @@ export const ContactManager: React.FC = () => {
           <div>
             <h3 className="font-display text-sm font-bold text-theme-text flex items-center gap-2">
               <Building2 className="h-4 w-4 text-theme-primary" />
-              <span>ระบบจัดการสาขาและสถานที่ตั้ง (Multi-Branch & Locations Manager)</span>
+              <span>{t('admin.branchManagerTitle', 'ระบบจัดการสาขาและสถานที่ตั้ง (Multi-Branch & Locations Manager)')}</span>
             </h3>
             <p className="text-[11px] text-theme-text-muted mt-0.5">
-              💡 สำหรับองค์กรที่มีหลายสาขา สามารถเพิ่ม แก้ไข และกำหนดสาขาหลัก (สำนักงานใหญ่, โรงงานผลิต, คลังสินค้า) เพื่อให้ผู้เข้าชมเลือกดูได้
+              💡 {t('admin.branchManagerSubtitle', 'สำหรับองค์กรที่มีหลายสาขา สามารถเพิ่ม แก้ไข และกำหนดสาขาหลัก (สำนักงานใหญ่, โรงงานผลิต, คลังสินค้า) เพื่อให้ผู้เข้าชมเลือกดูได้')}
             </p>
           </div>
 
@@ -556,25 +556,25 @@ export const ContactManager: React.FC = () => {
             className="btn-primary-action text-xs font-black px-4 py-2 shadow-lg flex items-center gap-1.5 self-start sm:self-auto"
           >
             <Plus className="h-4 w-4 text-black" />
-            <span>+ เพิ่มสาขาใหม่</span>
+            <span>{t('admin.addNewBranch', '+ เพิ่มสาขาใหม่')}</span>
           </button>
         </div>
 
         {branches.length === 0 ? (
           <div className="p-8 text-center text-xs text-theme-text-muted rounded-2xl border border-dashed border-theme-border">
-            ยังไม่มีข้อมูลสาขา กดปุ่ม "+ เพิ่มสาขาใหม่" เพื่อเริ่มต้น
+            {t('admin.noBranchesYet', 'ยังไม่มีข้อมูลสาขา กดปุ่ม "+ เพิ่มสาขาใหม่" เพื่อเริ่มต้น')}
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pt-2">
             {branches.map((b, idx) => {
               const typeLabel =
                 b.type === 'headquarters'
-                  ? '🏢 สำนักงานใหญ่'
+                  ? t('admin.typeHq', '🏢 สำนักงานใหญ่')
                   : b.type === 'factory'
-                  ? '🏭 โรงงานผลิต'
+                  ? t('admin.typeFactory', '🏭 โรงงานผลิต')
                   : b.type === 'warehouse'
-                  ? '📦 คลังสินค้า'
-                  : '📍 สาขาย่อย';
+                  ? t('admin.typeWarehouse', '📦 คลังสินค้า')
+                  : t('admin.typeBranch', '📍 สาขาย่อย');
 
               return (
                 <div
@@ -594,16 +594,16 @@ export const ContactManager: React.FC = () => {
                         {b.isPrimary ? (
                           <span className="flex items-center gap-1 rounded-full bg-amber-500/20 border border-amber-500/40 px-2 py-0.5 text-[9px] font-black text-amber-300">
                             <Star className="h-2.5 w-2.5 fill-amber-400 text-amber-400" />
-                            สาขาหลัก
+                            {t('admin.primaryBranchBadge', 'สาขาหลัก')}
                           </span>
                         ) : (
                           <button
                             type="button"
                             onClick={() => handleSetPrimaryBranch(idx)}
                             className="rounded-full bg-theme-surface border border-theme-border px-2 py-0.5 text-[9px] font-bold text-theme-text-muted hover:text-theme-primary"
-                            title="คลิกเพื่อตั้งเป็นสาขาหลัก"
+                            title={t('admin.setAsPrimaryBranch', 'คลิกเพื่อตั้งเป็นสาขาหลัก')}
                           >
-                            ตั้งเป็นสาขาหลัก
+                            {t('admin.setAsPrimaryBranch', 'ตั้งเป็นสาขาหลัก')}
                           </button>
                         )}
                       </div>
@@ -648,7 +648,7 @@ export const ContactManager: React.FC = () => {
                           target="_blank"
                           rel="noreferrer"
                           className="rounded-lg p-1.5 text-theme-text-dim hover:text-theme-primary"
-                          title="เปิดดูแผนที่ Google Maps"
+                          title={t('admin.testOpenMap', 'เปิดดูแผนที่ Google Maps')}
                         >
                           <ExternalLink className="h-3.5 w-3.5" />
                         </a>
@@ -661,10 +661,10 @@ export const ContactManager: React.FC = () => {
                             ? 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/30'
                             : 'bg-slate-500/15 text-slate-400 border border-slate-500/30'
                         }`}
-                        title={b.enabled !== false ? 'คลิกเพื่อซ่อน' : 'คลิกเพื่อแสดง'}
+                        title={b.enabled !== false ? t('admin.clickToHide', 'คลิกเพื่อซ่อน') : t('admin.clickToShow', 'คลิกเพื่อแสดง')}
                       >
                         {b.enabled !== false ? <Eye className="h-2.5 w-2.5" /> : <EyeOff className="h-2.5 w-2.5" />}
-                        <span>{b.enabled !== false ? 'แสดง' : 'ซ่อน'}</span>
+                        <span>{b.enabled !== false ? t('admin.show', 'แสดง') : t('admin.hide', 'ซ่อน')}</span>
                       </button>
                     </div>
 
@@ -673,7 +673,7 @@ export const ContactManager: React.FC = () => {
                         type="button"
                         onClick={() => handleOpenEditBranch(idx)}
                         className="rounded-lg border border-theme-border bg-theme-surface p-1.5 text-theme-text-muted hover:text-theme-primary hover:border-theme-primary transition-colors"
-                        title="แก้ไขข้อมูลสาขา"
+                        title={t('admin.edit', 'แก้ไขข้อมูลสาขา')}
                       >
                         <Edit className="h-3.5 w-3.5" />
                       </button>
@@ -681,7 +681,7 @@ export const ContactManager: React.FC = () => {
                         type="button"
                         onClick={() => handleDeleteBranch(idx)}
                         className="rounded-lg border border-theme-border bg-theme-surface p-1.5 text-red-400 hover:bg-red-500/10 hover:border-red-500/40 transition-colors"
-                        title="ลบสาขา"
+                        title={t('admin.deleteItem', 'ลบสาขา')}
                       >
                         <Trash2 className="h-3.5 w-3.5" />
                       </button>
@@ -700,14 +700,14 @@ export const ContactManager: React.FC = () => {
           <div className="space-y-1">
             <h3 className="font-display text-sm font-bold text-theme-text flex items-center gap-2">
               <Inbox className="h-4 w-4 text-theme-primary" />
-              <span>กล่องข้อความคำขอใบเสนอราคา (Customer Leads & Quote Requests)</span>
+              <span>{t('admin.customerLeadsTitle', 'กล่องข้อความคำขอใบเสนอราคา (Customer Leads & Quote Requests)')}</span>
             </h3>
             <p className="text-[11px] text-theme-text-muted">
-              รายการข้อความที่ลูกค้าส่งเข้ามาผ่านฟอร์มหน้าเว็บ
+              {t('admin.customerLeadsSubtitle', 'รายการข้อความที่ลูกค้าส่งเข้ามาผ่านฟอร์มหน้าเว็บ')}
             </p>
           </div>
           <span className="rounded-full bg-theme-primary/15 border border-theme-primary/30 px-3 py-1 text-xs font-bold text-theme-primary">
-            {inquiries.length} คำขอ
+            {inquiries.length} {t('admin.inquiryCount', 'คำขอ')}
           </span>
         </div>
 
@@ -755,9 +755,9 @@ export const ContactManager: React.FC = () => {
                           ? 'bg-blue-500/20 text-blue-400 border border-blue-500/30 hover:bg-blue-500/30'
                           : 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
                       }`}
-                      title="คลิกเพื่อเปลี่ยนสถานะ"
+                      title={t('admin.clickToChangeStatus', 'คลิกเพื่อเปลี่ยนสถานะ')}
                     >
-                      {inq.status === 'NEW' ? 'รอดำเนินการ' : inq.status === 'CONTACTED' ? 'ติดต่อแล้ว' : 'ปิดงาน'}
+                      {inq.status === 'NEW' ? t('admin.statusPending', 'รอดำเนินการ') : inq.status === 'CONTACTED' ? t('admin.statusContacted', 'ติดต่อแล้ว') : t('admin.statusClosed', 'ปิดงาน')}
                     </button>
                   </td>
                   <td className="py-3 px-4 text-right space-x-2">
@@ -765,7 +765,7 @@ export const ContactManager: React.FC = () => {
                       type="button"
                       onClick={() => setSelectedInquiry(inq)}
                       className="rounded-lg border border-theme-border bg-theme-surface p-1.5 text-theme-text-muted hover:text-theme-primary hover:border-theme-primary transition-colors"
-                      title="ดูรายละเอียดข้อความ"
+                      title={t('admin.viewDetails', 'ดูรายละเอียดข้อความ')}
                     >
                       <Eye className="h-3.5 w-3.5" />
                     </button>
@@ -776,7 +776,7 @@ export const ContactManager: React.FC = () => {
                         setDeleteConfirmOpen(true);
                       }}
                       className="rounded-lg border border-theme-border bg-theme-surface p-1.5 text-red-400 hover:bg-red-500/10 hover:border-red-500/40 transition-colors"
-                      title="ลบรายการ"
+                      title={t('admin.deleteItem', 'ลบรายการ')}
                     >
                       <Trash2 className="h-3.5 w-3.5" />
                     </button>
@@ -792,7 +792,7 @@ export const ContactManager: React.FC = () => {
       <Modal
         isOpen={!!selectedInquiry}
         onClose={() => setSelectedInquiry(null)}
-        title="รายละเอียดคำขอใบเสนอราคา / ข้อความลูกค้า"
+        title={t('admin.inquiryDetailTitle', 'รายละเอียดคำขอใบเสนอราคา / ข้อความลูกค้า')}
         maxWidth="xl"
       >
         {selectedInquiry && (
@@ -822,14 +822,14 @@ export const ContactManager: React.FC = () => {
 
             <div className="flex justify-between items-center pt-2">
               <span className="text-[10px] text-theme-text-dim">
-                ส่งเมื่อ: {new Date(selectedInquiry.createdAt).toLocaleString('th-TH')}
+                {t('admin.tableDate', 'ส่งเมื่อ')}: {new Date(selectedInquiry.createdAt).toLocaleString('th-TH')}
               </span>
               <button
                 type="button"
                 onClick={() => setSelectedInquiry(null)}
                 className="rounded-xl bg-theme-primary px-5 py-2 font-bold text-black"
               >
-                ปิดหน้าต่าง
+                {t('admin.closeModal', 'ปิดหน้าต่าง')}
               </button>
             </div>
           </div>
@@ -840,22 +840,22 @@ export const ContactManager: React.FC = () => {
       <Modal
         isOpen={branchModalOpen}
         onClose={() => setBranchModalOpen(false)}
-        title={editingBranchIdx !== null ? 'แก้ไขข้อมูลสาขา / โรงงาน' : 'เพิ่มสาขา / โรงงานใหม่'}
+        title={editingBranchIdx !== null ? t('admin.editBranchTitle', 'แก้ไขข้อมูลสาขา / โรงงาน') : t('admin.addBranchTitle', 'เพิ่มสาขา / โรงงานใหม่')}
       >
         <div className="space-y-4 text-xs">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="font-bold text-theme-text block mb-1">ชื่อสาขา (ภาษาไทย) *</label>
+              <label className="font-bold text-theme-text block mb-1">{t('admin.branchNameTh', 'ชื่อสาขา (ภาษาไทย)')} *</label>
               <input
                 type="text"
                 value={bNameTh}
                 onChange={(e) => setBNameTh(e.target.value)}
-                placeholder="เช่น สำนักงานใหญ่, โรงงานสมุทรสาคร"
+                placeholder={t('admin.branchNamePlaceholder', 'เช่น สำนักงานใหญ่, โรงงานสมุทรสาคร')}
                 className="w-full rounded-xl border border-theme-border bg-theme-surface-elevated px-3 py-2 text-theme-text"
               />
             </div>
             <div>
-              <label className="font-bold text-theme-text block mb-1">ชื่อสาขา (English)</label>
+              <label className="font-bold text-theme-text block mb-1">{t('admin.branchNameEn', 'ชื่อสาขา (English)')}</label>
               <input
                 type="text"
                 value={bNameEn}
@@ -874,10 +874,10 @@ export const ContactManager: React.FC = () => {
                 onChange={(e) => setBType(e.target.value as any)}
                 className="w-full rounded-xl border border-theme-border bg-theme-surface-elevated px-3 py-2 text-theme-text"
               >
-                <option value="headquarters">🏢 สำนักงานใหญ่ (Headquarters)</option>
-                <option value="factory">🏭 โรงงานผลิต (Manufacturing Plant)</option>
-                <option value="warehouse">📦 คลังสินค้า / ศูนย์กระจายสินค้า (Warehouse)</option>
-                <option value="branch">📍 สาขาภูมิภาค (Regional Branch)</option>
+                <option value="headquarters">{t('admin.typeHq', '🏢 สำนักงานใหญ่ (Headquarters)')}</option>
+                <option value="factory">{t('admin.typeFactory', '🏭 โรงงานผลิต (Manufacturing Plant)')}</option>
+                <option value="warehouse">{t('admin.typeWarehouse', '📦 คลังสินค้า / ศูนย์กระจายสินค้า (Warehouse)')}</option>
+                <option value="branch">{t('admin.typeBranch', '📍 สาขาภูมิภาค (Regional Branch)')}</option>
               </select>
             </div>
             <div>
@@ -893,18 +893,18 @@ export const ContactManager: React.FC = () => {
           </div>
 
           <div>
-            <label className="font-bold text-theme-text block mb-1">ที่อยู่สาขา (ภาษาไทย) *</label>
+            <label className="font-bold text-theme-text block mb-1">{t('admin.branchAddressTh', 'ที่อยู่สาขา (ภาษาไทย)')} *</label>
             <textarea
               rows={2}
               value={bAddressTh}
               onChange={(e) => setBAddressTh(e.target.value)}
-              placeholder="บ้านเลขที่, ถนน, ตำบล/แขวง, อำเภอ/เขต, จังหวัด, รหัสไปรษณีย์"
+              placeholder={t('admin.branchAddressPlaceholder', 'บ้านเลขที่, ถนน, ตำบล/แขวง, อำเภอ/เขต, จังหวัด, รหัสไปรษณีย์')}
               className="w-full rounded-xl border border-theme-border bg-theme-surface-elevated px-3 py-2 text-theme-text"
             />
           </div>
 
           <div>
-            <label className="font-bold text-theme-text block mb-1">ที่อยู่สาขา (English)</label>
+            <label className="font-bold text-theme-text block mb-1">{t('admin.branchAddressEn', 'ที่อยู่สาขา (English)')}</label>
             <textarea
               rows={2}
               value={bAddressEn}
@@ -939,7 +939,7 @@ export const ContactManager: React.FC = () => {
 
           <div>
             <div className="flex items-center justify-between mb-1">
-              <label className="font-bold text-theme-text block">ลิงก์ Google Maps (สำหรับให้ลูกค้ากดเปิดแผนที่นำทาง)</label>
+              <label className="font-bold text-theme-text block">{t('admin.googleMapsLink', 'ลิงก์ Google Maps (สำหรับให้ลูกค้ากดเปิดแผนที่นำทาง)')}</label>
               {bMapUrl && (
                 <a
                   href={formatGoogleMapsUrl(bMapUrl, bAddressTh)}
@@ -948,7 +948,7 @@ export const ContactManager: React.FC = () => {
                   className="text-[11px] font-bold text-theme-primary hover:underline flex items-center gap-1"
                 >
                   <ExternalLink className="h-3 w-3" />
-                  ทดสอบเปิดดูแผนที่
+                  {t('admin.testOpenMap', 'ทดสอบเปิดดูแผนที่')}
                 </a>
               )}
             </div>
@@ -959,22 +959,16 @@ export const ContactManager: React.FC = () => {
               placeholder="เช่น https://maps.app.goo.gl/... หรือ 13.6265, 100.2642 หรือ ชื่อสถานที่"
               className="w-full rounded-xl border border-theme-border bg-theme-surface-elevated px-3 py-2 text-theme-text font-mono text-xs"
             />
-            <div className="mt-1.5 p-2.5 rounded-xl bg-theme-surface border border-theme-border/70 text-[11px] text-theme-text-muted space-y-1">
-              <span className="font-bold text-theme-text block">💡 สามารถเลือกใส่ได้ 3 รูปแบบตามสะดวก:</span>
-              <p>• <strong>วิธีที่ 1 (แนะนำ):</strong> ลิงก์แชร์จาก Google Maps &gt; เปิด Google Maps &gt; กด <strong>"แชร์" (Share)</strong> &gt; <strong>"คัดลอกลิงก์"</strong> (เช่น <code className="text-theme-primary font-mono">https://maps.app.goo.gl/...</code>)</p>
-              <p>• <strong>วิธีที่ 2 (พิกัด):</strong> ใส่ตัวเลข ละติจูด,ลองจิจูด ตรงๆ ได้เลย เช่น <code className="text-theme-primary font-mono">13.6265, 100.2642</code> (คลิกขวาบนแผนที่จะมีตัวเลขพิกัดให้คัดลอก)</p>
-              <p>• <strong>วิธีที่ 3 (ชื่อสถานที่):</strong> พิมพ์ชื่อบริษัทหรือที่อยู่ เช่น <code className="text-theme-primary font-mono">บริษัท ไคโอทรอน เทคโนโลยี จำกัด สมุทรสาคร</code> (ระบบจะสร้างลิงก์ค้นหาให้อัตโนมัติ)</p>
-            </div>
           </div>
 
           {/* Branch Multi-Language Translations (EN, JP, CN, MM) */}
           <MultiLangSectionEditor
             compact
-            title="แปลภาษาข้อมูลสาขา (Branch Multi-Language Translations)"
+            title={t('admin.branchTranslationsTitle', 'แปลภาษาข้อมูลสาขา (Branch Multi-Language Translations)')}
             fields={[
-              { key: 'name', label: 'ชื่อสาขา (Branch Name)' },
-              { key: 'address', label: 'ที่อยู่สาขา (Address)', type: 'textarea', rows: 2 },
-              { key: 'businessHours', label: 'เวลาทำการ (Business Hours)' },
+              { key: 'name', label: `${t('admin.branchNameTh', 'ชื่อสาขา')} (Branch Name)` },
+              { key: 'address', label: `${t('admin.branchAddressTh', 'ที่อยู่สาขา')} (Address)`, type: 'textarea', rows: 2 },
+              { key: 'businessHours', label: `${t('admin.businessHours', 'เวลาทำการ')} (Business Hours)` },
             ]}
             value={bTranslations as any}
             onChange={setBTranslations}
@@ -989,7 +983,7 @@ export const ContactManager: React.FC = () => {
               className="h-4 w-4 rounded border-theme-border text-theme-primary focus:ring-theme-primary"
             />
             <label htmlFor="branchPrimaryCheck" className="font-bold text-theme-text cursor-pointer">
-              ⭐ ตั้งเป็นสาขาหลัก (Primary Branch) — ที่อยู่นี้จะแสดงเป็นค่าเริ่มต้นใน Footer และหน้าติดต่อเรา
+              {t('admin.setAsPrimaryBranchLabel', '⭐ ตั้งเป็นสาขาหลัก (Primary Branch) — ที่อยู่นี้จะแสดงเป็นค่าเริ่มต้นใน Footer และหน้าติดต่อเรา')}
             </label>
           </div>
 
@@ -999,14 +993,14 @@ export const ContactManager: React.FC = () => {
               onClick={() => setBranchModalOpen(false)}
               className="rounded-xl border border-theme-border bg-theme-surface px-5 py-2 font-bold text-theme-text hover:bg-theme-surface-elevated"
             >
-              ยกเลิก
+              {t('admin.cancel', 'ยกเลิก')}
             </button>
             <button
               type="button"
               onClick={handleSaveBranch}
               className="btn-primary-action px-6 py-2 font-black text-black shadow-lg"
             >
-              บันทึกข้อมูลสาขา
+              {t('admin.saveBranch', 'บันทึกข้อมูลสาขา')}
             </button>
           </div>
         </div>
@@ -1017,8 +1011,8 @@ export const ContactManager: React.FC = () => {
         isOpen={deleteConfirmOpen}
         onClose={() => setDeleteConfirmOpen(false)}
         onConfirm={handleDeleteInquiry}
-        title="ยืนยันการลบข้อความ"
-        message="คุณแน่ใจหรือไม่ว่าต้องการลบรายการข้อความลูกค้านี้?"
+        title={t('admin.confirmDeleteInquiry', 'ยืนยันการลบข้อความ')}
+        message={t('admin.confirmDeleteInquiryMsg', 'คุณแน่ใจหรือไม่ว่าต้องการลบรายการข้อความลูกค้านี้?')}
         variant="danger"
       />
     </div>

@@ -202,7 +202,7 @@ export const SustainabilityManager: React.FC = () => {
                 type="text"
                 value={heading}
                 onChange={(e) => setHeading(e.target.value)}
-                placeholder="โลหะ... วัสดุเพื่อความยั่งยืนที่รีไซเคิลได้ไม่รู้จบ"
+                placeholder={t('admin.esgHeadingPlaceholder', 'โลหะ... วัสดุเพื่อความยั่งยืนที่รีไซเคิลได้ไม่รู้จบ')}
                 className="w-full rounded-xl border border-theme-border bg-theme-surface-elevated px-3.5 py-2.5 text-xs font-bold text-theme-text focus:border-theme-primary focus:outline-none"
               />
             </div>
@@ -215,7 +215,7 @@ export const SustainabilityManager: React.FC = () => {
                 rows={3}
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                placeholder="คำอธิบายแนวคิดเศรษฐกิจหมุนเวียนและนโยบายความยั่งยืนขององค์กร..."
+                placeholder={t('admin.esgDescPlaceholder', 'คำอธิบายแนวคิดเศรษฐกิจหมุนเวียนและนโยบายความยั่งยืนขององค์กร...')}
                 className="w-full rounded-xl border border-theme-border bg-theme-surface-elevated px-3.5 py-2.5 text-xs text-theme-text focus:border-theme-primary focus:outline-none leading-relaxed"
               />
             </div>
@@ -240,10 +240,10 @@ export const SustainabilityManager: React.FC = () => {
             <div>
               <h2 className="font-display text-sm font-bold text-theme-text flex items-center gap-2">
                 <Recycle className="h-4 w-4 text-emerald-400" />
-                <span>2. เสาหลักความยั่งยืน (ESG Pillars Cards)</span>
+                <span>{t('admin.sustainabilityCardsSection', '2. เสาหลักความยั่งยืน (ESG Pillars Cards)')}</span>
               </h2>
               <p className="text-[11px] text-theme-text-muted mt-0.5">
-                แสดงผลเป็น Card พร้อมเอฟเฟกต์แสงเรือง (.glow-card) บนหน้าเว็บ
+                {t('admin.techGlowCardHint', 'แสดงผลเป็น Card พร้อมเอฟเฟกต์แสงเรือง (.glow-card) บนหน้าเว็บ')}
               </p>
             </div>
 
@@ -253,7 +253,7 @@ export const SustainabilityManager: React.FC = () => {
               className="inline-flex items-center gap-1.5 rounded-lg border border-emerald-500/40 bg-emerald-500/10 px-3 py-1.5 text-xs font-bold text-emerald-400 hover:bg-emerald-500/20 transition-colors"
             >
               <Plus className="h-3.5 w-3.5" />
-              <span>เพิ่ม Card ใหม่</span>
+              <span>{t('admin.addEsgCard', 'เพิ่ม Card ใหม่')}</span>
             </button>
           </div>
 
@@ -290,24 +290,24 @@ export const SustainabilityManager: React.FC = () => {
                           updated[idx] = { ...updated[idx], isPinned: nextPinned };
                           setCards(updated);
                           await updateSettings({ sustainabilityCards: updated });
-                          showToast(nextPinned ? '📌 ปักหมุดแสดงที่หน้าแรกแล้ว' : 'ยกเลิกปักหมุดหน้าแรกแล้ว');
+                          showToast(nextPinned ? `📌 ${t('admin.pinnedToHome', 'ปักหมุดแสดงที่หน้าแรกแล้ว')}` : t('admin.unpinnedFromHome', 'ยกเลิกปักหมุดหน้าแรกแล้ว'));
                         }}
                         className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-bold transition-all ${
                           Boolean(card.isPinned)
                             ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40 shadow-sm'
                             : 'bg-theme-surface text-theme-text-muted hover:text-theme-text border border-theme-border'
                         }`}
-                        title={Boolean(card.isPinned) ? 'คลิกเพื่อยกเลิกการปักหมุดหน้าแรก' : 'คลิกเพื่อปักหมุดแสดงที่หน้าแรก'}
+                        title={Boolean(card.isPinned) ? t('admin.clickToUnpin', 'คลิกเพื่อยกเลิกการปักหมุดหน้าแรก') : t('admin.clickToPin', 'คลิกเพื่อปักหมุดแสดงที่หน้าแรก')}
                       >
                         <Pin className={`h-3.5 w-3.5 ${Boolean(card.isPinned) ? 'fill-amber-400 text-amber-400' : ''}`} />
-                        <span>{Boolean(card.isPinned) ? '📌 ปักหมุดหน้าแรก' : 'ปักหมุดหน้าแรก'}</span>
+                        <span>{Boolean(card.isPinned) ? `📌 ${t('admin.pinned', 'ปักหมุดแล้ว')}` : t('admin.pinToHome', 'ปักหมุดหน้าแรก')}</span>
                       </button>
 
                       <button
                         type="button"
                         onClick={() => handleDeleteCard(idx)}
                         className="rounded-lg p-1.5 text-theme-text-dim hover:bg-red-500/20 hover:text-red-400 transition-colors"
-                        title="ลบ Card นี้"
+                        title={t('admin.deleteItem', 'ลบ Card นี้')}
                       >
                         <Trash2 className="h-4 w-4" />
                       </button>
@@ -318,7 +318,7 @@ export const SustainabilityManager: React.FC = () => {
                     <div className="grid grid-cols-2 gap-3">
                       <div>
                         <label className="block text-[11px] font-semibold text-theme-text mb-1">
-                          ไอคอน (Icon)
+                          {t('admin.icon', 'ไอคอน (Icon)')}
                         </label>
                         <select
                           value={card.icon}
@@ -337,7 +337,7 @@ export const SustainabilityManager: React.FC = () => {
 
                       <div>
                         <label className="block text-[11px] font-semibold text-theme-text mb-1">
-                          หัวข้อ (ภาษาอังกฤษ)
+                          {t('admin.titleEn', 'หัวข้อ (ภาษาอังกฤษ)')}
                         </label>
                         <input
                           type="text"
@@ -351,33 +351,33 @@ export const SustainabilityManager: React.FC = () => {
 
                     <div>
                       <label className="block text-[11px] font-semibold text-theme-text mb-1">
-                        หัวข้อ (ภาษาไทย)
+                        {t('admin.titleTh', 'หัวข้อ (ภาษาไทย)')}
                       </label>
                       <input
                         type="text"
                         value={card.titleTh}
                         onChange={(e) => handleCardChange(idx, 'titleTh', e.target.value)}
-                        placeholder="หัวข้อเสาหลักความยั่งยืน..."
+                        placeholder={t('admin.esgCardTitlePlaceholder', 'หัวข้อเสาหลักความยั่งยืน...')}
                         className="w-full rounded-lg border border-theme-border bg-theme-surface px-2.5 py-1.5 text-xs font-semibold text-theme-text focus:outline-none"
                       />
                     </div>
 
                     <div>
                       <label className="block text-[11px] font-semibold text-theme-text mb-1">
-                        คำอธิบายรายละเอียด (ภาษาไทย)
+                        {t('admin.descTh', 'คำอธิบายรายละเอียด (ภาษาไทย)')}
                       </label>
                       <textarea
                         rows={2}
                         value={card.descTh}
                         onChange={(e) => handleCardChange(idx, 'descTh', e.target.value)}
-                        placeholder="รายละเอียดความยั่งยืน..."
+                        placeholder={t('admin.esgCardDescPlaceholder', 'รายละเอียดความยั่งยืน...')}
                         className="w-full rounded-lg border border-theme-border bg-theme-surface px-2.5 py-1.5 text-xs text-theme-text focus:outline-none leading-relaxed"
                       />
                     </div>
 
                     <div>
                       <label className="block text-[11px] font-semibold text-theme-text mb-1">
-                        รูปภาพประจำ Card (Image)
+                        {t('admin.cardImage', 'รูปภาพประจำ Card (Image)')}
                       </label>
                       <div className="flex items-center gap-3">
                         {card.image && (
@@ -412,10 +412,10 @@ export const SustainabilityManager: React.FC = () => {
                     {/* Multi-Language Tabs for this Sustainability Card */}
                     <MultiLangSectionEditor
                       compact
-                      title={`แปลภาษา Card ความยั่งยืน: ${card.titleTh}`}
+                      title={`${t('admin.translateEsgCard', 'แปลภาษา Card ความยั่งยืน')}: ${card.titleTh || ''}`}
                       fields={[
-                        { key: 'title', label: 'หัวข้อความยั่งยืน (Title)' },
-                        { key: 'desc', label: 'คำอธิบาย (Description)', type: 'textarea', rows: 2 },
+                        { key: 'title', label: t('admin.esgTitle', 'หัวข้อความยั่งยืน (Title)') },
+                        { key: 'desc', label: t('admin.desc', 'คำอธิบาย (Description)'), type: 'textarea', rows: 2 },
                       ]}
                       value={card.translations || {
                         en: { title: card.titleEn || '', desc: card.descEn || '' },
@@ -440,7 +440,7 @@ export const SustainabilityManager: React.FC = () => {
             className="inline-flex items-center gap-2 rounded-xl bg-theme-primary px-6 py-3 text-xs font-bold text-black shadow-lg shadow-theme-primary/20 hover:opacity-90 disabled:opacity-50 transition-all"
           >
             <Save className="h-4 w-4" />
-            <span>{isSaving ? 'กำลังบันทึกข้อมูล...' : 'บันทึกการเปลี่ยนแปลงทั้งหมด'}</span>
+            <span>{isSaving ? t('admin.saving', 'กำลังบันทึกข้อมูล...') : t('admin.saveAllChanges', 'บันทึกการเปลี่ยนแปลงทั้งหมด')}</span>
           </button>
         </div>
       </form>

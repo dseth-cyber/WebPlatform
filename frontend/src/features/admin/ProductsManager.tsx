@@ -574,7 +574,7 @@ export const ProductsManager: React.FC = () => {
                       {cat.isPinned && (
                         <span className="flex items-center gap-1 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40 px-2 py-0.5 text-[10px] font-bold flex-shrink-0">
                           <Pin className="h-2.5 w-2.5 fill-amber-400 text-amber-400" />
-                          ปักหมุด
+                          {t('admin.pinned', 'ปักหมุด')}
                         </span>
                       )}
                     </div>
@@ -590,7 +590,7 @@ export const ProductsManager: React.FC = () => {
                     className="flex items-center gap-1.5 rounded-xl px-3 py-2 text-xs font-bold bg-theme-primary/10 text-theme-primary hover:bg-theme-primary hover:text-black transition-all border border-theme-primary/20"
                   >
                     <Edit className="h-3.5 w-3.5" />
-                    <span>แก้ไขรูป & ข้อมูล</span>
+                    <span>{t('admin.editCategoryBtn', 'แก้ไขรูป & ข้อมูล')}</span>
                   </button>
 
                   <div className="flex items-center gap-1.5">
@@ -602,7 +602,7 @@ export const ProductsManager: React.FC = () => {
                           ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40 shadow-sm'
                           : 'bg-theme-surface-elevated text-theme-text-muted hover:text-amber-400 border border-theme-border'
                       }`}
-                      title={cat.isPinned ? 'ยกเลิกการปักหมุด' : 'ปักหมุดหมวดหมู่นี้บนหน้าแรก'}
+                      title={cat.isPinned ? t('admin.clickToUnpin', 'ยกเลิกการปักหมุด') : t('admin.clickToPin', 'ปักหมุดหมวดหมู่นี้บนหน้าแรก')}
                     >
                       <Pin className={`h-3.5 w-3.5 ${cat.isPinned ? 'fill-amber-400 text-amber-400' : ''}`} />
                     </button>
@@ -615,7 +615,7 @@ export const ProductsManager: React.FC = () => {
                           ? 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/30'
                           : 'bg-slate-500/15 text-slate-400 border border-slate-500/30'
                       }`}
-                      title={cat.enabled !== false ? 'คลิกเพื่อซ่อน' : 'คลิกเพื่อแสดง'}
+                      title={cat.enabled !== false ? t('admin.clickToHide', 'คลิกเพื่อซ่อน') : t('admin.clickToShow', 'คลิกเพื่อแสดง')}
                     >
                       {cat.enabled !== false ? <Eye className="h-3.5 w-3.5" /> : <EyeOff className="h-3.5 w-3.5 text-slate-400" />}
                     </button>
@@ -625,7 +625,7 @@ export const ProductsManager: React.FC = () => {
                         type="button"
                         onClick={() => handleDeleteCategory(idx)}
                         className="p-2 text-theme-text-dim hover:text-red-400 rounded-xl transition-colors"
-                        title="ลบหมวดหมู่นี้"
+                        title={t('admin.deleteItem', 'ลบหมวดหมู่นี้')}
                       >
                         <Trash2 className="h-4 w-4" />
                       </button>
@@ -962,13 +962,13 @@ export const ProductsManager: React.FC = () => {
       <Modal
         isOpen={categoryModalOpen}
         onClose={() => setCategoryModalOpen(false)}
-        title={editingCatIdx !== null ? '✏️ แก้ไขรูปภาพและข้อมูลหมวดหมู่สินค้า' : '✨ เพิ่มหมวดหมู่สินค้าใหม่'}
+        title={editingCatIdx !== null ? t('admin.editCategoryModal', '✏️ แก้ไขรูปภาพและข้อมูลหมวดหมู่สินค้า') : t('admin.addCategoryModal', '✨ เพิ่มหมวดหมู่สินค้าใหม่')}
       >
         <div className="space-y-4 text-xs font-sans">
           {/* Image Upload & Preview */}
           <div>
             <label className="font-bold text-theme-text block mb-1.5">
-              รูปภาพหมวดหมู่สินค้า (Category Image) *
+              {t('admin.categoryImage', 'รูปภาพหมวดหมู่สินค้า (Category Image)')} *
             </label>
             <div className="flex items-start gap-4 p-3 rounded-2xl border border-theme-border bg-theme-surface-elevated">
               <div className="h-20 w-20 rounded-xl bg-white p-2 border border-theme-border flex items-center justify-center flex-shrink-0 shadow-sm overflow-hidden">
@@ -986,12 +986,12 @@ export const ProductsManager: React.FC = () => {
                 <div className="flex flex-wrap items-center gap-2">
                   <label className="inline-flex items-center gap-1.5 rounded-xl bg-theme-primary/15 border border-theme-primary/40 px-3 py-1.5 text-xs font-bold text-theme-primary hover:bg-theme-primary hover:text-black cursor-pointer transition-all shadow-sm">
                     <UploadCloud className="h-3.5 w-3.5" />
-                    <span>อัปโหลดรูปภาพใหม่ (PNG / JPG / WEBP)</span>
+                    <span>{t('admin.uploadNewImage', 'อัปโหลดรูปภาพใหม่ (PNG / JPG / WEBP)')}</span>
                     <input type="file" accept="image/*" onChange={handleCatImageUpload} className="hidden" />
                   </label>
                 </div>
                 <p className="text-[11px] text-theme-text-muted">
-                  หรือระบุที่อยู่ไฟล์ / URL รูปภาพโดยตรง:
+                  {t('admin.orSpecifyImageUrl', 'หรือระบุที่อยู่ไฟล์ / URL รูปภาพโดยตรง:')}
                 </p>
                 <input
                   type="text"
@@ -1007,7 +1007,7 @@ export const ProductsManager: React.FC = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="font-bold text-theme-text block mb-1">
-                ชื่อหมวดหมู่ (ภาษาไทย) *
+                {t('admin.categoryTitleTh', 'ชื่อหมวดหมู่ (ภาษาไทย)')} *
               </label>
               <input
                 type="text"
@@ -1019,7 +1019,7 @@ export const ProductsManager: React.FC = () => {
             </div>
             <div>
               <label className="font-bold text-theme-text block mb-1">
-                ชื่อหมวดหมู่ (English)
+                {t('admin.categoryTitleEn', 'ชื่อหมวดหมู่ (English)')}
               </label>
               <input
                 type="text"
@@ -1033,7 +1033,7 @@ export const ProductsManager: React.FC = () => {
 
           <div>
             <label className="font-bold text-theme-text block mb-1">
-              ลิงก์ปลายทางเมื่อคลิก (Target Path)
+              {t('admin.targetPath', 'ลิงก์ปลายทางเมื่อคลิก (Target Path)')}
             </label>
             <input
               type="text"
@@ -1052,7 +1052,7 @@ export const ProductsManager: React.FC = () => {
                 onChange={(e) => setCatFormPinned(e.target.checked)}
                 className="h-4 w-4 rounded border-theme-border text-theme-primary focus:ring-theme-primary"
               />
-              <span className="font-bold text-theme-text">📌 ปักหมุดแสดงบนหน้าแรก</span>
+              <span className="font-bold text-theme-text">{t('admin.pinToHomeCheckbox', '📌 ปักหมุดแสดงบนหน้าแรก')}</span>
             </label>
 
             <label className="flex items-center gap-2 cursor-pointer">
@@ -1062,7 +1062,7 @@ export const ProductsManager: React.FC = () => {
                 onChange={(e) => setCatFormEnabled(e.target.checked)}
                 className="h-4 w-4 rounded border-theme-border text-theme-primary focus:ring-theme-primary"
               />
-              <span className="font-bold text-theme-text">🟢 เปิดแสดงผล (Active)</span>
+              <span className="font-bold text-theme-text">{t('admin.activeStatusCheckbox', '🟢 เปิดแสดงผล (Active)')}</span>
             </label>
           </div>
 
@@ -1070,9 +1070,9 @@ export const ProductsManager: React.FC = () => {
           <div className="pt-2">
             <MultiLangSectionEditor
               compact
-              title="แปลภาษาหมวดหมู่สินค้า (Category Translations: EN, JP, CN, MM)"
+              title={t('admin.categoryTranslationsTitle', 'แปลภาษาหมวดหมู่สินค้า (Category Translations: EN, JP, CN, MM)')}
               fields={[
-                { key: 'title', label: 'ชื่อหมวดหมู่สินค้า (Category Title)' },
+                { key: 'title', label: `${t('admin.category', 'ชื่อหมวดหมู่สินค้า')} (Category Title)` },
               ]}
               value={catFormTranslations}
               onChange={setCatFormTranslations}
@@ -1085,14 +1085,14 @@ export const ProductsManager: React.FC = () => {
               onClick={() => setCategoryModalOpen(false)}
               className="rounded-xl border border-theme-border bg-theme-surface px-4 py-2 font-bold text-theme-text hover:bg-theme-surface-elevated"
             >
-              ยกเลิก
+              {t('admin.cancel', 'ยกเลิก')}
             </button>
             <button
               type="button"
               onClick={handleSaveCategory}
               className="btn-primary-action px-5 py-2 font-bold"
             >
-              บันทึกการแก้ไข
+              {t('admin.saveCategory', 'บันทึกการแก้ไข')}
             </button>
           </div>
         </div>
