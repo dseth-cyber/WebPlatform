@@ -404,6 +404,8 @@
     "metricLabel": "説明ラベル (Label)",
     "hideButton": "このボタンを非表示にする",
     "showButton": "このボタンを表示する",
+    "hideCMSButton": "CMSボタンを非表示にする",
+    "showCMSButton": "CMSボタンを表示する",
     "changeMyPassword": "パスワードを変更",
     "resetPassword": "パスワードをリセット",
     "autoGenSecurePassword": "安全なパスワードを自動生成",

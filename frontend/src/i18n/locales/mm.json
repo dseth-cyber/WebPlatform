@@ -404,6 +404,8 @@
     "metricLabel": "ရှင်းလင်းချက် အညွှန်း",
     "hideButton": "ဤခလုတ်ကို ဝှက်ရန်",
     "showButton": "ဤခလုတ်ကို ဖော်ပြရန်",
+    "hideCMSButton": "CMS ခလုတ်ကို ဝှက်ရန်",
+    "showCMSButton": "CMS ခလုတ်ကို ဖော်ပြရန်",
     "changeMyPassword": "စကားဝှက် ပြောင်းလဲရန်",
     "resetPassword": "စကားဝှက် အသစ်ပြန်လည်သတ်မှတ်ရန်",
     "autoGenSecurePassword": "လုံခြုံသော စကားဝှက် အလိုအလျောက် ထုတ်ယူရန်",

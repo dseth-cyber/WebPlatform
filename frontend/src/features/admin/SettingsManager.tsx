@@ -456,12 +456,12 @@ export const SettingsManager: React.FC = () => {
               {settings.showCMSButton ? (
                 <>
                   <EyeOff className="h-4 w-4 text-red-400" />
-                  <span>คลิกเพื่อซ่อนปุ่ม CMS</span>
+                  <span>{t('admin.hideCMSButton', 'คลิกเพื่อซ่อนปุ่ม CMS')}</span>
                 </>
               ) : (
                 <>
                   <Eye className="h-4 w-4" />
-                  <span>คลิกเพื่อเปิดแสดงปุ่ม CMS</span>
+                  <span>{t('admin.showCMSButton', 'คลิกเพื่อเปิดแสดงปุ่ม CMS')}</span>
                 </>
               )}
             </button>
@@ -499,12 +499,12 @@ export const SettingsManager: React.FC = () => {
               {settings.showThemeSwitcher ? (
                 <>
                   <EyeOff className="h-4 w-4 text-red-400" />
-                  <span>{t('admin.statusHidden', 'คลิกเพื่อซ่อนปุ่ม')}</span>
+                  <span>{t('admin.hideButton', 'คลิกเพื่อซ่อนปุ่มนี้')}</span>
                 </>
               ) : (
                 <>
                   <Eye className="h-4 w-4" />
-                  <span>{t('admin.statusActive', 'คลิกเพื่อเปิดแสดงปุ่ม')}</span>
+                  <span>{t('admin.showButton', 'คลิกเพื่อเปิดแสดงปุ่มนี้')}</span>
                 </>
               )}
             </button>
@@ -545,12 +545,12 @@ export const SettingsManager: React.FC = () => {
               {settings.showHeroPrimaryBtn !== false ? (
                 <>
                   <EyeOff className="h-4 w-4 text-red-400" />
-                  <span>{t('admin.statusHidden', 'คลิกเพื่อซ่อนปุ่ม')}</span>
+                  <span>{t('admin.hideButton', 'คลิกเพื่อซ่อนปุ่มนี้')}</span>
                 </>
               ) : (
                 <>
                   <Eye className="h-4 w-4" />
-                  <span>{t('admin.statusActive', 'คลิกเพื่อเปิดแสดงปุ่ม')}</span>
+                  <span>{t('admin.showButton', 'คลิกเพื่อเปิดแสดงปุ่มนี้')}</span>
                 </>
               )}
             </button>

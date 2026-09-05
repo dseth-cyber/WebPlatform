@@ -404,6 +404,8 @@
     "metricLabel": "说明标签 (Label)",
     "hideButton": "点击隐藏此按钮",
     "showButton": "点击显示此按钮",
+    "hideCMSButton": "点击隐藏CMS按钮",
+    "showCMSButton": "点击显示CMS按钮",
     "changeMyPassword": "修改我的密码",
     "resetPassword": "重置密码",
     "autoGenSecurePassword": "自动生成安全强密码",

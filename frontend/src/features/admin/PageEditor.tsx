@@ -505,7 +505,7 @@ export const PageEditor: React.FC<{
                   }`}
                 >
                   {showPrimaryBtn ? <Eye className="h-3 w-3" /> : <EyeOff className="h-3 w-3" />}
-                  <span>{showPrimaryBtn ? t('admin.activeShowing', 'แสดงผลอยู่') : t('admin.hideButton', 'ซ่อนปุ่ม')}</span>
+                  <span>{showPrimaryBtn ? t('admin.activeShowing', 'แสดงผลอยู่') : t('admin.statusHidden', 'ซ่อนอยู่')}</span>
                 </button>
               </div>
 
@@ -559,7 +559,7 @@ export const PageEditor: React.FC<{
                   }`}
                 >
                   {showSecondaryBtn ? <Eye className="h-3 w-3" /> : <EyeOff className="h-3 w-3" />}
-                  <span>{showSecondaryBtn ? t('admin.activeShowing', 'แสดงผลอยู่') : t('admin.hideButton', 'ซ่อนปุ่ม')}</span>
+                  <span>{showSecondaryBtn ? t('admin.activeShowing', 'แสดงผลอยู่') : t('admin.statusHidden', 'ซ่อนอยู่')}</span>
                 </button>
               </div>
 

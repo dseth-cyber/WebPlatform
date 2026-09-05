@@ -404,6 +404,8 @@
     "metricLabel": "คำอธิบาย (Label)",
     "hideButton": "คลิกเพื่อซ่อนปุ่มนี้",
     "showButton": "คลิกเพื่อเปิดแสดงปุ่มนี้",
+    "hideCMSButton": "คลิกเพื่อซ่อนปุ่ม CMS",
+    "showCMSButton": "คลิกเพื่อเปิดแสดงปุ่ม CMS",
     "changeMyPassword": "เปลี่ยนรหัสผ่านของฉัน",
     "resetPassword": "รีเซ็ตรหัสผ่าน",
     "autoGenSecurePassword": "สร้างรหัสผ่านที่ปลอดภัยอัตโนมัติ",
