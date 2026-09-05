@@ -615,7 +615,21 @@
     "activeStatusCheckbox": "🟢 Active (Visible to Visitors)",
     "categoryTranslationsTitle": "Category Multi-Language Translations (EN, JP, CN, MM)",
     "saveCategory": "Save Category",
-    "editCategoryBtn": "Edit Media & Info"
+    "editCategoryBtn": "Edit Media & Info",
+    "fieldTitleHeading": "Title / Heading",
+    "fieldHighlightSubheading": "Highlight / Subheading",
+    "fieldStoryDesc": "Story Description",
+    "fieldMissionStandards": "Mission & Standards",
+    "fieldHighlight": "Highlight",
+    "fieldSubtitleCulturePitch": "Subtitle / Culture Pitch",
+    "fieldCompanyBio": "Company Bio / Overview",
+    "restore": "Restore",
+    "permanentDelete": "Permanent Delete",
+    "emptyTrash": "Empty Trash Permanently",
+    "restoreConfirmTitle": "Confirm Restore",
+    "restoreConfirmMsg": "Do you want to restore this item back to the active system?",
+    "permDeleteConfirmTitle": "⚠️ Permanent Deletion Warning",
+    "permDeleteConfirmMsg": "Permanent deletion cannot be undone. Media and database records will be permanently removed. Admin re-authentication is required."
   },
   "contact": {
     "title": "Contact CHIOTRON TECHNOLOGY",

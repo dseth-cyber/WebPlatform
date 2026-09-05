@@ -86,7 +86,7 @@ export const TrashManager: React.FC = () => {
             className="flex items-center gap-2 rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-2.5 text-xs font-bold text-red-400 hover:bg-red-500/20 transition-all"
           >
             <ShieldAlert className="h-4 w-4" />
-            <span>Empty Trash (ล้างถังขยะถาวร)</span>
+            <span>{t('admin.emptyTrash', 'Empty Trash Permanently')}</span>
           </button>
         )}
       </div>
@@ -130,11 +130,11 @@ export const TrashManager: React.FC = () => {
                           action: 'restore',
                         })
                       }
-                      className="inline-flex items-center gap-1 rounded-lg border border-theme-border bg-theme-surface px-2.5 py-1.5 text-xs text-emerald-400 hover:bg-emerald-500/10 hover:border-emerald-500/30"
-                      title="Restore Item"
+                      className="inline-flex items-center gap-1 rounded-lg border border-theme-border bg-theme-surface px-2.5 py-1.5 text-xs text-emerald-400 hover:bg-emerald-500/10 hover:border-emerald-500/30 cursor-pointer"
+                      title={t('admin.restore', 'Restore')}
                     >
                       <RotateCcw className="h-3.5 w-3.5" />
-                      <span>Restore</span>
+                      <span>{t('admin.restore', 'Restore')}</span>
                     </button>
 
                     <button
@@ -146,11 +146,11 @@ export const TrashManager: React.FC = () => {
                           action: 'permanent_delete',
                         })
                       }
-                      className="inline-flex items-center gap-1 rounded-lg border border-red-500/30 bg-red-500/10 px-2.5 py-1.5 text-xs text-red-400 hover:bg-red-500/20"
-                      title="Permanently Purge"
+                      className="inline-flex items-center gap-1 rounded-lg border border-red-500/30 bg-red-500/10 px-2.5 py-1.5 text-xs text-red-400 hover:bg-red-500/20 cursor-pointer"
+                      title={t('admin.permanentDelete', 'Permanent Delete')}
                     >
                       <Trash2 className="h-3.5 w-3.5" />
-                      <span>Permanent Delete</span>
+                      <span>{t('admin.permanentDelete', 'Permanent Delete')}</span>
                     </button>
                   </td>
                 </tr>
@@ -167,15 +167,15 @@ export const TrashManager: React.FC = () => {
         onConfirm={handleConfirmAction}
         title={
           confirmDialog.action === 'restore'
-            ? 'Restore Item'
+            ? t('admin.restoreConfirmTitle', 'Confirm Restore')
             : confirmDialog.action === 'empty_trash'
-            ? 'Empty Trash Permanently'
-            : 'Permanent Deletion Warning'
+            ? t('admin.emptyTrash', 'Empty Trash Permanently')
+            : t('admin.permDeleteConfirmTitle', '⚠️ Permanent Deletion Warning')
         }
         message={
           confirmDialog.action === 'restore'
-            ? 'คุณต้องการกู้คืนข้อมูลนี้กลับสู่ระบบปกติใช่หรือไม่?'
-            : 'การลบถาวรจะไม่สามารถกู้คืนข้อมูลหรือไฟล์สื่อได้อีกต่อไป ระบบต้องการการยืนยันรหัสผ่านของผู้ดูแลระบบ'
+            ? t('admin.restoreConfirmMsg', 'คุณต้องการกู้คืนข้อมูลนี้กลับสู่ระบบปกติใช่หรือไม่?')
+            : t('admin.permDeleteConfirmMsg', 'การลบถาวรจะไม่สามารถกู้คืนข้อมูลหรือไฟล์สื่อได้อีกต่อไป ระบบต้องการการยืนยันรหัสผ่านของผู้ดูแลระบบ')
         }
         variant={confirmDialog.action === 'restore' ? 'info' : 'danger'}
         requiresPasswordVerification={confirmDialog.action !== 'restore'}

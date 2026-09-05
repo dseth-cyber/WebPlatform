@@ -197,10 +197,10 @@ export const AboutManager: React.FC = () => {
       <MultiLangSectionEditor
         title={`${t('admin.multiLangTitle', 'แปลภาษา (Multi-Language)')} - ${t('admin.aboutTitle', 'เกี่ยวกับเรา')}`}
         fields={[
-          { key: 'heading', label: 'Title / Heading' },
-          { key: 'subheading', label: 'Highlight / Subheading' },
-          { key: 'story1', label: 'Story Description', type: 'textarea', rows: 3 },
-          { key: 'mission', label: 'Mission & Standards', type: 'textarea', rows: 3 },
+          { key: 'heading', label: t('admin.fieldTitleHeading', 'Title / Heading'), labelKey: 'admin.fieldTitleHeading' },
+          { key: 'subheading', label: t('admin.fieldHighlightSubheading', 'Highlight / Subheading'), labelKey: 'admin.fieldHighlightSubheading' },
+          { key: 'story1', label: t('admin.fieldStoryDesc', 'Story Description'), labelKey: 'admin.fieldStoryDesc', type: 'textarea', rows: 3 },
+          { key: 'mission', label: t('admin.fieldMissionStandards', 'Mission & Standards'), labelKey: 'admin.fieldMissionStandards', type: 'textarea', rows: 3 },
         ]}
         value={aboutTranslations}
         onChange={setAboutTranslations}

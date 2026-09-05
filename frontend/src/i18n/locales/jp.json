@@ -615,7 +615,21 @@
     "activeStatusCheckbox": "🟢 公開中 (Active)",
     "categoryTranslationsTitle": "製品カテゴリの多言語翻訳 (EN, JP, CN, MM)",
     "saveCategory": "カテゴリ設定を保存",
-    "editCategoryBtn": "画像・情報編集"
+    "editCategoryBtn": "画像・情報編集",
+    "fieldTitleHeading": "タイトル・見出し (Title / Heading)",
+    "fieldHighlightSubheading": "ハイライト・副見出し (Highlight / Subheading)",
+    "fieldStoryDesc": "企業ストーリー・詳細 (Story Description)",
+    "fieldMissionStandards": "ミッションと品質基準 (Mission & Standards)",
+    "fieldHighlight": "ハイライト (Highlight)",
+    "fieldSubtitleCulturePitch": "副見出し・企業カルチャー (Subtitle / Culture Pitch)",
+    "fieldCompanyBio": "企業概要・沿革 (Company Bio / Overview)",
+    "restore": "復元 (Restore)",
+    "permanentDelete": "完全削除 (Permanent Delete)",
+    "emptyTrash": "ゴミ箱を完全に空にする",
+    "restoreConfirmTitle": "データの復元確認",
+    "restoreConfirmMsg": "この項目を通常システムへ復元してもよろしいですか？",
+    "permDeleteConfirmTitle": "⚠️ 完全削除の警告",
+    "permDeleteConfirmMsg": "完全削除を実行するとデータやメディアファイルを復元できなくなります。管理者パスワードの再認証が必要です。"
   },
   "contact": {
     "title": "お問い合わせ",

@@ -615,7 +615,21 @@
     "activeStatusCheckbox": "🟢 启用展示 (Active)",
     "categoryTranslationsTitle": "产品类别多语言翻译 (EN, JP, CN, MM)",
     "saveCategory": "保存类别设置",
-    "editCategoryBtn": "编辑图文"
+    "editCategoryBtn": "编辑图文",
+    "fieldTitleHeading": "主标题 (Title / Heading)",
+    "fieldHighlightSubheading": "亮点与副标题 (Highlight / Subheading)",
+    "fieldStoryDesc": "发展历程与详细介绍 (Story Description)",
+    "fieldMissionStandards": "企业使命与质量标准 (Mission & Standards)",
+    "fieldHighlight": "亮点 (Highlight)",
+    "fieldSubtitleCulturePitch": "副标题・企业文化 (Subtitle / Culture Pitch)",
+    "fieldCompanyBio": "企业概述 (Company Bio / Overview)",
+    "restore": "恢复 (Restore)",
+    "permanentDelete": "永久删除 (Permanent Delete)",
+    "emptyTrash": "清空回收站",
+    "restoreConfirmTitle": "确认恢复数据",
+    "restoreConfirmMsg": "您确定要将该项恢复至正常系统吗？",
+    "permDeleteConfirmTitle": "⚠️ 永久删除警告",
+    "permDeleteConfirmMsg": "永久删除后将无法恢复数据及媒体文件，系统需要管理员密码进行再次验证。"
   },
   "contact": {
     "title": "联系我们",

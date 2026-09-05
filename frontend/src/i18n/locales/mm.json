@@ -615,7 +615,21 @@
     "activeStatusCheckbox": "🟢 ဖွင့်ပြထားသည် (Active)",
     "categoryTranslationsTitle": "ကုန်ပစ္စည်းအမျိုးအစား ဘာသာစကားမျိုးစုံ ပြန်ဆိုချက်",
     "saveCategory": "အမျိုးအစားအား သိမ်းဆည်းရန်",
-    "editCategoryBtn": "ပုံနှင့် အချက်အလက်ပြင်ရန်"
+    "editCategoryBtn": "ပုံနှင့် အချက်အလက်ပြင်ရန်",
+    "fieldTitleHeading": "အဓိကခေါင်းစဉ် (Title / Heading)",
+    "fieldHighlightSubheading": "ပေါ်လွင်ချက်နှင့် ခေါင်းစဉ်ခွဲ (Highlight / Subheading)",
+    "fieldStoryDesc": "လုပ်ငန်းသမိုင်းနှင့် ရှင်းလင်းချက် (Story Description)",
+    "fieldMissionStandards": "ရည်မှန်းချက်နှင့် စံချိန်စံညွှန်းများ (Mission & Standards)",
+    "fieldHighlight": "ပေါ်လွင်ချက် (Highlight)",
+    "fieldSubtitleCulturePitch": "ခေါင်းစဉ်ခွဲနှင့် လုပ်ငန်းခွင်ယဉ်ကျေးမှု (Subtitle / Culture Pitch)",
+    "fieldCompanyBio": "ကုမ္ပဏီအကြောင်း အကျဉ်းချုပ် (Company Bio / Overview)",
+    "restore": "ပြန်လည်ရယူရန် (Restore)",
+    "permanentDelete": "အပြီးတိုင်ဖျက်ရန် (Permanent Delete)",
+    "emptyTrash": "အမှိုက်ပုံးအား အပြီးရှင်းလင်းရန်",
+    "restoreConfirmTitle": "ဒေတာပြန်လည်ရယူရန် အတည်ပြုပါ",
+    "restoreConfirmMsg": "ဤဒေတာကို ပုံမှန်စနစ်သို့ ပြန်လည်ရယူလိုပါသလား?",
+    "permDeleteConfirmTitle": "⚠️ အပြီးတိုင်ဖျက်ပစ်ရန် သတိပေးချက်",
+    "permDeleteConfirmMsg": "အပြီးတိုင်ဖျက်ပစ်ပါက ဒေတာများကို ပြန်လည်ရယူနိုင်မည် မဟုတ်ပါ။ စီမံခန့်ခွဲသူ စကားဝှက် ပြန်လည်အတည်ပြုရန် လိုအပ်သည်"
   },
   "contact": {
     "title": "ဆက်သွယ်ရန်",

@@ -226,9 +226,9 @@ export const SustainabilityManager: React.FC = () => {
         <MultiLangSectionEditor
           title={`${t('admin.multiLangTitle', 'แปลภาษา (Multi-Language)')} - ${t('admin.sustainability', 'ความยั่งยืน')}`}
           fields={[
-            { key: 'badge', label: 'Badge' },
-            { key: 'heading', label: 'Title / Heading' },
-            { key: 'description', label: 'Description', type: 'textarea', rows: 3 },
+            { key: 'badge', label: t('admin.fieldBadge', 'Badge'), labelKey: 'admin.fieldBadge' },
+            { key: 'heading', label: t('admin.fieldTitleHeading', 'Title / Heading'), labelKey: 'admin.fieldTitleHeading' },
+            { key: 'description', label: t('admin.fieldDescription', 'Description'), labelKey: 'admin.fieldDescription', type: 'textarea', rows: 3 },
           ]}
           value={sustainabilityTranslations}
           onChange={setSustainabilityTranslations}

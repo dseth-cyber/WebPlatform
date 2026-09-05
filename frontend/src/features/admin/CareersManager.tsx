@@ -220,9 +220,9 @@ export const CareersManager: React.FC = () => {
         <MultiLangSectionEditor
           title={`${t('admin.multiLangTitle', 'แปลภาษา (Multi-Language)')} - ${t('admin.careers', 'ร่วมงานกับเรา')}`}
           fields={[
-            { key: 'badge', label: 'Badge' },
-            { key: 'heading', label: 'Title / Heading' },
-            { key: 'subtitle', label: 'Subtitle / Culture Pitch', type: 'textarea', rows: 3 },
+            { key: 'badge', label: t('admin.fieldBadge', 'Badge'), labelKey: 'admin.fieldBadge' },
+            { key: 'heading', label: t('admin.fieldTitleHeading', 'Title / Heading'), labelKey: 'admin.fieldTitleHeading' },
+            { key: 'subtitle', label: t('admin.fieldSubtitleCulturePitch', 'Subtitle / Culture Pitch'), labelKey: 'admin.fieldSubtitleCulturePitch', type: 'textarea', rows: 3 },
           ]}
           value={careersTranslations}
           onChange={setCareersTranslations}

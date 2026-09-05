@@ -615,7 +615,21 @@
     "activeStatusCheckbox": "🟢 เปิดแสดงผล (Active)",
     "categoryTranslationsTitle": "แปลภาษาหมวดหมู่สินค้า (Category Translations: EN, JP, CN, MM)",
     "saveCategory": "บันทึกการแก้ไข",
-    "editCategoryBtn": "แก้ไขรูป & ข้อมูล"
+    "editCategoryBtn": "แก้ไขรูป & ข้อมูล",
+    "fieldTitleHeading": "หัวข้อหลัก (Title / Heading)",
+    "fieldHighlightSubheading": "ไฮไลต์ / หัวข้อย่อย (Highlight / Subheading)",
+    "fieldStoryDesc": "เนื้อเรื่องและรายละเอียด (Story Description)",
+    "fieldMissionStandards": "พันธกิจและมาตรฐาน (Mission & Standards)",
+    "fieldHighlight": "ไฮไลต์ (Highlight)",
+    "fieldSubtitleCulturePitch": "คำบรรยาย / วัฒนธรรมองค์กร (Subtitle / Culture Pitch)",
+    "fieldCompanyBio": "ข้อมูลสรุปองค์กร (Company Bio / Overview)",
+    "restore": "กู้คืน (Restore)",
+    "permanentDelete": "ลบถาวร (Permanent Delete)",
+    "emptyTrash": "ล้างถังขยะถาวร (Empty Trash)",
+    "restoreConfirmTitle": "ยืนยันการกู้คืนข้อมูล",
+    "restoreConfirmMsg": "คุณต้องการกู้คืนข้อมูลนี้กลับสู่ระบบปกติใช่หรือไม่?",
+    "permDeleteConfirmTitle": "⚠️ ยืนยันการลบข้อมูลถาวร",
+    "permDeleteConfirmMsg": "การลบถาวรจะไม่สามารถกู้คืนข้อมูลหรือไฟล์สื่อได้อีกต่อไป ระบบต้องการการยืนยันรหัสผ่านของผู้ดูแลระบบ"
   },
   "contact": {
     "title": "ติดต่อ บริษัท ไคโอทรอน เทคโนโลยี จำกัด (CHIOTRON TECHNOLOGY)",

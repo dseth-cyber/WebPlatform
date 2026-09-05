@@ -921,7 +921,7 @@ export const PageEditor: React.FC<{
         {/* COLUMN 3: แปลภาษา 4 ภาษา (EN, JP, CN, MM) */}
         <div className="lg:col-span-4 rounded-3xl border border-theme-border bg-theme-surface p-6 shadow-2xl space-y-4">
           <h2 className="font-display text-sm font-bold text-theme-text border-b border-theme-border pb-3 flex items-center justify-between">
-            <span>แปลภาษา (Multi-Language)</span>
+            <span>{t('admin.multiLangTitle', 'แปลภาษา (Multi-Language)')}</span>
             <span className="text-[10px] text-theme-text-muted font-mono">4 Locales</span>
           </h2>
 
@@ -954,7 +954,7 @@ export const PageEditor: React.FC<{
           <div className="space-y-4 text-xs">
             <div>
               <label className="font-bold text-theme-text block mb-1">
-                Title ({activeTranslationLang.toUpperCase()})
+                {t('admin.fieldTitle', 'Title')} ({activeTranslationLang.toUpperCase()})
               </label>
               <input
                 type="text"
@@ -973,7 +973,7 @@ export const PageEditor: React.FC<{
 
             <div>
               <label className="font-bold text-theme-text block mb-1">
-                Highlight ({activeTranslationLang.toUpperCase()})
+                {t('admin.fieldHighlight', 'Highlight')} ({activeTranslationLang.toUpperCase()})
               </label>
               <input
                 type="text"
@@ -992,7 +992,7 @@ export const PageEditor: React.FC<{
 
             <div>
               <label className="font-bold text-theme-text block mb-1">
-                Description ({activeTranslationLang.toUpperCase()})
+                {t('admin.fieldDescription', 'Description')} ({activeTranslationLang.toUpperCase()})
               </label>
               <textarea
                 rows={5}

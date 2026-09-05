@@ -507,7 +507,7 @@ export const ContactManager: React.FC = () => {
             { key: 'registeredCapital', label: `${t('admin.registeredCapital', 'ทุนจดทะเบียน')} (Registered Capital)` },
             { key: 'taxId', label: `${t('admin.taxId', 'เลขประจำตัวผู้เสียภาษี')} (Tax ID)` },
             { key: 'establishedYear', label: `${t('admin.establishedYear', 'ปีก่อตั้ง')} (Established Year)` },
-            { key: 'factoryAddress', label: 'ที่อยู่สำนักงาน / โรงงาน (Legal Address)', type: 'textarea', rows: 2 },
+            { key: 'factoryAddress', label: t('admin.legalAddress', 'ที่อยู่สำนักงาน / โรงงาน (Legal Address)'), labelKey: 'admin.legalAddress', type: 'textarea', rows: 2 },
           ]}
           value={brandLegalTranslations}
           onChange={setBrandLegalTranslations}
@@ -530,8 +530,8 @@ export const ContactManager: React.FC = () => {
       <MultiLangSectionEditor
         title={`${t('admin.multiLangTitle', 'แปลภาษา (Multi-Language)')} - ${t('contact.title', 'ติดต่อเรา')} & ${t('admin.brandLegalInfo', 'ข้อมูลองค์กร')}`}
         fields={[
-          { key: 'bio', label: 'Company Bio / Overview', type: 'textarea', rows: 3 },
-          { key: 'businessHours', label: 'Business Hours' },
+          { key: 'bio', label: t('admin.fieldCompanyBio', 'Company Bio / Overview'), labelKey: 'admin.fieldCompanyBio', type: 'textarea', rows: 3 },
+          { key: 'businessHours', label: t('admin.businessHours', 'Business Hours'), labelKey: 'admin.businessHours' },
         ]}
         value={contactTranslations}
         onChange={setContactTranslations}

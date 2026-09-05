@@ -6,6 +6,7 @@ export type LocaleCode = 'en' | 'jp' | 'cn' | 'mm';
 export interface TranslationField {
   key: string;
   label: string; // e.g. "Title", "Highlight", "Description"
+  labelKey?: string; // optional explicit i18n key
   type?: 'text' | 'textarea';
   rows?: number;
   placeholder?: string;
@@ -41,6 +42,36 @@ export const MultiLangSectionEditor: React.FC<MultiLangSectionEditorProps> = ({
   const { t } = useTranslation();
   const displayTitle = title || t('admin.multiLangTitle', 'แปลภาษา (Multi-Language)');
   const [activeTab, setActiveTab] = useState<LocaleCode>('en');
+
+  const getFieldLabel = (field: TranslationField) => {
+    if (field.labelKey) return t(field.labelKey, field.label);
+    switch (field.label) {
+      case 'Title / Heading':
+        return t('admin.fieldTitleHeading', 'Title / Heading');
+      case 'Highlight / Subheading':
+        return t('admin.fieldHighlightSubheading', 'Highlight / Subheading');
+      case 'Story Description':
+        return t('admin.fieldStoryDesc', 'Story Description');
+      case 'Mission & Standards':
+        return t('admin.fieldMissionStandards', 'Mission & Standards');
+      case 'Title':
+        return t('admin.fieldTitle', 'Title');
+      case 'Highlight':
+        return t('admin.fieldHighlight', 'Highlight');
+      case 'Description':
+        return t('admin.fieldDescription', 'Description');
+      case 'Badge':
+        return t('admin.fieldBadge', 'Badge');
+      case 'Subtitle / Culture Pitch':
+        return t('admin.fieldSubtitleCulturePitch', 'Subtitle / Culture Pitch');
+      case 'Company Bio / Overview':
+        return t('admin.fieldCompanyBio', 'Company Bio / Overview');
+      case 'Business Hours':
+        return t('admin.businessHours', 'Business Hours');
+      default:
+        return field.label;
+    }
+  };
 
   const handleFieldChange = (key: string, val: string) => {
     const currentLocaleData = value[activeTab] || {};
@@ -90,11 +121,12 @@ export const MultiLangSectionEditor: React.FC<MultiLangSectionEditorProps> = ({
         <div className="space-y-2.5 text-xs pt-0.5">
           {fields.map((field) => {
             const currentVal = value?.[activeTab]?.[field.key] || '';
+            const resolvedLabel = getFieldLabel(field);
             return (
               <div key={field.key} className="space-y-1">
                 <div className="flex items-center justify-between">
                   <label className="font-semibold text-theme-text block text-[11px]">
-                    {field.label} ({activeTab.toUpperCase()})
+                    {resolvedLabel} ({activeTab.toUpperCase()})
                   </label>
                   {field.helperText && (
                     <span className="text-[9px] text-theme-text-muted">{field.helperText}</span>
@@ -106,7 +138,7 @@ export const MultiLangSectionEditor: React.FC<MultiLangSectionEditorProps> = ({
                     rows={field.rows || 2}
                     value={currentVal}
                     onChange={(e) => handleFieldChange(field.key, e.target.value)}
-                    placeholder={field.placeholder || `${field.label} (${activeTab.toUpperCase()})`}
+                    placeholder={field.placeholder || `${resolvedLabel} (${activeTab.toUpperCase()})`}
                     className="w-full rounded-xl border border-theme-border bg-theme-surface px-3 py-1.5 text-xs text-theme-text focus:border-cyan-400 focus:outline-none transition-colors"
                   />
                 ) : (
@@ -114,7 +146,7 @@ export const MultiLangSectionEditor: React.FC<MultiLangSectionEditorProps> = ({
                     type="text"
                     value={currentVal}
                     onChange={(e) => handleFieldChange(field.key, e.target.value)}
-                    placeholder={field.placeholder || `${field.label} (${activeTab.toUpperCase()})`}
+                    placeholder={field.placeholder || `${resolvedLabel} (${activeTab.toUpperCase()})`}
                     className="w-full rounded-xl border border-theme-border bg-theme-surface px-3 py-1.5 text-xs text-theme-text focus:border-cyan-400 focus:outline-none transition-colors"
                   />
                 )}
@@ -159,11 +191,12 @@ export const MultiLangSectionEditor: React.FC<MultiLangSectionEditorProps> = ({
       <div className="space-y-4 text-xs pt-1">
         {fields.map((field) => {
           const currentVal = value[activeTab]?.[field.key] || '';
+          const resolvedLabel = getFieldLabel(field);
           return (
             <div key={field.key} className="space-y-1">
               <div className="flex items-center justify-between">
                 <label className="font-bold text-theme-text block">
-                  {field.label} ({activeTab.toUpperCase()})
+                  {resolvedLabel} ({activeTab.toUpperCase()})
                 </label>
                 {field.helperText && (
                   <span className="text-[10px] text-theme-text-muted">{field.helperText}</span>
@@ -175,7 +208,7 @@ export const MultiLangSectionEditor: React.FC<MultiLangSectionEditorProps> = ({
                   rows={field.rows || 3}
                   value={currentVal}
                   onChange={(e) => handleFieldChange(field.key, e.target.value)}
-                  placeholder={field.placeholder || `${field.label} (${activeTab.toUpperCase()})`}
+                  placeholder={field.placeholder || `${resolvedLabel} (${activeTab.toUpperCase()})`}
                   className="w-full rounded-xl border border-theme-border bg-theme-surface-elevated px-3.5 py-2.5 text-xs text-theme-text focus:border-cyan-400 focus:outline-none transition-colors"
                 />
               ) : (
@@ -183,7 +216,7 @@ export const MultiLangSectionEditor: React.FC<MultiLangSectionEditorProps> = ({
                   type="text"
                   value={currentVal}
                   onChange={(e) => handleFieldChange(field.key, e.target.value)}
-                  placeholder={field.placeholder || `${field.label} (${activeTab.toUpperCase()})`}
+                  placeholder={field.placeholder || `${resolvedLabel} (${activeTab.toUpperCase()})`}
                   className="w-full rounded-xl border border-theme-border bg-theme-surface-elevated px-3.5 py-2.5 text-xs text-theme-text focus:border-cyan-400 focus:outline-none transition-colors"
                 />
               )}
