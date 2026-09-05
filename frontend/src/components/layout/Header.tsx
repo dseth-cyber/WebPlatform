@@ -168,35 +168,37 @@ export const Header: React.FC<HeaderProps> = ({ currentPath, onNavigate }) => {
           {/* Brand Logo & Company Title (Point 1: Supports Custom Uploaded Logo or Dynamic Diamond) */}
           <div
             onClick={() => onNavigate('/')}
-            className="flex cursor-pointer items-center gap-3 group"
+            className="flex cursor-pointer items-center gap-2 sm:gap-3 group min-w-0 flex-1 sm:flex-initial mr-1 sm:mr-3"
           >
             {settings.logoImage ? (
               <img
                 src={settings.logoImage}
                 alt={localizedCompanyName}
-                className="h-11 w-auto max-w-[140px] object-contain rounded-lg drop-shadow-md group-hover:scale-105 transition-transform"
+                className="h-10 sm:h-11 w-auto max-w-[48px] sm:max-w-[140px] object-contain rounded-lg drop-shadow-md group-hover:scale-105 transition-transform flex-shrink-0"
               />
             ) : (
-              <div className="relative flex h-11 w-11 items-center justify-center">
+              <div className="relative flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center flex-shrink-0">
                 <div className="absolute inset-0 rotate-45 rounded-lg border-2 border-theme-primary/90 bg-gradient-to-br from-slate-900 via-slate-800 to-black shadow-lg shadow-theme-primary/30 group-hover:scale-105 transition-transform" />
-                <span className="relative z-10 font-display font-black text-sm text-theme-primary tracking-tighter">
+                <span className="relative z-10 font-display font-black text-xs sm:text-sm text-theme-primary tracking-tighter">
                   {settings.logoText || 'LC'}
                 </span>
               </div>
             )}
 
-            <div className="flex flex-col">
+            <div className="flex flex-col min-w-0 overflow-hidden">
               <span
-                className={`font-display text-sm sm:text-base font-black tracking-wide leading-tight group-hover:text-theme-primary transition-colors ${
+                className={`font-display text-xs sm:text-sm md:text-base font-black tracking-tight leading-tight group-hover:text-theme-primary transition-colors truncate ${
                   isTransparentOverDark ? 'text-white drop-shadow-sm' : 'text-theme-text'
                 }`}
+                title={localizedCompanyName}
               >
                 {localizedCompanyName}
               </span>
               <span
-                className={`text-[10px] sm:text-[11px] font-bold tracking-wider uppercase ${
+                className={`text-[9px] sm:text-[10px] md:text-[11px] font-bold tracking-wider uppercase truncate ${
                   isTransparentOverDark ? 'text-slate-300 drop-shadow-sm' : 'text-theme-text-muted'
                 }`}
+                title={localizedCompanySub}
               >
                 {localizedCompanySub}
               </span>
@@ -256,13 +258,13 @@ export const Header: React.FC<HeaderProps> = ({ currentPath, onNavigate }) => {
           </nav>
 
           {/* Right Toolbar Controls */}
-          <div className="flex items-center gap-2 sm:gap-2.5">
-            {/* 1. Theme Switcher */}
+          <div className="flex items-center gap-1.5 sm:gap-2.5 flex-shrink-0">
+            {/* 1. Theme Switcher (Hidden on small mobile navbar, accessible in mobile menu drawer) */}
             {settings.showThemeSwitcher && (
               <button
                 type="button"
                 onClick={cycleTheme}
-                className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold backdrop-blur-md transition-all duration-200 ${
+                className={`hidden sm:flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold backdrop-blur-md transition-all duration-200 ${
                   isTransparentOverDark
                     ? 'border border-white/30 bg-transparent text-white hover:border-theme-primary hover:text-theme-primary'
                     : 'border border-theme-border bg-theme-surface/60 text-theme-text hover:border-theme-primary hover:text-theme-primary hover:bg-theme-surface-hover'
@@ -277,12 +279,12 @@ export const Header: React.FC<HeaderProps> = ({ currentPath, onNavigate }) => {
             {/* 2. Language Switcher */}
             <LanguageSwitcher isTransparentOverDark={isTransparentOverDark} />
 
-            {/* 3. CMS Admin Login Button */}
+            {/* 3. CMS Admin Login Button (Hidden on small mobile navbar, accessible in mobile menu drawer) */}
             {settings.showCMSButton && (
               <button
                 type="button"
                 onClick={() => onNavigate('/admin/login')}
-                className={`flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-xs font-bold backdrop-blur-md transition-all duration-200 ${
+                className={`hidden sm:flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-xs font-bold backdrop-blur-md transition-all duration-200 ${
                   isTransparentOverDark
                     ? 'border border-white/30 bg-transparent text-white hover:border-theme-primary hover:text-theme-primary'
                     : 'border border-theme-border bg-theme-surface/60 text-theme-text hover:border-theme-primary hover:text-theme-primary hover:bg-theme-surface-hover'
@@ -290,7 +292,7 @@ export const Header: React.FC<HeaderProps> = ({ currentPath, onNavigate }) => {
                 title="CMS Management Login"
               >
                 <Lock className="h-3.5 w-3.5 text-theme-primary" />
-                <span className="hidden sm:inline">CMS</span>
+                <span className="hidden md:inline">CMS</span>
               </button>
             )}
 
@@ -305,7 +307,7 @@ export const Header: React.FC<HeaderProps> = ({ currentPath, onNavigate }) => {
               }`}
               aria-label="Toggle Navigation Menu"
             >
-              {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+              {mobileMenuOpen ? <X className="h-5 w-5 sm:h-6 sm:w-6" /> : <Menu className="h-5 w-5 sm:h-6 sm:w-6" />}
             </button>
           </div>
         </div>
@@ -313,7 +315,7 @@ export const Header: React.FC<HeaderProps> = ({ currentPath, onNavigate }) => {
 
       {/* Mobile Slide-Down Menu */}
       {mobileMenuOpen && (
-        <div className="lg:hidden border-b border-theme-border bg-theme-bg/98 px-4 pt-3 pb-6 space-y-3 backdrop-blur-2xl shadow-2xl">
+        <div className="lg:hidden border-b border-theme-border bg-theme-bg/98 px-4 pt-3 pb-6 space-y-4 backdrop-blur-2xl shadow-2xl">
           <nav className="flex flex-col space-y-1">
             {navLinks.map((link) => {
               const isActive = checkIsActive(link.path);
@@ -338,6 +340,34 @@ export const Header: React.FC<HeaderProps> = ({ currentPath, onNavigate }) => {
               );
             })}
           </nav>
+
+          {/* Quick Utility Actions in Mobile Drawer */}
+          <div className="pt-3 border-t border-theme-border/60 flex items-center justify-between gap-3">
+            {settings.showThemeSwitcher && (
+              <button
+                type="button"
+                onClick={cycleTheme}
+                className="flex-1 flex items-center justify-center gap-2 rounded-xl py-2.5 px-3 text-xs font-bold border border-theme-border bg-theme-surface text-theme-text hover:border-theme-primary transition-colors"
+              >
+                <Palette className="h-4 w-4 text-theme-primary" />
+                <span>ธีม: {theme}</span>
+              </button>
+            )}
+
+            {settings.showCMSButton && (
+              <button
+                type="button"
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  onNavigate('/admin/login');
+                }}
+                className="flex-1 flex items-center justify-center gap-2 rounded-xl py-2.5 px-3 text-xs font-bold border border-theme-border bg-theme-surface text-theme-text hover:border-theme-primary transition-colors"
+              >
+                <Lock className="h-4 w-4 text-theme-primary" />
+                <span>จัดการ CMS</span>
+              </button>
+            )}
+          </div>
         </div>
       )}
     </header>
