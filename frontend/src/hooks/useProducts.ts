@@ -29,7 +29,23 @@ const normalizeProduct = (p: any): LocalizedProduct => {
       p.featured_image_url ||
       defMock?.primaryImageURL ||
       '/images/cat-round-cans.jpg',
-    galleryImages: p.galleryImages || (p.primaryImageURL ? [p.primaryImageURL] : ['/images/cat-round-cans.jpg']),
+    galleryImages: (() => {
+      const primary =
+        p.primaryImageURL ||
+        p.featuredImageUrl ||
+        p.featured_image_url ||
+        defMock?.primaryImageURL ||
+        '/images/cat-round-cans.jpg';
+      const list: string[] = [primary];
+      if (Array.isArray(p.galleryImages)) {
+        for (const g of p.galleryImages) {
+          if (g && g !== primary && g !== '/images/cat-round-cans.jpg' && !g.includes('photo-1584727638096')) {
+            list.push(g);
+          }
+        }
+      }
+      return list;
+    })(),
     pdfSpecURL: p.pdfSpecURL || p.pdf_spec_url || defMock?.pdfSpecURL || '/specs/lohakit-spec.pdf',
     specifications: specs,
     isPinned: Boolean(p.isPinned),
@@ -216,25 +232,55 @@ export const useProductBySlug = (slug: string, lang: string = 'th') => {
   return useQuery<LocalizedProduct | null>({
     queryKey: ['product', slug, lang],
     queryFn: async () => {
+      const matchItem = (p: any) => {
+        if (!p) return false;
+        const target = slug.toLowerCase();
+        const pSlug = (p.slug || '').toLowerCase();
+        const pSku = (p.sku || '').toLowerCase();
+        const pId = (p.id || '').toLowerCase();
+        return pSlug === target || pSku === target || pId === target || target.includes(pSku) || target.includes(pSlug);
+      };
+
       try {
         const settingsRes = await fetch('/api/v1/public/settings');
         if (settingsRes.ok) {
           const json = await settingsRes.json();
           if (json && json.data && Array.isArray(json.data.catalog_products)) {
-            const found = json.data.catalog_products.find((p: any) => p.slug === slug || p.sku.toLowerCase() === slug.toLowerCase());
+            const found = json.data.catalog_products.find(matchItem);
             if (found) return normalizeProduct(found);
           }
+        }
+
+        const cached = localStorage.getItem('lohakit_catalog_products');
+        if (cached) {
+          try {
+            const parsed = JSON.parse(cached);
+            if (Array.isArray(parsed) && parsed.length > 0) {
+              const found = parsed.find(matchItem);
+              if (found) return normalizeProduct(found);
+            }
+          } catch (e) {}
         }
 
         const res = await apiClient<any>(`/public/products/${slug}?lang=${lang}`);
         if (res.data) {
           return normalizeProduct(res.data);
         }
-        const found = MOCK_PRODUCTS.find((p) => p.slug === slug);
-        return found || MOCK_PRODUCTS[0];
+        const found = MOCK_PRODUCTS.find(matchItem);
+        return found ? normalizeProduct(found) : normalizeProduct(MOCK_PRODUCTS[0]);
       } catch (e) {
-        const found = MOCK_PRODUCTS.find((p) => p.slug === slug);
-        return found || MOCK_PRODUCTS[0];
+        const cached = localStorage.getItem('lohakit_catalog_products');
+        if (cached) {
+          try {
+            const parsed = JSON.parse(cached);
+            if (Array.isArray(parsed) && parsed.length > 0) {
+              const found = parsed.find(matchItem);
+              if (found) return normalizeProduct(found);
+            }
+          } catch (err) {}
+        }
+        const found = MOCK_PRODUCTS.find(matchItem);
+        return found ? normalizeProduct(found) : normalizeProduct(MOCK_PRODUCTS[0]);
       }
     },
   });

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useQueryClient } from '@tanstack/react-query';
 import { useProducts, useCategories, matchesCategory } from '../../hooks/useProducts';
 import { MOCK_PRODUCTS } from '../../api/mockData';
 import { SearchableSelect, SelectOption } from '../../components/ui/SearchableSelect';
@@ -24,6 +25,7 @@ interface ExtendedProduct extends LocalizedProduct {
 export const ProductsManager: React.FC = () => {
   const { t, i18n } = useTranslation();
   const currentLang = i18n.language || 'th';
+  const queryClient = useQueryClient();
 
   const { data: categories } = useCategories(currentLang);
   const { data: initialProducts, isLoading } = useProducts('all', '', currentLang);
@@ -211,6 +213,8 @@ export const ProductsManager: React.FC = () => {
       localStorage.setItem('lohakit_catalog_products', JSON.stringify(newList));
     } catch (e) {}
     window.dispatchEvent(new Event('lohakit_products_updated'));
+    queryClient.invalidateQueries({ queryKey: ['products'] });
+    queryClient.invalidateQueries({ queryKey: ['product'] });
 
     try {
       const csrfToken = localStorage.getItem('csrf_token') || '';
@@ -388,6 +392,7 @@ export const ProductsManager: React.FC = () => {
                 dimensions,
               },
               primaryImageURL,
+              galleryImages: [primaryImageURL],
             }
           : item
       );

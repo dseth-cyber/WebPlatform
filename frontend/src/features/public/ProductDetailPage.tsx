@@ -38,9 +38,21 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ slug, onNa
     );
   }
 
-  const images = product.galleryImages && product.galleryImages.length > 0
-    ? product.galleryImages
-    : [product.primaryImageURL];
+  const images = (() => {
+    const list: string[] = [];
+    const primary = product.primaryImageURL;
+    if (primary) {
+      list.push(primary);
+    }
+    if (product.galleryImages && Array.isArray(product.galleryImages)) {
+      for (const img of product.galleryImages) {
+        if (img && !list.includes(img) && img !== '/images/cat-round-cans.jpg' && !img.includes('unsplash.com/photo-1584727638096')) {
+          list.push(img);
+        }
+      }
+    }
+    return list.length > 0 ? list : [primary || '/images/cat-round-cans.jpg'];
+  })();
 
   const relatedProducts = (allProducts ?? [])
     .filter((p) => p.id !== product.id)
