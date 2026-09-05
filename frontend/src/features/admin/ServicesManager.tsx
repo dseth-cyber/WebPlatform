@@ -242,7 +242,7 @@ export const ServicesManager: React.FC = () => {
                 <span>{t('admin.servicesCardsSection', '2. รายการบริการ (Services Cards)')}</span>
               </h2>
               <p className="text-[11px] text-theme-text-muted mt-0.5">
-                แสดงผลเป็น Card พร้อมเอฟเฟกต์แสงเรือง (.glow-card) บนหน้าเว็บ
+                {t('admin.servicesCardsDesc', 'แสดงผลเป็น Card พร้อมเอฟเฟกต์แสงเรือง (.glow-card) บนหน้าเว็บ')}
               </p>
             </div>
 
@@ -299,7 +299,7 @@ export const ServicesManager: React.FC = () => {
                         title={Boolean(srv.isPinned) ? 'คลิกเพื่อยกเลิกการปักหมุดหน้าแรก' : 'คลิกเพื่อปักหมุดแสดงที่หน้าแรก'}
                       >
                         <Pin className={`h-3.5 w-3.5 ${Boolean(srv.isPinned) ? 'fill-amber-400 text-amber-400' : ''}`} />
-                        <span>{Boolean(srv.isPinned) ? '📌 ปักหมุดหน้าแรก' : 'ปักหมุดหน้าแรก'}</span>
+                        <span>{Boolean(srv.isPinned) ? `📌 ${t('admin.pinToHome', 'ปักหมุดหน้าแรก')}` : t('admin.pinToHome', 'ปักหมุดหน้าแรก')}</span>
                       </button>
 
                       <button
@@ -317,7 +317,7 @@ export const ServicesManager: React.FC = () => {
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                       <div>
                         <label className="block text-[11px] font-semibold text-theme-text mb-1">
-                          ไอคอน (Icon)
+                          {t('admin.icon', 'ไอคอน (Icon)')}
                         </label>
                         <select
                           value={srv.icon}
@@ -335,7 +335,7 @@ export const ServicesManager: React.FC = () => {
 
                       <div className="md:col-span-2">
                         <label className="block text-[11px] font-semibold text-theme-text mb-1">
-                          ชื่อบริการ (ภาษาอังกฤษ)
+                          {t('admin.serviceTitleEn', 'ชื่อบริการ (ภาษาอังกฤษ)')}
                         </label>
                         <input
                           type="text"
@@ -349,7 +349,7 @@ export const ServicesManager: React.FC = () => {
 
                     <div>
                       <label className="block text-[11px] font-semibold text-theme-text mb-1">
-                        ชื่อบริการ (ภาษาไทย)
+                        {t('admin.serviceTitleTh', 'ชื่อบริการ (ภาษาไทย)')}
                       </label>
                       <input
                         type="text"
@@ -362,7 +362,7 @@ export const ServicesManager: React.FC = () => {
 
                     <div>
                       <label className="block text-[11px] font-semibold text-theme-text mb-1">
-                        คำอธิบายบริการ (ภาษาไทย)
+                        {t('admin.serviceDescTh', 'คำอธิบายบริการ (ภาษาไทย)')}
                       </label>
                       <textarea
                         rows={2}
@@ -375,7 +375,7 @@ export const ServicesManager: React.FC = () => {
 
                     <div>
                       <label className="block text-[11px] font-semibold text-theme-text mb-1">
-                        จุดเด่น / รายการย่อย (Bullet Points - แยก 1 ข้อต่อ 1 บรรทัด)
+                        {t('admin.bulletPointsDesc', 'จุดเด่น / รายการย่อย (Bullet Points - แยก 1 ข้อต่อ 1 บรรทัด)')}
                       </label>
                       <textarea
                         rows={3}
@@ -394,7 +394,7 @@ export const ServicesManager: React.FC = () => {
 
                     <div>
                       <label className="block text-[11px] font-semibold text-theme-text mb-1">
-                        รูปภาพประจำ Card (Image)
+                        {t('admin.cardImage', 'รูปภาพประจำ Card (Image)')}
                       </label>
                       <div className="flex items-center gap-3">
                         {srv.image && (
@@ -429,10 +429,10 @@ export const ServicesManager: React.FC = () => {
                     {/* Multi-Language Tabs for this Service Card */}
                     <MultiLangSectionEditor
                       compact
-                      title={`แปลภาษา Card บริการ: ${srv.titleTh}`}
+                      title={`${t('admin.translateServiceCard', 'แปลภาษา Card บริการ')}: ${srv.titleTh}`}
                       fields={[
-                        { key: 'title', label: 'ชื่อบริการ (Service Title)' },
-                        { key: 'desc', label: 'คำอธิบายบริการ (Service Description)', type: 'textarea', rows: 2 },
+                        { key: 'title', label: t('admin.serviceTitle', 'ชื่อบริการ (Service Title)') },
+                        { key: 'desc', label: t('admin.serviceDescription', 'คำอธิบายบริการ (Service Description)'), type: 'textarea', rows: 2 },
                       ]}
                       value={srv.translations || {
                         en: { title: srv.titleEn || '', desc: srv.descEn || '' },
@@ -457,7 +457,7 @@ export const ServicesManager: React.FC = () => {
             className="inline-flex items-center gap-2 rounded-xl bg-theme-primary px-6 py-3 text-xs font-bold text-black shadow-lg shadow-theme-primary/20 hover:opacity-90 disabled:opacity-50 transition-all"
           >
             <Save className="h-4 w-4" />
-            <span>{isSaving ? 'กำลังบันทึกข้อมูล...' : 'บันทึกการเปลี่ยนแปลงทั้งหมด'}</span>
+            <span>{isSaving ? t('admin.saving', 'กำลังบันทึกข้อมูล...') : t('admin.saveAllSettings', 'บันทึกการเปลี่ยนแปลงทั้งหมด')}</span>
           </button>
         </div>
       </form>

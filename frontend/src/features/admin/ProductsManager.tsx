@@ -795,13 +795,13 @@ export const ProductsManager: React.FC = () => {
       <Modal
         isOpen={editModalOpen}
         onClose={() => setEditModalOpen(false)}
-        title={selectedProduct ? `แก้ไขสินค้า: ${selectedProduct.sku}` : 'เพิ่มสินค้าบรรจุภัณฑ์โลหะใหม่'}
+        title={selectedProduct ? `${t('admin.editProduct', 'แก้ไขสินค้า')}: ${selectedProduct.sku}` : t('admin.addNewProduct', 'เพิ่มสินค้าบรรจุภัณฑ์โลหะใหม่')}
         maxWidth="2xl"
       >
         <div className="space-y-4 text-xs">
           {/* Status Switch */}
           <div className="flex items-center justify-between p-3 rounded-xl border border-theme-border bg-theme-surface-elevated">
-            <span className="font-bold text-theme-text">การแสดงผลบนหน้าเว็บ (Visibility Status)</span>
+            <span className="font-bold text-theme-text">{t('admin.visibilityStatus', 'การแสดงผลบนหน้าเว็บ (Visibility Status)')}</span>
             <button
               type="button"
               onClick={() => setIsActive(!isActive)}
@@ -812,13 +812,13 @@ export const ProductsManager: React.FC = () => {
               }`}
             >
               {isActive ? <Eye className="h-3.5 w-3.5" /> : <EyeOff className="h-3.5 w-3.5" />}
-              <span>{isActive ? 'เปิดแสดงบนเว็บ' : 'ซ่อนไว้ (ไม่แสดง)'}</span>
+              <span>{isActive ? t('admin.showTab', 'เปิดแสดงบนเว็บ') : t('admin.hideTab', 'ซ่อนไว้ (ไม่แสดง)')}</span>
             </button>
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="font-bold text-theme-text block mb-1">รหัสสินค้า SKU Code *</label>
+              <label className="font-bold text-theme-text block mb-1">{t('admin.skuCode', 'รหัสสินค้า SKU Code')} *</label>
               <input
                 type="text"
                 value={sku}
@@ -827,7 +827,7 @@ export const ProductsManager: React.FC = () => {
               />
             </div>
             <div>
-              <label className="font-bold text-theme-text block mb-1">ชื่อสินค้า (Product Name) *</label>
+              <label className="font-bold text-theme-text block mb-1">{t('admin.productName', 'ชื่อสินค้า (Product Name)')} *</label>
               <input
                 type="text"
                 value={name}
@@ -839,7 +839,7 @@ export const ProductsManager: React.FC = () => {
           </div>
 
           <div>
-            <label className="font-bold text-theme-text block mb-1">หมวดหมู่ (Category)</label>
+            <label className="font-bold text-theme-text block mb-1">{t('admin.category', 'หมวดหมู่ (Category)')}</label>
             <select
               value={categoryName}
               onChange={(e) => setCategoryName(e.target.value)}
@@ -858,7 +858,7 @@ export const ProductsManager: React.FC = () => {
 
           {/* Image Attachment & Preview */}
           <div className="rounded-2xl border border-theme-border bg-theme-surface-elevated p-3.5 space-y-3">
-            <label className="font-bold text-theme-text block">รูปภาพสินค้า (Product Image)</label>
+            <label className="font-bold text-theme-text block">{t('admin.productImage', 'รูปภาพสินค้า (Product Image)')}</label>
             <div className="flex items-center gap-4">
               <img
                 src={primaryImageURL || '/images/cat-round-cans.jpg'}
@@ -875,7 +875,7 @@ export const ProductsManager: React.FC = () => {
                 />
                 <label className="inline-flex items-center gap-1.5 rounded-lg border border-theme-border bg-theme-surface px-3 py-1 text-[11px] font-bold text-theme-primary hover:border-theme-primary cursor-pointer transition-all">
                   <UploadCloud className="h-3.5 w-3.5" />
-                  <span>เลือกรูปภาพจากคอมพิวเตอร์ / อัปโหลด</span>
+                  <span>{t('admin.uploadImage', 'เลือกรูปภาพจากคอมพิวเตอร์ / อัปโหลด')}</span>
                   <input type="file" accept="image/*" onChange={handleFileUpload} className="hidden" />
                 </label>
               </div>
@@ -883,7 +883,7 @@ export const ProductsManager: React.FC = () => {
           </div>
 
           <div>
-            <label className="font-bold text-theme-text block mb-1">รายละเอียดสินค้า (Description)</label>
+            <label className="font-bold text-theme-text block mb-1">{t('admin.productDescription', 'รายละเอียดสินค้า (Description)')}</label>
             <textarea
               rows={2}
               value={description}
@@ -895,7 +895,7 @@ export const ProductsManager: React.FC = () => {
 
           <div className="grid grid-cols-3 gap-3">
             <div>
-              <label className="font-bold text-theme-text block mb-1">วัสดุ (Material)</label>
+              <label className="font-bold text-theme-text block mb-1">{t('admin.material', 'วัสดุ (Material)')}</label>
               <input
                 type="text"
                 value={material}
@@ -913,7 +913,7 @@ export const ProductsManager: React.FC = () => {
               />
             </div>
             <div>
-              <label className="font-bold text-theme-text block mb-1">ขนาดมิติ (Dimensions)</label>
+              <label className="font-bold text-theme-text block mb-1">{t('admin.dimensions', 'ขนาดมิติ (Dimensions)')}</label>
               <input
                 type="text"
                 value={dimensions}
@@ -927,12 +927,12 @@ export const ProductsManager: React.FC = () => {
           <div className="pt-2">
             <MultiLangSectionEditor
               compact
-              title="แปลภาษาสินค้า (Product Translations: EN, JP, CN, MM)"
+              title={t('admin.productTranslationsTitle', 'แปลภาษาสินค้า (Product Translations: EN, JP, CN, MM)')}
               fields={[
-                { key: 'name', label: 'ชื่อสินค้า (Product Name)' },
-                { key: 'description', label: 'รายละเอียดสินค้า (Description)', type: 'textarea', rows: 2 },
-                { key: 'features', label: 'คุณสมบัติเด่น (Features)' },
-                { key: 'applications', label: 'การนำไปใช้งาน (Applications)' },
+                { key: 'name', label: t('admin.productName', 'ชื่อสินค้า (Product Name)') },
+                { key: 'description', label: t('admin.productDescription', 'รายละเอียดสินค้า (Description)'), type: 'textarea', rows: 2 },
+                { key: 'features', label: t('admin.productFeatures', 'คุณสมบัติเด่น (Features)') },
+                { key: 'applications', label: t('admin.productApplications', 'การนำไปใช้งาน (Applications)') },
               ]}
               value={productTranslations}
               onChange={setProductTranslations}
@@ -945,14 +945,14 @@ export const ProductsManager: React.FC = () => {
               onClick={() => setEditModalOpen(false)}
               className="rounded-xl border border-theme-border bg-theme-surface px-4 py-2 font-semibold text-theme-text hover:bg-theme-surface-elevated transition-colors"
             >
-              ยกเลิก
+              {t('common.cancel', 'ยกเลิก')}
             </button>
             <button
               type="button"
               onClick={handleSave}
               className="btn-primary-action text-xs font-black px-6 py-2.5"
             >
-              บันทึกข้อมูลสินค้า (ลง Database)
+              {t('admin.saveProduct', 'บันทึกข้อมูลสินค้า (ลง Database)')}
             </button>
           </div>
         </div>

@@ -372,7 +372,7 @@ export const PageEditor: React.FC<{
           </button>
           <div>
             <h1 className="font-display text-xl sm:text-2xl font-black text-theme-text flex items-center gap-3">
-              <span>แก้ไขหน้าแรก (Hero Section CMS)</span>
+              <span>{t('admin.editHeroSection', 'แก้ไขหน้าแรก (Hero Section CMS)')}</span>
               {/* Workflow Status Pill */}
               <span
                 className={`rounded-full px-3 py-0.5 text-xs font-bold border ${
@@ -387,7 +387,7 @@ export const PageEditor: React.FC<{
               </span>
             </h1>
             <p className="text-xs text-theme-text-muted mt-0.5">
-              Flow การทำงาน: Draft &rarr; Preview &rarr; Review &rarr; Publish พร้อมประวัติ Version Rollback
+              {t('admin.heroWorkflowSubtitle', 'Flow การทำงาน: Draft → Preview → Review → Publish พร้อมประวัติ Version Rollback')}
             </p>
           </div>
         </div>
@@ -401,7 +401,7 @@ export const PageEditor: React.FC<{
             className="flex items-center gap-1.5 rounded-xl border border-theme-border bg-theme-surface px-4 py-2.5 text-xs font-bold text-theme-text hover:border-theme-primary transition-colors shadow-sm"
           >
             <History className="h-4 w-4 text-theme-primary" />
-            <span>ประวัติเวอร์ชัน (Revision {revisions[0]?.revisionNumber || 5})</span>
+            <span>{t('admin.revisionHistory', 'ประวัติเวอร์ชัน')} (Revision {revisions[0]?.revisionNumber || 5})</span>
           </button>
 
           {/* Live Preview Button */}
@@ -411,7 +411,7 @@ export const PageEditor: React.FC<{
             className="flex items-center gap-1.5 rounded-xl border border-theme-primary/40 bg-theme-primary/10 px-4 py-2.5 text-xs font-black text-theme-primary hover:bg-theme-primary hover:text-black transition-all shadow-sm"
           >
             <Eye className="h-4 w-4" />
-            <span>🔍 ดูตัวอย่างหน้าจริง (Live Preview)</span>
+            <span>🔍 {t('admin.livePreview', 'ดูตัวอย่างหน้าจริง (Live Preview)')}</span>
           </button>
 
           {/* Save Draft */}
@@ -421,7 +421,7 @@ export const PageEditor: React.FC<{
             className="flex items-center gap-1.5 rounded-xl border border-theme-border bg-theme-surface px-4 py-2.5 text-xs font-bold text-theme-text hover:bg-theme-surface-elevated transition-colors"
           >
             <Save className="h-4 w-4" />
-            <span>บันทึก Draft</span>
+            <span>{t('admin.saveDraft', 'บันทึก Draft')}</span>
           </button>
 
           {/* Publish Button */}
@@ -431,7 +431,7 @@ export const PageEditor: React.FC<{
             className="btn-primary-action text-xs font-black px-6 py-2.5 shadow-xl"
           >
             <Send className="h-4 w-4 text-black" />
-            <span>🚀 เผยแพร่ทันที (Publish)</span>
+            <span>🚀 {t('admin.publishNow', 'เผยแพร่ทันที (Publish)')}</span>
           </button>
         </div>
       </div>
@@ -441,13 +441,13 @@ export const PageEditor: React.FC<{
         {/* COLUMN 1: เนื้อหา (Thai Content) */}
         <div className="lg:col-span-4 rounded-3xl border border-theme-border bg-theme-surface p-6 shadow-2xl space-y-4">
           <h2 className="font-display text-sm font-bold text-theme-text border-b border-theme-border pb-3 flex items-center justify-between">
-            <span>เนื้อหาหลัก (ภาษาไทย 🇹🇭)</span>
-            <span className="text-[10px] text-theme-text-muted font-mono">Primary Language</span>
+            <span>{t('admin.mainContentTh', 'เนื้อหาหลัก (ภาษาไทย 🇹🇭)')}</span>
+            <span className="text-[10px] text-theme-text-muted font-mono">{t('admin.primaryLanguage', 'Primary Language')}</span>
           </h2>
 
           <div className="space-y-4 text-xs">
             <div>
-              <label className="font-bold text-theme-text block mb-1">หัวข้อหลัก Title (ไทย)</label>
+              <label className="font-bold text-theme-text block mb-1">{t('admin.heroTitleTh', 'หัวข้อหลัก Title (ไทย)')}</label>
               <input
                 type="text"
                 value={thaiTitle}
@@ -460,7 +460,7 @@ export const PageEditor: React.FC<{
             </div>
 
             <div>
-              <label className="font-bold text-theme-text block mb-1">หัวข้อย่อยเน้นสีทอง Highlight (ไทย)</label>
+              <label className="font-bold text-theme-text block mb-1">{t('admin.heroHighlightTh', 'หัวข้อย่อยเน้นสีทอง Highlight (ไทย)')}</label>
               <input
                 type="text"
                 value={thaiSubtitle}
@@ -473,7 +473,7 @@ export const PageEditor: React.FC<{
             </div>
 
             <div>
-              <label className="font-bold text-theme-text block mb-1">คำบรรยายรายละเอียด Subtitle (ไทย)</label>
+              <label className="font-bold text-theme-text block mb-1">{t('admin.heroSubtitleTh', 'คำบรรยายรายละเอียด Subtitle (ไทย)')}</label>
               <textarea
                 rows={5}
                 value={thaiDesc}
@@ -490,7 +490,7 @@ export const PageEditor: React.FC<{
               <div className="flex items-center justify-between">
                 <span className="font-bold text-theme-text flex items-center gap-1.5">
                   <span className="w-2.5 h-2.5 rounded-full bg-amber-400 shadow-sm" />
-                  <span>ปุ่มที่ 1 (สีทอง - หลัก)</span>
+                  <span>{t('admin.button1Gold', 'ปุ่มที่ 1 (สีทอง - หลัก)')}</span>
                 </span>
                 <button
                   type="button"
@@ -505,7 +505,7 @@ export const PageEditor: React.FC<{
                   }`}
                 >
                   {showPrimaryBtn ? <Eye className="h-3 w-3" /> : <EyeOff className="h-3 w-3" />}
-                  <span>{showPrimaryBtn ? 'แสดงผลอยู่' : 'ซ่อนปุ่ม'}</span>
+                  <span>{showPrimaryBtn ? t('admin.activeShowing', 'แสดงผลอยู่') : t('admin.hideButton', 'ซ่อนปุ่ม')}</span>
                 </button>
               </div>
 
@@ -544,7 +544,7 @@ export const PageEditor: React.FC<{
               <div className="flex items-center justify-between">
                 <span className="font-bold text-theme-text flex items-center gap-1.5">
                   <span className="w-2.5 h-2.5 rounded-full bg-white/70 border border-white/40 shadow-sm" />
-                  <span>ปุ่มที่ 2 (โครงร่างใส - รอง)</span>
+                  <span>{t('admin.button2Transparent', 'ปุ่มที่ 2 (โครงร่างใส - รอง)')}</span>
                 </span>
                 <button
                   type="button"
@@ -559,7 +559,7 @@ export const PageEditor: React.FC<{
                   }`}
                 >
                   {showSecondaryBtn ? <Eye className="h-3 w-3" /> : <EyeOff className="h-3 w-3" />}
-                  <span>{showSecondaryBtn ? 'แสดงผลอยู่' : 'ซ่อนปุ่ม'}</span>
+                  <span>{showSecondaryBtn ? t('admin.activeShowing', 'แสดงผลอยู่') : t('admin.hideButton', 'ซ่อนปุ่ม')}</span>
                 </button>
               </div>
 
@@ -599,9 +599,9 @@ export const PageEditor: React.FC<{
         <div className="lg:col-span-4 rounded-3xl border border-theme-border bg-theme-surface p-6 shadow-2xl space-y-4">
           <div className="border-b border-theme-border pb-3 flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <h2 className="font-display text-sm font-bold text-theme-text">ภาพพื้นหลังปก (Hero Media)</h2>
+              <h2 className="font-display text-sm font-bold text-theme-text">{t('admin.heroMediaTitle', 'ภาพพื้นหลังปก (Hero Media)')}</h2>
               <span className="rounded-full bg-theme-primary/20 text-theme-primary px-2 py-0.5 text-[10px] font-bold">
-                {heroImagesList.length}/5 ภาพ
+                {heroImagesList.length}/5 {t('admin.imagesUnit', 'ภาพ')}
               </span>
             </div>
             <span className="text-[10px] text-theme-text-muted font-mono">1920x1080 Fullwidth</span>
@@ -620,11 +620,11 @@ export const PageEditor: React.FC<{
               {/* Slide Counter Overlay */}
               <div className="absolute top-2.5 left-2.5 z-10 flex items-center gap-1.5">
                 <span className="rounded-lg bg-black/75 px-2.5 py-1 text-[10px] font-bold text-white border border-white/20 backdrop-blur-sm">
-                  ภาพที่ {activeSlideIndex + 1} จาก {heroImagesList.length}
+                  {activeSlideIndex + 1} / {heroImagesList.length}
                 </span>
                 {activeSlideIndex === 0 && (
                   <span className="rounded-lg bg-amber-500/90 text-black px-2 py-1 text-[10px] font-extrabold shadow-sm">
-                    ภาพปกเริ่มต้น
+                    {t('admin.defaultCover', 'ภาพปกเริ่มต้น')}
                   </span>
                 )}
               </div>
@@ -669,8 +669,8 @@ export const PageEditor: React.FC<{
             {/* Thumbnails Strip with Delete and Select */}
             <div className="space-y-1.5">
               <div className="flex items-center justify-between text-[11px] font-bold text-theme-text">
-                <span>ลำดับภาพสไลด์ (คลิกเลือกดู หรือลบ)</span>
-                <span className="text-[10px] text-theme-text-muted">ลำดับแรก = ภาพหน้าปก</span>
+                <span>{t('admin.slideOrderDesc', 'ลำดับภาพสไลด์ (คลิกเลือกดู หรือลบ)')}</span>
+                <span className="text-[10px] text-theme-text-muted">{t('admin.firstIsCover', 'ลำดับแรก = ภาพหน้าปก')}</span>
               </div>
               <div className="grid grid-cols-5 gap-1.5">
                 {heroImagesList.map((imgUrl, idx) => {
@@ -714,7 +714,7 @@ export const PageEditor: React.FC<{
                 <div className="flex items-center justify-between">
                   <span className="font-bold text-theme-text flex items-center gap-1.5 text-[11px]">
                     <Plus className="h-3.5 w-3.5 text-theme-primary" />
-                    <span>เพิ่มรูปภาพสไลด์ใหม่ ({heroImagesList.length}/5)</span>
+                    <span>{t('admin.addNewSlideImage', 'เพิ่มรูปภาพสไลด์ใหม่')} ({heroImagesList.length}/5)</span>
                   </span>
                 </div>
 
@@ -740,7 +740,7 @@ export const PageEditor: React.FC<{
                     className="rounded-xl border border-theme-border bg-theme-surface px-2.5 py-2 text-[11px] font-semibold text-theme-text-muted hover:text-theme-primary transition-colors"
                     title="ใช้ชุดภาพเริ่มต้นของระบบ"
                   >
-                    รีเซ็ตเริ่มต้น
+                    {t('admin.resetDefaults', 'รีเซ็ตเริ่มต้น')}
                   </button>
                 </div>
 
@@ -749,7 +749,7 @@ export const PageEditor: React.FC<{
                     type="text"
                     value={newImageUrlInput}
                     onChange={(e) => setNewImageUrlInput(e.target.value)}
-                    placeholder="หรือวาง URL ภาพ (เช่น /images/... หรือ https://...)"
+                    placeholder={t('admin.orPasteImageUrl', 'หรือวาง URL ภาพ (เช่น /images/... หรือ https://...)')}
                     className="flex-1 rounded-xl border border-theme-border bg-theme-surface px-2.5 py-1.5 text-[11px] text-theme-text font-mono placeholder:text-theme-text-muted"
                   />
                   <button
@@ -758,13 +758,13 @@ export const PageEditor: React.FC<{
                     disabled={!newImageUrlInput.trim()}
                     className="rounded-xl bg-theme-primary px-3 py-1.5 text-xs font-bold text-black disabled:opacity-40 disabled:cursor-not-allowed hover:brightness-110 transition-all"
                   >
-                    เพิ่ม
+                    {t('common.add', 'เพิ่ม')}
                   </button>
                 </div>
               </div>
             ) : (
               <div className="rounded-xl border border-amber-500/30 bg-amber-500/10 p-2.5 text-center text-[11px] font-semibold text-amber-500">
-                ครบจำนวนสูงสุด 5 ภาพแล้ว (ลบภาพที่ไม่ต้องการก่อนหากต้องการเพิ่มใหม่)
+                {t('admin.maxImagesReached', 'ครบจำนวนสูงสุด 5 ภาพแล้ว (ลบภาพที่ไม่ต้องการก่อนหากต้องการเพิ่มใหม่)')}
               </div>
             )}
 
@@ -772,14 +772,14 @@ export const PageEditor: React.FC<{
             <div className="rounded-2xl border border-theme-border bg-theme-surface-elevated p-3.5 space-y-3">
               <div className="flex items-center gap-1.5 text-[11px] font-bold text-theme-text border-b border-theme-border/60 pb-2">
                 <Sliders className="h-3.5 w-3.5 text-theme-primary" />
-                <span>ตั้งค่าพฤติกรรมสไลด์ (Slide Settings)</span>
+                <span>{t('admin.slideSettingsTitle', 'ตั้งค่าพฤติกรรมสไลด์ (Slide Settings)')}</span>
               </div>
 
               {/* Auto Slide Toggle */}
               <div className="flex items-center justify-between">
                 <div>
-                  <div className="font-bold text-theme-text text-[11px]">เลื่อนสไลด์อัตโนมัติ (Auto-Slide)</div>
-                  <div className="text-[10px] text-theme-text-muted">เปลี่ยนภาพตามเวลา (จะหยุดชั่วคราวเมื่อชี้เมาส์)</div>
+                  <div className="font-bold text-theme-text text-[11px]">{t('admin.autoSlide', 'เลื่อนสไลด์อัตโนมัติ (Auto-Slide)')}</div>
+                  <div className="text-[10px] text-theme-text-muted">{t('admin.autoSlideDesc', 'เปลี่ยนภาพตามเวลา (จะหยุดชั่วคราวเมื่อชี้เมาส์)')}</div>
                 </div>
                 <button
                   type="button"
@@ -803,7 +803,7 @@ export const PageEditor: React.FC<{
               {heroAutoSlide && (
                 <div className="space-y-1.5 pt-1 border-t border-theme-border/40">
                   <label className="font-bold text-theme-text-muted block text-[10px]">
-                    ความเร็วในการเปลี่ยนสไลด์ (วินาที)
+                    {t('admin.slideSpeed', 'ความเร็วในการเปลี่ยนสไลด์ (วินาที)')}
                   </label>
                   <div className="grid grid-cols-4 gap-1.5">
                     {[3, 5, 7, 10].map((sec) => (
@@ -820,7 +820,7 @@ export const PageEditor: React.FC<{
                             : 'border-theme-border bg-theme-surface text-theme-text hover:border-theme-primary/50'
                         }`}
                       >
-                        {sec} วินาที
+                        {sec} {t('admin.secondsUnit', 'วินาที')}
                       </button>
                     ))}
                   </div>
@@ -830,8 +830,8 @@ export const PageEditor: React.FC<{
               {/* Hover Arrows Toggle */}
               <div className="flex items-center justify-between pt-2 border-t border-theme-border/40">
                 <div>
-                  <div className="font-bold text-theme-text text-[11px]">ปุ่มลูกศรเมื่อชี้เมาส์ (Hover Navigation)</div>
-                  <div className="text-[10px] text-theme-text-muted">แสดงลูกศร ซ้าย/ขวา เพื่อให้ผู้ใช้กดเลื่อนเอง</div>
+                  <div className="font-bold text-theme-text text-[11px]">{t('admin.hoverNavigation', 'ปุ่มลูกศรเมื่อชี้เมาส์ (Hover Navigation)')}</div>
+                  <div className="text-[10px] text-theme-text-muted">{t('admin.hoverNavigationDesc', 'แสดงลูกศร ซ้าย/ขวา เพื่อให้ผู้ใช้กดเลื่อนเอง')}</div>
                 </div>
                 <button
                   type="button"
@@ -854,7 +854,7 @@ export const PageEditor: React.FC<{
               {/* Dots Toggle */}
               <div className="flex items-center justify-between pt-2 border-t border-theme-border/40">
                 <div>
-                  <div className="font-bold text-theme-text text-[11px]">จุดบอกตำแหน่งสไลด์ (Slide Dots)</div>
+                  <div className="font-bold text-theme-text text-[11px]">{t('admin.slideDots', 'จุดบอกตำแหน่งสไลด์ (Slide Dots)')}</div>
                   <div className="text-[10px] text-theme-text-muted">{t('admin.slideDotsDesc', 'แสดงจุดนำทางด้านล่างของแบนเนอร์')}</div>
                 </div>
                 <button
@@ -887,8 +887,8 @@ export const PageEditor: React.FC<{
                     </div>
                     <div className="text-[10px] text-theme-text-muted">
                       {heroTextOverlayOpacity === 0
-                        ? 'ปิดเงาดำ (ภาพพื้นหลังชัดเจน 100%)'
-                        : `ลด/เพิ่มเงาดำเพื่อความคมชัดของข้อความ (${heroTextOverlayOpacity}%)`}
+                        ? t('admin.disableOverlay', 'ปิดเงาดำ (ภาพพื้นหลังชัดเจน 100%)')
+                        : `${t('admin.textOverlayDesc', 'ลด/เพิ่มเงาดำเพื่อความคมชัดของข้อความ')} (${heroTextOverlayOpacity}%)`}
                     </div>
                   </div>
                 </div>
@@ -1018,10 +1018,10 @@ export const PageEditor: React.FC<{
           <div>
             <h2 className="font-display text-base font-bold text-theme-text flex items-center gap-2">
               <ShieldCheck className="h-5 w-5 text-theme-primary" />
-              <span>คุณภาพมาตรฐานสากล & จุดเด่น 4 ด้าน (Feature Badges - 5 Languages)</span>
+              <span>{t('admin.featureBadgesTitle', 'คุณภาพมาตรฐานสากล & จุดเด่น 4 ด้าน (Feature Badges - 5 Languages)')}</span>
             </h2>
             <p className="text-xs text-theme-text-muted mt-1">
-              แก้ไขหัวข้อ คำบรรยาย และคำแปลทั้ง 5 ภาษา (TH, EN, JP, CN, MM) ของแถบจุดเด่นใต้ภาพหน้าแรก
+              {t('admin.featureBadgesDesc', 'แก้ไขหัวข้อ คำบรรยาย และคำแปลทั้ง 5 ภาษา (TH, EN, JP, CN, MM) ของแถบจุดเด่นใต้ภาพหน้าแรก')}
             </p>
           </div>
           <span className="rounded-full bg-theme-primary/20 text-theme-primary px-3 py-1 text-xs font-bold w-fit">
@@ -1057,14 +1057,14 @@ export const PageEditor: React.FC<{
                   }`}
                 >
                   {badge.enabled !== false ? <Eye className="h-3 w-3" /> : <EyeOff className="h-3 w-3" />}
-                  <span>{badge.enabled !== false ? 'เปิดแสดง' : 'ปิด'}</span>
+                  <span>{badge.enabled !== false ? t('admin.showTab', 'เปิดแสดง') : t('admin.hideTab', 'ปิด')}</span>
                 </button>
               </div>
 
               {/* Thai Primary Fields */}
               <div className="space-y-2.5 text-xs">
                 <div>
-                  <label className="font-bold text-theme-text block mb-1">หัวข้อหลัก (ภาษาไทย)</label>
+                  <label className="font-bold text-theme-text block mb-1">{t('admin.mainTitleTh', 'หัวข้อหลัก (ภาษาไทย)')}</label>
                   <input
                     type="text"
                     value={badge.title}
@@ -1078,7 +1078,7 @@ export const PageEditor: React.FC<{
                   />
                 </div>
                 <div>
-                  <label className="font-bold text-theme-text block mb-1">คำบรรยายย่อย (ภาษาไทย)</label>
+                  <label className="font-bold text-theme-text block mb-1">{t('admin.subtitleTh', 'คำบรรยายย่อย (ภาษาไทย)')}</label>
                   <input
                     type="text"
                     value={badge.subtitle}
@@ -1096,10 +1096,10 @@ export const PageEditor: React.FC<{
               {/* 4 Translation Tabs (EN, JP, CN, MM) */}
               <MultiLangSectionEditor
                 compact
-                title={`แปลภาษา จุดเด่น #${idx + 1}`}
+                title={`${t('admin.featureHighlight', 'แปลภาษา จุดเด่น')} #${idx + 1}`}
                 fields={[
-                  { key: 'title', label: 'หัวข้อหลัก (Title)' },
-                  { key: 'subtitle', label: 'คำบรรยาย (Subtitle)' },
+                  { key: 'title', label: t('admin.mainTitleTh', 'หัวข้อหลัก (Title)') },
+                  { key: 'subtitle', label: t('admin.subtitleTh', 'คำบรรยาย (Subtitle)') },
                 ]}
                 value={badge.translations || {
                   en: { title: '', subtitle: '' },
