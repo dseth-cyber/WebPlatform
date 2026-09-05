@@ -107,7 +107,7 @@ func main() {
 	var adminUserID uuid.UUID
 	_ = pool.QueryRow(ctx, `
 		INSERT INTO users (email, password_hash, full_name, status)
-		VALUES ('admin@lohakit.co.th', $1, 'Lohakit Administrator', 'ACTIVE')
+		VALUES ('admin@localhost.co.th', $1, 'Lohakit Administrator', 'ACTIVE')
 		ON CONFLICT (email) DO UPDATE SET password_hash = EXCLUDED.password_hash
 		RETURNING id
 	`, adminPassHash).Scan(&adminUserID)
@@ -637,6 +637,6 @@ func main() {
 
 	fmt.Println("Database seed completed successfully!")
 	fmt.Println("Admin Login:")
-	fmt.Println("  Email:    admin@lohakit.co.th")
+	fmt.Println("  Email:    admin@localhost.co.th")
 	fmt.Println("  Password: AdminLohakit2026!")
 }

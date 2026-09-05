@@ -13,7 +13,7 @@ export const useAdminUsers = (search?: string) => {
         return [
           {
             id: 'u-1',
-            email: 'admin@lohakit.co.th',
+            email: 'admin@localhost.co.th',
             fullName: 'Lohakit Administrator',
             status: 'ACTIVE',
             createdAt: '2026-09-01T00:00:00Z',
@@ -45,7 +45,7 @@ export const useAuditLogs = (resource?: string, action?: string) => {
           {
             id: 'aud-1',
             userName: 'Lohakit Administrator',
-            userEmail: 'admin@lohakit.co.th',
+            userEmail: 'admin@localhost.co.th',
             action: 'LOGIN',
             resource: 'auth',
             resourceId: 'u-1',
@@ -55,7 +55,7 @@ export const useAuditLogs = (resource?: string, action?: string) => {
           {
             id: 'aud-2',
             userName: 'Lohakit Administrator',
-            userEmail: 'admin@lohakit.co.th',
+            userEmail: 'admin@localhost.co.th',
             action: 'PUBLISH',
             resource: 'page',
             resourceId: 'page-home',

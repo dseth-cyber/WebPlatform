@@ -105,7 +105,7 @@ export const UsersManager: React.FC = () => {
     const currentSuperAdmin = usersList.find((u) => u.roles.includes('Superadmin') || u.roles.includes('SUPER_ADMIN')) || usersList[0] || {
       id: 'current-admin',
       fullName: 'Administrator',
-      email: 'admin@lohakit.co.th',
+      email: 'admin@localhost.co.th',
       roles: ['SUPER_ADMIN'],
       status: 'ACTIVE' as const,
       createdAt: new Date().toISOString(),

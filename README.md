@@ -92,7 +92,7 @@ docker compose exec api /app/seeder
 
 ### ข้อมูลเข้าสู่ระบบเริ่มต้น (Default Superadmin Credentials):
 - **URL เข้าสู่ระบบ CMS**: `http://localhost/admin`
-- **บัญชีผู้ใช้**: `admin@lohakit.co.th`
+- **บัญชีผู้ใช้**: `admin@localhost.co.th`
 - **รหัสผ่าน**: `AdminLohakit2026!`
 
 ---

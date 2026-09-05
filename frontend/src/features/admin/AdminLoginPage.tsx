@@ -10,7 +10,7 @@ interface AdminLoginPageProps {
 
 export const AdminLoginPage: React.FC<AdminLoginPageProps> = ({ onLoginSuccess, onNavigate }) => {
   const { t } = useTranslation();
-  const [email, setEmail] = useState('admin@lohakit.co.th');
+  const [email, setEmail] = useState('admin@localhost.co.th');
   const [password, setPassword] = useState('AdminLohakit2026!');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -33,8 +33,8 @@ export const AdminLoginPage: React.FC<AdminLoginPageProps> = ({ onLoginSuccess, 
       onLoginSuccess(res.data?.user || { email, role: 'Superadmin' });
     } catch (err: any) {
       // Safe fallback for demo
-      if (email === 'admin@lohakit.co.th' && password === 'AdminLohakit2026!') {
-        const demoUser = { id: 'u-1', email, fullName: 'Lohakit Administrator', role: 'Superadmin' };
+      if ((email === 'admin@localhost.co.th' || email === 'admin@lohakit.co.th') && password === 'AdminLohakit2026!') {
+        const demoUser = { id: 'u-1', email: 'admin@localhost.co.th', fullName: 'Lohakit Administrator', role: 'Superadmin' };
         localStorage.setItem('lohakit_admin_user', JSON.stringify(demoUser));
         onLoginSuccess(demoUser);
         return;
@@ -90,7 +90,7 @@ export const AdminLoginPage: React.FC<AdminLoginPageProps> = ({ onLoginSuccess, 
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="admin@lohakit.co.th"
+                placeholder="admin@localhost.co.th"
                 className="w-full rounded-xl border border-theme-border bg-theme-surface py-2.5 pl-9 pr-3 text-xs text-theme-text placeholder-theme-text-dim focus:border-theme-primary focus:outline-none focus:ring-1 focus:ring-theme-primary"
               />
             </div>
@@ -124,7 +124,7 @@ export const AdminLoginPage: React.FC<AdminLoginPageProps> = ({ onLoginSuccess, 
 
         <div className="rounded-xl border border-theme-border bg-theme-surface/50 p-3 text-center text-[11px] text-theme-text-dim">
           <p className="font-semibold text-theme-primary mb-0.5">Default Superadmin:</p>
-          <p>Email: admin@lohakit.co.th | Pass: AdminLohakit2026!</p>
+          <p>Email: admin@localhost.co.th | Pass: AdminLohakit2026!</p>
         </div>
       </div>
     </div>
