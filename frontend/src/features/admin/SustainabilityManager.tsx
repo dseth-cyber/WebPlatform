@@ -397,7 +397,7 @@ export const SustainabilityManager: React.FC = () => {
                           />
                           <label className="flex items-center gap-1 rounded-lg bg-theme-primary/15 border border-theme-primary/40 px-3 py-1.5 text-[11px] font-bold text-theme-primary hover:bg-theme-primary hover:text-black cursor-pointer transition-all flex-shrink-0">
                             <UploadCloud className="h-3.5 w-3.5" />
-                            <span>อัปรูป</span>
+                            <span>{t('admin.uploadImage', 'อัปรูป')}</span>
                             <input
                               type="file"
                               accept="image/*"

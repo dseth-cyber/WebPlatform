@@ -275,7 +275,7 @@ export const UsersManager: React.FC = () => {
             className="flex items-center gap-2 rounded-xl border border-amber-500/40 bg-amber-500/10 px-4 py-2.5 text-xs font-bold text-amber-400 hover:bg-amber-500 hover:text-black transition-all shadow-sm"
           >
             <KeyRound className="h-4 w-4" />
-            <span>เปลี่ยนรหัสผ่านของฉัน</span>
+            <span>{t('admin.changeMyPassword', 'เปลี่ยนรหัสผ่านของฉัน')}</span>
           </button>
 
           {/* Add User Button */}
@@ -351,7 +351,7 @@ export const UsersManager: React.FC = () => {
                         title="รีเซ็ต / เปลี่ยนรหัสผ่านสำหรับผู้ใช้นี้"
                       >
                         <KeyRound className="h-3.5 w-3.5" />
-                        <span>รีเซ็ตรหัสผ่าน</span>
+                        <span>{t('admin.resetPassword', 'รีเซ็ตรหัสผ่าน')}</span>
                       </button>
 
                       {/* EDIT PERMISSIONS BUTTON */}
@@ -418,7 +418,7 @@ export const UsersManager: React.FC = () => {
             <div className="flex items-center justify-between gap-2 p-2.5 rounded-xl bg-theme-primary/10 border border-theme-primary/30">
               <span className="text-[11px] text-theme-text font-bold flex items-center gap-1.5">
                 <ShieldCheck className="h-4 w-4 text-theme-primary" />
-                <span>สร้างรหัสผ่านที่ปลอดภัยอัตโนมัติ</span>
+                <span>{t('admin.autoGenSecurePassword', 'สร้างรหัสผ่านที่ปลอดภัยอัตโนมัติ')}</span>
               </span>
               <button
                 type="button"
@@ -450,7 +450,7 @@ export const UsersManager: React.FC = () => {
                     ) : (
                       <>
                         <Copy className="h-3 w-3" />
-                        <span>คัดลอกรหัสผ่าน</span>
+                        <span>{t('admin.copyPassword', 'คัดลอกรหัสผ่าน')}</span>
                       </>
                     )}
                   </button>
@@ -511,13 +511,13 @@ export const UsersManager: React.FC = () => {
               {confirmPassword && confirmPassword !== newPassword && (
                 <p className="text-[10px] text-red-400 flex items-center gap-1">
                   <AlertCircle className="h-3 w-3" />
-                  <span>รหัสผ่านทั้งสองช่องไม่ตรงกัน</span>
+                  <span>{t('admin.passwordsDoNotMatch', 'รหัสผ่านทั้งสองช่องไม่ตรงกัน')}</span>
                 </p>
               )}
               {confirmPassword && confirmPassword === newPassword && (
                 <p className="text-[10px] text-emerald-400 flex items-center gap-1">
                   <CheckCircle2 className="h-3 w-3" />
-                  <span>รหัสผ่านตรงกันถูกต้อง</span>
+                  <span>{t('admin.passwordsMatch', 'รหัสผ่านตรงกันถูกต้อง')}</span>
                 </p>
               )}
             </div>

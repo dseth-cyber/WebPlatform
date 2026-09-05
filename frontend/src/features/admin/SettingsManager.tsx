@@ -231,21 +231,21 @@ export const SettingsManager: React.FC = () => {
     {
       id: 'DARK',
       name: 'Industrial Dark Steel',
-      subtitle: 'Brushed Charcoal & Deep Obsidian (ความคมเข้มสไตล์อุตสาหกรรมโลหะ)',
+      subtitle: t('admin.themeDarkSubtitle', 'Brushed Charcoal & Deep Obsidian (ความคมเข้มสไตล์อุตสาหกรรมโลหะ)'),
       icon: <Moon className="h-5 w-5 text-amber-500" />,
       bg: 'bg-[#04070C] border-slate-700/60',
     },
     {
       id: 'LIGHT',
       name: 'Corporate Clean Titanium',
-      subtitle: 'Precision Silver & Crisp White (โทนสีสว่าง สะอาด เรียบหรูแบบสากล)',
+      subtitle: t('admin.themeLightSubtitle', 'Precision Silver & Crisp White (โทนสีสว่าง สะอาด เรียบหรูแบบสากล)'),
       icon: <Sun className="h-5 w-5 text-sky-500" />,
       bg: 'bg-[#F8FAFC] border-slate-300 text-slate-900',
     },
     {
       id: 'MODERN',
       name: 'Industrial Cyber Technology',
-      subtitle: 'High-Tech Titanium Slate & Electric Cyan (นีออนเมทัลลิกล้ำสมัย ไฮเทค)',
+      subtitle: t('admin.themeModernSubtitle', 'High-Tech Titanium Slate & Electric Cyan (นีออนเมทัลลิกล้ำสมัย ไฮเทค)'),
       icon: <Sparkles className="h-5 w-5 text-cyan-400" />,
       bg: 'bg-[#131E32] border-cyan-500/40',
     },
@@ -591,12 +591,12 @@ export const SettingsManager: React.FC = () => {
               {settings.showHeroSecondaryBtn !== false ? (
                 <>
                   <EyeOff className="h-4 w-4 text-red-400" />
-                  <span>คลิกเพื่อซ่อนปุ่มนี้</span>
+                  <span>{t('admin.hideButton', 'คลิกเพื่อซ่อนปุ่มนี้')}</span>
                 </>
               ) : (
                 <>
                   <Eye className="h-4 w-4" />
-                  <span>คลิกเพื่อเปิดแสดงปุ่มนี้</span>
+                  <span>{t('admin.showButton', 'คลิกเพื่อเปิดแสดงปุ่มนี้')}</span>
                 </>
               )}
             </button>
@@ -610,10 +610,10 @@ export const SettingsManager: React.FC = () => {
           <div>
             <h3 className="font-display text-sm font-bold text-theme-text flex items-center gap-2">
               <Database className="h-4 w-4 text-theme-primary" />
-              <span>แหล่งข้อมูลของแผงควบคุมภาพรวม (Admin Dashboard Data Mode)</span>
+              <span>{t('admin.dashboardDataMode')}</span>
             </h3>
             <p className="text-[11px] text-theme-text-muted mt-0.5">
-              เลือกว่าจะให้หน้า <strong>แผงควบคุมภาพรวม (Dashboard)</strong> ดึงข้อมูลจริงจากระบบ หรือแสดงข้อมูลจำลองเพื่อการพรีเซนต์
+              {t('admin.dashboardDataModeDesc')}
             </p>
           </div>
 
@@ -625,8 +625,8 @@ export const SettingsManager: React.FC = () => {
             }`}
           >
             {formState.dashboardDataSource === 'real'
-              ? '🟢 กำลังใช้: ข้อมูลจริงของระบบ (Real System Data)'
-              : '🟡 กำลังใช้: ข้อมูลจำลอง (Mockup Demo Data)'}
+              ? `🟢 ${t('admin.usingRealData')}`
+              : `🟡 ${t('admin.usingMockData')}`}
           </span>
         </div>
 
@@ -644,16 +644,16 @@ export const SettingsManager: React.FC = () => {
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2 text-xs font-bold text-theme-text">
                   <Sparkles className="h-4 w-4 text-amber-400" />
-                  <span>ข้อมูลจำลอง / ตัวอย่างระบบ (Mockup Demo Data)</span>
+                  <span>{t('admin.mockDataTitle')}</span>
                 </div>
                 {formState.dashboardDataSource !== 'real' && (
                   <span className="rounded-full bg-amber-500 text-black px-2 py-0.5 text-[10px] font-black">
-                    เปิดใช้งานอยู่
+                    {t('admin.statusActive', 'เปิดใช้งานอยู่')}
                   </span>
                 )}
               </div>
               <p className="text-[11px] text-theme-text-muted leading-relaxed">
-                แสดงผลสถิติตัวอย่างระดับองค์กร (Web Traffic, Pageviews 36k+, ผู้เข้าชมต่างประเทศ, สัดส่วนอุปกรณ์ B2B Desktop 64%, และคำขอใบเสนอราคาจำลอง) เหมาะสำหรับใช้ในการนำเสนอหรือ Demo เว็บไซต์
+                {t('admin.mockDataDesc')}
               </p>
             </div>
             <button
@@ -664,7 +664,7 @@ export const SettingsManager: React.FC = () => {
                   : 'border border-theme-border bg-theme-surface text-theme-text-muted hover:text-theme-text'
               }`}
             >
-              {formState.dashboardDataSource !== 'real' ? '✓ กำลังใช้งานโหมดนี้' : 'สลับใช้ข้อมูลจำลอง (Mockup)'}
+              {formState.dashboardDataSource !== 'real' ? `✓ ${t('admin.currentlyActiveMode')}` : t('admin.switchToMock')}
             </button>
           </div>
 
@@ -681,16 +681,16 @@ export const SettingsManager: React.FC = () => {
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2 text-xs font-bold text-theme-text">
                   <Database className="h-4 w-4 text-emerald-400" />
-                  <span>ข้อมูลจริงของระบบ (Real Live System Data)</span>
+                  <span>{t('admin.realDataTitle')}</span>
                 </div>
                 {formState.dashboardDataSource === 'real' && (
                   <span className="rounded-full bg-emerald-500 text-white px-2 py-0.5 text-[10px] font-black">
-                    เปิดใช้งานอยู่
+                    {t('admin.statusActive', 'เปิดใช้งานอยู่')}
                   </span>
                 )}
               </div>
               <p className="text-[11px] text-theme-text-muted leading-relaxed">
-                ดึงตัวเลขและสถิติจริงจากฐานข้อมูลและระบบแบบ Real-time: จำนวนสินค้าจริง, ข่าวสารที่บันทึกจริง, หน้าเพจจริง, ไฟล์สื่อในคลังจริง, บัญชีผู้ใช้จริง, ข้อความติดต่อจากลูกค้าจริง และประวัติการทำงาน (Audit Logs)
+                {t('admin.realDataDesc')}
               </p>
             </div>
             <button
@@ -701,7 +701,7 @@ export const SettingsManager: React.FC = () => {
                   : 'border border-theme-border bg-theme-surface text-theme-text-muted hover:text-theme-text'
               }`}
             >
-              {formState.dashboardDataSource === 'real' ? '✓ กำลังใช้งานโหมดนี้' : 'สลับใช้ข้อมูลจริงของระบบ (Real)'}
+              {formState.dashboardDataSource === 'real' ? `✓ ${t('admin.currentlyActiveMode')}` : t('admin.switchToReal')}
             </button>
           </div>
         </div>
@@ -713,10 +713,10 @@ export const SettingsManager: React.FC = () => {
           <div>
             <h3 className="font-display text-sm font-bold text-theme-text flex items-center gap-2">
               <Navigation className="h-4 w-4 text-theme-primary" />
-              <span>จัดการแถบเมนูนำทางด้านบน (Header Navigation Tabs Manager)</span>
+              <span>{t('admin.navTabsManagerTitle')}</span>
             </h3>
             <p className="text-[11px] text-theme-text-muted mt-0.5">
-              💡 <strong>ลากเพื่อจัดวางเรียงลำดับ (Drag & Drop)</strong> หรือกดปุ่มลูกศรขึ้น/ลง เพื่อจัดเรียงลำดับเมนูบน Header ได้ทันที พร้อมสวิตช์เปิด/ปิดซ่อนหรือแสดง
+              💡 {t('admin.navTabsManagerDesc')}
             </p>
           </div>
         </div>
@@ -752,7 +752,7 @@ export const SettingsManager: React.FC = () => {
                 </div>
                 <div className="space-y-0.5">
                   <div className="flex items-center gap-1.5">
-                    <span className="font-bold text-xs text-theme-text">{tab.labelTh}</span>
+                    <span className="font-bold text-xs text-theme-text">{t(`nav.${tab.key}`, tab.labelTh)}</span>
                     <span className="text-[10px] text-theme-text-muted font-mono">({tab.labelEn})</span>
                   </div>
                   <div className="text-[10px] text-theme-text-dim">
@@ -769,7 +769,7 @@ export const SettingsManager: React.FC = () => {
                     disabled={idx === 0}
                     onClick={() => handleMoveTab(idx, 'up')}
                     className="p-1 rounded bg-theme-surface hover:bg-theme-primary/20 text-theme-text-muted hover:text-theme-primary disabled:opacity-20 disabled:pointer-events-none transition-colors"
-                    title="เลื่อนขึ้น"
+                    title={t('common.moveUp', 'เลื่อนขึ้น')}
                   >
                     <ArrowUp className="h-3 w-3" />
                   </button>
@@ -778,7 +778,7 @@ export const SettingsManager: React.FC = () => {
                     disabled={idx === arr.length - 1}
                     onClick={() => handleMoveTab(idx, 'down')}
                     className="p-1 rounded bg-theme-surface hover:bg-theme-primary/20 text-theme-text-muted hover:text-theme-primary disabled:opacity-20 disabled:pointer-events-none transition-colors"
-                    title="เลื่อนลง"
+                    title={t('common.moveDown', 'เลื่อนลง')}
                   >
                     <ArrowDown className="h-3 w-3" />
                   </button>
@@ -792,17 +792,17 @@ export const SettingsManager: React.FC = () => {
                       ? 'bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 hover:bg-red-500/15 hover:border-red-500/30 hover:text-red-400'
                       : 'bg-slate-500/15 border border-slate-500/30 text-slate-400 hover:bg-emerald-500/15 hover:border-emerald-500/30 hover:text-emerald-400'
                   }`}
-                  title={tab.enabled ? 'คลิกเพื่อซ่อน Tab นี้' : 'คลิกเพื่อแสดง Tab นี้'}
+                  title={tab.enabled ? t('admin.hideTab', 'คลิกเพื่อซ่อน Tab นี้') : t('admin.showTab', 'คลิกเพื่อแสดง Tab นี้')}
                 >
                   {tab.enabled ? (
                     <>
                       <Eye className="h-3.5 w-3.5 text-emerald-400" />
-                      <span>แสดง</span>
+                      <span>{t('admin.showTab', 'แสดง')}</span>
                     </>
                   ) : (
                     <>
                       <EyeOff className="h-3.5 w-3.5 text-slate-400" />
-                      <span>ซ่อน</span>
+                      <span>{t('admin.hideTab', 'ซ่อน')}</span>
                     </>
                   )}
                 </button>
@@ -817,7 +817,7 @@ export const SettingsManager: React.FC = () => {
         <div className="flex items-center justify-between border-b border-theme-border pb-3">
           <h3 className="font-display text-sm font-bold text-theme-text flex items-center gap-2">
             <Palette className="h-4 w-4 text-theme-primary" />
-            <span>ธีมและโทนสีของเว็บไซต์ (Website Theme System)</span>
+            <span>{t('admin.themeSystemTitle')}</span>
           </h3>
           <span className="text-[11px] font-mono font-bold text-theme-primary bg-theme-primary/10 border border-theme-primary/30 px-2.5 py-0.5 rounded-full">
             Active: {theme}
@@ -865,12 +865,12 @@ export const SettingsManager: React.FC = () => {
       <div className="rounded-3xl border border-theme-border bg-theme-surface p-6 sm:p-8 shadow-2xl space-y-6 text-xs">
         <h3 className="font-display text-sm font-bold text-theme-text flex items-center gap-2 border-b border-theme-border pb-3">
           <Building2 className="h-4 w-4 text-theme-primary" />
-          <span>ข้อมูลแบรนด์และนิติบุคคล (Brand & Legal Entity Information)</span>
+          <span>{t('admin.brandLegalTitle')}</span>
         </h3>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label className="font-bold text-theme-text block mb-1">ชื่อบริษัท (ภาษาไทย)</label>
+            <label className="font-bold text-theme-text block mb-1">{t('admin.companyNameTh')}</label>
             <input
               type="text"
               value={formState.companyNameTh}
@@ -879,7 +879,7 @@ export const SettingsManager: React.FC = () => {
             />
           </div>
           <div>
-            <label className="font-bold text-theme-text block mb-1">Company Name (English)</label>
+            <label className="font-bold text-theme-text block mb-1">{t('admin.companyNameEn')}</label>
             <input
               type="text"
               value={formState.companyNameEn}
@@ -891,7 +891,7 @@ export const SettingsManager: React.FC = () => {
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div>
-            <label className="font-bold text-theme-text block mb-1">เลขประจำตัวผู้เสียภาษี (Tax ID)</label>
+            <label className="font-bold text-theme-text block mb-1">{t('admin.taxId')}</label>
             <input
               type="text"
               value={formState.taxId}
@@ -900,7 +900,7 @@ export const SettingsManager: React.FC = () => {
             />
           </div>
           <div>
-            <label className="font-bold text-theme-text block mb-1">ทุนจดทะเบียน</label>
+            <label className="font-bold text-theme-text block mb-1">{t('admin.registeredCapital')}</label>
             <input
               type="text"
               value={formState.registeredCapital}
@@ -909,7 +909,7 @@ export const SettingsManager: React.FC = () => {
             />
           </div>
           <div>
-            <label className="font-bold text-theme-text block mb-1">ปีก่อตั้ง (Established Year)</label>
+            <label className="font-bold text-theme-text block mb-1">{t('admin.establishedYear')}</label>
             <input
               type="text"
               value={formState.establishedYear}
@@ -921,13 +921,13 @@ export const SettingsManager: React.FC = () => {
 
         <MultiLangSectionEditor
           compact
-          title="แปลภาษาข้อมูลแบรนด์และนิติบุคคล (Brand & Legal Entity Translations)"
+          title={t('admin.brandLegalTranslationsTitle')}
           fields={[
-            { key: 'companyName', label: 'ชื่อบริษัท (Company Name)' },
-            { key: 'registeredCapital', label: 'ทุนจดทะเบียน (Registered Capital)' },
-            { key: 'taxId', label: 'เลขประจำตัวผู้เสียภาษี (Tax ID)' },
-            { key: 'establishedYear', label: 'ปีก่อตั้ง (Established Year)' },
-            { key: 'factoryAddress', label: 'ที่อยู่สำนักงาน / โรงงาน (Legal Address)', type: 'textarea', rows: 2 },
+            { key: 'companyName', label: t('admin.companyNameEn', 'Company Name (English)') },
+            { key: 'registeredCapital', label: t('admin.registeredCapital', 'ทุนจดทะเบียน (Registered Capital)') },
+            { key: 'taxId', label: t('admin.taxId', 'เลขประจำตัวผู้เสียภาษี (Tax ID)') },
+            { key: 'establishedYear', label: t('admin.establishedYear', 'ปีก่อตั้ง (Established Year)') },
+            { key: 'factoryAddress', label: t('admin.legalAddress', 'ที่อยู่สำนักงาน / โรงงาน (Legal Address)'), type: 'textarea', rows: 2 },
           ]}
           value={(formState.brandLegalTranslations || {
             en: { companyName: '', registeredCapital: '', taxId: '', establishedYear: '', factoryAddress: '' },
@@ -945,7 +945,7 @@ export const SettingsManager: React.FC = () => {
             className="btn-primary-action text-xs font-black px-6 py-2.5 shadow-xl"
           >
             <Save className="h-4 w-4 text-black" />
-            <span>{t('common.save')} การตั้งค่า</span>
+            <span>{t('admin.saveBrandSettings', 'บันทึกการตั้งค่าแบรนด์')}</span>
           </button>
         </div>
       </div>
@@ -954,13 +954,13 @@ export const SettingsManager: React.FC = () => {
       <div className="rounded-3xl border border-theme-border bg-theme-surface p-6 sm:p-8 shadow-2xl space-y-6 text-xs">
         <h3 className="font-display text-sm font-bold text-theme-text flex items-center gap-2 border-b border-theme-border pb-3">
           <Sliders className="h-4 w-4 text-theme-primary" />
-          <span>ข้อมูลส่วนท้ายเว็บและการรับรองมาตรฐาน (Footer & Certifications Bar)</span>
+          <span>{t('admin.footerCertTitle')}</span>
         </h3>
 
         <div className="space-y-4">
           <div>
             <label className="font-bold text-theme-text block mb-1">
-              คำบรรยายสรุปใต้แบรนด์ท้ายเว็บ (Footer Brand Bio)
+              {t('admin.footerBrandBio')}
             </label>
             <textarea
               rows={2}
@@ -978,10 +978,10 @@ export const SettingsManager: React.FC = () => {
             </div>
             <div className="space-y-1 text-xs">
               <div className="font-bold text-theme-text">
-                ข้อมูลที่อยู่โรงงาน, เบอร์โทร, อีเมล และเวลาทำการใน Footer
+                {t('admin.footerSingleSourceNote')}
               </div>
               <p className="text-[11px] text-theme-text-muted leading-relaxed">
-                เชื่อมโยงกับเมนู <span className="font-bold text-theme-primary">"จัดการเนื้อหา • ติดต่อเรา"</span> โดยตรงแบบอัตโนมัติ (Single Source of Truth) เพื่อป้องกันความซ้ำซ้อน ไม่จำเป็นต้องกรอกซ้ำสองที่
+                {t('admin.footerSingleSourceDesc')}
               </p>
             </div>
           </div>
@@ -989,7 +989,7 @@ export const SettingsManager: React.FC = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="font-bold text-theme-text block mb-1">
-                แถบมาตรฐานรับรองสากล (Certifications Banner - ซ้าย)
+                {t('admin.certificationsBanner')}
               </label>
               <input
                 type="text"
@@ -1001,7 +1001,7 @@ export const SettingsManager: React.FC = () => {
             </div>
             <div>
               <label className="font-bold text-theme-text block mb-1">
-                แถบมาตรฐานความปลอดภัย & รีไซเคิล (Compliance Text - ขวา)
+                {t('admin.complianceText')}
               </label>
               <input
                 type="text"
@@ -1021,7 +1021,7 @@ export const SettingsManager: React.FC = () => {
             className="btn-primary-action text-xs font-black px-6 py-2.5 shadow-xl"
           >
             <Save className="h-4 w-4 text-black" />
-            <span>{t('common.save')} ข้อมูลส่วนท้ายเว็บ</span>
+            <span>{t('admin.saveFooterSettings')}</span>
           </button>
         </div>
       </div>

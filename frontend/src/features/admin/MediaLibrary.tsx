@@ -295,7 +295,7 @@ export const MediaLibrary: React.FC = () => {
                 className="flex items-center gap-1.5 rounded-xl border border-red-500/20 bg-red-500/10 px-4 py-2 text-xs font-bold text-red-400 hover:bg-red-500/20 transition-all"
               >
                 <Trash2 className="h-4 w-4" />
-                <span>ลบไฟล์นี้</span>
+                <span>{t('admin.deleteFile', 'ลบไฟล์นี้')}</span>
               </button>
             </div>
           </div>
@@ -312,7 +312,7 @@ export const MediaLibrary: React.FC = () => {
         <div className="space-y-4 text-xs font-sans">
           <div className="rounded-2xl border-2 border-dashed border-theme-primary/40 bg-theme-surface/50 p-8 text-center space-y-3">
             <UploadCloud className="h-10 w-10 text-theme-primary mx-auto animate-bounce" />
-            <p className="font-bold text-sm text-theme-text">ลากไฟล์มาวางที่นี่ หรือคลิกเพื่อเลือกไฟล์</p>
+            <p className="font-bold text-sm text-theme-text">{t('admin.dragDropMedia', 'ลากไฟล์มาวางที่นี่ หรือคลิกเพื่อเลือกไฟล์')}</p>
             <p className="text-[11px] text-theme-text-dim">รองรับ JPG, PNG, WEBP, SVG, PDF สูงสุด 50MB</p>
             <input
               type="file"

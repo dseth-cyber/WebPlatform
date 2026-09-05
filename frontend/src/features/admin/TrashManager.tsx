@@ -94,8 +94,8 @@ export const TrashManager: React.FC = () => {
       {trashItems.length === 0 ? (
         <div className="rounded-3xl border border-dashed border-theme-border bg-theme-surface p-12 text-center space-y-2 text-theme-text-muted">
           <CheckCircle2 className="h-10 w-10 text-emerald-400 mx-auto mb-2" />
-          <p className="text-sm font-semibold text-theme-text">ถังขยะว่างเปล่า</p>
-          <p className="text-xs text-theme-text-dim">ไม่มีรายการที่ถูกลบชั่วคราวในขณะนี้</p>
+          <p className="text-sm font-semibold text-theme-text">{t('admin.trashEmpty', 'ถังขยะว่างเปล่า')}</p>
+          <p className="text-xs text-theme-text-dim">{t('admin.trashEmptyDesc', 'ไม่มีรายการที่ถูกลบชั่วคราวในขณะนี้')}</p>
         </div>
       ) : (
         <div className="rounded-2xl border border-theme-border bg-theme-surface shadow-2xl overflow-hidden">

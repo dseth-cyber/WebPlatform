@@ -472,7 +472,7 @@ export const NewsManager: React.FC = () => {
           {/* Status Switches (Visibility & Pin to Homepage) */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div className="flex items-center justify-between p-3 rounded-xl border border-theme-border bg-theme-surface-elevated">
-              <span className="font-bold text-theme-text">สถานะการเผยแพร่</span>
+              <span className="font-bold text-theme-text">{t('admin.publishStatus', 'สถานะการเผยแพร่')}</span>
               <button
                 type="button"
                 onClick={() => setIsActive(!isActive)}
@@ -490,7 +490,7 @@ export const NewsManager: React.FC = () => {
             <div className="flex items-center justify-between p-3 rounded-xl border border-theme-border bg-theme-surface-elevated">
               <span className="font-bold text-theme-text flex items-center gap-1.5">
                 <Pin className="h-3.5 w-3.5 text-amber-400" />
-                <span>ปักหมุดหน้าแรก</span>
+                <span>{t('admin.pinToHome', 'ปักหมุดหน้าแรก')}</span>
               </span>
               <button
                 type="button"

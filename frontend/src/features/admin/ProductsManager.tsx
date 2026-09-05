@@ -564,7 +564,7 @@ export const ProductsManager: React.FC = () => {
                       className="absolute inset-0 bg-black/60 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center text-xs text-white font-bold gap-1.5 backdrop-blur-xs"
                     >
                       <UploadCloud className="h-4 w-4 text-theme-primary" />
-                      <span>คลิกเพื่อเปลี่ยนรูปภาพ</span>
+                      <span>{t('admin.changeImage', 'คลิกเพื่อเปลี่ยนรูปภาพ')}</span>
                     </button>
                   </div>
 
@@ -904,7 +904,7 @@ export const ProductsManager: React.FC = () => {
               />
             </div>
             <div>
-              <label className="font-bold text-theme-text block mb-1">การเคลือบแล็กเกอร์</label>
+              <label className="font-bold text-theme-text block mb-1">{t('admin.lacquerCoating', 'การเคลือบแล็กเกอร์')}</label>
               <input
                 type="text"
                 value={coatingType}

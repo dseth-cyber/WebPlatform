@@ -268,7 +268,7 @@ export const CareersManager: React.FC = () => {
               className="inline-flex items-center gap-1.5 rounded-lg border border-theme-primary/40 bg-theme-primary/10 px-3 py-1.5 text-xs font-bold text-theme-primary hover:bg-theme-primary/20 transition-colors"
             >
               <Plus className="h-3.5 w-3.5" />
-              <span>เพิ่มตำแหน่งงานใหม่</span>
+              <span>{t('admin.addJobPosition', 'เพิ่มตำแหน่งงานใหม่')}</span>
             </button>
           </div>
 
@@ -304,7 +304,7 @@ export const CareersManager: React.FC = () => {
                         {Boolean(job.isPinned) && (
                           <span className="flex items-center gap-1 rounded px-2 py-0.5 text-[10px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30">
                             <Pin className="h-3 w-3 fill-amber-400 text-amber-400" />
-                            <span>ปักหมุดหน้าแรก</span>
+                            <span>{t('admin.pinToHome', 'ปักหมุดหน้าแรก')}</span>
                           </span>
                         )}
                       </div>

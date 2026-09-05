@@ -512,7 +512,7 @@ export const PageEditor: React.FC<{
               {showPrimaryBtn && (
                 <div className="grid grid-cols-2 gap-2.5 pt-1">
                   <div>
-                    <label className="font-bold text-theme-text-muted block text-[10px] mb-1">ข้อความบนปุ่ม</label>
+                    <label className="font-bold text-theme-text-muted block text-[10px] mb-1">{t('admin.buttonText', 'ข้อความบนปุ่ม')}</label>
                     <input
                       type="text"
                       value={ctaText}
@@ -524,7 +524,7 @@ export const PageEditor: React.FC<{
                     />
                   </div>
                   <div>
-                    <label className="font-bold text-theme-text-muted block text-[10px] mb-1">ลิงก์ปลายทาง</label>
+                    <label className="font-bold text-theme-text-muted block text-[10px] mb-1">{t('admin.targetLink', 'ลิงก์ปลายทาง')}</label>
                     <input
                       type="text"
                       value={ctaLink}
@@ -566,7 +566,7 @@ export const PageEditor: React.FC<{
               {showSecondaryBtn && (
                 <div className="grid grid-cols-2 gap-2.5 pt-1">
                   <div>
-                    <label className="font-bold text-theme-text-muted block text-[10px] mb-1">ข้อความบนปุ่ม</label>
+                    <label className="font-bold text-theme-text-muted block text-[10px] mb-1">{t('admin.buttonText', 'ข้อความบนปุ่ม')}</label>
                     <input
                       type="text"
                       value={secondaryCtaText}
@@ -578,7 +578,7 @@ export const PageEditor: React.FC<{
                     />
                   </div>
                   <div>
-                    <label className="font-bold text-theme-text-muted block text-[10px] mb-1">ลิงก์ปลายทาง</label>
+                    <label className="font-bold text-theme-text-muted block text-[10px] mb-1">{t('admin.targetLink', 'ลิงก์ปลายทาง')}</label>
                     <input
                       type="text"
                       value={secondaryCtaLink}
@@ -721,7 +721,7 @@ export const PageEditor: React.FC<{
                 <div className="flex gap-2">
                   <label className="flex-1 inline-flex items-center justify-center gap-1.5 rounded-xl bg-theme-primary/15 border border-theme-primary/40 px-3 py-2 text-xs font-bold text-theme-primary hover:bg-theme-primary hover:text-black cursor-pointer transition-all shadow-sm">
                     <UploadCloud className="h-4 w-4" />
-                    <span>อัปโหลดรูปภาพ</span>
+                    <span>{t('admin.uploadImage', 'อัปโหลดรูปภาพ')}</span>
                     <input type="file" accept="image/*" onChange={handleFileUpload} className="hidden" />
                   </label>
                   <button
@@ -855,7 +855,7 @@ export const PageEditor: React.FC<{
               <div className="flex items-center justify-between pt-2 border-t border-theme-border/40">
                 <div>
                   <div className="font-bold text-theme-text text-[11px]">จุดบอกตำแหน่งสไลด์ (Slide Dots)</div>
-                  <div className="text-[10px] text-theme-text-muted">แสดงจุดนำทางด้านล่างของแบนเนอร์</div>
+                  <div className="text-[10px] text-theme-text-muted">{t('admin.slideDotsDesc', 'แสดงจุดนำทางด้านล่างของแบนเนอร์')}</div>
                 </div>
                 <button
                   type="button"
@@ -880,7 +880,7 @@ export const PageEditor: React.FC<{
                 <div className="flex items-center justify-between">
                   <div>
                     <div className="font-bold text-theme-text text-[11px] flex items-center gap-1.5">
-                      <span>ความฟุ้งเงาดำหลังตัวหนังสือ</span>
+                      <span>{t('admin.textOverlayOpacity', 'ความฟุ้งเงาดำหลังตัวหนังสือ')}</span>
                       <span className="rounded-md bg-theme-primary/20 text-theme-primary px-1.5 py-0.5 text-[10px] font-black">
                         {heroTextOverlayOpacity}%
                       </span>

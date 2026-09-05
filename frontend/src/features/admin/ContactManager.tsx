@@ -395,7 +395,7 @@ export const ContactManager: React.FC = () => {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label className="font-bold text-theme-text block mb-1">เบอร์โทรศัพท์ติดต่อ</label>
+            <label className="font-bold text-theme-text block mb-1">{t('contact.phone', 'เบอร์โทรศัพท์ติดต่อ')}</label>
             <input
               type="text"
               value={phoneNumber}
@@ -480,7 +480,7 @@ export const ContactManager: React.FC = () => {
             />
           </div>
           <div>
-            <label className="font-bold text-theme-text block mb-1">ทุนจดทะเบียน</label>
+            <label className="font-bold text-theme-text block mb-1">{t('admin.registeredCapital', 'ทุนจดทะเบียน')}</label>
             <input
               type="text"
               value={registeredCapital}
@@ -715,12 +715,12 @@ export const ContactManager: React.FC = () => {
           <table className="w-full text-left text-xs text-theme-text-muted">
             <thead>
               <tr className="border-b border-theme-border bg-theme-surface-elevated text-theme-text font-semibold">
-                <th className="py-3 px-4">วันที่</th>
-                <th className="py-3 px-4">ชื่อผู้ติดต่อ / บริษัท</th>
-                <th className="py-3 px-4">หัวข้อคำขอ</th>
-                <th className="py-3 px-4">หมวดสินค้า</th>
-                <th className="py-3 px-4">สถานะ</th>
-                <th className="py-3 px-4 text-right">Actions</th>
+                <th className="py-3 px-4">{t('admin.tableDate', 'วันที่')}</th>
+                <th className="py-3 px-4">{t('admin.contactPerson', 'ชื่อผู้ติดต่อ')} / {t('contact.company', 'บริษัท')}</th>
+                <th className="py-3 px-4">{t('admin.tableSubject', 'หัวข้อคำขอ')}</th>
+                <th className="py-3 px-4">{t('admin.tableCategory', 'หมวดสินค้า')}</th>
+                <th className="py-3 px-4">{t('admin.tableStatus', 'สถานะ')}</th>
+                <th className="py-3 px-4 text-right">{t('admin.tableActions', 'Actions')}</th>
               </tr>
             </thead>
             <tbody>
@@ -799,24 +799,24 @@ export const ContactManager: React.FC = () => {
           <div className="space-y-4 text-xs">
             <div className="grid grid-cols-2 gap-4 border-b border-theme-border pb-4">
               <div>
-                <span className="text-[10px] text-theme-text-dim block">ผู้ติดต่อ</span>
+                <span className="text-[10px] text-theme-text-dim block">{t('admin.contactPerson', 'ผู้ติดต่อ')}</span>
                 <div className="font-bold text-theme-text text-sm">{selectedInquiry.name}</div>
                 <div className="text-theme-text-muted">{selectedInquiry.companyName}</div>
               </div>
               <div>
-                <span className="text-[10px] text-theme-text-dim block">ช่องทางการติดต่อ</span>
+                <span className="text-[10px] text-theme-text-dim block">{t('admin.contactChannels', 'ช่องทางการติดต่อ')}</span>
                 <div className="text-theme-primary font-mono font-bold">{selectedInquiry.phone}</div>
                 <div className="text-theme-text-muted font-mono">{selectedInquiry.email}</div>
               </div>
             </div>
 
             <div>
-              <span className="text-[10px] text-theme-text-dim block mb-0.5">หัวข้อ</span>
+              <span className="text-[10px] text-theme-text-dim block mb-0.5">{t('admin.tableSubject', 'หัวข้อ')}</span>
               <div className="font-bold text-theme-text">{selectedInquiry.subject}</div>
             </div>
 
             <div className="rounded-2xl border border-theme-border bg-theme-surface-elevated p-4">
-              <span className="text-[10px] text-theme-text-dim block mb-1">เนื้อหาข้อความ</span>
+              <span className="text-[10px] text-theme-text-dim block mb-1">{t('admin.messageContent', 'เนื้อหาข้อความ')}</span>
               <p className="text-theme-text leading-relaxed whitespace-pre-wrap">{selectedInquiry.message}</p>
             </div>
 
@@ -868,7 +868,7 @@ export const ContactManager: React.FC = () => {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="font-bold text-theme-text block mb-1">ประเภทสาขา</label>
+              <label className="font-bold text-theme-text block mb-1">{t('admin.branchType', 'ประเภทสาขา')}</label>
               <select
                 value={bType}
                 onChange={(e) => setBType(e.target.value as any)}
@@ -881,7 +881,7 @@ export const ContactManager: React.FC = () => {
               </select>
             </div>
             <div>
-              <label className="font-bold text-theme-text block mb-1">เบอร์โทรศัพท์ติดต่อ</label>
+              <label className="font-bold text-theme-text block mb-1">{t('contact.phone', 'เบอร์โทรศัพท์ติดต่อ')}</label>
               <input
                 type="text"
                 value={bPhone}
@@ -916,7 +916,7 @@ export const ContactManager: React.FC = () => {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="font-bold text-theme-text block mb-1">อีเมลติดต่อสาขา</label>
+              <label className="font-bold text-theme-text block mb-1">{t('admin.branchEmail', 'อีเมลติดต่อสาขา')}</label>
               <input
                 type="email"
                 value={bEmail}
@@ -926,7 +926,7 @@ export const ContactManager: React.FC = () => {
               />
             </div>
             <div>
-              <label className="font-bold text-theme-text block mb-1">เวลาทำการ</label>
+              <label className="font-bold text-theme-text block mb-1">{t('admin.businessHours', 'เวลาทำการ')}</label>
               <input
                 type="text"
                 value={bHours}

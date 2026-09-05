@@ -146,7 +146,7 @@ export const AuditLogManager: React.FC = () => {
             className="flex items-center gap-1.5 rounded-xl border border-theme-border bg-theme-surface px-3.5 py-2 text-xs font-semibold text-theme-text hover:bg-theme-surface-hover"
           >
             <RefreshCw className="h-3.5 w-3.5" />
-            <span>รีเฟรช</span>
+            <span>{t('admin.refresh', 'รีเฟรช')}</span>
           </button>
 
           {/* Purge All Danger Button */}
@@ -156,7 +156,7 @@ export const AuditLogManager: React.FC = () => {
             className="flex items-center gap-1.5 rounded-xl border border-red-500/30 bg-red-500/10 px-3.5 py-2 text-xs font-bold text-red-400 hover:bg-red-500/20 transition-colors"
           >
             <Trash2 className="h-3.5 w-3.5" />
-            <span>ล้างทั้งหมด</span>
+            <span>{t('admin.purgeAll', 'ล้างทั้งหมด')}</span>
           </button>
         </div>
       </div>

@@ -219,7 +219,7 @@ export const AboutManager: React.FC = () => {
 
           <div className="sm:col-span-7 space-y-3">
             <div>
-              <label className="font-bold text-theme-text block mb-1">URL รูปภาพโรงงาน</label>
+              <label className="font-bold text-theme-text block mb-1">{t('admin.plantPhotoUrl', 'URL รูปภาพโรงงาน')}</label>
               <input
                 type="text"
                 value={factoryImage}
@@ -229,10 +229,10 @@ export const AboutManager: React.FC = () => {
             </div>
 
             <div>
-              <label className="font-bold text-theme-text block mb-1">หรือ อัปโหลดรูปภาพใหม่จากเครื่อง</label>
+              <label className="font-bold text-theme-text block mb-1">{t('admin.orUploadImage', 'หรือ อัปโหลดรูปภาพใหม่จากเครื่อง')}</label>
               <label className="inline-flex items-center gap-2 rounded-xl bg-theme-primary/15 border border-theme-primary/40 px-4 py-2.5 text-xs font-bold text-theme-primary hover:bg-theme-primary hover:text-black cursor-pointer transition-all shadow-sm">
                 <UploadCloud className="h-4 w-4" />
-                <span>เลือกไฟล์รูปภาพจากเครื่อง (PNG/JPG)</span>
+                <span>{t('admin.selectImageFile', 'เลือกไฟล์รูปภาพจากเครื่อง (PNG/JPG)')}</span>
                 <input type="file" accept="image/*" onChange={handleFileUpload} className="hidden" />
               </label>
             </div>
@@ -253,7 +253,7 @@ export const AboutManager: React.FC = () => {
               className="rounded-2xl border border-theme-border bg-theme-surface-elevated p-4 space-y-2.5 shadow-sm"
             >
               <div className="flex items-center justify-between">
-                <span className="font-bold text-theme-primary">สถิติที่ {idx + 1}</span>
+                <span className="font-bold text-theme-primary">{t('admin.metricNumber', 'สถิติที่')} {idx + 1}</span>
                 <button
                   type="button"
                   onClick={() => {
@@ -267,12 +267,12 @@ export const AboutManager: React.FC = () => {
                       : 'bg-slate-500/20 text-slate-400 border-slate-500/30'
                   }`}
                 >
-                  {m.enabled ? '🟢 แสดง' : '⚪ ซ่อน'}
+                  {m.enabled ? `🟢 ${t('admin.showTab', 'แสดง')}` : `⚪ ${t('admin.hideTab', 'ซ่อน')}`}
                 </button>
               </div>
 
               <div>
-                <label className="text-[10px] text-theme-text-dim block">ตัวเลขสถิติ (Value)</label>
+                <label className="text-[10px] text-theme-text-dim block">{t('admin.metricValue', 'ตัวเลขสถิติ (Value)')}</label>
                 <input
                   type="text"
                   value={m.value}
@@ -286,7 +286,7 @@ export const AboutManager: React.FC = () => {
               </div>
 
               <div>
-                <label className="text-[10px] text-theme-text-dim block">คำอธิบาย (Label)</label>
+                <label className="text-[10px] text-theme-text-dim block">{t('admin.metricLabel', 'คำอธิบาย (Label)')}</label>
                 <input
                   type="text"
                   value={m.label}
@@ -310,7 +310,7 @@ export const AboutManager: React.FC = () => {
             className="btn-primary-action text-xs font-black px-6 py-2.5 shadow-xl flex items-center gap-2 disabled:opacity-50"
           >
             {isSaving ? <Loader2 className="h-4 w-4 animate-spin text-black" /> : <Save className="h-4 w-4 text-black" />}
-            <span>{isSaving ? 'กำลังบันทึก...' : 'บันทึกข้อมูลทั้งหมด'}</span>
+            <span>{isSaving ? t('admin.saving', 'กำลังบันทึก...') : t('admin.saveAllSettings', 'บันทึกข้อมูลทั้งหมด')}</span>
           </button>
         </div>
       </div>
