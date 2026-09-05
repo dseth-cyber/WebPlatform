@@ -73,38 +73,96 @@
 
 ---
 
-## 🚀 การเริ่มต้นใช้งานด่วน (Quick Start via Docker)
+## 🚀 วิธีการติดตั้งใช้งานบนเครื่องใหม่ (Installation Guide)
 
-### 1. โคลนและตั้งค่าสภาพแวดล้อม (Environment Setup)
-```bash
-cp .env.example .env
-```
-
-### 2. รันระบบทั้งหมดด้วย Docker Compose
-```bash
-docker compose up -d --build
-```
-
-### 3. รันตัวสร้างข้อมูลเริ่มต้น (Database Seeder)
-```bash
-docker compose exec api /app/seeder
-```
-
-### ข้อมูลเข้าสู่ระบบเริ่มต้น (Default Superadmin Credentials):
-- **URL เข้าสู่ระบบ CMS**: `http://localhost/admin`
-- **บัญชีผู้ใช้**: `admin@localhost.co.th`
-- **รหัสผ่าน**: `AdminLohakit2026!`
+ระบบถูกออกแบบให้ **Portable 100%** สามารถนำไปติดตั้งใช้งานบนเครื่องคอมพิวเตอร์หรือเซิร์ฟเวอร์เครื่องอื่นได้อย่างง่ายดาย โดยมีไฟล์ Static Assets สำหรับ Production (`frontend/dist/`) พร้อมใช้งานในตัว ทำให้ **ไม่จำเป็นต้องติดตั้ง Node.js, Go หรือเครื่องมือ Build ใดๆ บนเครื่องปลายทาง** เพียงแค่มี **Docker** เท่านั้น
 
 ---
 
-## 🌐 พอร์ตและ URL การเข้าถึงระบบ
+### ⚡ วิธีที่ 1: ติดตั้งแบบคำสั่งเดียวอัตโนมัติ (One-Click / One-Command Setup - แนะนำ)
 
-| บริการ (Service) | URL การเข้าถึง | รายละเอียด |
-|---|---|---|
-| **เว็บไซต์สำหรับผู้เข้าชม (Public Web)** | [http://localhost/](http://localhost/) | เว็บไซต์หลักแบบ Responsive และ Multi-language |
-| **ระบบจัดการเนื้อหา (Admin Panel)** | [http://localhost/admin](http://localhost/admin) | แผงควบคุมระบบ CMS และการตั้งค่าเว็บไซต์ |
-| **REST API Server** | [http://localhost:8080/api/v1](http://localhost:8080/api/v1) | Backend Go HTTP API Endpoints |
-| **MinIO Object Storage Console** | [http://localhost:9001](http://localhost:9001) | แผงจัดการพื้นที่จัดเก็บไฟล์และคลังรูปภาพ |
+เลือกรันคำสั่งตามระบบปฏิบัติการของคุณ:
+
+#### 🪟 สำหรับระบบปฏิบัติการ Windows:
+ดับเบิลคลิกไฟล์ **`install.bat`** หรือเปิด PowerShell แล้วรันคำสั่ง:
+```powershell
+.\install.ps1
+```
+*(สคริปต์จะตรวจสอบ Docker, บิลด์และเริ่มรันคอนเทนเนอร์ทั้งหมด, นำเข้าฐานข้อมูลเริ่มต้น และเปิดเบราว์เซอร์เข้าสู่หน้า CMS ให้โดยอัตโนมัติ)*
+
+#### 🐧 สำหรับระบบปฏิบัติการ Linux / macOS:
+เปิด Terminal ในโฟลเดอร์โปรเจกต์แล้วรัน:
+```bash
+chmod +x install.sh && ./install.sh
+```
+
+---
+
+### 🐳 วิธีที่ 2: ติดตั้งด้วยคำสั่ง Docker Compose มาตรฐาน (Manual Setup)
+
+หากต้องการรันคำสั่งทีละขั้นตอนด้วยตนเอง สามารถทำได้ดังนี้:
+
+```bash
+# 1. เริ่มการทำงานของคอนเทนเนอร์ทั้งหมดในพื้นหลัง (PostgreSQL, MinIO, Go API, Nginx)
+docker compose up -d --build
+
+# 2. รอประมาณ 5-10 วินาทีให้ฐานข้อมูลสร้างโครงสร้างตาราง (Auto Migration) สำเร็จ
+# จากนั้นรันตัวสร้างข้อมูลเริ่มต้น (ผู้ใช้ Superadmin, หน้าแรก, แคตตาล็อกสินค้า, ธีม):
+docker compose exec -T api /app/seeder
+```
+
+---
+
+### 🔑 ข้อมูลเข้าสู่ระบบเริ่มต้น (Default Superadmin Credentials):
+
+| รายการ | ค่าเริ่มต้น (Default Value) |
+|---|---|
+| **URL เข้าสู่ระบบ CMS** | [http://localhost/admin](http://localhost/admin) |
+| **บัญชีผู้ใช้งาน (Email)** | `admin@localhost.co.th` |
+| **รหัสผ่าน (Password)** | `AdminLocalhost2026!` |
+
+---
+
+## 🌐 พอร์ตและ URL การเข้าถึงระบบ (Service Endpoints)
+
+| บริการ (Service) | URL การเข้าถึง | ข้อมูลการเข้าสู่ระบบ | รายละเอียด |
+|---|---|---|---|
+| **เว็บไซต์สำหรับผู้เข้าชม (Public Web)** | [http://localhost](http://localhost) | ไม่ต้องล็อกอิน | เว็บไซต์หลัก 5 ภาษา รองรับ Responsive |
+| **ระบบจัดการเนื้อหา (Admin CMS)** | [http://localhost/admin](http://localhost/admin) | `admin@localhost.co.th`<br>`AdminLocalhost2026!` | แผงควบคุมเนื้อหา แคตตาล็อก ผู้ใช้ และการตั้งค่า |
+| **REST API Backend** | [http://localhost:8080/api/v1](http://localhost:8080/api/v1) | - | Go HTTP API Server |
+| **MinIO Storage Console** | [http://localhost:9001](http://localhost:9001) | `lohakit_minio`<br>`LohakitMinIOSecureKey2026!` | จัดการไฟล์และคลังรูปภาพ Object Storage |
+
+---
+
+## 🔧 คำแนะนำการดูแลและการแก้ไขปัญหา (Troubleshooting & Maintenance)
+
+### 1. หากเครื่องปลายทางมีโปรแกรมอื่นใช้งานพอร์ต 80 อยู่แล้ว (เช่น IIS หรือ Apache)
+สามารถปรับพอร์ตของ Nginx ในไฟล์ [docker-compose.yml](file:///d:/Antygravity/weblc/docker-compose.yml) ตรงส่วน `nginx.ports`:
+```yaml
+ports:
+  - "8000:80"   # เปลี่ยนให้เข้าผ่าน http://localhost:8000
+```
+
+### 2. การตรวจสอบสถานะคอนเทนเนอร์ (Check Status)
+```bash
+docker compose ps
+```
+
+### 3. การดูบันทึกการทำงานของระบบ (View Logs)
+```bash
+docker compose logs -f api
+docker compose logs -f nginx
+```
+
+### 4. การรีสตาร์ตระบบทั้งหมด (Restart System)
+```bash
+docker compose restart
+```
+
+### 5. การสั่งหยุดการทำงาน (Stop Services)
+```bash
+docker compose down
+```
 
 ---
 

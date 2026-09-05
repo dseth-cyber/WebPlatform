@@ -103,7 +103,7 @@ func main() {
 	}
 
 	// 3. Seed Superadmin User
-	adminPassHash, _ := hasher.GenerateHash("AdminLohakit2026!", nil)
+	adminPassHash, _ := hasher.GenerateHash("AdminLocalhost2026!", nil)
 	var adminUserID uuid.UUID
 	_ = pool.QueryRow(ctx, `
 		INSERT INTO users (email, password_hash, full_name, status)
@@ -638,5 +638,5 @@ func main() {
 	fmt.Println("Database seed completed successfully!")
 	fmt.Println("Admin Login:")
 	fmt.Println("  Email:    admin@localhost.co.th")
-	fmt.Println("  Password: AdminLohakit2026!")
+	fmt.Println("  Password: AdminLocalhost2026!")
 }
