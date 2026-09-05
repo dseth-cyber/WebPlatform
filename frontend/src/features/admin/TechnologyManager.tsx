@@ -151,11 +151,11 @@ export const TechnologyManager: React.FC = () => {
               <Cpu className="h-4 w-4" />
             </span>
             <h1 className="font-display text-xl font-bold text-theme-text">
-              จัดการเนื้อหา: เทคโนโลยีและนวัตกรรม (Technology CMS)
+              {t('admin.techTitle', 'จัดการเนื้อหา: เทคโนโลยีและนวัตกรรม (Technology CMS)')}
             </h1>
           </div>
           <p className="text-xs text-theme-text-muted mt-1">
-            แก้ไขข้อความหัวข้อ คำบรรยาย และ Card เครื่องจักร/ระบบ AI ในหน้าเว็บสาธารณะ (/technology)
+            {t('admin.techSubtitle', 'แก้ไขข้อความหัวข้อ คำบรรยาย และ Card เครื่องจักร/ระบบ AI ในหน้าเว็บสาธารณะ (/technology)')}
           </p>
         </div>
 
@@ -166,7 +166,7 @@ export const TechnologyManager: React.FC = () => {
           className="inline-flex items-center justify-center gap-2 rounded-xl bg-theme-primary px-5 py-2.5 text-xs font-bold text-black shadow-lg shadow-theme-primary/20 hover:opacity-90 disabled:opacity-50 transition-all"
         >
           <Save className="h-4 w-4" />
-          <span>{isSaving ? 'กำลังบันทึก...' : 'บันทึกการเปลี่ยนแปลง'}</span>
+          <span>{isSaving ? t('admin.saving', 'กำลังบันทึก...') : t('admin.saveChanges', 'บันทึกการเปลี่ยนแปลง')}</span>
         </button>
       </div>
 
@@ -176,14 +176,14 @@ export const TechnologyManager: React.FC = () => {
           <div className="border-b border-theme-border/60 pb-3">
             <h2 className="font-display text-sm font-bold text-theme-text flex items-center gap-2">
               <Sparkles className="h-4 w-4 text-theme-primary" />
-              <span>1. ข้อมูลหัวข้อหน้าเทคโนโลยี (Page Banner & Header)</span>
+              <span>{t('admin.techBannerSection', '1. ข้อมูลหัวข้อหน้าเทคโนโลยี (Page Banner & Header)')}</span>
             </h2>
           </div>
 
           <div className="space-y-4">
             <div>
               <label className="block text-xs font-semibold text-theme-text mb-1.5">
-                ป้ายกำกับด้านบน (Badge / Subtitle Tag)
+                {t('admin.fieldBadge', 'ป้ายกำกับด้านบน (Badge / Subtitle Tag)')}
               </label>
               <input
                 type="text"
@@ -196,7 +196,7 @@ export const TechnologyManager: React.FC = () => {
 
             <div>
               <label className="block text-xs font-semibold text-theme-text mb-1.5">
-                หัวข้อหลักของหน้า (Page Title)
+                {t('admin.fieldHeading', 'หัวข้อหลักของหน้า (Page Title)')}
               </label>
               <input
                 type="text"
@@ -209,7 +209,7 @@ export const TechnologyManager: React.FC = () => {
 
             <div>
               <label className="block text-xs font-semibold text-theme-text mb-1.5">
-                คำบรรยายภาพรวม (Description)
+                {t('admin.fieldDescription', 'คำบรรยายภาพรวม (Description)')}
               </label>
               <textarea
                 rows={3}
@@ -224,7 +224,7 @@ export const TechnologyManager: React.FC = () => {
 
         {/* 1.5 Multi-Language Translations (EN, JP, CN, MM) */}
         <MultiLangSectionEditor
-          title="แปลภาษา (Multi-Language) - เทคโนโลยี"
+          title={`${t('admin.multiLangTitle', 'แปลภาษา (Multi-Language)')} - ${t('admin.technology', 'เทคโนโลยี')}`}
           fields={[
             { key: 'badge', label: 'Badge' },
             { key: 'heading', label: 'Title / Heading' },
@@ -240,7 +240,7 @@ export const TechnologyManager: React.FC = () => {
             <div>
               <h2 className="font-display text-sm font-bold text-theme-text flex items-center gap-2">
                 <Cpu className="h-4 w-4 text-theme-primary" />
-                <span>2. รายการเครื่องจักรและนวัตกรรม AI (Technology Cards)</span>
+                <span>{t('admin.techCardsSection', '2. รายการเครื่องจักรและนวัตกรรม AI (Technology Cards)')}</span>
               </h2>
               <p className="text-[11px] text-theme-text-muted mt-0.5">
                 แสดงผลเป็น Card พร้อมเอฟเฟกต์แสงเรือง (.glow-card) บนหน้าเว็บ

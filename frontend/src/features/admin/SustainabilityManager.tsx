@@ -151,11 +151,11 @@ export const SustainabilityManager: React.FC = () => {
               <Recycle className="h-4 w-4" />
             </span>
             <h1 className="font-display text-xl font-bold text-theme-text">
-              จัดการเนื้อหา: ความยั่งยืนและ ESG (Sustainability CMS)
+              {t('admin.sustainabilityTitle', 'จัดการเนื้อหา: ความยั่งยืนและ ESG (Sustainability CMS)')}
             </h1>
           </div>
           <p className="text-xs text-theme-text-muted mt-1">
-            แก้ไขข้อความหัวข้อ คำบรรยาย และ Card เสาหลักความยั่งยืนในหน้าเว็บสาธารณะ (/sustainability)
+            {t('admin.sustainabilitySubtitle', 'แก้ไขข้อความหัวข้อ คำบรรยาย และ Card เสาหลักความยั่งยืนในหน้าเว็บสาธารณะ (/sustainability)')}
           </p>
         </div>
 
@@ -166,7 +166,7 @@ export const SustainabilityManager: React.FC = () => {
           className="inline-flex items-center justify-center gap-2 rounded-xl bg-theme-primary px-5 py-2.5 text-xs font-bold text-black shadow-lg shadow-theme-primary/20 hover:opacity-90 disabled:opacity-50 transition-all"
         >
           <Save className="h-4 w-4" />
-          <span>{isSaving ? 'กำลังบันทึก...' : 'บันทึกการเปลี่ยนแปลง'}</span>
+          <span>{isSaving ? t('admin.saving', 'กำลังบันทึก...') : t('admin.saveChanges', 'บันทึกการเปลี่ยนแปลง')}</span>
         </button>
       </div>
 
@@ -176,14 +176,14 @@ export const SustainabilityManager: React.FC = () => {
           <div className="border-b border-theme-border/60 pb-3">
             <h2 className="font-display text-sm font-bold text-theme-text flex items-center gap-2">
               <Sparkles className="h-4 w-4 text-emerald-400" />
-              <span>1. ข้อมูลหัวข้อหน้าความยั่งยืน (Page Banner & Header)</span>
+              <span>{t('admin.sustainabilityBannerSection', '1. ข้อมูลหัวข้อหน้าความยั่งยืน (Page Banner & Header)')}</span>
             </h2>
           </div>
 
           <div className="space-y-4">
             <div>
               <label className="block text-xs font-semibold text-theme-text mb-1.5">
-                ป้ายกำกับด้านบน (Badge / Subtitle Tag)
+                {t('admin.fieldBadge', 'ป้ายกำกับด้านบน (Badge / Subtitle Tag)')}
               </label>
               <input
                 type="text"
@@ -196,7 +196,7 @@ export const SustainabilityManager: React.FC = () => {
 
             <div>
               <label className="block text-xs font-semibold text-theme-text mb-1.5">
-                หัวข้อหลักของหน้า (Page Title)
+                {t('admin.fieldHeading', 'หัวข้อหลักของหน้า (Page Title)')}
               </label>
               <input
                 type="text"
@@ -209,7 +209,7 @@ export const SustainabilityManager: React.FC = () => {
 
             <div>
               <label className="block text-xs font-semibold text-theme-text mb-1.5">
-                คำบรรยายภาพรวม (Description)
+                {t('admin.fieldDescription', 'คำบรรยายภาพรวม (Description)')}
               </label>
               <textarea
                 rows={3}
@@ -224,7 +224,7 @@ export const SustainabilityManager: React.FC = () => {
 
         {/* 1.5 Multi-Language Translations (EN, JP, CN, MM) */}
         <MultiLangSectionEditor
-          title="แปลภาษา (Multi-Language) - ความยั่งยืน"
+          title={`${t('admin.multiLangTitle', 'แปลภาษา (Multi-Language)')} - ${t('admin.sustainability', 'ความยั่งยืน')}`}
           fields={[
             { key: 'badge', label: 'Badge' },
             { key: 'heading', label: 'Title / Heading' },

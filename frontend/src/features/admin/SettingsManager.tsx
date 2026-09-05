@@ -269,7 +269,7 @@ export const SettingsManager: React.FC = () => {
             <span>{t('admin.settings')} (System & Logo Settings)</span>
           </h1>
           <p className="text-xs text-theme-text-muted mt-1">
-            จัดการโลโก้เว็บไซต์ (แสดงครบ 3 จุด), ควบคุมปุ่มบนหน้าเว็บ, ระบบธีม, และข้อมูลแบรนด์องค์กร
+            {t('admin.settingsSubtitle', 'จัดการโลโก้เว็บไซต์ (แสดงครบ 3 จุด), ควบคุมปุ่มบนหน้าเว็บ, ระบบธีม, และข้อมูลแบรนด์องค์กร')}
           </p>
         </div>
 
@@ -280,7 +280,7 @@ export const SettingsManager: React.FC = () => {
             className="flex items-center gap-1.5 rounded-xl border border-theme-border bg-theme-surface px-3.5 py-2 text-xs font-semibold text-theme-text-muted hover:text-theme-text hover:bg-theme-surface-elevated transition-colors"
           >
             <RotateCcw className="h-3.5 w-3.5" />
-            <span>รีเซ็ตค่าเริ่มต้น</span>
+            <span>{t('admin.resetDefaults', 'รีเซ็ตค่าเริ่มต้น')}</span>
           </button>
           <button
             type="button"
@@ -288,7 +288,7 @@ export const SettingsManager: React.FC = () => {
             className="btn-primary-action text-xs font-black px-6 py-2.5 shadow-xl"
           >
             <Save className="h-4 w-4 text-black" />
-            <span>บันทึกการตั้งค่าทั้งหมด</span>
+            <span>{t('admin.saveAllSettings', 'บันทึกการตั้งค่าทั้งหมด')}</span>
           </button>
         </div>
       </div>
@@ -298,10 +298,10 @@ export const SettingsManager: React.FC = () => {
         <div className="flex items-center justify-between border-b border-theme-border pb-3">
           <h3 className="font-display text-sm font-bold text-theme-text flex items-center gap-2">
             <ImageIcon className="h-4 w-4 text-theme-primary" />
-            <span>จัดการโลโก้เว็บไซต์ (Website Logo & Favicon Sync across 3 Locations)</span>
+            <span>{t('admin.settingsLogoSection', 'จัดการโลโก้เว็บไซต์ (Website Logo & Favicon Sync across 3 Locations)')}</span>
           </h3>
           <span className="text-[11px] font-bold text-theme-primary bg-theme-primary/10 border border-theme-primary/30 px-2.5 py-0.5 rounded-full">
-            ซิงค์อัตโนมัติ 3 จุด
+            {t('admin.autoSyncBadge', 'ซิงค์อัตโนมัติ 3 จุด')}
           </span>
         </div>
 
@@ -311,7 +311,7 @@ export const SettingsManager: React.FC = () => {
           <div className="rounded-2xl border border-theme-border bg-theme-surface-elevated p-4 space-y-2.5">
             <div className="flex items-center gap-1.5 text-theme-primary text-xs font-bold">
               <Globe className="h-3.5 w-3.5" />
-              <span>จุดที่ 1: เมนูหน้าเว็บผู้เข้าชม</span>
+              <span>{t('admin.previewPoint1', 'จุดที่ 1: เมนูหน้าเว็บผู้เข้าชม')}</span>
             </div>
             <div className="h-16 rounded-xl bg-black/60 border border-white/10 p-2.5 flex items-center gap-3">
               {formState.logoImage ? (
@@ -333,7 +333,7 @@ export const SettingsManager: React.FC = () => {
           <div className="rounded-2xl border border-theme-border bg-theme-surface-elevated p-4 space-y-2.5">
             <div className="flex items-center gap-1.5 text-theme-primary text-xs font-bold">
               <Layout className="h-3.5 w-3.5" />
-              <span>จุดที่ 2: เมนู Admin Panel</span>
+              <span>{t('admin.previewPoint2', 'จุดที่ 2: เมนู Admin Panel')}</span>
             </div>
             <div className="h-16 rounded-xl bg-black/60 border border-white/10 p-2.5 flex items-center gap-3">
               {formState.logoImage ? (
@@ -352,7 +352,7 @@ export const SettingsManager: React.FC = () => {
           <div className="rounded-2xl border border-theme-border bg-theme-surface-elevated p-4 space-y-2.5">
             <div className="flex items-center gap-1.5 text-theme-primary text-xs font-bold">
               <Layers className="h-3.5 w-3.5" />
-              <span>จุดที่ 3: แท็บบราวเซอร์ (Favicon)</span>
+              <span>{t('admin.previewPoint3', 'จุดที่ 3: แท็บบราวเซอร์ (Favicon)')}</span>
             </div>
             <div className="h-16 rounded-xl bg-slate-900 border border-white/10 p-2.5 flex items-center gap-2">
               <div className="h-6 w-6 rounded bg-slate-800 border border-theme-primary/40 flex items-center justify-center overflow-hidden p-0.5 flex-shrink-0">
@@ -374,11 +374,11 @@ export const SettingsManager: React.FC = () => {
         {/* Logo Upload & Input Controls */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 pt-2 text-xs">
           <div className="space-y-3">
-            <label className="font-bold text-theme-text block">อัปโหลดไฟล์รูปภาพโลโก้ (Image Logo)</label>
+            <label className="font-bold text-theme-text block">{t('admin.uploadLogoLabel', 'อัปโหลดไฟล์รูปภาพโลโก้ (Image Logo)')}</label>
             <div className="flex items-center gap-3">
               <label className="inline-flex items-center gap-2 rounded-xl bg-theme-primary/15 border border-theme-primary/40 px-4 py-2.5 text-xs font-bold text-theme-primary hover:bg-theme-primary hover:text-black cursor-pointer transition-all shadow-sm">
                 <UploadCloud className="h-4 w-4" />
-                <span>เลือกไฟล์รูปโลโก้จากเครื่อง (PNG/JPG/SVG)</span>
+                <span>{t('admin.chooseLogoFile', 'เลือกไฟล์รูปโลโก้จากเครื่อง (PNG/JPG/SVG)')}</span>
                 <input type="file" accept="image/*" onChange={handleLogoFileUpload} className="hidden" />
               </label>
 
@@ -388,17 +388,17 @@ export const SettingsManager: React.FC = () => {
                   onClick={handleResetLogo}
                   className="rounded-xl border border-red-500/30 bg-red-500/10 px-3 py-2.5 text-xs font-bold text-red-400 hover:bg-red-500/20"
                 >
-                  ลบรูปโลโก้
+                  {t('admin.deleteLogo', 'ลบรูปโลโก้')}
                 </button>
               )}
             </div>
             <p className="text-[11px] text-theme-text-muted">
-              แนะนำไฟล์พื้นหลังโปร่งใส (Transparent PNG) เพื่อความสวยงามในทุกธีม
+              {t('admin.transparentPngHint', 'แนะนำไฟล์พื้นหลังโปร่งใส (Transparent PNG) เพื่อความสวยงามในทุกธีม')}
             </p>
           </div>
 
           <div className="space-y-3">
-            <label className="font-bold text-theme-text block">ตัวอักษรตราสัญลักษณ์ (Monogram Text)</label>
+            <label className="font-bold text-theme-text block">{t('admin.monogramLabel', 'ตัวอักษรตราสัญลักษณ์ (Monogram Text)')}</label>
             <div className="flex gap-3">
               <input
                 type="text"
@@ -409,7 +409,7 @@ export const SettingsManager: React.FC = () => {
                 className="w-24 rounded-xl border border-theme-border bg-theme-surface-elevated px-3 py-2 text-center text-theme-text font-black font-mono uppercase text-sm"
               />
               <div className="flex-1 text-[11px] text-theme-text-muted flex items-center">
-                ใช้แสดงผลเมื่อไม่ได้อัปโหลดรูปภาพ เช่น ตัวย่อบริษัท (2-4 ตัวอักษร)
+                {t('admin.monogramHint', 'ใช้แสดงผลเมื่อไม่ได้อัปโหลดรูปภาพ เช่น ตัวย่อบริษัท (2-4 ตัวอักษร)')}
               </div>
             </div>
           </div>
@@ -420,7 +420,7 @@ export const SettingsManager: React.FC = () => {
       <div className="rounded-3xl border border-theme-border bg-theme-surface p-6 sm:p-8 shadow-2xl space-y-4">
         <h3 className="font-display text-sm font-bold text-theme-text flex items-center gap-2 border-b border-theme-border pb-3">
           <Sliders className="h-4 w-4 text-theme-primary" />
-          <span>การแสดงผลปุ่มบนหน้าเว็บสำหรับผู้เข้าชม (Public Web Button Controls)</span>
+          <span>{t('admin.publicButtonSection', 'การแสดงผลปุ่มบนหน้าเว็บสำหรับผู้เข้าชม (Public Web Button Controls)')}</span>
         </h3>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5 pt-1">
@@ -428,19 +428,19 @@ export const SettingsManager: React.FC = () => {
           <div className="flex flex-col justify-between p-5 rounded-2xl border border-theme-border bg-theme-surface-elevated space-y-4 shadow-sm">
             <div className="space-y-1.5">
               <div className="font-bold text-xs text-theme-text flex items-center justify-between">
-                <span>ปุ่มเข้าสู่ระบบ CMS บนหน้าเว็บ</span>
+                <span>{t('admin.cmsButtonLabel', 'ปุ่มเข้าสู่ระบบ CMS บนหน้าเว็บ')}</span>
                 {settings.showCMSButton ? (
                   <span className="rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-2.5 py-0.5 text-[10px] font-bold">
-                    🟢 กำลังแสดงผล
+                    🟢 {t('admin.statusActive', 'กำลังแสดงผล')}
                   </span>
                 ) : (
                   <span className="rounded-full bg-slate-500/20 text-slate-400 border border-slate-500/30 px-2.5 py-0.5 text-[10px] font-bold">
-                    ⚪ ซ่อนอยู่
+                    ⚪ {t('admin.statusHidden', 'ซ่อนอยู่')}
                   </span>
                 )}
               </div>
               <p className="text-[11px] text-theme-text-muted leading-relaxed">
-                เปิด/ปิด การแสดงปุ่ม <code>🔒 CMS</code> บนแถบเมนูด้านบนของหน้าเว็บสำหรับผู้เข้าชม
+                {t('admin.cmsButtonDesc', 'เปิด/ปิด การแสดงปุ่ม บนแถบเมนูด้านบนของหน้าเว็บสำหรับผู้เข้าชม')}
               </p>
             </div>
 
@@ -471,19 +471,19 @@ export const SettingsManager: React.FC = () => {
           <div className="flex flex-col justify-between p-5 rounded-2xl border border-theme-border bg-theme-surface-elevated space-y-4 shadow-sm">
             <div className="space-y-1.5">
               <div className="font-bold text-xs text-theme-text flex items-center justify-between">
-                <span>ปุ่มเปลี่ยนธีมบนหน้าเว็บ</span>
+                <span>{t('admin.themeButtonLabel', 'ปุ่มเปลี่ยนธีมบนหน้าเว็บ')}</span>
                 {settings.showThemeSwitcher ? (
                   <span className="rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-2.5 py-0.5 text-[10px] font-bold">
-                    🟢 กำลังแสดงผล
+                    🟢 {t('admin.statusActive', 'กำลังแสดงผล')}
                   </span>
                 ) : (
                   <span className="rounded-full bg-slate-500/20 text-slate-400 border border-slate-500/30 px-2.5 py-0.5 text-[10px] font-bold">
-                    ⚪ ซ่อนอยู่
+                    ⚪ {t('admin.statusHidden', 'ซ่อนอยู่')}
                   </span>
                 )}
               </div>
               <p className="text-[11px] text-theme-text-muted leading-relaxed">
-                เปิด/ปิด การแสดงปุ่มเปลี่ยนธีม (Dark / Light / Modern) บนแถบเมนูหน้าเว็บสำหรับผู้เข้าชม
+                {t('admin.themeButtonDesc', 'เปิด/ปิด การแสดงปุ่มเปลี่ยนธีม (Dark / Light / Modern) บนแถบเมนูหน้าเว็บสำหรับผู้เข้าชม')}
               </p>
             </div>
 
@@ -499,12 +499,12 @@ export const SettingsManager: React.FC = () => {
               {settings.showThemeSwitcher ? (
                 <>
                   <EyeOff className="h-4 w-4 text-red-400" />
-                  <span>คลิกเพื่อซ่อนปุ่มเปลี่ยนธีม</span>
+                  <span>{t('admin.statusHidden', 'คลิกเพื่อซ่อนปุ่ม')}</span>
                 </>
               ) : (
                 <>
                   <Eye className="h-4 w-4" />
-                  <span>คลิกเพื่อเปิดแสดงปุ่มเปลี่ยนธีม</span>
+                  <span>{t('admin.statusActive', 'คลิกเพื่อเปิดแสดงปุ่ม')}</span>
                 </>
               )}
             </button>
@@ -516,20 +516,20 @@ export const SettingsManager: React.FC = () => {
               <div className="font-bold text-xs text-theme-text flex items-center justify-between">
                 <span className="flex items-center gap-1.5">
                   <span className="inline-block w-2.5 h-2.5 rounded-full bg-amber-400 shadow-sm" />
-                  <span>ปุ่ม "{settings.heroButtonText || 'อ่านประวัติองค์กร'}" บนแบนเนอร์หน้าแรก</span>
+                  <span>{t('admin.historyButtonLabel', 'ปุ่ม "อ่านประวัติองค์กร" บนแบนเนอร์หน้าแรก')}</span>
                 </span>
                 {settings.showHeroPrimaryBtn !== false ? (
                   <span className="rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-2.5 py-0.5 text-[10px] font-bold">
-                    🟢 กำลังแสดงผล
+                    🟢 {t('admin.statusActive', 'กำลังแสดงผล')}
                   </span>
                 ) : (
                   <span className="rounded-full bg-slate-500/20 text-slate-400 border border-slate-500/30 px-2.5 py-0.5 text-[10px] font-bold">
-                    ⚪ ซ่อนอยู่
+                    ⚪ {t('admin.statusHidden', 'ซ่อนอยู่')}
                   </span>
                 )}
               </div>
               <p className="text-[11px] text-theme-text-muted leading-relaxed">
-                เปิด/ปิด การแสดงปุ่มสีทองหลัก <code>{settings.heroButtonText || 'อ่านประวัติองค์กร'} &rarr;</code> บนแบนเนอร์ส่วน Hero ของหน้าแรก
+                {t('admin.historyButtonDesc', 'เปิด/ปิด การแสดงปุ่มสีทองหลัก อ่านประวัติองค์กร บนแบนเนอร์ส่วน Hero ของหน้าแรก')}
               </p>
             </div>
 
@@ -545,12 +545,12 @@ export const SettingsManager: React.FC = () => {
               {settings.showHeroPrimaryBtn !== false ? (
                 <>
                   <EyeOff className="h-4 w-4 text-red-400" />
-                  <span>คลิกเพื่อซ่อนปุ่มนี้</span>
+                  <span>{t('admin.statusHidden', 'คลิกเพื่อซ่อนปุ่ม')}</span>
                 </>
               ) : (
                 <>
                   <Eye className="h-4 w-4" />
-                  <span>คลิกเพื่อเปิดแสดงปุ่มนี้</span>
+                  <span>{t('admin.statusActive', 'คลิกเพื่อเปิดแสดงปุ่ม')}</span>
                 </>
               )}
             </button>
@@ -562,20 +562,20 @@ export const SettingsManager: React.FC = () => {
               <div className="font-bold text-xs text-theme-text flex items-center justify-between">
                 <span className="flex items-center gap-1.5">
                   <span className="inline-block w-2.5 h-2.5 rounded-full bg-white/70 border border-white/40 shadow-sm" />
-                  <span>ปุ่ม "{settings.heroSecondaryButtonText || 'ชมผลิตภัณฑ์ของเรา'}" บนแบนเนอร์หน้าแรก</span>
+                  <span>{t('admin.productsButtonLabel', 'ปุ่ม "ชมผลิตภัณฑ์ของเรา" บนแบนเนอร์หน้าแรก')}</span>
                 </span>
                 {settings.showHeroSecondaryBtn !== false ? (
                   <span className="rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-2.5 py-0.5 text-[10px] font-bold">
-                    🟢 กำลังแสดงผล
+                    🟢 {t('admin.statusActive', 'กำลังแสดงผล')}
                   </span>
                 ) : (
                   <span className="rounded-full bg-slate-500/20 text-slate-400 border border-slate-500/30 px-2.5 py-0.5 text-[10px] font-bold">
-                    ⚪ ซ่อนอยู่
+                    ⚪ {t('admin.statusHidden', 'ซ่อนอยู่')}
                   </span>
                 )}
               </div>
               <p className="text-[11px] text-theme-text-muted leading-relaxed">
-                เปิด/ปิด การแสดงปุ่มโครงร่างโปร่งใส <code>{settings.heroSecondaryButtonText || 'ชมผลิตภัณฑ์ของเรา'}</code> บนแบนเนอร์ส่วน Hero ของหน้าแรก
+                {t('admin.productsButtonDesc', 'เปิด/ปิด การแสดงปุ่มโครงร่างโปร่งใส ชมผลิตภัณฑ์ของเรา บนแบนเนอร์ส่วน Hero ของหน้าแรก')}
               </p>
             </div>
 

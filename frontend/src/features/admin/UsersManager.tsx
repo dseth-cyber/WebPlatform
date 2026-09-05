@@ -299,11 +299,11 @@ export const UsersManager: React.FC = () => {
             <table className="w-full text-left text-xs text-theme-text-muted">
               <thead>
                 <tr className="border-b border-theme-border bg-theme-surface-elevated text-theme-text font-semibold">
-                  <th className="py-3 px-4">User Name</th>
-                  <th className="py-3 px-4">Email</th>
-                  <th className="py-3 px-4">Roles & Permissions</th>
-                  <th className="py-3 px-4">Status</th>
-                  <th className="py-3 px-4 text-right">Actions (จัดการ / รีเซ็ตรหัสผ่าน)</th>
+                  <th className="py-3 px-4">{t('admin.tableUser', 'User Name')}</th>
+                  <th className="py-3 px-4">{t('admin.tableEmail', 'Email')}</th>
+                  <th className="py-3 px-4">{t('admin.tableRole', 'Roles & Permissions')}</th>
+                  <th className="py-3 px-4">{t('admin.tableStatus', 'Status')}</th>
+                  <th className="py-3 px-4 text-right">{t('admin.tableActions', 'Actions (จัดการ / รีเซ็ตรหัสผ่าน)')}</th>
                 </tr>
               </thead>
               <tbody>

@@ -692,19 +692,19 @@ export const ProductsManager: React.FC = () => {
             <table className="w-full text-left text-xs text-theme-text-muted">
               <thead>
                 <tr className="border-b border-theme-border bg-theme-surface-elevated text-theme-text font-semibold">
-                  <th className="py-3 px-4">รูปภาพ</th>
-                  <th className="py-3 px-4">รหัส SKU</th>
-                  <th className="py-3 px-4">ชื่อสินค้า</th>
-                  <th className="py-3 px-4">หมวดหมู่</th>
-                  <th className="py-3 px-4 text-center">เปิด/ปิด บนเว็บ</th>
-                  <th className="py-3 px-4 text-right">จัดการ</th>
+                  <th className="py-3 px-4">{t('admin.tableImage', 'รูปภาพ')}</th>
+                  <th className="py-3 px-4">{t('admin.tableSku', 'รหัส SKU')}</th>
+                  <th className="py-3 px-4">{t('admin.tableProductName', 'ชื่อสินค้า')}</th>
+                  <th className="py-3 px-4">{t('admin.tableCategory', 'หมวดหมู่')}</th>
+                  <th className="py-3 px-4 text-center">{t('admin.tableVisibility', 'เปิด/ปิด บนเว็บ')}</th>
+                  <th className="py-3 px-4 text-right">{t('admin.tableActions', 'จัดการ')}</th>
                 </tr>
               </thead>
               <tbody>
                 {filteredProducts.length === 0 ? (
                   <tr>
                     <td colSpan={6} className="py-8 text-center text-xs text-theme-text-dim">
-                      ไม่พบรายการสินค้า
+                      {t('admin.tableNoData', 'ไม่พบรายการสินค้า')}
                     </td>
                   </tr>
                 ) : (

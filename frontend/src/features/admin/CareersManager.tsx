@@ -145,11 +145,11 @@ export const CareersManager: React.FC = () => {
               <Briefcase className="h-4 w-4" />
             </span>
             <h1 className="font-display text-xl font-bold text-theme-text">
-              จัดการเนื้อหา: สมัครงาน & ร่วมงานกับเรา (Careers CMS)
+              {t('admin.careersTitle', 'จัดการเนื้อหา: สมัครงาน & ร่วมงานกับเรา (Careers CMS)')}
             </h1>
           </div>
           <p className="text-xs text-theme-text-muted mt-1">
-            แก้ไขหัวข้อ สวัสดิการองค์กร และตำแหน่งงานว่าง (Job Openings) ในหน้าเว็บสาธารณะ (/careers)
+            {t('admin.careersSubtitle', 'แก้ไขหัวข้อ สวัสดิการองค์กร และตำแหน่งงานว่าง (Job Openings) ในหน้าเว็บสาธารณะ (/careers)')}
           </p>
         </div>
 
@@ -160,7 +160,7 @@ export const CareersManager: React.FC = () => {
           className="inline-flex items-center justify-center gap-2 rounded-xl bg-theme-primary px-5 py-2.5 text-xs font-bold text-black shadow-lg shadow-theme-primary/20 hover:opacity-90 disabled:opacity-50 transition-all"
         >
           <Save className="h-4 w-4" />
-          <span>{isSaving ? 'กำลังบันทึก...' : 'บันทึกการเปลี่ยนแปลง'}</span>
+          <span>{isSaving ? t('admin.saving', 'กำลังบันทึก...') : t('admin.saveChanges', 'บันทึกการเปลี่ยนแปลง')}</span>
         </button>
       </div>
 
@@ -177,7 +177,7 @@ export const CareersManager: React.FC = () => {
           <div className="space-y-4">
             <div>
               <label className="block text-xs font-semibold text-theme-text mb-1.5">
-                ป้ายกำกับด้านบน (Badge / Subtitle Tag)
+                {t('admin.fieldBadge', 'ป้ายกำกับด้านบน (Badge / Subtitle Tag)')}
               </label>
               <input
                 type="text"
@@ -190,7 +190,7 @@ export const CareersManager: React.FC = () => {
 
             <div>
               <label className="block text-xs font-semibold text-theme-text mb-1.5">
-                หัวข้อหลักของหน้า (Page Title)
+                {t('admin.fieldHeading', 'หัวข้อหลักของหน้า (Page Title)')}
               </label>
               <input
                 type="text"
@@ -218,7 +218,7 @@ export const CareersManager: React.FC = () => {
 
         {/* 1.5 Multi-Language Translations (EN, JP, CN, MM) */}
         <MultiLangSectionEditor
-          title="แปลภาษา (Multi-Language) - สมัครงาน"
+          title={`${t('admin.multiLangTitle', 'แปลภาษา (Multi-Language)')} - ${t('admin.careers', 'ร่วมงานกับเรา')}`}
           fields={[
             { key: 'badge', label: 'Badge' },
             { key: 'heading', label: 'Title / Heading' },

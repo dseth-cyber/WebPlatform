@@ -32,9 +32,9 @@ export const PagesManager: React.FC<PagesManagerProps> = ({ onNavigate, onEditPa
 
   const statusOptions: SelectOption[] = [
     { value: 'all', label: `✨ ${t('common.all')} (${t('common.status')})` },
-    { value: 'PUBLISHED', label: 'PUBLISHED (เผยแพร่แล้ว)' },
-    { value: 'DRAFT', label: 'DRAFT (ฉบับร่าง)' },
-    { value: 'REVIEW', label: 'REVIEW (รอตรวจสอบ)' },
+    { value: 'PUBLISHED', label: `PUBLISHED (${t('admin.statusPublished', 'เผยแพร่แล้ว')})` },
+    { value: 'DRAFT', label: `DRAFT (${t('admin.statusDraft', 'ฉบับร่าง')})` },
+    { value: 'REVIEW', label: `REVIEW (${t('admin.statusReview', 'รอตรวจสอบ')})` },
   ];
 
   const handleEdit = (slug: string, id: string) => {
@@ -63,10 +63,10 @@ export const PagesManager: React.FC<PagesManagerProps> = ({ onNavigate, onEditPa
         <div>
           <h1 className="font-display text-2xl font-black text-theme-text flex items-center gap-2">
             <FileText className="h-6 w-6 text-theme-primary" />
-            <span>{t('admin.pages')} (Pages & Structure CMS)</span>
+            <span>{t('admin.pagesTitle', 'Pages & Section Builder (Pages & Structure CMS)')}</span>
           </h1>
           <p className="text-xs text-theme-text-muted mt-1">
-            จัดการหน้าเว็บไซต์และเนื้อหาแต่ละส่วน (หน้าแรก, เกี่ยวกับเรา, สินค้า, ข่าวสาร, ติดต่อเรา)
+            {t('admin.pagesSubtitle', 'จัดการหน้าเว็บไซต์และเนื้อหาแต่ละส่วน (หน้าแรก, เกี่ยวกับเรา, สินค้า, ข่าวสาร, ติดต่อเรา)')}
           </p>
         </div>
 
@@ -76,7 +76,7 @@ export const PagesManager: React.FC<PagesManagerProps> = ({ onNavigate, onEditPa
           className="flex items-center gap-2 rounded-xl bg-theme-primary px-5 py-2.5 text-xs font-black text-black shadow-lg shadow-theme-primary/25 hover:bg-theme-primary-hover transition-all"
         >
           <Plus className="h-4 w-4 text-black" />
-          <span>+ เพิ่มสินค้า / เนื้อหาใหม่</span>
+          <span>{t('admin.addNewContent', '+ เพิ่มสินค้า / เนื้อหาใหม่')}</span>
         </button>
       </div>
 
@@ -97,7 +97,7 @@ export const PagesManager: React.FC<PagesManagerProps> = ({ onNavigate, onEditPa
             type="text"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder="ค้นหาตาม Slug หรือ Title..."
+            placeholder={t('admin.searchSlugPlaceholder', 'ค้นหาตาม Slug หรือ Title...')}
             className="w-full rounded-xl border border-theme-border bg-theme-surface-elevated py-2 pl-9 pr-3 text-xs text-theme-text placeholder-theme-text-dim focus:border-theme-primary focus:outline-none"
           />
         </div>
@@ -112,11 +112,11 @@ export const PagesManager: React.FC<PagesManagerProps> = ({ onNavigate, onEditPa
             <table className="w-full text-left text-xs text-theme-text-muted">
               <thead>
                 <tr className="border-b border-theme-border bg-theme-surface-elevated text-theme-text font-semibold">
-                  <th className="py-3 px-4">Slug / Path</th>
-                  <th className="py-3 px-4">ชื่อหน้าเว็บ (Page Title)</th>
-                  <th className="py-3 px-4">สถานะ</th>
-                  <th className="py-3 px-4">อัปเดตล่าสุด</th>
-                  <th className="py-3 px-4 text-right">จัดการ</th>
+                  <th className="py-3 px-4">{t('admin.tableSlug', 'Slug / Path')}</th>
+                  <th className="py-3 px-4">{t('admin.tablePageTitle', 'ชื่อหน้าเว็บ (Page Title)')}</th>
+                  <th className="py-3 px-4">{t('admin.tableStatus', 'สถานะ')}</th>
+                  <th className="py-3 px-4">{t('admin.tableLastUpdated', 'อัปเดตล่าสุด')}</th>
+                  <th className="py-3 px-4 text-right">{t('admin.tableActions', 'จัดการ')}</th>
                 </tr>
               </thead>
               <tbody>

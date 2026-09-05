@@ -113,10 +113,10 @@ export const AboutManager: React.FC = () => {
         <div>
           <h1 className="font-display text-2xl font-black text-theme-text flex items-center gap-2">
             <Building2 className="h-6 w-6 text-theme-primary" />
-            <span>จัดการเนื้อหาหน้า • เกี่ยวกับเรา (About Us CMS)</span>
+            <span>{t('admin.aboutTitle', 'จัดการเนื้อหาหน้า • เกี่ยวกับเรา (About Us CMS)')}</span>
           </h1>
           <p className="text-xs text-theme-text-muted mt-1">
-            แก้ไขประวัติบริษัท วิสัยทัศน์ รูปภาพโรงงาน และตัวเลขสถิติความสำเร็จ (บันทึกลง Database กลางอัตโนมัติ)
+            {t('admin.aboutSubtitle', 'แก้ไขประวัติบริษัท วิสัยทัศน์ รูปภาพโรงงาน และตัวเลขสถิติความสำเร็จ (บันทึกลง Database กลางอัตโนมัติ)')}
           </p>
         </div>
 
@@ -127,19 +127,19 @@ export const AboutManager: React.FC = () => {
           className="btn-primary-action text-xs font-black px-6 py-2.5 shadow-xl flex items-center gap-2 disabled:opacity-50"
         >
           {isSaving ? <Loader2 className="h-4 w-4 animate-spin text-black" /> : <Save className="h-4 w-4 text-black" />}
-          <span>{isSaving ? 'กำลังบันทึก...' : 'บันทึกข้อมูลเกี่ยวกับเรา'}</span>
+          <span>{isSaving ? t('admin.saving', 'กำลังบันทึก...') : t('admin.saveAbout', 'บันทึกข้อมูลเกี่ยวกับเรา')}</span>
         </button>
       </div>
 
       {/* 1. Main Story & Headlines */}
       <div className="rounded-3xl border border-theme-border bg-theme-surface p-6 sm:p-8 shadow-2xl space-y-4 text-xs">
         <h3 className="font-display text-sm font-bold text-theme-text border-b border-theme-border pb-3">
-          ข้อความหัวข้อและประวัติองค์กร (Company Story & Overview)
+          {t('admin.aboutStorySection', 'ข้อความหัวข้อและประวัติองค์กร (Company Story & Overview)')}
         </h3>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label className="font-bold text-theme-text block mb-1">หัวข้อหลัก (Title)</label>
+            <label className="font-bold text-theme-text block mb-1">{t('admin.fieldTitle', 'หัวข้อหลัก (Title)')}</label>
             <input
               type="text"
               value={heading}
@@ -148,7 +148,7 @@ export const AboutManager: React.FC = () => {
             />
           </div>
           <div>
-            <label className="font-bold text-theme-text block mb-1">หัวข้อย่อยสโลแกน (Subheading)</label>
+            <label className="font-bold text-theme-text block mb-1">{t('admin.fieldSubheading', 'หัวข้อย่อยสโลแกน (Subheading)')}</label>
             <input
               type="text"
               value={subheading}
@@ -159,7 +159,7 @@ export const AboutManager: React.FC = () => {
         </div>
 
         <div>
-          <label className="font-bold text-theme-text block mb-1">เนื้อหาประวัติความเป็นมา (Paragraph 1)</label>
+          <label className="font-bold text-theme-text block mb-1">{t('admin.fieldStory1', 'เนื้อหาประวัติความเป็นมา (Paragraph 1)')}</label>
           <textarea
             rows={4}
             value={story1}
@@ -169,7 +169,7 @@ export const AboutManager: React.FC = () => {
         </div>
 
         <div>
-          <label className="font-bold text-theme-text block mb-1">วิสัยทัศน์และความมุ่งมั่น (Paragraph 2 - Vision)</label>
+          <label className="font-bold text-theme-text block mb-1">{t('admin.fieldStory2', 'วิสัยทัศน์และความมุ่งมั่น (Paragraph 2 - Vision)')}</label>
           <textarea
             rows={3}
             value={story2}
@@ -180,8 +180,8 @@ export const AboutManager: React.FC = () => {
 
         <div>
           <div className="flex items-center justify-between mb-1">
-            <label className="font-bold text-theme-text block">พันธกิจและมาตรฐาน (Paragraph 3 - Mission & Standards)</label>
-            <span className="text-[11px] text-theme-text-muted">ขึ้นบรรทัดใหม่ (Enter) เพื่อแยกเป็นแต่ละข้อหัวข้อย่อย</span>
+            <label className="font-bold text-theme-text block">{t('admin.fieldMission', 'พันธกิจและมาตรฐาน (Paragraph 3 - Mission & Standards)')}</label>
+            <span className="text-[11px] text-theme-text-muted">{t('admin.enterBreakHint', 'ขึ้นบรรทัดใหม่ (Enter) เพื่อแยกเป็นแต่ละข้อหัวข้อย่อย')}</span>
           </div>
           <textarea
             rows={4}
@@ -195,7 +195,7 @@ export const AboutManager: React.FC = () => {
 
       {/* 1.5 Multi-Language Translations (EN, JP, CN, MM) */}
       <MultiLangSectionEditor
-        title="แปลภาษา (Multi-Language) - เกี่ยวกับเรา"
+        title={`${t('admin.multiLangTitle', 'แปลภาษา (Multi-Language)')} - ${t('admin.aboutTitle', 'เกี่ยวกับเรา')}`}
         fields={[
           { key: 'heading', label: 'Title / Heading' },
           { key: 'subheading', label: 'Highlight / Subheading' },
@@ -209,7 +209,7 @@ export const AboutManager: React.FC = () => {
       {/* 2. Factory Photo & Attachment */}
       <div className="rounded-3xl border border-theme-border bg-theme-surface p-6 sm:p-8 shadow-2xl space-y-4 text-xs">
         <h3 className="font-display text-sm font-bold text-theme-text border-b border-theme-border pb-3">
-          รูปภาพอาคารและสายการผลิตโรงงาน (Plant & Facility Photo)
+          {t('admin.aboutFactorySection', 'รูปภาพอาคารและสายการผลิตโรงงาน (Plant & Facility Photo)')}
         </h3>
 
         <div className="grid grid-cols-1 sm:grid-cols-12 gap-6 items-center">
@@ -243,7 +243,7 @@ export const AboutManager: React.FC = () => {
       {/* 3. 4 Metric Counters (Edit & Show/Hide) */}
       <div className="rounded-3xl border border-theme-border bg-theme-surface p-6 sm:p-8 shadow-2xl space-y-4 text-xs">
         <h3 className="font-display text-sm font-bold text-theme-text border-b border-theme-border pb-3">
-          ตัวเลขสถิติความสำเร็จ 4 ด้าน (Key Performance Metrics)
+          {t('admin.aboutMetricsSection', 'ตัวเลขสถิติความสำเร็จ 4 ด้าน (Key Performance Metrics)')}
         </h3>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">

@@ -359,10 +359,10 @@ export const ContactManager: React.FC = () => {
         <div>
           <h1 className="font-display text-2xl font-black text-theme-text flex items-center gap-2">
             <Phone className="h-6 w-6 text-theme-primary" />
-            <span>จัดการข้อมูลการติดต่อ & ข้อความลูกค้า (Contact & Inquiries)</span>
+            <span>{t('admin.contactTitle', 'จัดการข้อมูลการติดต่อ & ข้อความลูกค้า (Contact & Inquiries)')}</span>
           </h1>
           <p className="text-xs text-theme-text-muted mt-1">
-            แก้ไขช่องทางติดต่อโรงงาน และบริหารจัดการคำขอใบเสนอราคาจากหน้าเว็บ
+            {t('admin.contactSubtitle', 'แก้ไขช่องทางติดต่อโรงงาน และบริหารจัดการคำขอใบเสนอราคาจากหน้าเว็บ')}
           </p>
         </div>
 
@@ -372,7 +372,7 @@ export const ContactManager: React.FC = () => {
           className="flex items-center gap-2 rounded-xl bg-theme-primary px-6 py-2.5 text-xs font-black text-black shadow-lg shadow-theme-primary/20 hover:bg-theme-primary-hover transition-all"
         >
           <Save className="h-4 w-4 text-black" />
-          <span>บันทึกข้อมูลการติดต่อ</span>
+          <span>{t('admin.saveContact', 'บันทึกข้อมูลการติดต่อ')}</span>
         </button>
       </div>
 

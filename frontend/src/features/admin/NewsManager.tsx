@@ -356,19 +356,19 @@ export const NewsManager: React.FC = () => {
             <table className="w-full text-left text-xs text-theme-text-muted">
               <thead>
                 <tr className="border-b border-theme-border bg-theme-surface-elevated text-theme-text font-semibold">
-                  <th className="py-3 px-4">รูปภาพ</th>
-                  <th className="py-3 px-4">หัวข้อข่าวสาร</th>
-                  <th className="py-3 px-4">หมวดหมู่</th>
-                  <th className="py-3 px-4">วันที่เผยแพร่</th>
-                  <th className="py-3 px-4 text-center">เปิด/ปิด บนเว็บ</th>
-                  <th className="py-3 px-4 text-right">จัดการ</th>
+                  <th className="py-3 px-4">{t('admin.tableImage', 'รูปภาพ')}</th>
+                  <th className="py-3 px-4">{t('admin.tableNewsTitle', 'หัวข้อข่าวสาร')}</th>
+                  <th className="py-3 px-4">{t('admin.tableCategory', 'หมวดหมู่')}</th>
+                  <th className="py-3 px-4">{t('admin.tablePublishedDate', 'วันที่เผยแพร่')}</th>
+                  <th className="py-3 px-4 text-center">{t('admin.tableVisibility', 'เปิด/ปิด บนเว็บ')}</th>
+                  <th className="py-3 px-4 text-right">{t('admin.tableActions', 'จัดการ')}</th>
                 </tr>
               </thead>
               <tbody>
                 {filteredItems.length === 0 ? (
                   <tr>
                     <td colSpan={6} className="py-8 text-center text-xs text-theme-text-dim">
-                      ไม่พบข้อมูลข่าวสาร
+                      {t('admin.tableNoData', 'ไม่พบข้อมูลข่าวสาร')}
                     </td>
                   </tr>
                 ) : (

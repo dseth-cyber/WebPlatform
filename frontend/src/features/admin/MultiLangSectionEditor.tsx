@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export type LocaleCode = 'en' | 'jp' | 'cn' | 'mm';
 
@@ -29,7 +30,7 @@ const LOCALE_TABS: Array<{ code: LocaleCode; label: string }> = [
 ];
 
 export const MultiLangSectionEditor: React.FC<MultiLangSectionEditorProps> = ({
-  title = 'แปลภาษา (Multi-Language)',
+  title,
   badge = '4 Locales',
   fields,
   value,
@@ -37,6 +38,8 @@ export const MultiLangSectionEditor: React.FC<MultiLangSectionEditorProps> = ({
   className = '',
   compact = false,
 }) => {
+  const { t } = useTranslation();
+  const displayTitle = title || t('admin.multiLangTitle', 'แปลภาษา (Multi-Language)');
   const [activeTab, setActiveTab] = useState<LocaleCode>('en');
 
   const handleFieldChange = (key: string, val: string) => {
@@ -57,7 +60,7 @@ export const MultiLangSectionEditor: React.FC<MultiLangSectionEditorProps> = ({
         <div className="flex items-center justify-between border-b border-theme-border/60 pb-2">
           <span className="font-bold text-xs text-theme-text flex items-center gap-1.5">
             <span>🌐</span>
-            <span>{title}</span>
+            <span>{displayTitle}</span>
           </span>
           <span className="text-[10px] text-theme-text-muted font-mono">{badge}</span>
         </div>
@@ -103,7 +106,7 @@ export const MultiLangSectionEditor: React.FC<MultiLangSectionEditorProps> = ({
                     rows={field.rows || 2}
                     value={currentVal}
                     onChange={(e) => handleFieldChange(field.key, e.target.value)}
-                    placeholder={field.placeholder || `กรอก ${field.label} (${activeTab.toUpperCase()})`}
+                    placeholder={field.placeholder || `${field.label} (${activeTab.toUpperCase()})`}
                     className="w-full rounded-xl border border-theme-border bg-theme-surface px-3 py-1.5 text-xs text-theme-text focus:border-cyan-400 focus:outline-none transition-colors"
                   />
                 ) : (
@@ -111,7 +114,7 @@ export const MultiLangSectionEditor: React.FC<MultiLangSectionEditorProps> = ({
                     type="text"
                     value={currentVal}
                     onChange={(e) => handleFieldChange(field.key, e.target.value)}
-                    placeholder={field.placeholder || `กรอก ${field.label} (${activeTab.toUpperCase()})`}
+                    placeholder={field.placeholder || `${field.label} (${activeTab.toUpperCase()})`}
                     className="w-full rounded-xl border border-theme-border bg-theme-surface px-3 py-1.5 text-xs text-theme-text focus:border-cyan-400 focus:outline-none transition-colors"
                   />
                 )}
@@ -127,7 +130,7 @@ export const MultiLangSectionEditor: React.FC<MultiLangSectionEditorProps> = ({
     <div className={`rounded-3xl border border-theme-border bg-theme-surface p-6 shadow-2xl space-y-4 ${className}`}>
       {/* Header */}
       <div className="border-b border-theme-border pb-3 flex items-center justify-between">
-        <h2 className="font-display text-sm font-bold text-theme-text">{title}</h2>
+        <h2 className="font-display text-sm font-bold text-theme-text">{displayTitle}</h2>
         <span className="text-[10px] text-theme-text-muted font-mono">{badge}</span>
       </div>
 
@@ -172,7 +175,7 @@ export const MultiLangSectionEditor: React.FC<MultiLangSectionEditorProps> = ({
                   rows={field.rows || 3}
                   value={currentVal}
                   onChange={(e) => handleFieldChange(field.key, e.target.value)}
-                  placeholder={field.placeholder || `กรอก ${field.label} (${activeTab.toUpperCase()})`}
+                  placeholder={field.placeholder || `${field.label} (${activeTab.toUpperCase()})`}
                   className="w-full rounded-xl border border-theme-border bg-theme-surface-elevated px-3.5 py-2.5 text-xs text-theme-text focus:border-cyan-400 focus:outline-none transition-colors"
                 />
               ) : (
@@ -180,7 +183,7 @@ export const MultiLangSectionEditor: React.FC<MultiLangSectionEditorProps> = ({
                   type="text"
                   value={currentVal}
                   onChange={(e) => handleFieldChange(field.key, e.target.value)}
-                  placeholder={field.placeholder || `กรอก ${field.label} (${activeTab.toUpperCase()})`}
+                  placeholder={field.placeholder || `${field.label} (${activeTab.toUpperCase()})`}
                   className="w-full rounded-xl border border-theme-border bg-theme-surface-elevated px-3.5 py-2.5 text-xs text-theme-text focus:border-cyan-400 focus:outline-none transition-colors"
                 />
               )}

@@ -102,10 +102,10 @@ export const TrashManager: React.FC = () => {
           <table className="w-full text-left text-xs text-theme-text-muted">
             <thead>
               <tr className="border-b border-theme-border bg-theme-surface-elevated text-theme-text font-semibold">
-                <th className="py-3 px-4">Entity Type</th>
-                <th className="py-3 px-4">Title / Name</th>
-                <th className="py-3 px-4">Deleted At</th>
-                <th className="py-3 px-4 text-right">Actions</th>
+                <th className="py-3 px-4">{t('admin.tableEntity', 'Entity Type')}</th>
+                <th className="py-3 px-4">{t('admin.tableProductName', 'Title / Name')}</th>
+                <th className="py-3 px-4">{t('admin.tableDeletedAt', 'Deleted At')}</th>
+                <th className="py-3 px-4 text-right">{t('admin.tableActions', 'Actions')}</th>
               </tr>
             </thead>
             <tbody>
