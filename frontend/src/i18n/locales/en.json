@@ -684,7 +684,9 @@
     "folder": "Folder:",
     "copied": "URL Copied!",
     "copyAssetUrl": "Copy Asset URL",
-    "uploadMediaModalTitle": "Upload Media Assets"
+    "uploadMediaModalTitle": "Upload Media Assets",
+    "inquiryCount": "Inquiries",
+    "deleteInquirySuccess": "Inquiry deleted successfully"
   },
   "contact": {
     "title": "Contact CHIOTRON TECHNOLOGY",

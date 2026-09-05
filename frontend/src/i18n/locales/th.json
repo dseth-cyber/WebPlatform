@@ -684,7 +684,9 @@
     "folder": "โฟลเดอร์:",
     "copied": "คัดลอก URL แล้ว!",
     "copyAssetUrl": "คัดลอก Asset URL",
-    "uploadMediaModalTitle": "อัปโหลดไฟล์สื่อใหม่ (Upload Assets)"
+    "uploadMediaModalTitle": "อัปโหลดไฟล์สื่อใหม่ (Upload Assets)",
+    "inquiryCount": "คำขอ",
+    "deleteInquirySuccess": "ลบรายการคำขอเรียบร้อยแล้ว"
   },
   "contact": {
     "title": "ติดต่อ บริษัท ไคโอทรอน เทคโนโลยี จำกัด (CHIOTRON TECHNOLOGY)",

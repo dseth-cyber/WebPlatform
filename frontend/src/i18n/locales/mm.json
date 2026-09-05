@@ -684,7 +684,9 @@
     "folder": "ဖိုင်တွဲ:",
     "copied": "URL ကူးယူပြီးပါပြီ!",
     "copyAssetUrl": "ဖိုင်လင့်ခ် ကူးယူရန်",
-    "uploadMediaModalTitle": "မီဒီယာဖိုင်အသစ် တင်ရန်"
+    "uploadMediaModalTitle": "မီဒီယာဖိုင်အသစ် တင်ရန်",
+    "inquiryCount": "ခု",
+    "deleteInquirySuccess": "တောင်းဆိုချက်အား အောင်မြင်စွာ ဖျက်ပြီးပါပြီ"
   },
   "contact": {
     "title": "ဆက်သွယ်ရန်",

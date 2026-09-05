@@ -684,7 +684,9 @@
     "folder": "フォルダ:",
     "copied": "URLをコピーしました！",
     "copyAssetUrl": "アセットURLをコピー",
-    "uploadMediaModalTitle": "メディアファイルのアップロード"
+    "uploadMediaModalTitle": "メディアファイルのアップロード",
+    "inquiryCount": "件",
+    "deleteInquirySuccess": "お問い合わせを削除しました"
   },
   "contact": {
     "title": "お問い合わせ",

@@ -338,7 +338,7 @@ export const ContactManager: React.FC = () => {
         localStorage.setItem('lohakit_customer_inquiries', JSON.stringify(updated));
         return updated;
       });
-      showToast('ลบรายการคำขอเรียบร้อยแล้ว');
+      showToast(t('admin.deleteInquirySuccess', 'ลบรายการคำขอเรียบร้อยแล้ว'));
       setDeleteConfirmOpen(false);
       setDeletingId(null);
     }

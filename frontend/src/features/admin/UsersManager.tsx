@@ -597,7 +597,7 @@ export const UsersManager: React.FC = () => {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="somchai@lohakit.co.th"
+              placeholder="somchai@localhost.co.th"
               className="w-full rounded-xl border border-theme-border bg-theme-surface px-3 py-2 text-theme-text font-mono"
             />
           </div>

@@ -684,7 +684,9 @@
     "folder": "文件夹:",
     "copied": "已复制链接！",
     "copyAssetUrl": "复制资源链接",
-    "uploadMediaModalTitle": "上传媒体资源"
+    "uploadMediaModalTitle": "上传媒体资源",
+    "inquiryCount": "条请求",
+    "deleteInquirySuccess": "已成功删除该咨询请求"
   },
   "contact": {
     "title": "联系我们",
